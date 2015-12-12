@@ -1,0 +1,103 @@
+doctype html
+html
+  head
+    title= title
+    link(rel="stylesheet", href="/stylesheets/jquery-ui-1.11.2-min.css")
+    link(rel="stylesheet", href="../bower_components/angular-material/angular-material.min.css")
+    link(rel="stylesheet", href="/stylesheets/style.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons")
+    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css")
+    base(href="/admin/")
+
+  body(ng-cloak ng-controller="LayoutCtrl as vm")
+    div(layout-fill)&attributes({layout:"column"})
+      md-toolbar()
+        div.md-toolbar-tools
+          md-button(class="md-icon-button", style="padding-top: 8px;", aria-label="Settings" ng-click="vm.toggleLeft()",  hide-gt-md="true")
+            i(class="material-icons") menu
+          span
+            h2.md-display-1 Tagger
+          span(flex)
+          md-list(ng-if="vm.userAreaId === 0")
+            md-list-item(ng-style="{'display':'inline'}")
+                md-input-container(class="md-no-float")
+                  md-select(ng-model="vm.areas" placeholder="Select Area")
+                    md-option(ng-repeat="area in vm.areas" ng-selected="vm.currentId == area.id" ng-click="vm.updateArea(area.id, $index)") {{area.title}}
+          md-container(ng-if="vm.userAreaId > 0")
+            span.md-subhead Area: &nbsp;  {{vm.areaLabel}}
+      div(layout="row" flex class="view-container")
+        if user
+          md-sidenav(style="height: 650px" class="md-sidenav-left transparent", flex="5", md-component-id="left", md-is-locked-open="$mdMedia('gt-md')")
+            md-toolbar(class="md-default-theme")
+              md-card(class="local-hue-1 margin-override")
+                md-card-content(style="padding-left: 12px;")
+                  md-list
+                    md-list-item.contact-item
+                      img.md-avatar(src="#{picture}")
+                    md-list-item(ng-controller="AuthorizedCtrl as vm")
+                      div.md-subhead #{user}
+                        .md-caption(elem-ready="vm.getRole(#{areaId})") {{vm.role}}
+            md-content.transparent
+              md-list
+                md-list-item(hide-gt-md="true")
+                  md-button(ng-click="vm.toggleLeft();", class=" md-button md-default-theme")
+                    div.md-list-item-inner
+                      div.list-group-item-text HIDE MENU
+                        div.md-ripple-container
+                md-list-item(ng-class="{selected: vm.currentIndex===0}")
+                  md-button(ng-click="vm.setCurrentIndex(0);vm.toggleLeft();", class="md-no-style md-button md-default-theme",  href="/admin/partials/overview")
+                    div.md-list-item-inner
+                      md-icon( aria-hidden="true" style="margin: 10px;")
+                        i.material-icons home
+                      div.list-group-item-text Overview
+                        div.md-ripple-container
+                md-list-item( ng-class="{selected: vm.currentIndex===1}")
+                  md-button(ng-click="vm.setCurrentIndex(1); vm.toggleLeft();", class="md-no-style md-button md-default-theme",  ng-href="/admin/partials/collections",)
+                    div.md-list-item-inner
+                      md-icon( aria-hidden="true" style="margin: 10px;")
+                        i.material-icons collections
+                      div.list-group-item-text Collections
+                        div.md-ripple-container
+                md-list-item( ng-class="{selected: vm.currentIndex===2}")
+                  md-button(ng-click="vm.setCurrentIndex(2); vm.toggleLeft();", class="md-no-style md-button md-default-theme" href="/admin/partials/tags" tabindex="0")
+                    div.md-list-item-inner
+                      md-icon( aria-hidden="true" style="margin: 10px;")
+                        i.material-icons link
+                      div.list-group-item-text Subject Tags
+                        div.md-ripple-container
+                md-list-item( ng-class="{selected: vm.currentIndex===3}")
+                  md-button(ng-click="vm.setCurrentIndex(3); vm.toggleLeft();", ng-disabled="vm.userAreaId > 0", class="md-no-style md-button md-default-theme" href="/admin/partials/contentTypes" tabindex="0")
+                    div.md-list-item-inner
+                      md-icon( aria-hidden="true" style="margin: 10px;")
+                        i.material-icons local_movies
+                      div.list-group-item-text Content Types
+                        div.md-ripple-container
+                md-list-item( ng-class="{selected: vm.currentIndex===4}" )
+                  md-button(ng-click="vm.setCurrentIndex(4); vm.toggleLeft();", ng-disabled="vm.userAreaId > 0", class="md-no-style md-button md-default-theme" href="/admin/partials/categories" tabindex="0")
+                    div.md-list-item-inner
+                      md-icon( aria-hidden="true" style="margin: 10px;")
+                        i.material-icons library_books
+                      div.list-group-item-text Collection Groups
+                        div.md-ripple-container
+                md-list-item(ng-class="{selected: vm.currentIndex===5}" )
+                  md-button(ng-click="vm.setCurrentIndex(5); vm.toggleLeft();", ng-disabled="vm.userAreaId > 0", class="md-no-style md-button md-default-theme" href="/admin/partials/areas" tabindex="0")
+                    div.md-list-item-inner
+                      md-icon( aria-hidden="true" style="margin: 10px;")
+                        i.material-icons public
+                      div.list-group-item-text Areas
+                        div.md-ripple-container
+                md-list-item(ng-class="{selected: vm.currentIndex===6}" )
+                  md-button(ng-click="vm.setCurrentIndex(6); vm.toggleLeft();", ng-disabled="vm.userAreaId > 0", class="md-no-style md-button md-default-theme" href="/admin/partials/users" tabindex="0")
+                    div.md-list-item-inner
+                      md-icon( aria-hidden="true" style="margin: 10px;")
+                        i.material-icons group
+                      div.list-group-item-text Users
+                        div.md-ripple-container
+
+        div(ng-view, style="overflow:auto", layout="row" layout-gt-md="column" flex)
+
+
+
+  include ./js-load.jade
+
+

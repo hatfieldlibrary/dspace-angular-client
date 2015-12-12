@@ -1,0 +1,17 @@
+<md-dialog aria-label="Remove tag" class="dialogs">
+  <md-dialog-content>
+    <h3 class="md-display-1">Remove Tag from Area</h3>
+    <md-input-container>
+      Remove this tag from the collection area? <strong>Removing this tag will also remove the tag from all collections that have used it!</strong>
+    </md-input-container>
+  </md-dialog-content>
+  <md-dialog-actions>
+    <md-button ng-click="closeDialog()">
+      Cancel
+    </md-button>
+    <md-button ng-click="removeAreaFromTag()">
+      Remove Tag
+    </md-button>
+  </md-dialog-actions>
+</md-dialog>
+

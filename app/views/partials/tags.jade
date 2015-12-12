@@ -1,0 +1,48 @@
+md-content(class="transparent" layout="column", layout-gt-md="row" style="overflow: auto;" layout-align="start start", flex="100", ng-controller="TagCtrl as vm")
+  md-card.flex(flex="100" flex-gt-md="75" style="height: 900px;")
+    div(ng-if="vm.tags.$resolved")
+    md-toolbar.md_primary
+      .md-toolbar-tools
+        span(flex="20")
+          i.material-icons link
+          span.md-subhead &nbsp;TAGS
+        span(flex="70")
+          h2.md-display-2 {{vm.tag.name}}
+        span(flex)
+        md-button(ng-show="vm.userAreaId==0" class="md-warn md-raised md-fab md-mini" aria-label="Delete Tag" ng-click="vm.showDialog($event, vm.deleteMessage)") <i class="material-icons">delete</i>
+
+    md-content
+      div(layout="row", layout-align="start start")
+        md-card-content(flex="20" )
+          md-button(ng-show="vm.userAreaId==0" class="md-raised md-accent responsive-button" ng-click="vm.showDialog($event, vm.addMessage)") Add Tag
+        md-card-content(layout="column" layout-padding flex="80" flex-gt-md="80" style="padding-left: 20px;")
+          div(flex="80" class="md-subhead grey-text")
+            span(ng-show="vm.userAreaId==0") Collections can be associated with one or more #[em Subject Tags]. A single Subject Tag can be used across multiple Areas. (A Tag must be assigned to at least one Area.)
+            div(style="width: 70%;" ng-show="vm.userAreaId > 0") Add or remove #[em Subject Tags} from your collection area. Note that when you add a tag it may immediately appear in the public display. If you add a tag, be sure to use it by linking it to one or more of your collections.
+              |  If you delete a tag from this collection area, all references to it will be removed from your collections.
+
+      md-content(layout="row", layout-align="start start")
+        md-card-content(flex="20" )
+          div(layout="column", style="height:700px;")
+            md-content(flex ng-show="vm.userAreaId==0")
+              md-list
+                div(ng-repeat="tag in vm.tags")
+                  md-list-item
+                    md-button(class="md-no-style md-button nav-item-dimens md-default-theme", ng-class="{'md-primary': tag.id==vm.currentTag}"  ng-click="vm.resetTag(tag.id);")
+                      div(class="list-group-item-text md-subhead layout-fill") {{tag.name}}
+                        div.md-ripple-container
+                  md-divider
+
+        md-card-content(flex="80" layout="column" class="md-subhead grey-text")
+          md-button(ng-show="vm.userAreaId==0" class="md-raised md-accent large-button" ng-click="vm.updateTag()") Update Tag
+          md-input-container(ng-show="vm.userAreaId==0")
+            label Tag Name
+            input(type="text", ng-model="vm.tag.name")
+          div( style="height: 507px; margin-bottom: 40px;overflow: auto;border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;" flex="100" ng-show="vm.userAreaId > 0")
+            md-content(flex )
+              md-list
+                md-list-item(ng-repeat="tag in vm.tags")
+                  toggle-tag-area-button(flex="100" tag-id="{{tag.id}}", tag-name="{{tag.name}}" , area-id="vm.currentAreaIndex", ng-click="showDialog($event, vm.deleteMessage)")
+
+  md-content(class="transparent"  flex="100" flex-gt-md="25")
+    tag-area-selector(flex ng-show="vm.userAreaId==0")

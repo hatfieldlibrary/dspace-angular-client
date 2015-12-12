@@ -1,0 +1,130 @@
+
+md-content(class="transparent" layout="column", layout-gt-md="row", layout-align="start start",  ng-controller="CollectionCtrl as vm")
+  md-content( layout="column" flex="100" flex-gt-md="75" class="transparent")
+    md-card.flex(flex, class="primary-content" style="background: #EAEAE6;")
+      div(ng-if="vm.collectionList.$resolved")
+      md-toolbar.md_primary
+        .md-toolbar-tools
+          span(flex="25")
+            i.material-icons() collections
+            span(class="md-subhead responsive-heading") &nbsp;COLLECTIONS
+          span(flex="65")
+            h3.md-display-1 {{vm.collection.title}}
+          span(flex)
+          md-button(class="md-warn md-raised md-fab md-mini" aria-label="Delete Collection" ng-click="vm.showDialog($event, vm.deleteMessage)") <i class="material-icons">delete</i>
+
+      md-content(style="background: transparent")
+        div(layout="row", layout-align="start start")
+          md-card-content(flex="20" )
+            md-button(class="md-raised md-accent responsive-button" ng-click="vm.showDialog($event, vm.addMessage)") Add Collection
+          md-card-content(layout="column" layout-padding flex="80" flex-gt-md="80" style="padding-left: 20px;")
+            div(flex="80" class="md-subhead grey-text")
+              span Values must be provided for ALL of the information below, with the exception of coverage dates and item counts, which can be blank.  You can use the default image if none is available. A minimum of one content type and one subject tag should be provided.
+
+        md-card-content(layout="row", layout-align="start start")
+          md-content(flex="20" style="background: transparent")
+            div(layout="column", style="height:700px;")
+              md-content(flex style="background: transparent")
+                md-list
+                div(ng-repeat="col in vm.collectionList")
+                  md-list-item
+                    md-button(class="md-no-style md-button  md-default-theme nav-item-dimens", ng-class="{'md-primary': col.Collection.id==vm.collectionId}" ng-click="vm.getCollectionById(col.Collection.id);")
+                      div(class="list-group-item-text md-subhead layout-fill") {{col.Collection.title}}
+                        div.md-ripple-container
+                  md-divider
+
+
+
+          md-content(ng-if="vm.collectionId > -1" layout-padding layout="column" flex="80" style="padding:25px;border: 1px solid #ccc;background: #fff;" )
+
+            md-button(class="md-raised md-accent large-button" ng-click="vm.updateCollection()") Update Collection
+            md-input-container
+              label Collection Name
+              input(type="text", ng-model="vm.collection.title")
+            md-input-container
+              label Collection Group
+              md-select(ng-model="vm.collection.category" placeholder="Select a Collection Group")
+                md-option(ng-repeat="category in vm.categoryList" ng-value="category.id") {{category.title}}
+            md-input-container
+              label Description  &nbsp;
+                span(class="md-subhead md-default") maximum characters 450 (current {{vm.collection.description.length}})
+              textarea(type="textarea", ng-trim="false", ng-model="vm.collection.description", maxlength="450")
+            md-input-container
+              label Coverage Dates
+              input(type="text", ng-model="vm.collection.dates")
+            md-input-container
+              label Item Count
+              input(type="text", ng-model="vm.collection.items")
+            div(style="margin-bottom: 15px;")
+              div.md-caption Item Type
+              md-radio-group(layout="column" layout-gt-md="row" ng-model="vm.collection.ctype")
+                div(flex="100" flex-gt-md="25")
+                  md-radio-button(aria-label="Unrestricted" value="dig" style="display: inline") Collection
+                div(flex="100" flex-gt-md="25")
+                  md-radio-button(aria-label="Restricted" value="itm" style="display: inline") Single Item
+                div(flex="100" flex-gt-md="25")
+                  md-radio-button(aria-label="Restricted" value="aid" style="display: inline") Finding Aid
+                span(flex)
+            md-divider
+            div(style="margin-bottom: 15px;")
+              div.md-caption Search Options
+              md-radio-group(layout="column" layout-gt-md="row" ng-model="vm.collection.repoType")
+                div(flex="100" flex-gt-md="25")
+                  md-radio-button(aria-label="Search & Browse" value="DEFAULT" flex="15" style="display: inline") Search & Browse
+                div(flex="100" flex-gt-md="25")
+                  md-radio-button(aria-label="Browse Only" value="BROWSE" flex="15" style="display: inline") Browse Only
+                div(flex="100" flex-gt-md="25")
+                  md-radio-button(aria-label="Search Only" value="SEARCH" flex="15" style="display: inline") Search Only
+                span(flex)
+            md-divider
+            div(style="margin-bottom: 15px;")
+              div.md-caption Collection Access
+              md-radio-group(layout="column" layout-gt-md="row" ng-model="vm.collection.restricted")
+                div(flex="100" flex-gt-lg="25")
+                  md-radio-button(aria-label="Unrestricted" ng-value="false" flex="15" style="display: inline") Unrestricted
+                div(flex="100" flex-gt-lg="25")
+                  md-radio-button(aria-label="Restricted" ng-value="true" flex="15" style="display: inline") Restricted
+                span(flex)
+            md-divider
+            div(style="margin-bottom: 15px;")
+              div.md-caption Browse Type
+              md-radio-group(layout="column" layout-gt-md="row" ng-model="vm.collection.browseType")
+                div(flex="100" flex-gt-md="25")
+                  md-radio-button(aria-label="Show entire collection" value="link" flex="15" style="display: inline" ng-click="vm.setBrowseType(0)") Link to collection
+                div(flex="100" flex-gt-md="25")
+                  md-radio-button(aria-label="Show a selection" value="opts" flex="15" style="display: inline" ng-click="vm.setBrowseType(1)") Show option list
+                span(flex)
+
+            md-content(layout="column" layout-gt-md="row" flex)
+              div(flex="5" )
+                i(class="material-icons" style="margin-top: 20px;color: rgb(63,81,181);") arrow_forward
+              md-content(flex="95")
+                md-input-container(style="width:100%")
+                  label {{vm.browseType}}
+                  input(type="text", ng-model="vm.collection.url")
+          md-content(ng-if="vm.collectionId == -1" layout-padding flex="80" style="padding: 55px;padding-top: 30px;border: 1px solid #ccc;background: #fff;" class="transparent")
+            div(flex="85" class="md-subhead grey-text")
+              span Add collection to area.
+  md-content(class="transparent" layout="column" flex="100" flex-gt-md="25" class="transparent")
+    md-card.flex(flex)
+      md-toolbar.md_primary
+        .md-toolbar-tools
+          i(class="material-icons") image
+          h3.md-display-1 &nbsp;Image
+          div(flex)
+            md-button(class="md-accent md-raised md-fab md-mini", ng-click="vm.showDialog($event, vm.updateImageMessage)", style="float: right;")
+              i(class="material-icons") file_upload
+      md-card-content
+        div(layout="row")
+          md-card(flex="40" style="margin:0;max-width: 120px")
+            thumb-image(imgname="{{vm.thumbnailImage}}" )
+          md-card-content
+            span(class="md-caption") Image size 500px wide by 600px high
+
+    subject-selector.flex
+
+    content-type-selector.flex
+
+    area-selector(flex ng-show="vm.userAreaId === 0")
+
+

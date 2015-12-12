@@ -1,0 +1,16 @@
+<md-dialog aria-label="Delete dialog" class="dialogs">
+    <md-dialog-content>
+        <h3 class="md-display-1">Delete Collection Group</h3>
+          <md-input-container>
+              Delete this collection group? This will remove the collection group from all collections that have used it.
+             </md-input-container>
+      </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-click="closeDialog()">
+            Cancel
+          </md-button>
+        <md-button ng-click="deleteCategory(Data.currentCategoryIndex)">
+            Delete Category
+          </md-button>
+      </md-dialog-actions>
+  </md-dialog>

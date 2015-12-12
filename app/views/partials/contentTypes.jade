@@ -1,0 +1,52 @@
+
+md-content(class="transparent" layout="row", layout-align="start start", flex, ng-controller="ContentCtrl as vm")
+  md-content(class="transparent" layout="column" flex="100" flex-gt-lg="75")
+    md-card.flex(flex, style="height: 990px;")
+      div(ng-if="vm.contentType.$resolved")
+      md-toolbar.md_primary
+        .md-toolbar-tools
+          span(flex="20")
+            i.material-icons local_movies
+            span.md-subhead &nbsp;TYPES
+          span(flex="70")
+            h2.md-display-2 {{vm.contentType.name}}
+          span(flex)
+          md-button(class="md-warn md-raised md-fab md-mini" aria-label="Delete Area" ng-click="vm.showDialog($event, vm.deleteMessage)") <i class="material-icons">delete</i>
+
+      md-content
+        div(layout="row", layout-align="start start")
+          md-card-content(flex="20" )
+            md-button(class="md-raised md-accent" ng-click="vm.showDialog($event, vm.addMessage)") Add Type
+          md-card-content(layout="column" layout-padding flex="80" flex-gt-md="80" style="padding-left: 20px;")
+            div(flex="80" class="md-subhead grey-text")
+              span Content types are global and can be used with any area and collection.
+
+        md-content(layout="row", layout-align="start start")
+          md-card-content(flex="20" )
+            div(layout="column", style="height:700px;")
+              md-content(flex)
+                md-list
+                  div(ng-repeat="type in vm.contentTypes")
+                    md-list-item
+                      md-button(class="md-no-style md-button nav-item-dimens md-default-theme", ng-class="{'md-primary': type.id==vm.currentType}" ng-click="vm.resetType(type.id);")
+                        div(class="list-group-item-text md-subhead layout-fill") {{type.name}}
+                          div.md-ripple-container
+                    md-divider
+
+          md-card-content(layout-padding layout="column" flex="80" style="padding-left: 20px;")
+            md-button(class="md-raised md-accent large-button" ng-click="vm.updateContentType()") Update Content Type
+            div(flex, layout="column")
+              md-input-container
+                label Type Name
+                input(type="text", ng-model="vm.contentType.name")
+              md-input-container
+                label Type Icon (Fontawesome icon name:  e.g. fa-bus )
+                input(type="text", ng-model="vm.contentType.icon")
+              div(ng-if="vm.contentType.icon" layout="column")
+                div(flex="30" style="padding-top: 30px;") Preview:
+                span(style="font-size: 2rem;padding-top: 10px;")
+                  i(class="fa {{vm.contentType.icon}}")
+            div.md-panel Fontawesome Icons:
+              a(href="https://fortawesome.github.io/Font-Awesome/icons/", target="_blank")  https://fortawesome.github.io/Font-Awesome/icons/
+
+  md-content(class="transparent" layout="column" flex-gt-md="25")

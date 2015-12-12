@@ -1,0 +1,487 @@
+.grey-text {
+  color: #999;
+}
+
+html {
+  background: #EBECEC;
+}
+
+body {
+  background: #EBECEC;
+}
+
+.primary-content {
+
+}
+
+.dialogs {
+  width: 450px;
+  padding: 10px;
+}
+
+.responsive-heading {
+  display: inline;
+}
+
+@media only screen and (max-width: 600px) {
+  .responsive-heading {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .responsive-button {
+    font-size: 0.6rem;
+    margin-left: 0px;
+  }
+}
+.large-button {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+.nav-item-dimens {
+  padding-left: 5px !important;
+  min-height: 47px !important;
+}
+
+md-radio-button:focus {
+  outline: none !important;
+  border: 0;
+}
+
+md-content.transparent {
+  background: #EBECEC;
+}
+
+md-sidenav.transparent {
+  background: transparent !important;
+}
+
+md-sidenav.md-locked-open {
+  min-width: 240px;
+  width: 240px;
+}
+
+md-list-item .md-no-style,
+md-list-item.md-no-proxy {
+  padding: 0;
+}
+
+.selected {
+  /*background: #7685C0;*/
+  background: #DDDDD9;
+  color: #317869;;
+}
+
+.selected md-icon {
+  color: #358377;
+  font-weight: 800;
+}
+
+.md-button.md-fab.md-mini {
+  line-height: inherit;
+}
+
+.local-hue-1 {
+  background-color: #44A299 !important;
+  color: #eee !important;
+}
+
+.local-hue-2-background {
+  background-color: #00695c !important;
+}
+
+.margin-override {
+  margin: 0;
+}
+
+.md-button.md-primary {
+  background: #959591;
+}
+
+.md-button.md-default-theme.md-primary:not([disabled]),
+.md-button.md-primary:not([disabled]) md-icon {
+  color: #fff;
+}
+
+.view-container {
+  max-width: 2000px;
+}
+
+.list-alignment {
+  text-align: right;
+
+}
+
+.grey-item {
+  color: #B2B3B6;
+}
+
+.grid-list-overview md-list-item {
+  padding: 0 10px;
+  background: #eee;
+}
+
+.grey-label {
+  color: #4C8A7D;
+}
+
+.grid-list-overview .blue md-grid-tile-header {
+  background: #414669;
+}
+
+figcaption {
+  width: 90% !important;
+}
+
+figcaption h3 {
+  line-height: 20px;
+}
+
+figcaption .alert-color {
+  color: rgb(255, 215, 64) !important;
+}
+
+figcaption .alert-color .material-icons {
+  font-size: 20px;
+}
+
+.chips .md-chip {
+  position: relative;
+  padding-right: 55px;
+  font-size: 0.8rem;
+}
+
+.chips .md-chips .md-chip .md-chip-content {
+  padding-right: 10px;
+}
+
+.chips .md-chip .md-chip-remove-container {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  margin-right: 0;
+  margin-left: 20px;
+  height: 20px;
+}
+
+.chips .md-chip .md-chip-remove-container button.taggerchip {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  line-height: 30px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  transition: background 0.15s linear;
+  display: block;
+}
+
+.chips .md-chip .md-chip-remove-container button.taggerchip md-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0) scale(0.7);
+  color: white;
+  fill: white;
+}
+
+.chips .md-chip .md-chip-remove-container button.taggerchip:hover, .chips .md-chip .md-chip-remove-container button.taggerchip:focus {
+  background: rgba(255, 0, 0, 0.8);
+}
+
+/* D3  chart */
+
+.svg-container * {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.svg-container body {
+  font-size: 14px;
+  font-family: sans-serif;
+  font-weight: 100;
+  background-size: 4px 4px;
+  position: inherit;
+
+}
+
+.svg-container body ul {
+  list-style: none;
+}
+
+.svg-container body ul, body li {
+  margin: 0;
+  padding: 0;
+}
+
+.chart {
+  min-height: 400px;
+  border-bottom: 1px solid #eee;
+  padding: 1em;
+}
+
+.chart--headline, .chart--subHeadline {
+  text-align: center;
+}
+
+.chart--headline {
+  position: relative;
+  font-weight: 100;
+  font-size: 28px;
+}
+
+.chart--headline:before {
+  position: absolute;
+  content: '';
+  bottom: 133%;
+  left: 50%;
+  width: 25%;
+  margin: 0 0 0 -12.5%;
+  border-top: 1px dashed #999999;
+}
+
+.chart--subHeadline {
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.charts--container {
+  background-color: #fff;
+  width: 100%;
+}
+
+@media screen and (min-width: 700px) {
+  .charts--container {
+    max-width: 700px;
+    left: 50%;
+    top: 10%;
+    margin: 5em auto;
+    box-shadow: 0 2em 2em #333;
+  }
+}
+
+.charts--headline {
+  text-align: center;
+  color: #444;
+  background-color: #fff;
+  padding: 1em;
+}
+
+.pieChart--center--innerCircle {
+  fill: #fff;
+}
+
+.pieChart--center--text {
+  font-size: 28px;
+}
+
+.pieChart--center--outerCircle {
+  fill: rgba(255, 255, 255, 0.75);
+}
+
+.pieChart--detail--divider {
+  stroke: gray;
+  stroke-width: 1;
+}
+
+.pieChart--detail--percentage {
+  font-size: 12px;
+  font-weight: 100;
+  fill: #333;
+  stroke-width: 1px;
+}
+
+.svg-container .pieChart--detail--textContainer {
+  background-color: transparent;
+  padding: 1px 0 0 0;
+  margin: 0;
+  color: #333;
+  font-style: italic;
+}
+
+@media only screen and (min-width: 900px) {
+  .svg-container .pieChart--detail--textContainer {
+    font-size: 9px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .svg-container .pieChart--detail--textContainer {
+    font-size: 11px;
+  }
+}
+
+@media only screen and (min-width: 1460px) {
+  .svg-container .pieChart--detail--textContainer {
+    font-size: 14px;
+  }
+}
+
+.chart-data {
+  width: 48%;
+  border: 1px solid #ccc;
+  padding: 15px;
+  float: right;
+  margin-top: 10px;
+}
+
+.pieChart--detail__left {
+  text-align: left;
+}
+
+.pieChart--detail__right {
+  text-align: right;
+}
+
+.pieChart__indigo {
+  color: #3F51B5;
+  fill: #3F51B5;
+}
+
+.pieChart__blue {
+  color: #568cc7;
+  fill: #568cc7;
+}
+
+.pieChart__red {
+  color: #9052AA;
+  fill: #9052AA;
+}
+
+.pieChart__green {
+  color: #39C57B;
+  fill: #39C57B;
+}
+
+.pieChart__yellow {
+  color: #d7d46b;
+  fill: #d7d46b;
+}
+
+.pieChart__orange {
+  color: #d7833b;
+  fill: #d7833b;
+}
+
+.pieChart__skyblue {
+  color: #8cc4c7;
+  fill: #8cc4c7;
+}
+
+.pieChart__seagreen {
+  color: #2d846b;
+  fill: #2d846b;
+}
+
+.pieChart__maroon {
+  color: #841848;
+  fill: #841848;
+}
+
+.pieChart__coffee {
+  color: #594833;
+  fill: #594833;
+}
+
+/**
+ * Helper classes
+ */
+.hidden {
+  display: none;
+}
+
+.sortable-list md-list[dnd-list],
+.sortable-list md-list[dnd-list] > md-list-item {
+  position: relative;
+}
+
+/**
+ * The dnd-list should always have a min-height,
+ * otherwise you can't drop to it once it's empty
+ */
+.sortable-list md-list[dnd-list] {
+  min-height: 42px;
+  padding-left: 0px;
+}
+
+/**
+ * The dndDraggingSource class will be applied to
+ * the source element of a drag operation. It makes
+ * sense to hide it to give the user the feeling
+ * that he's actually moving it.
+ */
+.sortable-list md-list[dnd-list] .dndDraggingSource {
+  display: none;
+}
+
+/**
+ * An element with .dndPlaceholder class will be
+ * added to the dnd-list while the user is dragging
+ * over it.
+ */
+.sortable-list md-list[dnd-list] .dndPlaceholder {
+  display: block;
+  background-color: #ddd;
+  min-height: 42px;
+}
+
+/**
+ * The dnd-lists's child elements currently MUST have
+ * position: relative. Otherwise we can not determine
+ * whether the mouse pointer is in the upper or lower
+ * half of the element we are dragging over. In other
+ * browsers we can use event.offsetY for this.
+ */
+.sortable-list md-list[dnd-list] > md-list-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding-left: 10px;
+  display: block;
+  padding: 0;
+  margin-bottom: -1px;
+}
+
+.sortable-list md-list-item > button {
+  padding-left: 10px;
+}
+
+/**
+ * Show selected elements in green
+ */
+.md-list md-list[dnd-list] md-list-item.selected {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+/**
+ * bar chart
+*/
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
