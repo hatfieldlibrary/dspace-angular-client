@@ -9,7 +9,7 @@ var express = require('express'),
   multiparty = require('multiparty');
 
 
-global.dspaceServices = require('./app/models');
+global.models = require('./app/models');
 var config = require('./config/environment');
 var app = express();
 

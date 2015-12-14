@@ -3,7 +3,7 @@
 (function() {
 
 exports.dspace = function () {
-  dspaceServices.login();
+  models.login();
 };
 
 })();

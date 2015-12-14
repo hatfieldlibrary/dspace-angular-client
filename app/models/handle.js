@@ -4,9 +4,9 @@ var rp = require('request-promise');
 
 (function () {
   /**
-   * Returns API response for handle.
+   * Model for fetching the DSpace API handle response.
    */
-  module.exports = function (site, item, res) {
+  module.exports = function (site, item) {
 
     var handleRequest =
       rp(
@@ -17,9 +17,7 @@ var rp = require('request-promise');
           json: true
         }
       ).then(function (json) {
-          console.log(json);
-          res.send(json);
-          res.end();
+          return json;
         })
         .catch(function (err) {
           console.log(err);

@@ -5,7 +5,7 @@ module.exports = function (app, config, passport) {
   var login = require('../app/controllers/login');
   var handle = require('../app/controllers/handle');
   var solr = require('../app/controllers/solr');
-  var communities = require('../app/controllers/communities');
+
   /**
    * Indicates whether the request has an authenticated session.
    * @type {boolean}
