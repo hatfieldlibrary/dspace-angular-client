@@ -1,6 +1,6 @@
 
 var path = require('path'),
-  rootPath = path.normalize(__dirname + '/../app' ),
+  rootPath = path.normalize(__dirname + '/../app/' ),
   credentials = require('./credentials');
   env = process.env.NODE_ENV || 'development';
 

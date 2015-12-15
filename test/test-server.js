@@ -9,7 +9,7 @@ chai.use(chaiHttp);
 describe('handle request', function() {
   it('should return JSON describing a community', function(done) {
     chai.request(server)
-      .get('/handle/10177/3538')
+      .get('/rest/handle/10177/3538')
       .then(function (res) {
         res.should.have.status(200);
         res.should.be.json;
@@ -27,7 +27,7 @@ describe('handle request', function() {
 
   it('should return JSON describing a collection', function(done) {
     chai.request(server)
-      .get('/handle/10177/4356')
+      .get('/rest/handle/10177/4356')
       .then(function (res) {
         res.should.have.status(200);
         res.should.be.json;
@@ -45,7 +45,7 @@ describe('handle request', function() {
 
   it('should return JSON describing an item', function(done) {
     chai.request(server)
-      .get('/handle/10177/5108')
+      .get('/rest/handle/10177/5108')
       .then(function (res) {
         res.should.have.status(200);
         res.should.be.json;
@@ -67,7 +67,6 @@ describe('handle request', function() {
       .then(function (res) {
         res.should.have.status(200);
         res.should.be.json;
-
         done();
       })
       .catch(function (err) {

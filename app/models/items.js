@@ -11,7 +11,7 @@ var rp = require('request-promise');
     var handleRequest =
       rp(
         {
-          url: 'http://localhost:1234/rest/items/' + id + '?expand=bitstreams,logo',
+          url: 'http://localhost:1234/rest/items/' + id + '?expand=bitstreams,logo,metadata,parentCollection',
           method: 'GET',
           headers: {'User-Agent': 'Request-Promise'},
           json: true,
@@ -36,11 +36,17 @@ var rp = require('request-promise');
 
     var ret = {};
     ret.id = json.id;
+    var parent = {};
+    parent.name = json.parentCollection.name;
+    parent.id = json.parentCollection.id;
+    parent.handle = json.parentCollection.handle;
+    ret.parentCollection = parent;
     ret.name = json.name;
     ret.type = json.type;
     ret.handle = json.handle;
     ret.archived = json.archived;
     ret.withdrawn = json.withdrawn;
+    ret.metadata = json.metadata;
     var bits = [];
     for (var i = 0; i < json.bitstreams.length; i++) {
       var tmpItem = {};

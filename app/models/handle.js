@@ -17,6 +17,7 @@ var rp = require('request-promise');
           json: true
         }
       ).then(function (json) {
+        console.log(json);
           return json;
         })
         .catch(function (err) {

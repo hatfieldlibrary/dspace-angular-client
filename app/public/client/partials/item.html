@@ -1,0 +1,163 @@
+<div ng-controller="HandleCtrl as vm">
+
+  <h3>Test Links</h3>
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 3538)">Classics Department Community</a>
+  </p>
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 4356)">Classics Department Faculty Publications</a>
+  </p>
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 5108)">Bachvarova Paper</a>
+  </p>
+
+  <div ng-if="vm.item.type==='community'">
+    <h3>Community Info</h3>
+    <ul>
+      <li>
+        {{vm.item.name}}
+      </li>
+      <li>
+        {{vm.item.handle}}
+      </li>
+      <li>
+        {{vm.item.id}}
+      </li>
+      <li>
+        {{vm.item.type}}
+      </li>
+    </ul>
+    <h3>Logo</h3>
+    <ul>
+      <li>
+        {{vm.item.logo.retrieveLink}}
+      </li>
+      <li>
+        {{vm.item.logo.sizeBytes}}
+      </li>
+      <li>
+        {{vm.item.logo.mimeType}}
+      </li>
+      <li>
+        <img ng-src="{{vm.getLogo()}}" />
+      </li>
+    </ul>
+    <h3>Collections</h3>
+    <p>As an unauthenticated user I only see the public collections.</p>
+    <ul>
+      <li ng-repeat="comm in vm.item.items">
+        {{comm.name}} <br>
+        {{comm.handle}} <br>
+        {{comm.type}}<br>
+        {{comm.id}} <br>
+        {{comm.introductoryText}}<br>
+        {{comm.shortDescription}} <br>
+        {{comm.numberItems}} <br>
+        {{comm.copyrightText}} <br>
+      </li>
+    </ul>
+  </div>
+  <div ng-if="vm.item.type==='collection'">
+    <h3>Parent Community</h3>
+    <ul>
+      <li>
+        {{vm.item.parentCommunity.name}}
+      </li>
+      <li>
+        {{vm.item.parentCommunity.id}}
+      </li>
+      <li>
+        {{vm.item.parentCommunity.handle}}
+      </li>
+    </ul>
+    <h3>Collection Info</h3>
+    <ul>
+      <li>
+        {{vm.item.name}}
+      </li>
+      <li>
+        {{vm.item.handle}}
+      </li>
+      <li>
+        {{vm.item.id}}
+      </li>
+      <li>
+        {{vm.item.type}}
+      </li>
+    </ul>
+    <h3>Logo</h3>
+    <ul>
+      <li>
+        {{vm.item.logo.retrieveLink}}
+      </li>
+      <li>
+        {{vm.item.logo.sizeBytes}}
+      </li>
+      <li>
+        {{vm.item.logo.mimeType}}
+      </li>
+      <li>
+        <img ng-src="{{vm.getLogo()}}" />
+      </li>
+    </ul>
+    <h3>Items</h3>
+    <ul>
+      <li ng-repeat="col in vm.item.items">
+        {{col.name}} <br>
+        {{col.handle}} <br>
+        {{col.id}} <br>
+        {{col.link}}<br>
+      </li>
+    </ul>
+  </div>
+  <div ng-if="vm.item.type==='item'">
+    <h3>Parent Collection</h3>
+    <ul>
+      <li>
+      {{vm.item.parentCollection.name}}
+      </li>
+      <li>
+        {{vm.item.parentCollection.id}}
+      </li>
+      <li>
+        {{vm.item.parentCollection.handle}}
+      </li>
+    </ul>
+    <h3>Item Info</h3>
+    <ul>
+      <li>
+        {{vm.item.name}}
+      </li>
+      <li>
+        {{vm.item.handle}}
+      </li>
+      <li>
+        {{vm.item.id}}
+      </li>
+      <li>
+        {{vm.item.type}}
+      </li>
+    </ul>
+    <h3>Metadata</h3>
+    <ul>
+      <li ng-repeat="data in vm.item.metadata">
+        <p><em>key:</em> {{data.key}} <em>value:</em> {{data.value}}</p>
+      </li>
+    </ul>
+    <h3>Bitstreams</h3>
+    <ul>
+      <li ng-repeat="stream in vm.item.bitstreams">
+        {{stream.name}} <br>
+        {{stream.retrieveLink}} <br>
+        {{stream.id}} <br>
+        {{stream.bundleName}}<br>
+        {{stream.mimeType}}<br>
+        {{stream.sizeBytes}} bytes<br>
+        {{stream.description}}<br>
+
+      </li>
+    </ul>
+  </div>
+
+
+</div>

@@ -18,13 +18,47 @@ module.exports = function (app, config, passport) {
   // AUTHENTICATION
   app.get('/login', login.dspace);
 
-  app.use('/handle/:site/:item', handle.getItem);
 
+  // API
+  app.use('/rest/handle/:site/:item', handle.getItem);
   app.use('/solr/:query', solr.query);
 
   // Use passport.authenticate() as middleware. The first step in Google authentication
   // redirects the user to google.com.  After authorization, Google
   // will redirect the user back to the callback URL /auth/google/callback
+
+  /**
+   * Route to page templates.
+   */
+  app.get('/partials/:name', function (req, res) {
+
+    var name = req.params.name;
+
+    res.sendFile(
+      app.get('appPath') +
+      '/partials/' +
+      name +
+      '.html'
+    );
+  });
+
+
+  //app.get('/commons', function (req, res) {
+
+  //  res.sendFile(
+  //    app.get('appPath') +
+  //    '/index.html'
+  //  );
+  //});
+
+  // This catch-all is required by html5mode.
+  app.get('/*', function (req, res) {
+
+    res.sendFile(
+      app.get('appPath') +
+      '/index.html'
+    );
+  });
 
 
 

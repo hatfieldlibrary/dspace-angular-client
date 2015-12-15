@@ -13,7 +13,7 @@ var rp = require('request-promise');
         {
           /** From API documentation: limit and offset params can be used for
            * paging (current default 100 */
-          url: 'http://localhost:1234/rest/collections/' + id + '?expand=items,logo',
+          url: 'http://localhost:1234/rest/collections/' + id + '?expand=items,logo,parentCommunity',
           method: 'GET',
           headers: {'User-Agent': 'Request-Promise'},
           json: true,
@@ -38,6 +38,12 @@ var rp = require('request-promise');
 
     var ret = {};
     ret.id = json.id;
+    ret.parentCommunity = [];
+    var parent = {};
+    parent.name = json.parentCommunity.name;
+    parent.id = json.parentCommunity.id;
+    parent.handle = json.parentCommunity.handle;
+    ret.parentCommunity = parent;
     ret.name = json.name;
     ret.handle = json.handle;
     ret.type = json.type;

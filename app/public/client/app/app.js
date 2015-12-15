@@ -2,16 +2,15 @@
 /**
  * Welcome to Tagger.
  */
-var taggerApp = angular.module('taggerApp', [
+var dspaceApp = angular.module('dspaceApp', [
 
   'ngMaterial',
   'ngRoute',
-  'ngFileUpload',
-  'dndLists',
-  'taggerContext',
-  'taggerControllers',
-  'taggerServices',
-  'taggerDirectives'
+  'dspaceControllers',
+  'dspaceServices',
+  // 'dspaceDirectives',
+  'angulartics',
+  'angulartics.google.analytics'
 
 
 ]);
@@ -36,31 +35,47 @@ var taggerApp = angular.module('taggerApp', [
    */
   var host = 'http://localhost:3000';
   var path = 'rest';
-  taggerApp.value('restHost', host + '/' + path + '/');
+  dspaceApp.value('restHost', host + '/' + path + '/');
 
 
-// configure the route provider
-  taggerApp.config([
-    '$routeProvider',
-    '$locationProvider',
+  /**
+   * Configure $routeProvider with all routes to the Tagger
+   * Express web server and API.
+   */
+  dspaceApp.config(['$routeProvider', '$locationProvider',
     function ($routeProvider, $locationProvider) {
 
       $routeProvider.
-      when('/partials/:name', {
-        templateUrl: function (params) {
-          return '/admin/partials/' + params.name;
-        }
-      }).when('/', {
-        templateUrl: '/admin/partials/overview',
+
+      when('/item', {
+        templateUrl: '/partials/item.html',
         reloadOnSearch: false
-      }).otherwise({
-        templateUrl: '/admin/partials/overview'
       });
 
       $locationProvider.html5Mode(true).hashPrefix('!');
 
-    }]
-  ).config(function ($mdThemingProvider) {
+    }]);
+
+
+  /**
+   * Singleton data object for sharing state.
+   */
+  dspaceApp.factory('Data', function () {
+    return {
+      currentAreaIndex: 0,
+      currentAreaId: -1,
+      currentSubjectIndex: 0,
+      currentSubjectId: -1,
+      currentSubjectName: '',
+      currentId: null,
+      currentView: 'card',
+      currentScrollPosition: 0,
+      showAllCollections: false,
+      collectionLinkData: ''
+    };
+  });
+
+  dspaceApp.config(function ($mdThemingProvider) {
       // configure the Angular Material theme
       $mdThemingProvider.theme('default')
         .primaryPalette('teal', {
@@ -72,20 +87,6 @@ var taggerApp = angular.module('taggerApp', [
         .accentPalette('amber');
 
     }
-  ).config(['$provide', function ($provide) {
-      var customDecorator = function ($delegate) {
-        var d3Service = $delegate;
-        /*jshint unused: false*/
-        d3Service.d3().then(function (d3) {
-          // this space available for building custom functions
-          // on the d3 object.
-        });
-        return d3Service;
-      };
-
-      $provide.decorator('d3Service', customDecorator);
-
-    }]
   ).config(function($mdIconProvider) {
     $mdIconProvider.fontSet('fa', 'fontawesome');
   });
@@ -96,7 +97,7 @@ var taggerApp = angular.module('taggerApp', [
    */
   angular.element(document).ready(function () {
     try {
-      angular.bootstrap(document, ['taggerApp']);
+      angular.bootstrap(document, ['dspaceApp']);
     } catch (e) {
       console.log(e);
     }
