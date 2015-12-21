@@ -11,9 +11,10 @@ var rp = require('request-promise');
     var handleRequest =
       rp(
         {
-          url: 'http://localhost:1234/rest/handle/' + site + '/' + item,
+          url: 'http://localhost:6789/rest/handle/' + site + '/' + item,
           method: 'GET',
-          headers: {'User-Agent': 'Request-Promise'},
+          headers: {'User-Agent': 'Request-Promise',
+            'rest-dspace-token:': '6a641ba1-53bb-49a0-9dfb-24d9d8b0a87a'},
           json: true
         }
       ).then(function (json) {

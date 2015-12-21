@@ -15,16 +15,16 @@ var request = require('request');
   module.exports = function () {
 
     request({
-      url: 'http://localhost:1234/rest/login',
+      url: 'http://localhost:6789/rest/login',
       method: 'POST',
-      json: {}  // no creds
+      json: {email: 'mspalti',password:'xRSo-13xop#Iqutzlqhgni-2h4'}  // no creds
     }, function (error, response, body) {
       if (error) {
         console.log(error);
       } else {
         console.log(response.statusCode);
-        if (response.statusCode === 400) {
-          // get rest token and add to session store.
+        if (response.statusCode === 400 || response.statusCode === 200) {
+          console.log(response.body);
         } else if (response.statusCode === 403) {   // forbidden
           // do we need to handle this?
         } else {

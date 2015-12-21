@@ -11,9 +11,10 @@ var rp = require('request-promise');
     var handleRequest =
       rp(
         {
-          url: 'http://localhost:1234/rest/communities/' + id + '?expand=collections,logo',
+          url: 'http://localhost:6789/rest/communities/' + id + '?expand=collections,logo',
           method: 'GET',
-          headers: {'User-Agent': 'Request-Promise'},
+          headers: {'User-Agent': 'Request-Promise',
+            'rest-dspace-token:': '6a641ba1-53bb-49a0-9dfb-24d9d8b0a87a'},
           json: true,
           transform: processResult
         }
@@ -44,9 +45,11 @@ var rp = require('request-promise');
     ret.shortDescription = json.shortDescription;
     ret.countItems = json.countItems;
     var logo = {};
-    logo.retrieveLink = json.logo.retrieveLink;
-    logo.sizeBytes = json.logo.sizeBytes;
-    logo.mimeType = json.logo.mimeType;
+    if (json.logo !== null) {
+      logo.retrieveLink = json.logo.retrieveLink;
+      logo.sizeBytes = json.logo.sizeBytes;
+      logo.mimeType = json.logo.mimeType;
+    }
     ret.logo = logo;
     var collections = [];
     for (var i = 0; i < json.collections.length; i++) {
