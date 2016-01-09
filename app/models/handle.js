@@ -1,29 +1,29 @@
 'use strict';
 
 var rp = require('request-promise');
+var utils = require('./utils');
 
 (function () {
   /**
-   * Model for fetching the DSpace API handle response.
+   * Model for fetching via DSpace handle.
    */
-  module.exports = function (site, item) {
+  module.exports = function (site, item, session) {
 
+    var dspaceTokenHeader = utils.dspaceToken(session);
+
+    /** DSpace handle request-promise */
     var handleRequest =
       rp(
         {
-          url: 'http://localhost:6789/rest/handle/' + site + '/' + item,
+          url: 'http://localhost:8080/dspace5-rest/handle/' + site + '/' + item,
           method: 'GET',
-          headers: {'User-Agent': 'Request-Promise',
-            'rest-dspace-token:': '6a641ba1-53bb-49a0-9dfb-24d9d8b0a87a'},
+          headers: {
+            'User-Agent': 'Request-Promise',
+            'rest-dspace-token': dspaceTokenHeader
+          },
           json: true
         }
-      ).then(function (json) {
-        console.log(json);
-          return json;
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
+      );
 
     return handleRequest;
 

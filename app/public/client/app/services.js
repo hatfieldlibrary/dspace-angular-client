@@ -11,12 +11,28 @@ var dspaceServices = angular.module('dspaceServices', ['ngResource']);
    */
   dspaceServices.factory('ItemByHandle', ['$resource', 'restHost',
     function ($resource, restHost) {
-      return $resource(restHost + 'handle/:site/:item', {}, {
+      return $resource('handle/:site/:item', {}, {
         query: {method: 'GET', isArray: false}
       });
     }
   ]);
 
+  dspaceServices.factory('Login', ['$resource',
+    function ($resource) {
+      return $resource('/auth/google', {}, {
+        query: {method: 'GET', isArray: false}
+      });
+    }
+  ]);
+
+
+  dspaceServices.factory('CheckSession', ['$resource',
+    function ($resource) {
+      return $resource('/check-session', {}, {
+        query: {method: 'GET', isArray: false}
+      });
+    }
+  ]);
 
 })();
 

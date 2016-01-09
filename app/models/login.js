@@ -1,37 +1,60 @@
 'use strict';
 
-var request = require('request');
+var rp = require('request-promise');
 
 (function () {
 
   /**
-   * Requests REST API token.  Since we use implicit DSpace authorization,
-   * there is no need to post email and password credentials.
-   *
-   * It's currently unclear whether this should be implemented with
-   * an Express route or as an internal authentication method.
-   * If nothing else, this route is handy for testing.
+   * Requests Dspace REST API token.  Since we use implicit DSpace authorization,
+   * there's no need to post email and password credentials.
    */
-  module.exports = function () {
+  module.exports = function (netid, config, req, res) {
 
-    request({
-      url: 'http://localhost:6789/rest/login',
-      method: 'POST',
-      json: {email: 'mspalti',password:'xRSo-13xop#Iqutzlqhgni-2h4'}  // no creds
-    }, function (error, response, body) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log(response.statusCode);
-        if (response.statusCode === 400 || response.statusCode === 200) {
-          console.log(response.body);
-        } else if (response.statusCode === 403) {   // forbidden
-          // do we need to handle this?
-        } else {
-          console.log('REST login returned status code: ' + response.statusCode);
+
+    var handleRequest = rp(
+
+      {
+        url: 'http://localhost:8080/dspace5-rest/login',
+        method: 'POST',
+        headers: {'User-Agent': 'Request-Promise'},
+        json: {
+          email: netid,
+          password: config.secret
         }
-      }
-    });
+
+      },
+
+      function (error, response, body) {
+
+        if (error) {
+          console.log('DSpace login error: ' + error);  // error
+
+        } else {
+
+          if (response.statusCode === 200) {    // success
+
+            // Add DSpace token to session.
+            var session = req.session;
+            session.dspaceToken = body;
+
+            session.save(function (err) {
+              if (err === null) {
+                console.log('DSpace API token: ' + session.dspaceToken);
+
+              }
+            });
+
+          } else if (response.statusCode === 403) {   // forbidden
+            console.log('DSpace access forbidden.');
+
+          } else {
+            console.log('Unknown DSpace login status.'); // unknown status
+          }
+        }
+      });
+
+    return handleRequest;
 
   };
+
 })();

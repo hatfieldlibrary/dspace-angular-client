@@ -1,30 +1,31 @@
 'use strict';
 
 var rp = require('request-promise');
+var utils = require('./utils');
 
 (function () {
   /**
    * Model for an item information.
    */
-  module.exports = function (id) {
+  module.exports = function (id, session) {
 
-    var handleRequest =
+    var dspaceTokenHeader = utils.dspaceToken(session);
+
+    var itemRequest =
       rp(
         {
-          url: 'http://localhost:1234/rest/items/' + id + '?expand=bitstreams,logo,metadata,parentCollection',
+          url: 'http://localhost:8080/dspace5-rest/rest/items/' + id + '?expand=bitstreams,logo,metadata,parentCollection',
           method: 'GET',
-          headers: {'User-Agent': 'Request-Promise'},
+          headers: {
+            'User-Agent': 'Request-Promise',
+            'rest-dspace-token': dspaceTokenHeader
+          },
           json: true,
           transform: processResult
         }
-      ).then(function (json) {
-          return json;
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
+      );
 
-    return handleRequest;
+    return itemRequest;
 
   };
 

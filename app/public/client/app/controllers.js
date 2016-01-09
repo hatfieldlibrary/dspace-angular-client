@@ -7,7 +7,48 @@ var dspaceControllers = angular.module('dspaceControllers', []);
 
   'use strict';
 
+  /** @type {string} */
+  var dspaceHost = 'http://localhost:8080';
+
+
   /*globals dspaceControllers*/
+
+  dspaceControllers.controller('LoginCtrl', [
+    'Login',
+    'CheckSession',
+    'Data',
+    function (Login, CheckSession, Data) {
+
+      var vm = this;
+
+      vm.statusMessage = "Login";
+      vm.sessionStatus = false;
+
+      vm.login = function () {
+        Login.query();
+
+      };
+
+      var init = function() {
+
+        var session = CheckSession.query();
+
+        session.$promise.then(function() {
+          if (session.status === 'ok') {
+            vm.sessionStatus = true;
+          } else {
+            vm.sessionStatus = false;
+          }
+        });
+
+      };
+
+      init();
+
+    }
+
+  ]);
+
   /**
    * Controller retrieving items by handle.
    */
@@ -26,8 +67,6 @@ var dspaceControllers = angular.module('dspaceControllers', []);
 
       var vm = this;
 
-      /** @type {string} */
-      var dspaceHost = 'http://localhost:1234';
 
       /**
        * Populates the view model <code>item</code> with

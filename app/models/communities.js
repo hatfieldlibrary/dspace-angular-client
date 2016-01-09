@@ -1,31 +1,33 @@
 'use strict';
 
 var rp = require('request-promise');
+var utils = require('./utils');
 
 (function () {
-  /**
-   * Model for community information.
-   */
-  module.exports = function (id) {
 
-    var handleRequest =
+  /**
+   * Model for requesting an individual dspace community.
+   */
+  module.exports = function (id, session) {
+
+    var dspaceTokenHeader = utils.dspaceToken(session);
+
+    /** DSpace communities request-promise */
+    var communityRequest =
       rp(
         {
-          url: 'http://localhost:6789/rest/communities/' + id + '?expand=collections,logo',
+          url: 'http://localhost:8080/dspace5-rest/communities/' + id + '?expand=collections,logo',
           method: 'GET',
-          headers: {'User-Agent': 'Request-Promise',
-            'rest-dspace-token:': '6a641ba1-53bb-49a0-9dfb-24d9d8b0a87a'},
+          headers: {
+            'User-Agent': 'Request-Promise',
+            'rest-dspace-token': dspaceTokenHeader
+          },
           json: true,
           transform: processResult
         }
-      ).then(function (json) {
-          return json;
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
+      );
 
-    return handleRequest;
+    return communityRequest;
 
   };
 

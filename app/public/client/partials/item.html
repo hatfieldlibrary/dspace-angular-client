@@ -1,16 +1,87 @@
+<div ng-controller="LoginCtrl as vm">
+  <p>
+    <a ng-if="vm.sessionStatus" href="/logout" target="_top">Logout</a>
+    <a ng-if="!vm.sessionStatus" href="auth/google" target="_top">Login</a>
+  </p>
+</div>
+
 <div ng-controller="HandleCtrl as vm">
 
+
   <h3>Test Links</h3>
+
   <p>
-    <!--<a href="#" ng-click="vm.getItem(10177, 3538)">Classics Department Community</a> -->
-    <a href="#" ng-click="vm.getItem(123456789, 3)">libtest-1 community</a>
+    <a href="#" ng-click="vm.getItem(10177, 2)">Public Community</a>
   </p>
+
   <p>
-    <a href="#" ng-click="vm.getItem(10177, 4356)">Classics Department Faculty Publications</a>
+    <a href="#" ng-click="vm.getItem(10177, 11)">Public Collection Two</a>
   </p>
+
   <p>
-    <a href="#" ng-click="vm.getItem(10177, 5108)">Bachvarova Paper</a>
+    <a href="#" ng-click="vm.getItem(10177, 12)">Public Collection Two > Restricted Item (staff)</a>
   </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 3)">Restricted Collection One</a>
+  </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 7)">Restricted Collection One > Restricted Item</a>
+  </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 13)">Public Collection Two > Public Item</a>
+  </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 9)">Public Community Two</a>
+  </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 14)">Public Community Two > Restricted Community Two</a>
+  </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 15)">Public Community Two > Restricted Community Two > Public Item</a>
+  </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 1)">Restricted Community</a>
+  </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 4)">Restricted Community > Public Collection Three</a>
+  </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 8)">Restricted Community  > Public Collection Three > Restricted Item</a>
+  </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 16)">Restricted Community  > Public Collection Three > Public Item</a>
+  </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 10)">Restricted Community Two</a>
+  </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 17)">Restricted Community Two > Public Community Four</a>
+  </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 18)">Restricted Community Two > Public Community Four > Public Item</a>
+  </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 19)">Restricted Community Two > Restricted Community Three</a>
+  </p>
+
+  <p>
+    <a href="#" ng-click="vm.getItem(10177, 20)">Restricted Community Two > Restricted Community Three > Restricted Item</a>
+  </p>
+
 
   <div ng-if="vm.item.type==='community'">
     <h3>Community Info</h3>
@@ -40,10 +111,11 @@
         {{vm.item.logo.mimeType}}
       </li>
       <li>
-        <img ng-src="{{vm.getLogo()}}" />
+        <img ng-src="{{vm.getLogo()}}"/>
       </li>
     </ul>
     <h3>Collections</h3>
+
     <p>As an unauthenticated user I only see the public collections.</p>
     <ul>
       <li ng-repeat="comm in vm.item.items">
@@ -98,7 +170,7 @@
         {{vm.item.logo.mimeType}}
       </li>
       <li>
-        <img ng-src="{{vm.getLogo()}}" />
+        <img ng-src="{{vm.getLogo()}}"/>
       </li>
     </ul>
     <h3>Items</h3>
@@ -115,7 +187,7 @@
     <h3>Parent Collection</h3>
     <ul>
       <li>
-      {{vm.item.parentCollection.name}}
+        {{vm.item.parentCollection.name}}
       </li>
       <li>
         {{vm.item.parentCollection.id}}

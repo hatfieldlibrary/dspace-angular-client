@@ -33,8 +33,8 @@ var dspaceApp = angular.module('dspaceApp', [
    * path = 'acomrest2'
    *
    */
-  var host = 'http://localhost:3000';
-  var path = 'rest';
+  var host = 'http://localhost:8080';
+  var path = 'dspace5-rest';
   dspaceApp.value('restHost', host + '/' + path + '/');
 
 

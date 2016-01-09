@@ -1,32 +1,35 @@
 'use strict';
 
 var rp = require('request-promise');
+var utils = require('./utils');
 
 (function () {
-  /**
-   * Model for collection information.
-   */
-  module.exports = function (id) {
 
-    var handleRequest =
+  /**
+   * Model for requesting an individual dspace collection.
+   */
+  module.exports = function (id, session) {
+
+    var dspaceTokenHeader = utils.dspaceToken(session);
+
+    /** DSpace collection request-promise */
+    var collectionRequest =
       rp(
         {
           /** From API documentation: limit and offset params can be used for
            * paging (current default 100 */
-          url: 'http://localhost:1234/rest/collections/' + id + '?expand=items,logo,parentCommunity',
+          url: 'http://localhost:8080/dspace5-rest/collections/' + id + '?expand=items,logo,parentCommunity',
           method: 'GET',
-          headers: {'User-Agent': 'Request-Promise'},
+          headers: {
+            'User-Agent': 'Request-Promise',
+            'rest-dspace-token': dspaceTokenHeader
+          },
           json: true,
           transform: processResult
         }
-      ).then(function (json) {
-          return json
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
+      );
 
-    return handleRequest;
+    return collectionRequest;
 
   };
 
@@ -48,9 +51,11 @@ var rp = require('request-promise');
     ret.handle = json.handle;
     ret.type = json.type;
     var logo = {};
-    logo.retrieveLink = json.logo.retrieveLink;
-    logo.sizeBytes = json.logo.sizeBytes;
-    logo.mimeType = json.logo.mimeType;
+    if (json.logo !== null) {
+      logo.retrieveLink = json.logo.retrieveLink;
+      logo.sizeBytes = json.logo.sizeBytes;
+      logo.mimeType = json.logo.mimeType;
+    }
     ret.logo = logo;
     var items = [];
     for (var i = 0; i < json.items.length; i++) {

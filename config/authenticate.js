@@ -21,6 +21,8 @@ var
    * CAS authentication strategy
    */
   cas = require('passport-cas'),
+
+  GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
   /**
    * Redis client
    * @type {exports|module.exports}
@@ -79,6 +81,7 @@ module.exports = function (app, config, passport) {
   });
 
   // Configure CAS authentication for this application
+  /*
   passport.use(new cas.Strategy({
     version: 'CAS3.0',
     ssoBaseURL: 'https://secure.willamette.edu/cas',
@@ -88,6 +91,38 @@ module.exports = function (app, config, passport) {
     var user = profile.user;
     return done(null, user);
   }));
+  */
+
+  // Google OAUTH2.
+  var GOOGLE_CLIENT_ID = '1092606309558-49gp8d101vvhcivd905fcic3u0l7a3fn.apps.googleusercontent.com';
+  var GOOGLE_CLIENT_SECRET = 'U_l2HUna8aJ6cr1pr5JynRsI';
+  var GOOGLE_CALLBACK = 'http://localhost:3000/oauth2callback';
+  // Configure Google authentication for this application
+  passport.use(new GoogleStrategy({
+
+      clientID: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+      callbackURL: GOOGLE_CALLBACK
+    },
+    function (accessToken,
+              refreshToken,
+              profile,
+              done) {
+
+      // asynchronous verification
+      process.nextTick(function () {
+
+        var email = profile.emails[0].value;
+        var netid = email.split('@');
+        if (email.length > 1) {
+          done(null, netid[0]);
+        } else {
+          done(null, null);
+        }
+
+      });
+    }
+  ));
 
 
   /* jshint unused: false */

@@ -18,6 +18,8 @@ var async = require('async');
     var site = req.params.site;
     /** @type {string} the item id from the handle */
     var item = req.params.item;
+    /** @type {Object} Express session */
+    var session = req.session;
 
     async.waterfall(
       [
@@ -27,12 +29,14 @@ var async = require('async');
          */
           function (callback) {
 
-          models.handle(site, item)
+          models.handle(site, item, session)
+
             .then(function (result) {
-              callback(null, result);
+                  callback(null, result);
             })
             .error(function (err) {
-              console.log(err);
+
+              callback(err, null);
             });
 
         },
@@ -44,48 +48,54 @@ var async = require('async');
          */
           function (result, callback) {
 
-          var type = result.type;
-          var id = result.id;
+          try {
+            var type = result.type;
+            var id = result.id;
 
-          if (type === 'community') {
+            if (type === 'community') {
 
-            models.communities(id)
-              .then(function (result) {
-                callback(null, result);
-              })
-              .error(function (err) {
-                console.log(err);
-              });
+              models.communities(id, session)
+                .then(function (result) {
+                  callback(null, result);
+                })
+                .error(function (err) {
+                  console.log(err);
+                });
 
-          } else if (type === 'collection') {
+            } else if (type === 'collection') {
 
-            models.collections(id)
-              .then(function (result) {
-                callback(null, result);
-              })
-              .error(function (err) {
-                console.log(err);
-              });
+              models.collections(id, session)
+                .then(function (result) {
+                  callback(null, result);
+                })
+                .error(function (err) {
+                  console.log(err);
+                });
 
-          } else if (type === 'item') {
+            } else if (type === 'item') {
 
-            models.items(id)
-              .then(function (result) {
-                callback(null, result);
-              })
-              .error(function (err) {
-                console.log(err);
-              });
+              models.items(id, session)
+                .then(function (result) {
+                  callback(null, result);
+                })
+                .error(function (err) {
+                  console.log(err);
+                });
 
+            }
+
+          } catch (err) {
+            callback(err)
           }
         },
       ],
       function (err, result) {
+
         /** handle error */
         if (err) {
-          console.log(err);
+          console.log('WARNING: DSpace handle request returned error: ' + err.message);
         }
-       // console.log(result);
+
         /** send response */
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');
@@ -93,7 +103,6 @@ var async = require('async');
 
       }
     );
-    models.handle(site, item);
 
 
   };
