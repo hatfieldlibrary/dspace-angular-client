@@ -1,7 +1,8 @@
 'use strict';
 
 var rp = require('request-promise');
-var utils = require('./utils');
+var utils = require('../controllers/utils');
+
 
 (function () {
 
@@ -32,6 +33,7 @@ var utils = require('./utils');
           }
           if (response.statusCode === 400) {
             console.log('ERROR: DSpace logout returned Invalid Request (400)');
+
           }
         }
       );

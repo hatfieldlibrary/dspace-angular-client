@@ -1,6 +1,7 @@
 'use strict';
 
 var async = require('async');
+var utils = require('./utils');
 
 (function () {
 
@@ -34,7 +35,7 @@ var async = require('async');
             .then(function (result) {
                   callback(null, result);
             })
-            .error(function (err) {
+            .catch(function (err) {
 
               callback(err, null);
             });
@@ -58,7 +59,7 @@ var async = require('async');
                 .then(function (result) {
                   callback(null, result);
                 })
-                .error(function (err) {
+                .catch(function (err) {
                   console.log(err);
                 });
 
@@ -68,7 +69,7 @@ var async = require('async');
                 .then(function (result) {
                   callback(null, result);
                 })
-                .error(function (err) {
+                .catch(function (err) {
                   console.log(err);
                 });
 
@@ -78,7 +79,7 @@ var async = require('async');
                 .then(function (result) {
                   callback(null, result);
                 })
-                .error(function (err) {
+                .catch(function (err) {
                   console.log(err);
                 });
 
@@ -87,19 +88,19 @@ var async = require('async');
           } catch (err) {
             callback(err)
           }
-        },
+        }
       ],
+
       function (err, result) {
 
         /** handle error */
         if (err) {
           console.log('WARNING: DSpace handle request returned error: ' + err.message);
+          console.log('This will occur when an unauthenticated user attempts to access a restricted item.');
         }
 
         /** send response */
-        res.setHeader('Content-Type', 'application/json');
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.end(JSON.stringify(result));
+        utils.jsonResponse(res, result);
 
       }
     );

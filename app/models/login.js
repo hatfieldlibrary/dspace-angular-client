@@ -11,7 +11,7 @@ var rp = require('request-promise');
   module.exports = function (netid, config, req, res) {
 
 
-    var handleRequest = rp(
+    var loginRequest = rp(
 
       {
         url: 'http://localhost:8080/dspace5-rest/login',
@@ -31,10 +31,11 @@ var rp = require('request-promise');
 
         } else {
 
+          var session = req.session;
+
           if (response.statusCode === 200) {    // success
 
             // Add DSpace token to session.
-            var session = req.session;
             session.dspaceToken = body;
 
             session.save(function (err) {
@@ -47,13 +48,21 @@ var rp = require('request-promise');
           } else if (response.statusCode === 403) {   // forbidden
             console.log('DSpace access forbidden.');
 
-          } else {
+          } else if (response.statusCode == 400 ) {
+            // 400 may mean that the token no longer exists
+            // in DSpace, possibly because of server restart.
+            // Reset the Express session.
+            session.regenerate(function (err) {
+              console.log('generated new session');
+            });
+          }
+          else {
             console.log('Unknown DSpace login status.'); // unknown status
           }
         }
       });
 
-    return handleRequest;
+    return loginRequest;
 
   };
 

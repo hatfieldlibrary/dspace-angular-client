@@ -1,7 +1,7 @@
 'use strict';
 
 var rp = require('request-promise');
-var utils = require('./utils');
+var utils = require('../controllers/utils');
 
 (function () {
   /**
