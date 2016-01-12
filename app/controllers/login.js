@@ -25,6 +25,8 @@ var utils = require('./utils');
 
     var session = req.session;
 
+    console.log('still have dspace token ' + session.dspaceToken);
+
     // If session does not already have DSpace token, login
     // to the DSpace REST API.
     if (!session.dspaceToken) {
@@ -61,40 +63,47 @@ var utils = require('./utils');
    */
   exports.checkSession = function (req, res) {
 
+    /** @type {Object} the current session object */
     var session = req.session;
-    if (session.dspaceToken) {
 
-      // Retrieve dspace token from the session object.
-      var dspaceTokenHeader = utils.dspaceToken(session);
-      if (dspaceTokenHeader.length > 0) {
+    /** @type {string} the current dspace token or an empty string */
+    var dspaceTokenHeader = utils.dspaceToken(session);
 
-        models
-          .checkDspaceSession(dspaceTokenHeader)
-          .then(
-            function (response) {
+    if (dspaceTokenHeader.length > 0) {
 
-              if (response.authenticated) {
-                // Dspace autheticated.
-                utils.jsonResponse(res, {status: 'ok'});
+      models
+        .checkDspaceSession(dspaceTokenHeader)
+        .then(
+          function (response) {
 
-              }
-              else {
-                // No dspace authentication.
-                utils.jsonResponse(res, {status: 'denied'});
-              }
+            // DSpace API REST status check will return a boolean
+            // value for authenticated.
+            if (response.authenticated) {
+              // Autheticated, returning status 'ok'
+              utils.jsonResponse(res, {status: 'ok'});
 
-            })
-          .catch(function (err) {
-              // No dspace returned error response.
-              console.log(err.message);
-              utils.jsonResponse(res, {status: 'denied'});
             }
-          );
-      } else {
-        // No dspace token in the current Express session.
-        utils.jsonResponse(res, {status: 'denied'});
+            else {
+              // If not authenticated, remove the stale token.
+              utils.removeDspaceSession(session);
+              // Returning status denied.
+              utils.jsonResponse(res, {status: 'denied'});
 
-      }
+            }
+
+          })
+        .catch(function (err) {
+            // If status request returned an error, remove dspace token.
+            utils.removeDspaceSession(session);
+            console.log(err.message);
+            utils.jsonResponse(res, {status: 'denied'});
+          }
+        );
+    } else {
+
+      // There's no dspace token in the current Express session.
+      utils.jsonResponse(res, {status: 'denied'});
+
     }
   };
 

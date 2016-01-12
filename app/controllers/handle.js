@@ -33,7 +33,7 @@ var utils = require('./utils');
           models.handle(site, item, session)
 
             .then(function (result) {
-                  callback(null, result);
+              callback(null, result);
             })
             .catch(function (err) {
 
@@ -97,10 +97,13 @@ var utils = require('./utils');
         if (err) {
           console.log('WARNING: DSpace handle request returned error: ' + err.message);
           console.log('This will occur when an unauthenticated user attempts to access a restricted item.');
-        }
+          // delete the dspace token.
+          var session = req.session;
+          delete session.dspaceToken;
 
-        /** send response */
-        utils.jsonResponse(res, result);
+        }
+          /** send response */
+          utils.jsonResponse(res, result);
 
       }
     );

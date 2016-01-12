@@ -62,16 +62,7 @@ var dspaceApp = angular.module('dspaceApp', [
    */
   dspaceApp.factory('Data', function () {
     return {
-      currentAreaIndex: 0,
-      currentAreaId: -1,
-      currentSubjectIndex: 0,
-      currentSubjectId: -1,
-      currentSubjectName: '',
-      currentId: null,
-      currentView: 'card',
-      currentScrollPosition: 0,
-      showAllCollections: false,
-      collectionLinkData: ''
+      hasDspaceSession: false
     };
   });
 

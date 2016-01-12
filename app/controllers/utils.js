@@ -32,4 +32,8 @@
 
   };
 
+  exports.removeDspaceSession = function(session) {
+
+  };
+
 })();

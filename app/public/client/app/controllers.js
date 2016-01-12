@@ -14,34 +14,45 @@ var dspaceControllers = angular.module('dspaceControllers', []);
   /*globals dspaceControllers*/
 
   dspaceControllers.controller('LoginCtrl', [
+    '$scope',
     'Login',
     'CheckSession',
     'Data',
-    function (Login, CheckSession, Data) {
+    function ($scope, Login, CheckSession, Data) {
 
       var vm = this;
+      vm.sessionStatus = Data.hasDspaceSession;
 
-      vm.statusMessage = "Login";
-      vm.sessionStatus = false;
+      console.log(Data);
 
       vm.login = function () {
         Login.query();
 
       };
 
-      var init = function() {
+      var init = function () {
 
-        var session = CheckSession.query();
+        var sessionStatus = CheckSession.query();
 
-        session.$promise.then(function() {
-          if (session.status === 'ok') {
-            vm.sessionStatus = true;
-          } else {
-            vm.sessionStatus = false;
-          }
-        });
+        sessionStatus.$promise
+          .then(function () {
+            if (sessionStatus.status === 'ok') {
+              Data.hasDspaceSession = true;
+            } else {
+              Data.hasDspaceSession = false;
+            }
+          });
 
       };
+
+      $scope.$watch( function() {return Data.hasDspaceSession; },
+        function (newValue, oldValue) {
+          console.log(newValue +" "+ oldValue);
+          if (newValue !== oldValue) {
+
+            vm.sessionStatus = newValue;
+          }
+        });
 
       init();
 
@@ -57,11 +68,13 @@ var dspaceControllers = angular.module('dspaceControllers', []);
     '$scope',
     '$resource',
     'ItemByHandle',
+    'CheckSession',
     'Data',
 
     function ($scope,
               $resource,
               ItemByHandle,
+              CheckSession,
               Data) {
 
 
@@ -75,11 +88,31 @@ var dspaceControllers = angular.module('dspaceControllers', []);
        * @param item the item handle id
        */
       vm.getItem = function (site, item) {
-        vm.item = ItemByHandle.query({site: site, item: item});
-        vm.item.$promise.then(
-          function () {
-            console.log(vm.item);
-            // do stuff?
+        var query = ItemByHandle.query({site: site, item: item});
+        query.$promise
+          .then(
+            function (data) {
+
+              vm.item = data;
+
+              var sessionStatus = CheckSession.query();
+
+              sessionStatus.$promise.then(function () {
+                console.log(sessionStatus);
+                if (sessionStatus.status === 'ok') {
+                  console.log('setting session status to true');
+                  Data.hasDspaceSession = true;
+                } else {
+                  console.log('setting session status to false');
+                  Data.hasDspaceSession = false;
+                }
+              });
+
+            }
+          )
+          .catch(function (err) {
+            console.log('got error');
+            console.log(err.message);
           });
 
       };
@@ -90,7 +123,9 @@ var dspaceControllers = angular.module('dspaceControllers', []);
        * @returns {string}
        */
       vm.getLogo = function () {
-        return dspaceHost + '/rest' + vm.item.logo.retrieveLink;
+        if (vm.item.logo.retrieveLink) {
+          return dspaceHost + '/rest' + vm.item.logo.retrieveLink;
+        }
       };
 
 

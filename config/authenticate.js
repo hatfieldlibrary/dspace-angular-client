@@ -16,7 +16,7 @@ var
    * cookie header parser used with sessions
    * @type {*|exports|module.exports}
    */
-  cookieParser = require('cookie-parser'),
+ // cookieParser = require('cookie-parser'),
   /**
    * CAS authentication strategy
    */
@@ -55,7 +55,7 @@ module.exports = function (app, config, passport) {
       config.redisPort, '127.0.0.1',
       {}
     );
-    app.use(cookieParser());
+   // app.use(cookieParser());
     app.use(session(
       {
 
