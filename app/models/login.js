@@ -36,11 +36,12 @@ var rp = require('request-promise');
           if (response.statusCode === 200) {    // success
 
             // Add DSpace token to session.
-            session.dspaceToken = body;
+            session.getDspaceToken = body;
 
             session.save(function (err) {
+
               if (err === null) {
-                console.log('DSpace API token: ' + session.dspaceToken);
+                console.log('DSpace API token: ' + session.getDspaceToken);
 
               }
             });
@@ -49,12 +50,11 @@ var rp = require('request-promise');
             console.log('DSpace access forbidden.');
 
           } else if (response.statusCode == 400 ) {
-            // 400 may mean that the token no longer exists
-            // in DSpace, possibly because of server restart.
-            // Reset the Express session.
-            session.regenerate(function (err) {
-              console.log('generated new session');
-            });
+            // 400 (malformed request) may mean that the token no
+            // longer exists in DSpace, possibly because of server
+            // restart. Remove the stale token if one is present.
+            // The REST API is DSpace 5.5
+            utils.removeDspaceSession(req.session);
           }
           else {
             console.log('Unknown DSpace login status.'); // unknown status

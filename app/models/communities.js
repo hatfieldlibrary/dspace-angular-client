@@ -10,7 +10,7 @@ var utils = require('../controllers/utils');
    */
   module.exports = function (id, session) {
 
-    var dspaceTokenHeader = utils.dspaceToken(session);
+    var dspaceTokenHeader = utils.getDspaceToken(session);
 
     /** DSpace communities request-promise */
     var communityRequest =

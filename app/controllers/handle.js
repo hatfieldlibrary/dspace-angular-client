@@ -39,7 +39,6 @@ var utils = require('./utils');
 
               callback(err, null);
             });
-
         },
         /**
          * Inspects type and retrieve additional data by calling the
@@ -52,6 +51,7 @@ var utils = require('./utils');
           try {
             var type = result.type;
             var id = result.id;
+            console.log(id);
 
             if (type === 'community') {
 
@@ -95,20 +95,27 @@ var utils = require('./utils');
 
         /** handle error */
         if (err) {
+
           console.log('WARNING: DSpace handle request returned error: ' + err.message);
           console.log('This will occur when an unauthenticated user attempts to access a restricted item.');
-          // delete the dspace token.
-          var session = req.session;
-          delete session.dspaceToken;
+
+          if (err.statusCode === 500 && err.error === 'undefined') {
+            // The error condition probably indicates that the DSpace host
+            // no longer has a record of the token, perhaps because the host
+            // was restarted.  This utility method deletes the Express session's
+            // dspace token one exists.  The client should have the ability
+            // to detect a change in session status and direct the user to
+            // log in again.
+            utils.removeDspaceSession(req.session)
+          }
 
         }
-          /** send response */
-          utils.jsonResponse(res, result);
+
+        /** send response */
+        utils.jsonResponse(res, result);
 
       }
     );
-
-
   };
 
 })();

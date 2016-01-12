@@ -25,11 +25,11 @@ var utils = require('./utils');
 
     var session = req.session;
 
-    console.log('still have dspace token ' + session.dspaceToken);
+    console.log('still have dspace token ' + session.getDspaceToken);
 
     // If session does not already have DSpace token, login
     // to the DSpace REST API.
-    if (!session.dspaceToken) {
+    if (!session.getDspaceToken) {
       models.login(netid, config, req, res)
         .then(function (data) {
           console.log(data);
@@ -67,7 +67,7 @@ var utils = require('./utils');
     var session = req.session;
 
     /** @type {string} the current dspace token or an empty string */
-    var dspaceTokenHeader = utils.dspaceToken(session);
+    var dspaceTokenHeader = utils.getDspaceToken(session);
 
     if (dspaceTokenHeader.length > 0) {
 

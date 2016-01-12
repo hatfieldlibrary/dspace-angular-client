@@ -8,32 +8,44 @@
    * returns token if present.
    * @param session the Express session object
    * @returns {*} token or empty string
-     */
-  exports.dspaceToken = function (session) {
+   */
+  exports.getDspaceToken = function (session) {
 
     var dspaceTokenHeader;
 
-    if (session) {
-      if (session.dspaceToken) {
-        dspaceTokenHeader = session.dspaceToken;
-      } else {
-        dspaceTokenHeader = '';
-      }
+    if ('dspaceToken' in session) {
+      dspaceTokenHeader = session.getDspaceToken;
+    } else {
+      dspaceTokenHeader = '';
     }
 
     return dspaceTokenHeader;
   };
 
+  /**
+   * Sets response header and sends json.
+   * @param res  the Express response object
+   * @param json   data to return
+     */
   exports.jsonResponse = function (res, json) {
 
-    res.setHeader('Content-Type', 'application/json');
+    // Set custom response header.
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.end(JSON.stringify(json));
+    res.json(json);
 
   };
 
-  exports.removeDspaceSession = function(session) {
+  /**
+   * Removes the dspace token from the current session if
+   * the token is present.
+   * @param session  the Express session object
+     */
+  exports.removeDspaceSession = function (session) {
 
+       if ('dspaceToken' in session) {
+          delete session.getDspaceToken;
+
+       }
   };
 
 })();

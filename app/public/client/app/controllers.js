@@ -18,12 +18,14 @@ var dspaceControllers = angular.module('dspaceControllers', []);
     'Login',
     'CheckSession',
     'Data',
-    function ($scope, Login, CheckSession, Data) {
+    function ($scope,
+              Login,
+              CheckSession,
+              Data) {
 
       var vm = this;
       vm.sessionStatus = Data.hasDspaceSession;
 
-      console.log(Data);
 
       vm.login = function () {
         Login.query();
@@ -45,11 +47,12 @@ var dspaceControllers = angular.module('dspaceControllers', []);
 
       };
 
-      $scope.$watch( function() {return Data.hasDspaceSession; },
-        function (newValue, oldValue) {
-          console.log(newValue +" "+ oldValue);
-          if (newValue !== oldValue) {
+      $scope.$watch(function () {
+          return Data.hasDspaceSession;
+        },
 
+        function (newValue, oldValue) {
+          if (newValue !== oldValue) {
             vm.sessionStatus = newValue;
           }
         });
@@ -98,12 +101,12 @@ var dspaceControllers = angular.module('dspaceControllers', []);
               var sessionStatus = CheckSession.query();
 
               sessionStatus.$promise.then(function () {
-                console.log(sessionStatus);
+
                 if (sessionStatus.status === 'ok') {
-                  console.log('setting session status to true');
+
                   Data.hasDspaceSession = true;
                 } else {
-                  console.log('setting session status to false');
+
                   Data.hasDspaceSession = false;
                 }
               });
@@ -111,7 +114,6 @@ var dspaceControllers = angular.module('dspaceControllers', []);
             }
           )
           .catch(function (err) {
-            console.log('got error');
             console.log(err.message);
           });
 

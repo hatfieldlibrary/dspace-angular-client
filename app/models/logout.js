@@ -8,7 +8,7 @@ var utils = require('../controllers/utils');
 
   module.exports = function (session) {
 
-    var dspaceTokenHeader = utils.dspaceToken(session);
+    var dspaceTokenHeader = utils.getDspaceToken(session);
 
     /** Generate a new Express session */
     session.regenerate(function (err) {
