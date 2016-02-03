@@ -9,8 +9,8 @@ var dspaceServices = angular.module('dspaceServices', ['ngResource']);
   /**
    * Retrieves information about object via it's handle.
    */
-  dspaceServices.factory('ItemByHandle', ['$resource', 'restHost',
-    function ($resource, restHost) {
+  dspaceServices.factory('ItemByHandle', ['$resource',
+    function ($resource) {
       return $resource('handle/:site/:item', {}, {
         query: {method: 'GET', isArray: false}
       });
@@ -33,6 +33,8 @@ var dspaceServices = angular.module('dspaceServices', ['ngResource']);
       });
     }
   ]);
+
+
 
 })();
 

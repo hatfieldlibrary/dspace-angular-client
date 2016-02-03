@@ -74,9 +74,10 @@ var utils = require('./utils');
                 });
 
             } else if (type === 'item') {
-
+                       console.log('got an item');
               models.items(id, session)
                 .then(function (result) {
+                  console.log('item result is: ' + result);
                   callback(null, result);
                 })
                 .catch(function (err) {

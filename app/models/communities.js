@@ -16,7 +16,7 @@ var utils = require('../controllers/utils');
     var communityRequest =
       rp(
         {
-          url: 'http://localhost:8080/dspace5-rest/communities/' + id + '?expand=collections,logo',
+          url: 'http://dspace.willamette.edu:8080/rest/communities/' + id + '?expand=collections,logo',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
@@ -48,6 +48,7 @@ var utils = require('../controllers/utils');
     ret.countItems = json.countItems;
     var logo = {};
     if (json.logo !== null) {
+      logo.id = json.logo.id;
       logo.retrieveLink = json.logo.retrieveLink;
       logo.sizeBytes = json.logo.sizeBytes;
       logo.mimeType = json.logo.mimeType;

@@ -47,13 +47,14 @@ var config = {
   production: {
     root: rootPath,
     app: {
-      name: 'acomtags'
+      name: 'dspace'
     },
     sync: { force: false },
     uid: credentials.uid,
     gid: credentials.gid,
-    port: 3000,
+    port: 3003,
     redisPort: 6379,
+    secret: secret,
     nodeEnv: env
   }
 };

@@ -5,82 +5,37 @@
   </p>
 </div>
 
+<img src="http://dspace.willamette.edu:8080/rest/bitstreams/10588/retrieve">
+
 <div ng-controller="HandleCtrl as vm">
 
 
   <h3>Test Links</h3>
 
   <p>
-    <a href="#" ng-click="vm.getItem(10177, 2)">Public Community</a>
+    <a href="#" ng-click="vm.getItem(10177, 13)">Hatfield Library Community</a>
   </p>
 
   <p>
-    <a href="#" ng-click="vm.getItem(10177, 11)">Public Collection Two</a>
+    <a href="#" ng-click="vm.getItem(10177, 238)">Moveable Type</a>
   </p>
 
   <p>
-    <a href="#" ng-click="vm.getItem(10177, 12)">Public Collection Two > Restricted Item (staff)</a>
+    <a href="#" ng-click="vm.getItem(10177, 1059)">Moveable Type Issue</a>
   </p>
 
   <p>
-    <a href="#" ng-click="vm.getItem(10177, 3)">Restricted Collection One</a>
+    <a href="#" ng-click="vm.getItem(10177, 1329)">Environmental Science Community (login required to see student collection)</a>
   </p>
 
   <p>
-    <a href="#" ng-click="vm.getItem(10177, 7)">Restricted Collection One > Restricted Item</a>
+    <a href="#" ng-click="vm.getItem(10177, 1332)">Environmental Science Theses (login required)</a>
   </p>
 
   <p>
-    <a href="#" ng-click="vm.getItem(10177, 13)">Public Collection Two > Public Item</a>
+    <a href="#" ng-click="vm.getItem(10177, 5034)">Environmental Science Senior Thesis (login Required)</a>
   </p>
 
-  <p>
-    <a href="#" ng-click="vm.getItem(10177, 9)">Public Community Two</a>
-  </p>
-
-  <p>
-    <a href="#" ng-click="vm.getItem(10177, 14)">Public Community Two > Restricted Community Two</a>
-  </p>
-
-  <p>
-    <a href="#" ng-click="vm.getItem(10177, 15)">Public Community Two > Restricted Community Two > Public Item</a>
-  </p>
-
-  <p>
-    <a href="#" ng-click="vm.getItem(10177, 1)">Restricted Community</a>
-  </p>
-
-  <p>
-    <a href="#" ng-click="vm.getItem(10177, 4)">Restricted Community > Public Collection Three</a>
-  </p>
-
-  <p>
-    <a href="#" ng-click="vm.getItem(10177, 8)">Restricted Community  > Public Collection Three > Restricted Item</a>
-  </p>
-
-  <p>
-    <a href="#" ng-click="vm.getItem(10177, 16)">Restricted Community  > Public Collection Three > Public Item</a>
-  </p>
-
-  <p>
-    <a href="#" ng-click="vm.getItem(10177, 10)">Restricted Community Two</a>
-  </p>
-
-  <p>
-    <a href="#" ng-click="vm.getItem(10177, 17)">Restricted Community Two > Public Community Four</a>
-  </p>
-
-  <p>
-    <a href="#" ng-click="vm.getItem(10177, 18)">Restricted Community Two > Public Community Four > Public Item</a>
-  </p>
-
-  <p>
-    <a href="#" ng-click="vm.getItem(10177, 19)">Restricted Community Two > Restricted Community Three</a>
-  </p>
-
-  <p>
-    <a href="#" ng-click="vm.getItem(10177, 20)">Restricted Community Two > Restricted Community Three > Restricted Item</a>
-  </p>
 
 
   <div ng-if="vm.item.type==='community'">
@@ -115,6 +70,8 @@
       </li>
     </ul>
     <h3>Collections</h3>
+
+
 
     <p>As an unauthenticated user I only see the public collections.</p>
     <ul>
@@ -227,6 +184,7 @@
         {{stream.mimeType}}<br>
         {{stream.sizeBytes}} bytes<br>
         {{stream.description}}<br>
+         <a target="_blank" href="/bitstream/{{stream.id}}/{{stream.name}}">Download File</a>
 
       </li>
     </ul>

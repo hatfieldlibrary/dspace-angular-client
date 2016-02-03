@@ -72,12 +72,14 @@ var dspaceControllers = angular.module('dspaceControllers', []);
     '$resource',
     'ItemByHandle',
     'CheckSession',
+    'dspaceHost',
     'Data',
 
     function ($scope,
               $resource,
               ItemByHandle,
               CheckSession,
+              dspaceHost,
               Data) {
 
 
@@ -98,13 +100,16 @@ var dspaceControllers = angular.module('dspaceControllers', []);
 
               vm.item = data;
 
+              console.log('calling check session');
+
               var sessionStatus = CheckSession.query();
 
               sessionStatus.$promise.then(function () {
 
+                    console.log(sessionStatus);
                 if (sessionStatus.status === 'ok') {
-
                   Data.hasDspaceSession = true;
+                  console.log('get item check session result ' + Data.hasDspaceSession);
                 } else {
 
                   Data.hasDspaceSession = false;
@@ -126,9 +131,12 @@ var dspaceControllers = angular.module('dspaceControllers', []);
        */
       vm.getLogo = function () {
         if (vm.item.logo.retrieveLink) {
-          return dspaceHost + '/rest' + vm.item.logo.retrieveLink;
+          //console.log(dspaceHost +  vm.item.logo.retrieveLink);
+          return '/bitstream/' + vm.item.logo.id;
         }
       };
+
+
 
 
     }]);

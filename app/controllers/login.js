@@ -3,6 +3,7 @@
 var utils = require('./utils');
 
 
+
 (function () {
 
   var config;
@@ -30,15 +31,23 @@ var utils = require('./utils');
     // If session does not already have DSpace token, login
     // to the DSpace REST API.
     if (!session.getDspaceToken) {
-      models.login(netid, config, req, res)
-        .then(function (data) {
-          console.log(data);
+      models.login(
+        netid,
+        config,
+        req,
+        res)
+        .then(function () {
+
           res.redirect('/item');
+
         })
         .catch(function (err) {
+
           console.log(err);
+
         });
     }
+
 
   };
 
@@ -69,13 +78,14 @@ var utils = require('./utils');
     /** @type {string} the current dspace token or an empty string */
     var dspaceTokenHeader = utils.getDspaceToken(session);
 
+    console.log('checking session');
+
     if (dspaceTokenHeader.length > 0) {
 
       models
         .checkDspaceSession(dspaceTokenHeader)
         .then(
           function (response) {
-
             // DSpace API REST status check will return a boolean
             // value for authenticated.
             if (response.authenticated) {

@@ -10,13 +10,18 @@ var utils = require('../controllers/utils');
    */
   module.exports = function (site, item, session) {
 
+    console.log(session);
+
     var dspaceTokenHeader = utils.getDspaceToken(session);
+
+    console.log('handle token ' + dspaceTokenHeader);
+    console.log('url is ' + 'http://dspace.willamette.edu:8080/rest/handle/' + site + '/' + item);
 
     /** DSpace handle request-promise */
     var handleRequest =
       rp(
         {
-          url: 'http://localhost:8080/dspace5-rest/handle/' + site + '/' + item,
+          url: 'http://dspace.willamette.edu:8080/rest/handle/' + site + '/' + item,
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',

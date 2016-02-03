@@ -19,7 +19,7 @@ var utils = require('../controllers/utils');
     var logoutRequest =
       rp(
         {
-          url: 'http://localhost:8080/dspace5-rest/logout',
+          url: 'http://dspace.willamette.edu:8080/rest/logout',
           method: 'POST',
           headers: {
             'User-Agent': 'Request-Promise',

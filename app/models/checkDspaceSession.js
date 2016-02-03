@@ -7,11 +7,13 @@ var rp = require('request-promise');
 
   module.exports = function (dspaceTokenHeader) {
 
+    console.log('check dspace session with token ' + dspaceTokenHeader);
+
     /** DSpace session status request-promise */
     var logoutRequest =
       rp(
         {
-          url: 'http://localhost:8080/dspace5-rest/status',
+          url: 'http://dspace.willamette.edu:8080/rest/status',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',

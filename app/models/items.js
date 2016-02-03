@@ -14,7 +14,7 @@ var utils = require('../controllers/utils');
     var itemRequest =
       rp(
         {
-          url: 'http://localhost:8080/dspace5-rest/rest/items/' + id + '?expand=bitstreams,logo,metadata,parentCollection',
+          url: 'http://dspace.willamette.edu:8080/rest/items/' + id + '?expand=bitstreams,logo,metadata,parentCollection',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',

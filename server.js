@@ -26,6 +26,7 @@ var allowCrossDomain = function(req, res, next) {
 
 // configure express
 require('./config/express')(app, config);
+
 // configure passport and session
 require('./config/authenticate')(app, config, passport);
 

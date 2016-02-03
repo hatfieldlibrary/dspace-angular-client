@@ -33,9 +33,9 @@ var dspaceApp = angular.module('dspaceApp', [
    * path = 'acomrest2'
    *
    */
-  var host = 'http://localhost:8080';
-  var path = 'dspace5-rest';
-  dspaceApp.value('restHost', host + '/' + path + '/');
+  var host = 'http://dspace.willamette.edu:8080';
+  var path = 'rest';
+  dspaceApp.value('dspaceHost', host + '/' + path );
 
 
   /**

@@ -4,6 +4,7 @@ module.exports = function (app, config, passport) {
 
   var login = require('../app/controllers/login'),
     handle = require('../app/controllers/handle'),
+    bitstream = require('../app/controllers/bitstream'),
     solr = require('../app/controllers/solr');
 
   /**
@@ -42,8 +43,8 @@ module.exports = function (app, config, passport) {
       // function will not be called.
     });
 
-  // If authentication failed, redirect the login page.  Otherwise, redirect
-  // to the admin page page.
+  // If authentication failed, redirect back to the item page.
+  // If it succeeded redirect to login/netid
   app.get('/oauth2callback',
 
     passport.authenticate('google',
@@ -56,6 +57,8 @@ module.exports = function (app, config, passport) {
     }
 
   );
+
+  app.get('/bitstream/:id/:file', bitstream.bitstream);
 
   app.get('/check-session', login.checkSession);
 

@@ -12,7 +12,7 @@ var rp = require('request-promise');
     var solr =
       rp(
         {
-          url: 'http://localhost:8080/solr/search/select?q=title:' + query + '&wt=json',
+          url: 'http://dspace.willamette.edu:8080/solr/search/select?q=title:' + query + '&wt=json',
           method: 'GET',
           headers: {'User-Agent': 'Request-Promise'},
           json: true

@@ -14,7 +14,7 @@ var rp = require('request-promise');
     var loginRequest = rp(
 
       {
-        url: 'http://localhost:8080/dspace5-rest/login',
+        url: 'http://dspace.willamette.edu:8080/rest/login',
         method: 'POST',
         headers: {'User-Agent': 'Request-Promise'},
         json: {
@@ -37,7 +37,6 @@ var rp = require('request-promise');
 
             // Add DSpace token to session.
             session.getDspaceToken = body;
-
             session.save(function (err) {
 
               if (err === null) {

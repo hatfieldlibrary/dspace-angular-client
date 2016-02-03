@@ -12,8 +12,9 @@ var
    * @type {session|exports|module.exports}
    */
   session = require('express-session'),
+
   /**
-   * cookie header parser used with sessions
+   * cookie header parser used with sessions. deprecated.
    * @type {*|exports|module.exports}
    */
  // cookieParser = require('cookie-parser'),
@@ -42,19 +43,29 @@ module.exports = function (app, config, passport) {
 
   // For development purposes, use express-session in lieu of Redisstore.
   if (app.get('env') === 'development' || app.get('env') === 'runlocal') {
+
+    // No longer required by session.  We use this to set cookie header.
+   // app.use(cookieParser());
+
     app.use(session({
         secret: 'rice paddy',
         saveUninitialized: true,
         resave: true
       })
     );
+
     // Use redis as the production session store.
     // http://redis.io/
   } else if (app.get('env') === 'production') {
+
+
+
     var client = redis.createClient(
-      config.redisPort, '127.0.0.1',
+      config.redisPort,
+      '127.0.0.1',
       {}
     );
+
    // app.use(cookieParser());
     app.use(session(
       {
@@ -66,6 +77,7 @@ module.exports = function (app, config, passport) {
       }
     ));
   }
+
 
   // Set up authentication and session.
   app.use(passport.initialize());
@@ -96,7 +108,10 @@ module.exports = function (app, config, passport) {
   // Google OAUTH2.
   var GOOGLE_CLIENT_ID = '1092606309558-49gp8d101vvhcivd905fcic3u0l7a3fn.apps.googleusercontent.com';
   var GOOGLE_CLIENT_SECRET = 'U_l2HUna8aJ6cr1pr5JynRsI';
+
+  // Hardcoded callback url!
   var GOOGLE_CALLBACK = 'http://localhost:3000/oauth2callback';
+
   // Configure Google authentication for this application
   passport.use(new GoogleStrategy({
 

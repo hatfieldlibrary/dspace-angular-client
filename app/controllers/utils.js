@@ -13,12 +13,12 @@
 
     var dspaceTokenHeader;
 
-    if ('dspaceToken' in session) {
+    if ('getDspaceToken' in session) {
       dspaceTokenHeader = session.getDspaceToken;
     } else {
       dspaceTokenHeader = '';
     }
-
+        console.log('util ' + dspaceTokenHeader);
     return dspaceTokenHeader;
   };
 
