@@ -53,6 +53,7 @@ var utils = require('../controllers/utils');
     ret.type = json.type;
     var logo = {};
     if (json.logo !== null) {
+      logo.id = json.logo.id;
       logo.retrieveLink = json.logo.retrieveLink;
       logo.sizeBytes = json.logo.sizeBytes;
       logo.mimeType = json.logo.mimeType;

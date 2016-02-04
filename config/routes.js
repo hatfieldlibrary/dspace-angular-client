@@ -26,6 +26,10 @@ module.exports = function (app, config, passport) {
 
   app.get('/logout', login.logout);
 
+  app.get('/auth/cas', ensureAuthenticated);
+
+  app.get('/check-session', login.checkSession);
+
   // GOOGLE AUTHENTICATION
   //app.get('/login', entry.login);
 
@@ -59,8 +63,6 @@ module.exports = function (app, config, passport) {
   );
 
   app.get('/bitstream/:id/:file', bitstream.bitstream);
-
-  app.get('/check-session', login.checkSession);
 
   // API
   app.use('/handle/:site/:item', handle.getItem);

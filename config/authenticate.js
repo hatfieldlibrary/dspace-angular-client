@@ -156,7 +156,8 @@ module.exports = function (app, config, passport) {
   app.ensureAuthenticated = function (req, res, next) {
 
 
-    var path = req._parsedOriginalUrl.pathname;
+    //var path = req._parsedOriginalUrl.pathname;
+    var path = '/item';
 
     if (req.isAuthenticated()) {
 
@@ -165,22 +166,27 @@ module.exports = function (app, config, passport) {
 
     passport.authenticate('cas', function (err, user, info) {
 
+      console.log('CAS login');
       if (err) {
+        console.log('in ensure auth : error');
         return next(err);
       }
 
       if (!user) {
         req.session.messages = info.message;
-        return res.redirect(redirect);
+        return res.redirect(path);
       }
 
       req.logIn(user, function (err) {
+        console.log('attempting login');
         if (err) {
           return next(err);
         }
 
         req.session.messages = '';
-        return res.redirect(redirect);
+        console.log('login succeeded');
+        var loginPath = '/login/' + user;
+        return res.redirect(loginPath);
 
       });
     })(req, res, next);

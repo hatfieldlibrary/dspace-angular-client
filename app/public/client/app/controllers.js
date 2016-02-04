@@ -132,7 +132,7 @@ var dspaceControllers = angular.module('dspaceControllers', []);
       vm.getLogo = function () {
         if (vm.item.logo.retrieveLink) {
           //console.log(dspaceHost +  vm.item.logo.retrieveLink);
-          return '/bitstream/' + vm.item.logo.id;
+          return '/bitstream/' + vm.item.logo.id + '/logo';
         }
       };
 
