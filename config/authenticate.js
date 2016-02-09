@@ -1,5 +1,8 @@
 /**
- * Authentication module.
+ * Authentication module. Sets up the authentication method and
+ * session store.  Uses Google OAUTH2 for development and CAS
+ * plus a redis session store for production.
+ *
  * Created by mspalti on 12/4/14.
  * Modified by mspalti on 11/10/2015
  */
@@ -13,26 +16,12 @@ var
    */
   session = require('express-session'),
 
-  /**
-   * cookie header parser used with sessions. deprecated.
-   * @type {*|exports|module.exports}
-   */
- // cookieParser = require('cookie-parser'),
-  /**
-   * CAS authentication strategy
-   */
-  cas = require('passport-cas'),
+/**
+ * cookie header parser used with sessions. deprecated.
+ * @type {*|exports|module.exports}
+ */
+// cookieParser = require('cookie-parser'),
 
-  GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
-  /**
-   * Redis client
-   * @type {exports|module.exports}
-   */
-  redis = require('redis'),
-  /**
-   * Redis session store
-   */
-  RedisStore = require('connect-redis')(session),
   /**
    * Confidential route and credential parameters
    */
@@ -41,12 +30,14 @@ var
 
 module.exports = function (app, config, passport) {
 
-  // For development purposes, use express-session in lieu of Redisstore.
+  // For development purposes, use Google OAUTH2 and express-session
+  // in lieu of Redisstore.
   if (app.get('env') === 'development' || app.get('env') === 'runlocal') {
 
-    // No longer required by session.  We use this to set cookie header.
-   // app.use(cookieParser());
+    var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
+    // No longer required by session.  We use this to set cookie header.
+    // app.use(cookieParser());
     app.use(session({
         secret: 'rice paddy',
         saveUninitialized: true,
@@ -54,11 +45,59 @@ module.exports = function (app, config, passport) {
       })
     );
 
-    // Use redis as the production session store.
+    // Google OAUTH2.
+    var GOOGLE_CLIENT_ID = '1092606309558-49gp8d101vvhcivd905fcic3u0l7a3fn.apps.googleusercontent.com';
+    var GOOGLE_CLIENT_SECRET = 'U_l2HUna8aJ6cr1pr5JynRsI';
+
+    // Hardcoded callback url!
+    var GOOGLE_CALLBACK = 'http://localhost:3000/oauth2callback';
+
+    // Configure Google authentication for this application
+    passport.use(new GoogleStrategy({
+
+        clientID: GOOGLE_CLIENT_ID,
+        clientSecret: GOOGLE_CLIENT_SECRET,
+        callbackURL: GOOGLE_CALLBACK
+      },
+      function (accessToken,
+                refreshToken,
+                profile,
+                done) {
+
+        // asynchronous verification
+        process.nextTick(function () {
+
+          var email = profile.emails[0].value;
+          var netid = email.split('@');
+          if (email.length > 1) {
+            done(null, netid[0]);
+          } else {
+            done(null, null);
+          }
+
+        });
+      }
+    ));
+
+
+    // Use CAS authentication and redis as the session store.
     // http://redis.io/
   } else if (app.get('env') === 'production') {
 
+    /**
+     * CAS authentication strategy
+     */
+    var cas = require('passport-cas');
 
+    /**
+     * Redis client
+     * @type {exports|module.exports}
+     */
+    var redis = require('redis');
+    /**
+     * Redis session store
+     */
+    var RedisStore = require('connect-redis')(session);
 
     var client = redis.createClient(
       config.redisPort,
@@ -66,7 +105,7 @@ module.exports = function (app, config, passport) {
       {}
     );
 
-   // app.use(cookieParser());
+    // app.use(cookieParser());
     app.use(session(
       {
 
@@ -76,6 +115,27 @@ module.exports = function (app, config, passport) {
         resave: false // don't save session if unmodified
       }
     ));
+
+    // Configure CAS authentication for this application
+
+    passport.use(new cas.Strategy({
+      version: 'CAS3.0',
+      ssoBaseURL: 'https://secure.willamette.edu/cas',
+      serverBaseURL: 'https://localhost:3000'
+    }, function (profile, done) {
+      // Put additional user authorization code here.
+      var user = profile.user;
+      return done(null, user);
+    }));
+
+    /* jshint unused: false */
+    app.isAuthenticated = function (req, res, next) {
+      if (req.isAthenticated()) {
+        return true;
+      }
+      return false;
+    };
+
   }
 
 
@@ -92,67 +152,8 @@ module.exports = function (app, config, passport) {
     done(null, user);
   });
 
-  // Configure CAS authentication for this application
-  /*
-  passport.use(new cas.Strategy({
-    version: 'CAS3.0',
-    ssoBaseURL: 'https://secure.willamette.edu/cas',
-    serverBaseURL: 'https://localhost:3000'
-  }, function (profile, done) {
-    // Put additional user authorization code here.
-    var user = profile.user;
-    return done(null, user);
-  }));
-  */
 
-  // Google OAUTH2.
-  var GOOGLE_CLIENT_ID = '1092606309558-49gp8d101vvhcivd905fcic3u0l7a3fn.apps.googleusercontent.com';
-  var GOOGLE_CLIENT_SECRET = 'U_l2HUna8aJ6cr1pr5JynRsI';
-
-  // Hardcoded callback url!
-  var GOOGLE_CALLBACK = 'http://localhost:3000/oauth2callback';
-
-  // Configure Google authentication for this application
-  passport.use(new GoogleStrategy({
-
-      clientID: GOOGLE_CLIENT_ID,
-      clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: GOOGLE_CALLBACK
-    },
-    function (accessToken,
-              refreshToken,
-              profile,
-              done) {
-
-      // asynchronous verification
-      process.nextTick(function () {
-
-        var email = profile.emails[0].value;
-        var netid = email.split('@');
-        if (email.length > 1) {
-          done(null, netid[0]);
-        } else {
-          done(null, null);
-        }
-
-      });
-    }
-  ));
-
-
-  /* jshint unused: false */
-  app.isAuthenticated = function (req, res, next) {
-    if (req.isAthenticated()) {
-      return true;
-    }
-    return false;
-  };
-
-// Route middleware ensures user is authenticated.
-// Use this middleware on any resource that needs to be protected.  If
-// the request is authenticated (typically via a persistent login session),
-// the request will proceed.  Otherwise, the user will be redirected to the
-// login page.
+// CAS Authentication check.
   app.ensureAuthenticated = function (req, res, next) {
 
 

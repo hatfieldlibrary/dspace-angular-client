@@ -11,6 +11,7 @@ var express = require('express'),
 
 global.models = require('./app/models');
 var config = require('./config/environment');
+
 var app = express();
 
 //CORS middleware
@@ -26,12 +27,11 @@ var allowCrossDomain = function(req, res, next) {
 
 // configure express
 require('./config/express')(app, config);
-
 // configure passport and session
 require('./config/authenticate')(app, config, passport);
-
 // configure routes
 require('./config/routes')(app, config, passport);
+
 
 function startServer() {
 

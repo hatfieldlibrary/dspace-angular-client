@@ -72,6 +72,8 @@ var utils = require('./utils');
    */
   exports.checkSession = function (req, res) {
 
+    console.log(req)
+
     /** @type {Object} the current session object */
     var session = req.session;
 

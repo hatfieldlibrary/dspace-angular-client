@@ -1,10 +1,8 @@
-
 var path = require('path'),
-  rootPath = path.normalize(__dirname + '/../app/' ),
+  rootPath = path.normalize(__dirname + '/../app/'),
   credentials = require('./credentials');
-  env = process.env.NODE_ENV || 'development';
 
-var secret = 'xRSo-13xop#Iqutzlqhgni-2h4';
+env = process.env.NODE_ENV || 'development';
 
 var config = {
 
@@ -16,7 +14,7 @@ var config = {
     uid: credentials.develuid,
     gid: credentials.develgid,
     port: 3000,
-    secret: secret,
+    secret: credentials.restSecret,
     nodeEnv: env
   },
 
@@ -28,7 +26,7 @@ var config = {
     uid: credentials.develuid,
     gid: credentials.develgid,
     port: 3000,
-    secret: secret,
+    secret: credentials.restSecret,
     nodeEnv: env
   },
 
@@ -40,7 +38,7 @@ var config = {
     uid: credentials.develuid,
     gid: credentials.develgid,
     port: 3000,
-    secret: secret,
+    secret: credentials.restSecret,
     nodeEnv: env
   },
 
@@ -49,12 +47,12 @@ var config = {
     app: {
       name: 'dspace'
     },
-    sync: { force: false },
+    sync: {force: false},
     uid: credentials.uid,
     gid: credentials.gid,
     port: 3003,
     redisPort: 6379,
-    secret: secret,
+    secret: credentials.restSecret,
     nodeEnv: env
   }
 };

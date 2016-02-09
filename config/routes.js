@@ -7,71 +7,85 @@ module.exports = function (app, config, passport) {
     bitstream = require('../app/controllers/bitstream'),
     solr = require('../app/controllers/solr');
 
+
+  // AUTHENTICATION
+
   /**
    * Pass app configuration to the login controller.
    */
   login.setConfig(config);
 
-  /**
-   * Indicates whether the request has an authenticated session.
-   * @type {boolean}
-   */
-  var ensureAuthenticated = app.ensureAuthenticated;
+  // Use Google OAUTH2
+
+  if (app.get('env') === 'development' ||
+    app.get('env') === 'runlocal'
+  ) {
+
+    // The first step in Google authentication redirects the user to google.com.
+    // After authorization, Google will redirect the user back to the callback
+    // URL /auth/google/callback
+    app.get('/auth/google',
+      passport.authenticate('google', {
+          scope: ['https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email']
+        }
+      ),
+      function (req, res) {
+        // The request will be redirected to Google for authentication, so this
+        // function will not be called.
+      }
+    );
+
+    // If authentication failed, redirect back to the item page.
+    // If it succeeded redirect to login/netid
+    app.get('/oauth2callback',
+
+      passport.authenticate('google',
+        {failureRedirect: '/item'}
+      ),
+
+      function (req, res) {
+        console.log('in callback ' + req.user);
+        res.redirect('/login/' + req.user);
+      }
+    );
+
+  }
+
+  // Use CAS.
+  else if (app.get('env') === 'production') {
+    /**
+     * Triggers CAS authentication.
+     * @type {function(object, object, object)}
+     */
+    var ensureCASAuthenticated = app.ensureAuthenticated;
+
+    // CAS authentication route
+    app.get('/auth/cas', ensureCASAuthenticated);
+
+  }
+
+
+  // App authentication routes
 
   /*jshint unused:false*/
-
-
-  // AUTHENTICATION
   app.get('/login/:netid', login.dspace);
 
   app.get('/logout', login.logout);
 
-  app.get('/auth/cas', ensureAuthenticated);
-
   app.get('/check-session', login.checkSession);
 
-  // GOOGLE AUTHENTICATION
-  //app.get('/login', entry.login);
 
-  // Use passport.authenticate() as middleware. The first step in Google authentication
-  // redirects the user to google.com.  After authorization, Google
-  // will redirect the user back to the callback URL /auth/google/callback
-  app.get('/auth/google',
-    passport.authenticate('google', {
-        scope: ['https://www.googleapis.com/auth/userinfo.profile',
-          'https://www.googleapis.com/auth/userinfo.email']
-      }
-    ),
-    function (req, res) {
-      // The request will be redirected to Google for authentication, so this
-      // function will not be called.
-    });
-
-  // If authentication failed, redirect back to the item page.
-  // If it succeeded redirect to login/netid
-  app.get('/oauth2callback',
-
-    passport.authenticate('google',
-      {failureRedirect: '/item' }
-    ),
-
-    function (req, res) {
-      console.log('in callback ' + req.user);
-      res.redirect('/login/' + req.user);
-    }
-
-  );
+  // REST API for dspace requests
 
   app.get('/bitstream/:id/:file', bitstream.bitstream);
 
-  // API
   app.use('/handle/:site/:item', handle.getItem);
 
   app.use('/solr/:query', solr.query);
 
-  // Use passport.authenticate() as middleware. The first step in Google authentication
-  // redirects the user to google.com.  After authorization, Google
-  // will redirect the user back to the callback URL /auth/google/callback
+
+  // ANGULARJS routes
 
   /**
    * Route to page templates.
@@ -87,15 +101,6 @@ module.exports = function (app, config, passport) {
       '.html'
     );
   });
-
-
-  //app.get('/commons', function (req, res) {
-
-  //  res.sendFile(
-  //    app.get('appPath') +
-  //    '/index.html'
-  //  );
-  //});
 
   // This catch-all is required by html5mode.
   app.get('/*', function (req, res) {

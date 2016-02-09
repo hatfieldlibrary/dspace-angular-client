@@ -24,8 +24,6 @@ module.exports = function(app) {
   //app.use(cookieParser());
   app.use(methodOverride());
 
-
-
   // app.set('serverPath', config.root + '/server');
 
   if ('production' === env) {
@@ -33,7 +31,6 @@ module.exports = function(app) {
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     app.use(express.static(path.join(config.root, 'public/client')));
     app.set('appPath', config.root + 'public/client');
-    ;
   }
 
   if ('development' === env || 'test' === env) {
@@ -42,7 +39,6 @@ module.exports = function(app) {
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'public/client')));
     app.set('appPath', config.root + 'public/client');
-
     //app.use(errorHandler()); // Error handler - has to be last
   }
 
