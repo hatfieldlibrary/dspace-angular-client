@@ -34,7 +34,7 @@ Solr searching is implemented in the NodeJs middleware.  It has not been added t
 
 ### Browsing the item hierarchy
 
-The DSpace REST API supports browsing the hierarchy of communities, collections and items.  This seems to work well.  However, for the purposes of this project we've focused on prototyping authentication, handle requests and bitstreams.  We have implemented quite a few of the middleware endpoints and controllers needed for browsing these entities and more will be added when we begin work on designing the AngularJs UI. 
+The DSpace REST API supports browsing the hierarchy of communities, collections and items.  This seems to work well.   We have implemented quite a few of the middleware endpoints and controllers needed for browsing these entities and more will be added when we begin work on designing the AngularJs UI.  However, for the purposes of this project we've focused on prototyping authentication, handle requests and bitstreams. 
 
 ### UI development
 
