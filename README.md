@@ -26,6 +26,8 @@ The controller for handle lookups uses the [async](https://github.com/caolan/asy
 
 Requests for bitstreams are handled by the middleware.  The current implementation loads data into a memory buffer before returning it in the Express response.  That's not a great solution.  It would be better to use streams and pipes or WebSockets.
 
+It would also be possible to retrieve the DSpace token from the session store and maintain a copy client-side. This would allow us to retrieve bitstreams directly from the DSpace host.  The implications of this approach haven't been considered but some possible components (e.g. /check-session) are in place. 
+
 ### Solr
 
 Solr searching is implemented in the NodeJs middleware.  It has not been added to the current UI prototype and we haven't tackled paging, etc.
