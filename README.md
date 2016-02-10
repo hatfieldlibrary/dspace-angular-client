@@ -14,7 +14,7 @@ Authentication is handled by the middleware, using CAS or OAUTH2 authentication 
 
 After authentication, the user's netid and an application key (shared between the middleware and the authentication plugin) are used to obtain a DSpace REST token. The login middleware retrieves the REST token and adds it to the current Express session.
 
-AngularJs client requests are channeled through Express middleware endpoints and controllers.  The application models use a utility method to obtain current session's DSpace REST API token. The token is added to header of each REST API request.
+AngularJs client requests are channeled through Express middleware endpoints and controllers.  The application models use a utility method to obtain current session's DSpace REST API token. The token is added to the HTTP header of each REST API request.
 
 When working with implicit authentication via CAS, OAUTH2, and probably Shibboleth, it seems reasonable and possibly helpful to shift authentication duties to the Express middleware and use DSpace authentication plugins to check for an EPerson, assign special groups, etc.
 
@@ -47,7 +47,7 @@ This project is currently focused on read operations needed for the public searc
 
 # Working with the code
 
-### Environment
+### Setting up the environment
 
 To get started with development, clone the project into your working directory.
 
