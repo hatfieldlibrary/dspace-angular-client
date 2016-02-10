@@ -6,13 +6,13 @@ The NodeJs middleware includes [Express](http://expressjs.com/ "Express"), [Pass
 
 The front-end is a simple AngularJs prototype for testing functionality. No effort has been made to dress it up.  The prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Searching solr via the Express middleware has been tested but not integrated into the AngularJs prototype.
 
-We are currently working with our production instance of DSpace 5.4.  We've added a `RestAuthentication` plugin to the  authentication configuration. We've also modified two Java classes bundle in the 5.4 release. `TokenHolder` has been updated to use our `RestAuthentication` plugin rather than the default password authentication.  `HandleResource` was out-of-date with release 5.4 and has been updated with more recent work by Peter. 
+We are currently working with our production instance of DSpace 5.4.  We've added a `RestAuthentication` plugin to the  authentication configuration. We've also modified two Java classes bundled in the 5.4 release. `TokenHolder` has been updated to use our `RestAuthentication` plugin rather than the default password authentication.  `HandleResource` was out-of-date with release 5.4 and has been updated with more recent work by Peter. 
 
 ### Authentication
 
 Authentication is handled by the middleware, using CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
 
-After authentication, the user's netid and an application key (shared between the middleware and the authentication plugin) are used to obtain a DSpace REST token. The login middleware retrieves the REST token and adds it to the current Express session.
+After authentication, the user's netid and an application key (shared between the Node middleware and the DSpace authentication plugin) are used to obtain a DSpace REST token. The login middleware retrieves the REST token and adds it to the current Express session. The `RestAuthentication` module adds special groups and creates a new user as required.
 
 AngularJs client requests are channeled through Express middleware endpoints and controllers.  The application models use a utility method to obtain current session's DSpace REST API token. The token is added to the HTTP header of each REST API request.
 
