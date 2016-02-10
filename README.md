@@ -123,8 +123,7 @@ The following deployment assumes that you have previously built and tested the a
 
 1. Copy the project to the production host. If you know what you are doing, you can omit unnecessary development files.
 2. Update the details of the NodeJs production environment in config/credentials.js and config/environment.js.
-3. Update the AngularJs public/javascripts/app/environment.js factory object with the production host REST path.
-4. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service acomtagger start).
-5. Copy the application directory to the production directory.
-6. Set the owner and group for project all files (including .* files) to the node user.
-7. Start forever via the init.d script (e.g. /sbin/service acomtagger start).
+3. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service dspace stop).
+4. Copy the application directory to the production directory.
+5. Set the owner and group for project all files (including .* files) to `node`.
+6. Start forever via the init.d script (e.g. /sbin/service dspace start).

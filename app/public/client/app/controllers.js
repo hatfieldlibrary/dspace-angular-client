@@ -7,9 +7,6 @@ var dspaceControllers = angular.module('dspaceControllers', []);
 
   'use strict';
 
-  /** @type {string} */
-  var dspaceHost = 'http://localhost:8080';
-
 
   /*globals dspaceControllers*/
 
@@ -72,14 +69,12 @@ var dspaceControllers = angular.module('dspaceControllers', []);
     '$resource',
     'ItemByHandle',
     'CheckSession',
-    'dspaceHost',
     'Data',
 
     function ($scope,
               $resource,
               ItemByHandle,
               CheckSession,
-              dspaceHost,
               Data) {
 
 

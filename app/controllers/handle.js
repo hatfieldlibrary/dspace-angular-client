@@ -51,7 +51,6 @@ var utils = require('./utils');
           try {
             var type = result.type;
             var id = result.id;
-            console.log(id);
 
             if (type === 'community') {
 
