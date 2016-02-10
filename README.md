@@ -26,7 +26,7 @@ The controller for handle lookups uses the [async](https://github.com/caolan/asy
 
 Requests for bitstreams are handled by the middleware.  The current implementation loads data into a memory buffer before returning it in the Express response.  That's not a good solution.  It would be better to use streams and pipes or WebSockets. In the case of piping the data stream, I ran into encoding issues.  Essentially, when piping the response streams I couldn't find a way to override the default utf-8 encoding favored by the Express `response` object.  That's not to say there isn't a way to do it.   
 
-It would also be possible to retrieve the DSpace token from the session store and maintain a copy client-side. This would allow us to retrieve bitstreams directly via the DSpace API.  The implications of this approach haven't been considered but some possible components (e.g. /check-session) are in place. 
+It would also be possible to retrieve the DSpace token from the session store and maintain a copy client-side. This would allow us to retrieve bitstreams directly via the DSpace REST API.  The implications of this approach haven't been considered but some possible components (e.g. /check-session) are in place. 
 
 ### Solr
 
