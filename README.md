@@ -70,7 +70,7 @@ var credentials = {
   develgid: 'your dev machine user group',
     uid: 'node',
     gid: 'node',
-    casURL: 'https://secure.willamette.edu/cas',
+    casURL: 'https://cashost.institution.edu/cas',
     dspaceDev: {
       host: 'dspace develoment host',
       protocol: 'http',
