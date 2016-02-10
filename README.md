@@ -56,6 +56,7 @@ Express can serve static files or render files using a template engine.  Using a
 Color and fonts can be modified using CSS or Sass configurations that are compiled into client builds. Using Sass, themes can be easily created and shared.  And, Angular Material provides themeing as well.
  
  ```javascript
+ 
     dspaceApp.config(function ($mdThemingProvider) {
         // configure the Angular Material theme
         $mdThemingProvider.theme('default')
@@ -70,6 +71,7 @@ Color and fonts can be modified using CSS or Sass configurations that are compil
     ).config(function($mdIconProvider) {
       $mdIconProvider.fontSet('fa', 'fontawesome');
     }); 
+    
  ```
 
 A web framework like Angular Material offers another set of configuration possibilities, such as positioning menus to the left or right.
