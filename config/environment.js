@@ -15,6 +15,11 @@ var config = {
     gid: credentials.develgid,
     port: 3000,
     secret: credentials.restSecret,
+    dspace: {
+      host: credentials.dspaceDev.host,
+      protocol: credentials.dspaceDev.protocol,
+      port: credentials.dspaceDev.port
+    },
     nodeEnv: env
   },
 
@@ -27,6 +32,11 @@ var config = {
     gid: credentials.develgid,
     port: 3000,
     secret: credentials.restSecret,
+    dspace: {
+      host: credentials.dspaceDev.host,
+      protocol: credentials.dspaceDev.protocol,
+      port: credentials.dspaceDev.port
+    },
     nodeEnv: env
   },
 
@@ -39,6 +49,11 @@ var config = {
     gid: credentials.develgid,
     port: 3000,
     secret: credentials.restSecret,
+    dspace: {
+      host: credentials.dspaceDev.host,
+      protocol: credentials.dspaceDev.protocol,
+      port: credentials.dspaceDev.port
+    },
     nodeEnv: env
   },
 
@@ -53,6 +68,11 @@ var config = {
     port: 3003,
     redisPort: 6379,
     secret: credentials.restSecret,
+    dspace: {
+      host: credentials.dspaceProd.host,
+      protocol: credentials.dspaceProd.protocol,
+      port: credentials.dspaceProd.port
+    },
     nodeEnv: env
   }
 };

@@ -7,13 +7,16 @@ var rp = require('request-promise');
    * Returns API response for handle.
    */
   module.exports = function (query, res) {
+
     //add query type (eg author)
+
+    //var host = utils.getURL();
 
     var solr =
       rp(
         {
           /** when not running on dspace host, use local port forwarding: e.g.: ssh -L 1234:127.0.0.1:8080 dspacehost.home.edu */
-          //  url: 'http://dspace.willamette.edu:8080/solr/search/select?q=title:' + query + '&wt=json',
+          //  url: host + '/solr/search/select?q=title:' + query + '&wt=json',
           url: 'http://localhost:1234/solr/search/select?q=title:' + query + '&wt=json',
           method: 'GET',
           headers: {'User-Agent': 'Request-Promise'},

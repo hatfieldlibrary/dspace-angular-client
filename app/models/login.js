@@ -1,6 +1,7 @@
 'use strict';
 
 var rp = require('request-promise');
+var utils = require('../controllers/utils');
 
 (function () {
 
@@ -10,11 +11,12 @@ var rp = require('request-promise');
    */
   module.exports = function (netid, config, req, res) {
 
+    var host = utils.getURL();
 
     var loginRequest = rp(
 
       {
-        url: 'http://dspace.willamette.edu:8080/rest/login',
+        url: host + '/rest/login',
         method: 'POST',
         headers: {'User-Agent': 'Request-Promise'},
         json: {

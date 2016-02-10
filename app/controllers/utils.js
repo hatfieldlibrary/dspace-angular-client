@@ -2,6 +2,8 @@
 
 (function () {
 
+  var config = require('../../config/environment');
+
 
   /**
    * Checks for dspace token in the current session and
@@ -47,5 +49,30 @@
 
        }
   };
+
+  /**
+   * Returns fully qualified URL for the host and port (from configuration).
+   * @returns {string}
+     */
+  exports.getURL = function() {
+    return config.dspace.protocol + '://' + config.dspace.host + ':' + config.dspace.port;
+  };
+
+
+    /**
+     * Returns the host name from configuration.
+     * @returns {*}
+     */
+  exports.getHost = function() {
+    return config.dspace.host;
+  };
+
+  /**
+   * Returns the host port from configuration.
+   * @returns {number|*}
+     */
+  exports.getPort = function() {
+    return config.dspace.port;
+  }
 
 })();

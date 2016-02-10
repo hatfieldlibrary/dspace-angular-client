@@ -10,11 +10,12 @@ var utils = require('../controllers/utils');
   module.exports = function (id, session) {
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
+    var host = utils.getURL();
 
     var itemRequest =
       rp(
         {
-          url: 'http://dspace.willamette.edu:8080/rest/items/' + id + '?expand=bitstreams,logo,metadata,parentCollection',
+          url: host + '/rest/items/' + id + '?expand=bitstreams,logo,metadata,parentCollection',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',

@@ -11,12 +11,13 @@ var utils = require('../controllers/utils');
   module.exports = function (id, session) {
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
+    var host = utils.getURL();
 
     /** DSpace communities request-promise */
     var communityRequest =
       rp(
         {
-          url: 'http://dspace.willamette.edu:8080/rest/communities/' + id + '?expand=collections,logo',
+          url: host + '/rest/communities/' + id + '?expand=collections,logo',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',

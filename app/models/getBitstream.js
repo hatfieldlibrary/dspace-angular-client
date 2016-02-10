@@ -10,6 +10,8 @@ var http = require('http');
   module.exports = function (req, res, id, session) {
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
+    var host = utils.getHost();
+    var port = utils.getPort();
 
     //  It would be great to pipe to result to the response stream. But
     //  I haven't learned how to get the res object to use base64 rather
@@ -32,8 +34,8 @@ var http = require('http');
     // base64 encoding.
 
     var options = {
-      host: 'dspace.willamette.edu',
-      port: '8080',
+      host: host,
+      port: port,
       path: '/rest/bitstreams/' + id + '/retrieve',
       method: 'GET',
       headers: {

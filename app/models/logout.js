@@ -9,6 +9,7 @@ var utils = require('../controllers/utils');
   module.exports = function (session) {
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
+    var host = utils.getURL();
 
     /** Generate a new Express session */
     session.regenerate(function (err) {
@@ -19,7 +20,7 @@ var utils = require('../controllers/utils');
     var logoutRequest =
       rp(
         {
-          url: 'http://dspace.willamette.edu:8080/rest/logout',
+          url: host + '/rest/logout',
           method: 'POST',
           headers: {
             'User-Agent': 'Request-Promise',

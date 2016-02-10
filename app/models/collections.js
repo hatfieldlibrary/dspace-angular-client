@@ -11,6 +11,7 @@ var utils = require('../controllers/utils');
   module.exports = function (id, session) {
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
+    var host = utils.getURL();
 
     /** DSpace collection request-promise */
     var collectionRequest =
@@ -18,7 +19,7 @@ var utils = require('../controllers/utils');
         {
           /** From API documentation: limit and offset params can be used for
            * paging (current default 100 */
-          url: 'http://dspace.willamette.edu:8080/rest/collections/' + id + '?expand=items,logo,parentCommunity',
+          url: host + '/rest/collections/' + id + '?expand=items,logo,parentCommunity',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
