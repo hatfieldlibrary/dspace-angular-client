@@ -1,30 +1,30 @@
 #  DSpace REST API with NodeJs and AngularJs
 
-This DSpace REST API service uses NodeJs middleware and AngularJs. We are using a similar approach for other projects, so much of this work is based on an approach we are already exploring in ernest. 
+This DSpace REST API prototype uses NodeJs middleware and AngularJs. We are using a similar approach in other projects and much of this work is based on an approach we are already exploring in ernest. 
 
 The NodeJs middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies) and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store.  
 
 The front-end is a simple AngularJs prototype for testing functionality. No effort has been made to dress it up.  The prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Searching solr via the Express middleware has been tested but not integrated into the AngularJs prototype.
 
-We are currently working with our production instance of DSpace 5.4.  We  added `RestAuthentication` plugin to our DSpace authentication configuration. We also modified Java classes. The DSpace `TokenHolder` has been updated to use our RestAuthentication plugin rather than the default password authentication.  The implementation of `HandleResource` in the DSpace 5.4 release was incomplete and has been updated with more recent work by Peter. 
+We are currently working with our production instance of DSpace 5.4.  We've added a `RestAuthentication` plugin to the  authentication configuration. We've also modified two Java classes bundle in the 5.4 release. `TokenHolder` has been updated to use our `RestAuthentication` plugin rather than the default password authentication.  `HandleResource` was out-of-date with release 5.4 and has been updated with more recent work by Peter. 
 
 ### Authentication
 
-Authentication is handled by the middleware, using CAS or OAUTH2 authentication strategies.  (Many other authentication strategies have been implemented and available as open source.) 
+Authentication is handled by the middleware, using CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
 
-After authentication, the user's netid and a shared application key are used to obtain a DSpace REST token. Custom login middleware retrieves the REST token and adds it to the current Express session.
+After authentication, the user's netid and an application key (shared between the middleware and the authentication plugin) are used to obtain a DSpace REST token. The login middleware retrieves the REST token and adds it to the current Express session.
 
-AngularJs client requests are channeled through the Express middleware.  The middleware's application models use a utility method that obtains current session's DSpace REST API token. The token is added to header of each REST API request.
+AngularJs client requests are channeled through Express middleware endpoints and controllers.  The application models use a utility method to obtain current session's DSpace REST API token. The token is added to header of each REST API request.
 
 When working with implicit authentication via CAS, OAUTH2, and probably Shibboleth, it seems reasonable and possibly helpful to shift authentication duties to the Express middleware and use DSpace authentication plugins to check for an EPerson, assign special groups, etc.
 
 ### Handle requests
 
-The controller for handle lookups uses the [async](https://github.com/caolan/async "async") NodeJs middleware package to implement a waterfall query.  An initial query retrieves information via the DSpace REST API handle service. Then, based on item type, a second API request is fired for additional community, collection or item information.  This second lookup might also be implemented using a WebSocket.
+The controller for handle lookups uses the [async](https://github.com/caolan/async "async") NodeJs middleware package to implement a waterfall query.  An initial DSpace REST query retrieves information via the handle service. Then, based on item type, a second API request is fired for additional community, collection or item information.  This second lookup might also be implemented using a WebSocket.
 
 ### Bitstream requests
 
-Requests for bitstreams are also handled by the middleware.  The current implementation loads data into a memory buffer before returning it in the Express response.  That's not a great solution.  It would be better to use streams and pipes or WebSockets.
+Requests for bitstreams are handled by the middleware.  The current implementation loads data into a memory buffer before returning it in the Express response.  That's not a great solution.  It would be better to use streams and pipes or WebSockets.
 
 ### Solr
 
@@ -32,7 +32,7 @@ Solr searching is implemented in the NodeJs middleware.  It has not been added t
 
 ### Browsing the item hierarchy
 
-The DSpace REST API supports browsing the hierarchy of communities, collections and items.  This seems to work well.  However, for the purposes of this project we've focused on evaluating authentication, handle requests and bitstreams.  We have implemented quite a few of the middleware endpoints and controllers needed for browsing these entities and more will be added when we begin work on designing the AngularJs UI. 
+The DSpace REST API supports browsing the hierarchy of communities, collections and items.  This seems to work well.  However, for the purposes of this project we've focused on prototyping authentication, handle requests and bitstreams.  We have implemented quite a few of the middleware endpoints and controllers needed for browsing these entities and more will be added when we begin work on designing the AngularJs UI. 
 
 ### UI development
 
@@ -41,6 +41,7 @@ We plan to use the [Angular Material](https://material.angularjs.org/latest/ "An
 ### CRUD operations
 
 This project is currently focused on read operations needed for the public search UI.
+
 
 
 
