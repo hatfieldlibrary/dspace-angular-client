@@ -1,6 +1,6 @@
 #  DSpace REST API with NodeJs and AngularJs
 
-This DSpace REST API prototype uses NodeJs middleware and AngularJs. We are using a similar approach in other projects and much of this work is based on an approach we are already exploring in ernest. 
+This DSpace REST API prototype uses NodeJs middleware and AngularJs. Much of this work is based on an approach we are already exploring in ernest with other projects. 
 
 The NodeJs middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies) and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store.  
 
@@ -16,7 +16,7 @@ After authentication, the user's netid and an application key (shared between th
 
 AngularJs client requests are channeled through Express middleware endpoints and controllers.  The application models use a utility method to obtain current session's DSpace REST API token. The token is added to the HTTP header of each REST API request.
 
-When working with implicit authentication via CAS, OAUTH2, and probably Shibboleth, it seems reasonable and possibly helpful to shift authentication duties to the Express middleware and use DSpace authentication plugins to check for an EPerson, assign special groups, etc.
+This approach shifts authentication duties to the Express middleware and uses DSpace authentication plugins to check for an EPerson, assign special groups, etc. When working with implicit authentication via CAS, OAUTH2, and probably Shibboleth, this seems reasonable. 
 
 ### Handle requests
 
