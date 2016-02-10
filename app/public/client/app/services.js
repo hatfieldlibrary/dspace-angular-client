@@ -17,6 +17,9 @@ var dspaceServices = angular.module('dspaceServices', ['ngResource']);
     }
   ]);
 
+  /**
+   * Google OAUTH2 login service.
+   */
   dspaceServices.factory('Login', ['$resource',
     function ($resource) {
       return $resource('/auth/google', {}, {
@@ -26,6 +29,9 @@ var dspaceServices = angular.module('dspaceServices', ['ngResource']);
   ]);
 
 
+  /**
+   * Call middleware service that checks and validates DSpace session.
+   */
   dspaceServices.factory('CheckSession', ['$resource',
     function ($resource) {
       return $resource('/check-session', {}, {

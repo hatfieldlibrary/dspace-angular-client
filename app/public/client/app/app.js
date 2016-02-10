@@ -14,33 +14,13 @@ var dspaceApp = angular.module('dspaceApp', [
 
 
 ]);
-// Varables defined within this block will be local.
-// This will prevent things like host and path existing
-// in the global scope.
+
 (function () {
 
 
   /**
-   * Set the host URL and port for the Tagger API service. The restHost AngularJs
-   * Value will be injected into ngResource factories. See services/tagger.js.
-   *
-   * -- example for localhost
-   * host = 'http://localhost:3000'
-   * path = 'rest'
-   *
-   * -- example production host
-   * host = 'http://libmedia.willamette.edu'
-   * path = 'acomrest2'
-   *
-   */
-  var host = 'http://dspace.willamette.edu:8080';
-  var path = 'rest';
-  dspaceApp.value('dspaceHost', host + '/' + path );
-
-
-  /**
-   * Configure $routeProvider with all routes to the Tagger
-   * Express web server and API.
+   * Configure $routeProvider with all routes to the
+   * Express middleware endpoints .
    */
   dspaceApp.config(['$routeProvider', '$locationProvider',
     function ($routeProvider, $locationProvider) {
@@ -66,6 +46,7 @@ var dspaceApp = angular.module('dspaceApp', [
     };
   });
 
+  // Angular Material configuration...
   dspaceApp.config(function ($mdThemingProvider) {
       // configure the Angular Material theme
       $mdThemingProvider.theme('default')

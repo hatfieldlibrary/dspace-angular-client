@@ -97,7 +97,7 @@ To start the development server, type:
  
  `grunt develop`
  
-You can work with either a DSpace instance running on your local machine or with a remote host. Note that hosts are currently hardcoded in the middleware modules.  
+You can work with either a DSpace instance running on your local machine or with a remote host. See `config/environment.js` to configure the DSpace host.  
 
 
 ### Testing
@@ -107,7 +107,7 @@ Currently have only middleware integration tests.  To run tests, execute `mocha`
 
 ### Production
 
-The procedure for deploying the application is basic and a bit cumbersome. We are on the lookout for a better strategy. We are considering this as our deployment tool: https://github.com/strongloop/strong-pm
+The procedure for deploying the application is basic and a bit cumbersome. We are on the lookout for a better strategy. We're considering this as a deployment tool: https://github.com/strongloop/strong-pm
 
 First, the prerequisites. Make sure nodejs is installed on the server. It's wise to use the identical nodejs version that you are using in your development environment.
 You need to decide how to manage the application runtime on your server. Currently, we use the forever CLI to launch and keep the Express application online. Install forever globally as follows:
@@ -122,7 +122,7 @@ Example: `NODE_ENV=production $DAEMON $DAEMONOPTS start $NODEAPP`.
 The following deployment assumes that you have previously built and tested the application on your development machine.
 
 1. Copy the project to the production host. If you know what you are doing, you can omit unnecessary development files.
-2. Update the details of the NodeJs production environment in config/credentials.js and config/environment.js, including database access credentials, paths, and Google OAUTH2 credentials.
+2. Update the details of the NodeJs production environment in config/credentials.js and config/environment.js.
 3. Update the AngularJs public/javascripts/app/environment.js factory object with the production host REST path.
 4. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service acomtagger start).
 5. Copy the application directory to the production directory.
