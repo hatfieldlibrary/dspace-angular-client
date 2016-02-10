@@ -1,6 +1,4 @@
 node_modules
-resources/images/full
-resources/images/thumb
 app/public/client/bower_components
 .tmp
 config/credentials.js
