@@ -52,7 +52,7 @@ module.exports = function (app, config, passport) {
 
   }
 
-  // Use CAS.
+  // Use CAS auth in production.
   else if (app.get('env') === 'production') {
     /**
      * Triggers CAS authentication.

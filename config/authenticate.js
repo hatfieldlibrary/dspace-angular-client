@@ -16,11 +16,6 @@ var
    */
   session = require('express-session'),
 
-/**
- * cookie header parser used with sessions. deprecated.
- * @type {*|exports|module.exports}
- */
-// cookieParser = require('cookie-parser'),
 
   /**
    * Confidential route and credential parameters
@@ -36,8 +31,6 @@ module.exports = function (app, config, passport) {
 
     var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-    // No longer required by session.  We use this to set cookie header.
-    // app.use(cookieParser());
     app.use(session({
         secret: 'rice paddy',
         saveUninitialized: true,
@@ -105,7 +98,6 @@ module.exports = function (app, config, passport) {
       {}
     );
 
-    // app.use(cookieParser());
     app.use(session(
       {
 
