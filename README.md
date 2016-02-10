@@ -47,7 +47,40 @@ This project is currently focused on read operations needed for the public searc
 
 # Working with the code
 
-### Setting up the environment
+### UI customization
+
+As noted, the UI has not been developed yet.  However, the general strategy is well known and provides multiple ways to customize the design after the initial implementation is complete.  
+
+Express can serve static files or render files using a template engine.  Using a template engine allows for interpolation on the server, which means that server-side layout logic can be used to determine layout structure.  That said, AngularJs can also be used quite effectively to do the same thing client-side.  
+
+Color and fonts can be modified using CSS or Sass configurations that are compiled into client builds. Using Sass, themes can be easily created and shared.  And, Angular Material provides themeing as well.
+ 
+ ```javascript
+    dspaceApp.config(function ($mdThemingProvider) {
+        // configure the Angular Material theme
+        $mdThemingProvider.theme('default')
+          .primaryPalette('teal', {
+            'default': '500', // by default use shade 400 from the pink palette for primary intentions
+            'hue-1': '300', // use shade 100 for the <code>md-hue-1</code> class
+            'hue-2': '600', // use shade 600 for the <code>md-hue-2</code> class
+            'hue-3': 'A100' // use shade A100 for the <code>md-hue-3</code> class
+          })
+          .accentPalette('amber');
+  
+      }
+    ).config(function($mdIconProvider) {
+      $mdIconProvider.fontSet('fa', 'fontawesome');
+    }); 
+ ```
+
+A web framework like Angular Material offers another set of configuration possibilities, such as positioning menus to the left or right.
+
+Both client- and server-side configuration files are in JSON and can be easily interpreted be applied to the AngularJs view model. This should allow for dynamically updating views through configuration files.
+
+Support for i18n is available via NodeJs middleware and Angularjs. 
+
+
+### Setting up the development environment
 
 To get started with development, clone the project into your working directory.
 
@@ -91,7 +124,7 @@ module.exports = credentials;
 See `config/environment.js` for development and production settings.
 
 
-### Development
+### Start development server
 
 To start the development server, type:
  
@@ -105,7 +138,7 @@ You can work with either a DSpace instance running on your local machine or with
 Currently have only middleware integration tests.  To run tests, execute `mocha` from the root project directory.
 
 
-### Production
+### Deploy
 
 The procedure for deploying the application is basic and a bit cumbersome. We are on the lookout for a better strategy. We're considering this as a deployment tool: https://github.com/strongloop/strong-pm
 
