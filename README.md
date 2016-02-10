@@ -66,7 +66,6 @@ Color and fonts can be modified using CSS or Sass configurations that are compil
             'hue-3': 'A100' // use shade A100 for the <code>md-hue-3</code> class
           })
           .accentPalette('amber');
-  
       }
     ).config(function($mdIconProvider) {
       $mdIconProvider.fontSet('fa', 'fontawesome');
