@@ -2,7 +2,7 @@
 
 This DSpace UI prototype uses NodeJs middleware and AngularJs. Much of the work here is based on an approach we are already exploring in ernest with other projects. Data is retrieved from DSpace using the REST API.
 
-The NodeJs middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store.  
+The NodeJs middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store. In general, we are betting that a robust middleware layer will be helpful and plan to channel all interactions through this layer.  
 
 The front-end is a simple AngularJs prototype for testing functionality only. No effort has been made to dress it up or approximate a real user experience. We plan to continue down that path.  In the meantime, this prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Searching solr via the Express middleware has been tested but not integrated into the AngularJs prototype.
 
@@ -14,13 +14,13 @@ Authentication is handled by the NodeJs middleware, using CAS or OAUTH2 authenti
 
 After successful Passport authentication, the user's netid and an application key (shared between the Node middleware and the DSpace authentication plugin) are used to obtain a DSpace REST token. The `RestAuthentication` module adds special groups and creates a new user as required. The login NodeJs middleware retrieves the REST token and adds it to the current Express session. 
 
-As noted below, every AngularJs client request is channeled through the Express middleware endpoints and controllers.  The middleware models use a utility method to obtain current Express session's DSpace REST API token. The token is added to the HTTP header of each REST API request.
+The middleware models use a utility method to obtain current Express session's DSpace REST API token. The token is added to the HTTP header of each REST API request.
 
-This approach shifts authentication duties to the Express middleware. The DSpace authentication plugin checks for an EPerson, assign special groups, creates new users, etc.. When working with implicit authentication via CAS, OAUTH2, and probably Shibboleth, this division of responsibilities seems helpful. 
+This approach shifts authentication duties to the Express middleware while the DSpace authentication plugin checks for an EPerson, assigns special groups, creates new users, etc. At least when working with implicit authentication via CAS, OAUTH2, and probably Shibboleth, this division of responsibilities seems helpful. 
 
 ### Client and API mapping
 
-Most of the application's data models use the request-promise `transform` callback to selectively return data to the client. This mapping is hard-coded, but with a bit of extra work it could be transferred to JSON configuration files. In general, we are betting that a robust middleware layer between the AngularJs client and the DSpace REST API will be helpful.
+Most of the application's data models use the request-promise `transform` callback to selectively return data to the client. This mapping is hard-coded, but with a bit of extra work it could be transferred to JSON configuration files. 
 
 ### Handle requests
 
