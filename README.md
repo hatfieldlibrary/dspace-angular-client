@@ -20,9 +20,9 @@ Authentication is handled by the NodeJs middleware, using CAS or OAUTH2 authenti
 
 After successful Passport authentication, the user's netid and an application key (shared between the Node middleware and the DSpace authentication plugin) are used to obtain a DSpace REST token. The `RestAuthentication` module adds special groups and creates a new user as required. The login NodeJs middleware retrieves the REST token and adds it to the current Express session. 
 
-The middleware retrieves the DSpace REST API token from the current Express session. The token is added to the request header in each call to the DSpace REST API.
-
 This approach shifts authentication duties to the Express middleware while the DSpace authentication plugin checks for an EPerson, assigns special groups, creates new users, etc. At least when working with implicit authentication via CAS, OAUTH2, and probably Shibboleth, this division of responsibilities seems helpful. 
+
+Whenever a request is received from the browser client, middleware retrieves the DSpace REST API token from the current Express session. That token is added to the request header in each call to the DSpace REST API.
 
 It's worth mentioning that the choice between two authentication strategies is driven by local considerations.  Willamette uses Google Apps for Education, but in practice favors authentication with CAS for most services. It's easier to develop applications using Google OAUTH2, so this prototype switches between the two authentication strategies based the environment.  That's OK for now, but one of our next steps will be to make the authentication strategies more configurable so we could easily switch between CAS and OAUTH2 in production.
 
