@@ -1,10 +1,12 @@
 'use strict';
 
 var utils = require('../controllers/utils');
-var request = require('request');
 var http = require('http');
 
-
+/**
+ * Requests bitstream from the DSpace host and
+ * writes to the Express response stream using base64.
+ */
 (function () {
 
   module.exports = function (req, res, id, session) {
@@ -13,61 +15,32 @@ var http = require('http');
     var host = utils.getHost();
     var port = utils.getPort();
 
-    //  It would be great to pipe to result to the response stream. But
-    //  I haven't learned how to get the res object to use base64 rather
-    //  than default utf-8 encoding.  The alternative approach (below)
-    //  loads a complete copy of the data into memory before sending.
-    //
-    // var options = {
-    //   url: 'http://dspace.willamette.edu:8080/rest/bitstreams/' + id + '/retrieve',
-    //   headers: {
-    //     'rest-dspace-token': dspaceTokenHeader
-    //   },
-    //   encoding: 'base64'
-    // };
-    // // For this to work, the res object needs to encode base64.
-    // request.get(options).pipe(res);
-    //
+     var options = {
+       host: host,
+         port: port,
+         path: '/rest/bitstreams/' + id + '/retrieve',
+         method: 'GET',
+         headers: {
+           'rest-dspace-token': dspaceTokenHeader
+         }
+     };
 
-    // Non-streaming solution.
-    // Load the data chunks into buffer and call res.end with
-    // base64 encoding.
+     http.get(options, function(response) {
 
-    var options = {
-      host: host,
-      port: port,
-      path: '/rest/bitstreams/' + id + '/retrieve',
-      method: 'GET',
-      headers: {
-        'rest-dspace-token': dspaceTokenHeader
-      }
-    };
+       // get the content type and set res header.
+       res.type(response.headers['content-type']);
 
-    http.get(options, function (response) {
+       // write data chunk to res.
+       response.on('data', function(chunk) {
+         // Set to encode base64.
+         res.write( chunk, 'base64');
+     });
+       response.on('end', function() {
+         // finished, ending res.
+         res.end();
+       });
 
-      var chunks = [];
-
-      response.on('data', function (chunk) {
-
-        chunks.push(chunk);
-
-      });
-
-      response.on("end", function () {
-
-        var data = new Buffer.concat(chunks);
-        res.header('content-type', response.headers['content-type']);
-
-        // use base64 encoding for transport
-        res.end(data, 'base64');
-
-      });
-
-    }).on("error", function (e) {
-
-        console.log(e.message);
-
-    });
+     });
 
   }
 })();

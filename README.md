@@ -6,7 +6,7 @@ The NodeJs middleware includes [Express](http://expressjs.com/ "Express"), [Pass
 
 The front-end is a simple AngularJs prototype for testing functionality only. No effort has been made to dress it up or approximate a real user experience. We plan to continue down that path.  In the meantime, this prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Searching solr via the Express middleware has been tested but not integrated into the AngularJs prototype.
 
-We are basing this prototype our production instance of DSpace 5.4. That took some additional work.  We've added a `RestAuthentication` plugin to the  authentication configuration. We've also modified two Java classes bundled in the 5.4 release. `TokenHolder` has been updated to use our `RestAuthentication` plugin rather than the default password authentication.  `HandleResource` was out-of-date with release 5.4 and has been updated with more recent work by Peter. 
+We decided to anchor this prototype development project to our production instance of DSpace 5.4. That took some additional work.  I developed and added a `RestAuthentication` plugin to the DSpace authentication plugins configuration. I also modified two Java classes bundled in the 5.4 release. `TokenHolder` has been updated to use our `RestAuthentication` plugin rather than the default password authentication.  `HandleResource` was out-of-date with release 5.4 and has been updated with more recent work by the development team. 
 
 ### Authentication
 
@@ -18,9 +18,12 @@ The middleware models use a utility method to obtain current Express session's D
 
 This approach shifts authentication duties to the Express middleware while the DSpace authentication plugin checks for an EPerson, assigns special groups, creates new users, etc. At least when working with implicit authentication via CAS, OAUTH2, and probably Shibboleth, this division of responsibilities seems helpful. 
 
+It's worth mentioning that the choice between two authentication strategies is driven by local considerations.  Willamette uses Google Apps for Education, but in practice favors authentication with CAS for most services. It's easier to develop applications using Google OAUTH2, so this prototype switches between the two authentication strategies based the environment.  That's OK for now, but one of our next steps will be to make the authentication strategies more configurable.
+
+
 ### Client and API mapping
 
-Most of the application's data models use the request-promise `transform` callback to selectively return data to the client. This mapping is hard-coded, but with a bit of extra work it could be transferred to JSON configuration files. 
+Most of the middleware  models use the request-promise `transform` callback to selectively return data from the DSpace response to the client. This mapping is hard-coded, but with a bit of extra work it could be transferred to JSON configuration files. 
 
 ### Handle requests
 
@@ -28,7 +31,7 @@ The controller for handle lookups uses the [async](https://github.com/caolan/asy
 
 ### Bitstream requests
 
-Requests for bitstreams are handled by the middleware.  The current implementation loads data into a memory buffer before returning it in the Express response.  That's not a good solution.  It would be better to use streams and pipes or WebSockets. In the case of piping the data stream, I ran into encoding issues.  Essentially, when piping the response streams I couldn't find a way to override the default utf-8 encoding favored by the Express `response` object.  That's not to say there isn't a way to do it.   
+Requests for bitstreams passed though the middleware layer.   After adding the REST token to the request header, the current implementation retrieves the bitstream via the DSpace REST API. It then writes the chunked response data to the Express response stream using Base64 encoding.
 
 It would also be possible to retrieve the DSpace token from the session store and maintain a copy client-side. This would allow us to retrieve bitstreams directly via the DSpace REST API.  The implications of this approach haven't been considered but some possible components (e.g. /check-session) are in place. 
 
@@ -104,22 +107,32 @@ You will need to provide a `config/credentials.js` file.  The `restSecret` show 
 
 var credentials = {
 
-  develuid: 'your dev machine netid',
-  develgid: 'your dev machine user group',
-    uid: 'node',
-    gid: 'node',
-    casURL: 'https://cashost.institution.edu/cas',
-    dspaceDev: {
-      host: 'dspace develoment host',
-      protocol: 'http',
-      port: '8080'
-    },
-    dspaceProd: {
-      host: 'dspace production host',
-      protocol: 'http',
-      port: '8080'
-    },
-  restSecret: 'csrqeare-el-9ernfe-lxrsswq-1' // Example. The key can be any length,and must match the value authentication-rest.cfg
+  develuid:        'your dev machine netid',
+  develgid:        'your dev machine user group',
+  uid: 'node',
+  gid: 'node',
+  cas: {
+    casServer:     'path to cas server',
+    develHost:     'path to local Express server',
+    prodHost:      'path to production Express server'
+  },
+  oauth: {
+    clientId:      'google oauth client id',
+    clientSecret:  'google oauth client secret',
+    callback:      'production server oauth callback',
+    develCallback: 'localhost callback'
+  },
+  dspaceDev: {
+    host:          'dspace develoment host',
+    protocol:      'http',
+    port:          '8080'
+  },
+  dspaceProd: {
+    host:          'dspace production host',
+    protocol:      'http',
+    port:          '8080'
+  },
+  restSecret:      'csrqeare-el-9ernfe-lxrsswq-1' // Example. The key can be any length,and must match the value authentication-rest.cfg
 
 };
 
@@ -145,10 +158,11 @@ Currently have only middleware integration tests.  To run tests, execute `mocha`
 
 ### Deploy
 
-The procedure for deploying the application is basic and a bit cumbersome. We are on the lookout for a better strategy. We're considering this as a deployment tool: https://github.com/strongloop/strong-pm
+Our procedure for deploying the application is basic and a bit cumbersome at the moment. We're looking at [StrongLoop-PM](https://github.com/strongloop/strong-pm "StrongLoop-PM") as an alternative way to build, deploy and monitor.
 
 First, the prerequisites. Make sure nodejs is installed on the server. It's wise to use the identical nodejs version that you are using in your development environment.
-You need to decide how to manage the application runtime on your server. Currently, we use the forever CLI to launch and keep the Express application online. Install forever globally as follows:
+
+You need to decide how to manage the application on your server. Currently, we use the [forever](https://github.com/foreverjs/forever "forever") CLI to launch the Express application ensure that it runs continuously. Install forever globally as follows:
 `sudo npm install forever -g `
 
 Create an `init.d` script that launches the application using `forever` as well as a second `init.d` script that starts the redis session store. Add these two startup tasks to your system runlevels.

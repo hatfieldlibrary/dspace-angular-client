@@ -20,6 +20,15 @@ var config = {
       protocol: credentials.dspaceDev.protocol,
       port: credentials.dspaceDev.port
     },
+    oauth: {
+      clientId: credentials.oauth.clientId,
+      clientSecret: credentials.oauth.clientSecret,
+      callback: credentials.oauth.develCallback
+    },
+    cas: {
+      casServer: credentials.cas.casServer,
+      baseUrl: credentials.cas.develHost
+    },
     nodeEnv: env
   },
 
@@ -37,6 +46,15 @@ var config = {
       protocol: credentials.dspaceDev.protocol,
       port: credentials.dspaceDev.port
     },
+    oauth: {
+      clientId: credentials.oauth.clientId,
+      clientSecret: credentials.oauth.clientSecret,
+      callback: credentials.oauth.develCallback
+    },
+    cas: {
+      casServer: credentials.cas.casServer,
+      baseUrl: credentials.cas.develHost
+    },
     nodeEnv: env
   },
 
@@ -53,6 +71,15 @@ var config = {
       host: credentials.dspaceDev.host,
       protocol: credentials.dspaceDev.protocol,
       port: credentials.dspaceDev.port
+    },
+    oauth: {
+      clientId: credentials.oauth.clientId,
+      clientSecret: credentials.oauth.clientSecret,
+      callback: credentials.oauth.develCallback
+    },
+    cas: {
+      casServer: credentials.cas.casServer,
+      baseUrl: credentials.cas.develHost
     },
     nodeEnv: env
   },
@@ -72,6 +99,15 @@ var config = {
       host: credentials.dspaceProd.host,
       protocol: credentials.dspaceProd.protocol,
       port: credentials.dspaceProd.port
+    },
+    oauth: {
+      clientId: credentials.oauth.clientId,
+      clientSecret: credentials.oauth.clientSecret,
+      callback: credentials.oauth.callback
+    },
+    cas: {
+      casServer: credentials.cas.casServer,
+      baseUrl: credentials.cas.prodHost
     },
     nodeEnv: env
   }

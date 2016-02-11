@@ -39,11 +39,11 @@ module.exports = function (app, config, passport) {
     );
 
     // Google OAUTH2.
-    var GOOGLE_CLIENT_ID = '1092606309558-49gp8d101vvhcivd905fcic3u0l7a3fn.apps.googleusercontent.com';
-    var GOOGLE_CLIENT_SECRET = 'U_l2HUna8aJ6cr1pr5JynRsI';
+    var GOOGLE_CLIENT_ID = config.oauth.clientId;
+    var GOOGLE_CLIENT_SECRET = config.oauth.clientSecret;
 
     // Hardcoded callback url!
-    var GOOGLE_CALLBACK = 'http://localhost:3000/oauth2callback';
+    var GOOGLE_CALLBACK = config.oauth.callback;
 
     // Configure Google authentication for this application
     passport.use(new GoogleStrategy({
@@ -111,10 +111,13 @@ module.exports = function (app, config, passport) {
     // Configure CAS authentication for this application
 
     passport.use(new cas.Strategy({
+
       version: 'CAS3.0',
-      ssoBaseURL: 'https://secure.willamette.edu/cas',
-      serverBaseURL: 'https://localhost:3000'
+      ssoBaseURL: config.cas.casServer,
+      serverBaseURL: config.cas.baseUrl
+
     }, function (profile, done) {
+
       // Put additional user authorization code here.
       var user = profile.user;
       return done(null, user);
