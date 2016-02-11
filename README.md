@@ -22,9 +22,9 @@ After successful Passport authentication, the user's netid and an application ke
 
 This approach shifts authentication duties to the Express middleware while the DSpace authentication plugin checks for an EPerson, assigns special groups, creates new users, etc. At least when working with implicit authentication via CAS, OAUTH2, and probably Shibboleth, this division of responsibilities seems helpful. 
 
-Whenever a request is received from the browser client, middleware retrieves the DSpace REST API token from the current Express session. That token is added to the request header in each call to the DSpace REST API.
+Whenever a request is received from the AngularJs client, the middleware retrieves the DSpace REST API token from the current Express session and adds the token to DSpace API REST request headers.
 
-The user can choose to logout.  Middleware uses the DSpace REST API logout endpoint to end the Express session and invalidate the current DSpace token.
+The user can choose to logout.  Middleware ends the Express session and invalidates the current DSpace token using the DSpace REST API logout endpoint.
 
 It's worth mentioning that the choice between two authentication strategies is driven by local considerations.  Willamette uses Google Apps for Education, but in practice favors authentication with CAS for most services. It's easier to develop applications using Google OAUTH2, so this prototype switches between the two authentication strategies based the environment.  That's OK for now, but one of our next steps will be to make the authentication strategies more configurable so we could easily switch between CAS and OAUTH2 in production.
 
