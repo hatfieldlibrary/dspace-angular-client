@@ -131,7 +131,8 @@ var credentials = {
     clientId:      'google oauth client id',
     clientSecret:  'google oauth client secret',
     callback:      'production server oauth callback',
-    develCallback: 'localhost callback'
+    develCallback: 'localhost callback',
+    emailDomain:   'somewhere.edu'
   },
   dspaceDev: {
     host:          'dspace develoment host',
