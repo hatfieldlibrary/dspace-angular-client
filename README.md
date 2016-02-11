@@ -185,7 +185,7 @@ Example: `NODE_ENV=production $DAEMON $DAEMONOPTS start $NODEAPP`.
 The following deployment assumes that you have previously built and tested the application on your development machine.
 
 1. Copy the project to the production host. If you know what you are doing, you can omit unnecessary development files.
-2. Update the details of the NodeJs production environment in config/credentials.js and config/environment.js.
+2. Verify the details of the NodeJs production environment in config/credentials.js and config/environment.js.
 3. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service dspace stop).
 4. Copy the application directory to the production directory.
 5. Set the owner and group for project all files (including .* files) to `node`.
