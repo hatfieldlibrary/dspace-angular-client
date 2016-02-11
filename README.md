@@ -4,9 +4,13 @@ This DSpace UI prototype uses NodeJs middleware and AngularJs. Much of the work 
 
 The NodeJs middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store. In general, we are betting that a robust middleware layer will be helpful and plan to channel all interactions through this layer.  
 
-The front-end is a simple AngularJs prototype for testing functionality only. No effort has been made to dress it up or approximate a real user experience. We plan to continue down that path.  In the meantime, this prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Searching solr via the Express middleware has been tested but not integrated into the AngularJs prototype.
+The front-end is a simple AngularJs prototype for testing functionality only. No effort has been made to dress it up or approximate a real user experience. 
 
-We decided to anchor this prototype development project to our production instance of DSpace 5.4. That took some additional work.  I developed and added a `RestAuthentication` plugin to the DSpace authentication plugins configuration. I also modified two Java classes bundled in the 5.4 release. `TokenHolder` has been updated to use our `RestAuthentication` plugin rather than the default password authentication.  `HandleResource` was out-of-date with release 5.4 and has been updated with more recent work by the development team. 
+This prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Searching solr via the Express middleware has been tested but not integrated into the AngularJs prototype.  We will begin the UI design work soon.
+
+We decided to anchor this prototype development project to our production instance of DSpace 5.4. That took some additional work.  
+
+I developed a `RestAuthentication` plugin and added it to our DSpace authentication plugin configuration. I also modified two Java classes bundled in the 5.4 release. `TokenHolder` has been updated to use our `RestAuthentication` plugin rather than the default password authentication.  `HandleResource` was out-of-date with release 5.4 and has been updated with more recent work by the development team. 
 
 ### Authentication
 
@@ -18,7 +22,7 @@ The middleware models use a utility method to obtain current Express session's D
 
 This approach shifts authentication duties to the Express middleware while the DSpace authentication plugin checks for an EPerson, assigns special groups, creates new users, etc. At least when working with implicit authentication via CAS, OAUTH2, and probably Shibboleth, this division of responsibilities seems helpful. 
 
-It's worth mentioning that the choice between two authentication strategies is driven by local considerations.  Willamette uses Google Apps for Education, but in practice favors authentication with CAS for most services. It's easier to develop applications using Google OAUTH2, so this prototype switches between the two authentication strategies based the environment.  That's OK for now, but one of our next steps will be to make the authentication strategies more configurable.
+It's worth mentioning that the choice between two authentication strategies is driven by local considerations.  Willamette uses Google Apps for Education, but in practice favors authentication with CAS for most services. It's easier to develop applications using Google OAUTH2, so this prototype switches between the two authentication strategies based the environment.  That's OK for now, but one of our next steps will be to make the authentication strategies more configurable so we could easily switch between CAS and OAUTH2 in production.
 
 
 ### Client and API mapping
@@ -31,7 +35,9 @@ The controller for handle lookups uses the [async](https://github.com/caolan/asy
 
 ### Bitstream requests
 
-Requests for bitstreams passed though the middleware layer.   After adding the REST token to the request header, the current implementation retrieves the bitstream via the DSpace REST API. It then writes the chunked response data to the Express response stream using Base64 encoding.
+Requests for bitstreams passed though the middleware layer.   
+
+After adding the REST token to the request header, the current implementation requests the bitstream from the DSpace REST API. It writes the chunked response data to the Express response stream using Base64 encoding.
 
 It would also be possible to retrieve the DSpace token from the session store and maintain a copy client-side. This would allow us to retrieve bitstreams directly via the DSpace REST API.  The implications of this approach haven't been considered but some possible components (e.g. /check-session) are in place. 
 
