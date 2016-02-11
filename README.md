@@ -35,9 +35,8 @@ Most of the middleware  models use the request-promise `transform` callback to s
 
 ### Handle requests
 
-The controller for handle lookups uses the [async](https://github.com/caolan/async "async") NodeJs middleware package to implement a waterfall query.  (It might be worth a reminder here that NodeJs uses asynchronous i/o throughout.) An initial DSpace REST query retrieves information via the handle service. Then, based on the item type, a second API request is fired for additional community, collection or item information.  The client receives a single response.
+The controller for handle lookups uses the [async](https://github.com/caolan/async "async") NodeJs middleware package to implement a waterfall query.  (It might be worth a reminder here that NodeJs uses asynchronous i/o throughout.) An initial DSpace REST query retrieves information via the REST handle endpoint. Then, based on the item type, a second API request is fired for additional community, collection or item information.  The client receives a single response.
 
-  
 
 ### Bitstream requests
 
