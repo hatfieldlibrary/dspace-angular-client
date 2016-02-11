@@ -94,7 +94,7 @@ Color and fonts can be modified using CSS or Sass configurations that are compil
 
 A web framework like Angular Material offers another set of configuration possibilities, such as positioning menus to the left or right.
 
-Both client- and server-side configuration files are in JSON and can be easily interpreted be applied to the AngularJs view model. This should allow for dynamically updating views through configuration files.
+Both client- and server-side configuration files are in JSON and can be easily applied to the AngularJs view model to modify view behavior. Although we are not using WebSockets in this prototype, some behaviors that might be helpful or necessary, particularly in the CRUD interface, might be implemented using [socket.io](http://socket.io/ "socket.io").
 
 Support for i18n is available via NodeJs middleware and Angularjs. 
 
