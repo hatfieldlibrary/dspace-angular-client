@@ -1,6 +1,6 @@
 #  DSpace UI with NodeJs and AngularJs
 
-This DSpace UI prototype uses NodeJs middleware and AngularJs. Much of the work here is based on an approach we are already exploring in ernest with other projects. 
+This DSpace UI prototype uses NodeJs and AngularJs. Much of the work here is based on an approach we are already exploring in ernest with other projects. 
 
 Data is retrieved from DSpace using the REST API.
 
@@ -12,7 +12,7 @@ This prototype supports login, logout, handle-based browsing of communities, col
 
 We decided to anchor this prototype project to our production instance of DSpace 5.4. That took some additional work.  
 
-I developed a `RestAuthentication` plugin and added it to our DSpace authentication plugin configuration. I also modified two Java classes bundled in the 5.4 release. `TokenHolder` has been updated to use our `RestAuthentication` plugin rather than the default password authentication.  `HandleResource` was out-of-date with release 5.4 and has been updated with more recent work by the development team. 
+I developed a `RestAuthentication` plugin and added it to our DSpace authentication plugin configuration. I also modified two `dspace-rest` Java classes bundled in the 5.4 release. `TokenHolder` has been updated to use our `RestAuthentication` plugin rather than the default password authentication.  `HandleResource` was out-of-date with release 5.4 and has been updated with more recent work by the development team. 
 
 ### Authentication
 
