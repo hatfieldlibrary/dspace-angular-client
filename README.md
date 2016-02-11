@@ -57,7 +57,7 @@ This project is currently focused on read operations needed for the public searc
 
 As noted, the UI has not been developed yet.  However, the general strategy is well known and provides multiple ways to customize the design after the initial implementation is complete.  
 
-Express can serve static files or render files using a template engine.  Using a template engine allows for interpolation on the server, which means that server-side layout logic can be used to determine layout structure.  That said, AngularJs can also be used quite effectively to do the same thing client-side.  
+Express can serve static files or render files using a template engine.  Using a template engine allows for interpolation on the server, which means that server-side logic can be used to determine layout structure.  That said, AngularJs can also be used quite effectively to do the same thing client-side.  
 
 Color and fonts can be modified using CSS or Sass configurations that are compiled into client builds. Using Sass, themes can be easily created and shared.  And, Angular Material provides themeing as well.
  
