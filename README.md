@@ -1,22 +1,26 @@
-#  DSpace REST API with NodeJs and AngularJs
+#  DSpace UI with NodeJs and AngularJs
 
-This DSpace REST API prototype uses NodeJs middleware and AngularJs. Much of this work is based on an approach we are already exploring in ernest with other projects. 
+This DSpace UI prototype uses NodeJs middleware and AngularJs. Much of the work here is based on an approach we are already exploring in ernest with other projects. Data is retrieved from DSpace using the REST API.
 
-The NodeJs middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies) and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store.  
+The NodeJs middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store.  
 
-The front-end is a simple AngularJs prototype for testing functionality. No effort has been made to dress it up.  The prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Searching solr via the Express middleware has been tested but not integrated into the AngularJs prototype.
+The front-end is a simple AngularJs prototype for testing functionality only. No effort has been made to dress it up or approximate a real user experience. We plan to continue down that path.  In the meantime, this prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Searching solr via the Express middleware has been tested but not integrated into the AngularJs prototype.
 
-We are currently working with our production instance of DSpace 5.4.  We've added a `RestAuthentication` plugin to the  authentication configuration. We've also modified two Java classes bundled in the 5.4 release. `TokenHolder` has been updated to use our `RestAuthentication` plugin rather than the default password authentication.  `HandleResource` was out-of-date with release 5.4 and has been updated with more recent work by Peter. 
+We are basing this prototype our production instance of DSpace 5.4. That took some additional work.  We've added a `RestAuthentication` plugin to the  authentication configuration. We've also modified two Java classes bundled in the 5.4 release. `TokenHolder` has been updated to use our `RestAuthentication` plugin rather than the default password authentication.  `HandleResource` was out-of-date with release 5.4 and has been updated with more recent work by Peter. 
 
 ### Authentication
 
-Authentication is handled by the middleware, using CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
+Authentication is handled by the NodeJs middleware, using CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
 
-After authentication, the user's netid and an application key (shared between the Node middleware and the DSpace authentication plugin) are used to obtain a DSpace REST token. The login middleware retrieves the REST token and adds it to the current Express session. The `RestAuthentication` module adds special groups and creates a new user as required.
+After successful Passport authentication, the user's netid and an application key (shared between the Node middleware and the DSpace authentication plugin) are used to obtain a DSpace REST token. The `RestAuthentication` module adds special groups and creates a new user as required. The login NodeJs middleware retrieves the REST token and adds it to the current Express session. 
 
 AngularJs client requests are channeled through Express middleware endpoints and controllers.  The application models use a utility method to obtain current session's DSpace REST API token. The token is added to the HTTP header of each REST API request.
 
 This approach shifts authentication duties to the Express middleware and uses DSpace authentication plugins to check for an EPerson, assign special groups, etc. When working with implicit authentication via CAS, OAUTH2, and probably Shibboleth, this seems reasonable. 
+
+### Client and API mapping
+
+Most of the application's data models use the request-promise `transform` callback to selectively return data to the client. This mapping is hard-coded, but with a bit of extra work it could be transferred to JSON configuration files. In general, we are betting that a robust middleware layer between the AngularJs client and the DSpace REST API will be helpful.
 
 ### Handle requests
 
