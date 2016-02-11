@@ -14,9 +14,9 @@ Authentication is handled by the NodeJs middleware, using CAS or OAUTH2 authenti
 
 After successful Passport authentication, the user's netid and an application key (shared between the Node middleware and the DSpace authentication plugin) are used to obtain a DSpace REST token. The `RestAuthentication` module adds special groups and creates a new user as required. The login NodeJs middleware retrieves the REST token and adds it to the current Express session. 
 
-AngularJs client requests are channeled through Express middleware endpoints and controllers.  The application models use a utility method to obtain current session's DSpace REST API token. The token is added to the HTTP header of each REST API request.
+As noted below, every AngularJs client request is channeled through the Express middleware endpoints and controllers.  The middleware models use a utility method to obtain current Express session's DSpace REST API token. The token is added to the HTTP header of each REST API request.
 
-This approach shifts authentication duties to the Express middleware and uses DSpace authentication plugins to check for an EPerson, assign special groups, etc. When working with implicit authentication via CAS, OAUTH2, and probably Shibboleth, this seems reasonable. 
+This approach shifts authentication duties to the Express middleware. The DSpace authentication plugin checks for an EPerson, assign special groups, creates new users, etc.. When working with implicit authentication via CAS, OAUTH2, and probably Shibboleth, this division of responsibilities seems helpful. 
 
 ### Client and API mapping
 
