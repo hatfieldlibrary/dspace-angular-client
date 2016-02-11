@@ -173,7 +173,7 @@ Our procedure for deploying the application is basic and a bit cumbersome at the
 
 First, the prerequisites. Make sure nodejs is installed on the server. It's wise to use the identical nodejs version that you are using in your development environment.
 
-You need to decide how to manage the application on your server. Currently, we use the [forever](https://github.com/foreverjs/forever "forever") CLI to launch the Express application ensure that it runs continuously. Install forever globally as follows:
+You need to decide how to manage the application on your server. Currently, we use the [forever](https://github.com/foreverjs/forever "forever") CLI to launch the Express application and ensure that it runs continuously. Install forever globally as follows:
 `sudo npm install forever -g `
 
 Create an `init.d` script that launches the application using `forever` as well as a second `init.d` script that starts the redis session store. Add these two startup tasks to your system runlevels.
