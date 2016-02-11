@@ -44,7 +44,7 @@ Requests for bitstreams passed though the middleware layer.
 
 After adding the REST token to the request header, the current implementation requests the bitstream from the DSpace REST API. It writes the chunked response data to the Express response stream using Base64 encoding.
 
-It would also be possible to retrieve the DSpace token from the session store and maintain a copy client-side. This would allow us to retrieve bitstreams directly via the DSpace REST API.  The implications of this approach haven't been considered but some possible components (e.g. /check-session) are in place. 
+It would also be possible to retrieve the DSpace token from the session store and maintain a copy client-side. This would allow us to bypass the middleware layer and retrieve bitstreams directly from the DSpace REST API.  The implications of this approach haven't been considered but some possible components (e.g. /check-session) are in place. 
 
 ### Solr
 
