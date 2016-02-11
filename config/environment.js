@@ -23,7 +23,8 @@ var config = {
     oauth: {
       clientId: credentials.oauth.clientId,
       clientSecret: credentials.oauth.clientSecret,
-      callback: credentials.oauth.develCallback
+      callback: credentials.oauth.develCallback,
+      emailDomain: credentials.oauth.emailDomain
     },
     cas: {
       casServer: credentials.cas.casServer,
@@ -49,7 +50,8 @@ var config = {
     oauth: {
       clientId: credentials.oauth.clientId,
       clientSecret: credentials.oauth.clientSecret,
-      callback: credentials.oauth.develCallback
+      callback: credentials.oauth.develCallback,
+      emailDomain: credentials.oauth.emailDomain
     },
     cas: {
       casServer: credentials.cas.casServer,
@@ -75,7 +77,8 @@ var config = {
     oauth: {
       clientId: credentials.oauth.clientId,
       clientSecret: credentials.oauth.clientSecret,
-      callback: credentials.oauth.develCallback
+      callback: credentials.oauth.develCallback,
+      emailDomain: credentials.oauth.emailDomain
     },
     cas: {
       casServer: credentials.cas.casServer,
@@ -103,7 +106,8 @@ var config = {
     oauth: {
       clientId: credentials.oauth.clientId,
       clientSecret: credentials.oauth.clientSecret,
-      callback: credentials.oauth.callback
+      callback: credentials.oauth.callback,
+      emailDomain: credentials.oauth.emailDomain
     },
     cas: {
       casServer: credentials.cas.casServer,

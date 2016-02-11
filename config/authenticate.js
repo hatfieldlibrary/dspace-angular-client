@@ -60,9 +60,11 @@ module.exports = function (app, config, passport) {
         // asynchronous verification
         process.nextTick(function () {
 
+          var emailDomain = config.oauth.emailDomain;
+
           var email = profile.emails[0].value;
           var netid = email.split('@');
-          if (email.length > 1) {
+          if (email.length > 1 && email.indexOf(emailDomain) > 0) {
             done(null, netid[0]);
           } else {
             done(null, null);
