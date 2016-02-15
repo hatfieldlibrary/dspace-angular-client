@@ -1,6 +1,6 @@
 #  DSpace UI with NodeJs and AngularJs
 
-This DSpace UI prototype uses NodeJs and AngularJs. Much of the work here is based on an approach we are already exploring in ernest with other projects. 
+This DSpace UI prototype uses NodeJs and AngularJs. Much of the work here is based on an approach we are exploring in ernest with other projects. 
 
 Data is retrieved from DSpace using the REST API.
 
@@ -18,13 +18,13 @@ I developed a `RestAuthentication` plugin and added it to our DSpace authenticat
 
 ### Authentication
 
-Authentication is handled by the NodeJs middleware, using CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
+Authentication is handled by the NodeJs Passport middleware, using CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
 
-After successful Passport authentication, the user's netid and an application key (shared between the Node middleware and DSpace configurations) are used to obtain a DSpace REST token from the `RestAuthentication` plugin. `RestAuthentication` adds special groups and creates a new user as required. The login middleware receives the REST token and adds it to the current Express session. 
+After successful Passport authentication, the user's netid and an application key (shared between the Node middleware and DSpace configurations) are used to obtain a DSpace REST token from the `TokenHolder` and  `RestAuthentication` plugin. `RestAuthentication` adds special groups and creates a new user as required. The NodeJs login middleware receives the REST token in the JSON response and adds it to the current Express session. 
 
-This approach shifts authentication duties to the Express middleware while the DSpace authentication plugin checks for an EPerson, assigns special groups, creates new users, etc. At least when working with implicit authentication via CAS, OAUTH2, and probably Shibboleth, this division of responsibilities seems helpful. 
+This approach shifts authentication duties to the middleware and asks the DSpace authentication plugin to check for an EPerson, assign special groups, create new users, etc. At least when working with implicit authentication via CAS or OAUTH2, this division of responsibilities seems helpful. 
 
-Whenever a request is received from the AngularJs client, the middleware retrieves the DSpace REST API token from the current Express session and adds the token to DSpace API REST request headers.
+Whenever a request is sent from the AngularJs client, the middleware retrieves the DSpace REST API token from the current Express session and adds the token to DSpace API REST request headers.
 
 The user can choose to logout.  Middleware ends the Express session and invalidates the current DSpace token using the DSpace REST API logout endpoint.
 
