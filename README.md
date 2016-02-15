@@ -20,13 +20,15 @@ I developed a `RestAuthentication` plugin and added it to our DSpace authenticat
 
 Authentication is handled by the NodeJs Passport middleware, using CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
 
-After successful Passport authentication, the user's netid and an application key (shared between the Node middleware and DSpace configurations) are used to obtain a DSpace REST token from the `TokenHolder` and  `RestAuthentication` plugin. `RestAuthentication` adds special groups and creates a new user as required. The NodeJs login middleware receives the REST token in the JSON response and adds it to the current Express session. 
+After successful Passport authentication, the user's netid is used in the DSpace REST API login request.  In addition to the netid, we provide an application key that is shared between the Node middleware and DSpace configurations. These values are used to obtain a DSpace REST token from `TokenHolder` and the `RestAuthentication` plugin. 
 
-This approach shifts authentication duties to the middleware and asks the DSpace authentication plugin to check for an EPerson, assign special groups, create new users, etc. At least when working with implicit authentication via CAS or OAUTH2, this division of responsibilities seems helpful. 
+`RestAuthentication` adds special groups and creates a new user as required. 
 
-Whenever a request is sent from the AngularJs client, the middleware retrieves the DSpace REST API token from the current Express session and adds the token to DSpace API REST request headers.
+The NodeJs login middleware receives the REST token in the JSON response and adds it to the current Express session. When a request is sent from the AngularJs client, the middleware retrieves the DSpace REST API token from the current Express session and adds the token to DSpace API REST request headers.
 
 The user can choose to logout.  Middleware ends the Express session and invalidates the current DSpace token using the DSpace REST API logout endpoint.
+
+This approach shifts authentication duties to the middleware and asks the DSpace authentication plugin to check for an EPerson, assign special groups, create new users, etc. At least when working with implicit authentication via CAS or OAUTH2, this division of responsibilities seems helpful. 
 
 It's worth mentioning that the choice between two authentication strategies is driven by local considerations.  Willamette uses Google Apps for Education, but in practice favors authentication with CAS for most services. It's easier to develop applications using Google OAUTH2, so this prototype switches between the two authentication strategies based the environment.  That's OK for now, but one of our next steps will be to make the authentication strategies more configurable so we could easily switch between CAS and OAUTH2 in production.
 
