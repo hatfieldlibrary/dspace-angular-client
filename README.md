@@ -30,7 +30,7 @@ The user can choose to logout.  Middleware ends the Express session and invalida
 
 This approach shifts authentication duties to the NodeJs middleware and asks the DSpace authentication plugin to check the shared application key first, then as required retrieve an EPerson, create a new user, assign special groups, etc. At least when working with implicit authentication via CAS or OAUTH2, this division of responsibilities seems helpful. 
 
-It's worth mentioning that the choice between two authentication strategies is driven by local considerations.  Willamette uses Google Apps for Education, but in practice favors authentication with CAS for most services. It's easier to develop applications using Google OAUTH2, so this prototype switches between the two authentication strategies based the environment.  That's OK for now, but one of our next steps will be to make the authentication strategies more configurable so we could easily switch between CAS and OAUTH2 in production.
+It's worth mentioning that the choice between two authentication strategies is driven by local considerations.  Willamette uses Google Apps for Education, but in practice favors authentication with CAS for most services. It's easier to develop applications using Google OAUTH2, so this prototype switches between the two authentication strategies based the environment.  That's OK for now, but one of our next steps will be to make the authentication strategies more configurable so we can easily switch between CAS and OAUTH2 in production.
 
 
 ### Client and API mapping
@@ -44,9 +44,9 @@ The controller for DSpace [handle lookups](https://wiki.duraspace.org/display/DS
 
 ### Bitstream requests
 
-Requests for bitstreams passed though the middleware layer.   
+Requests for bitstreams are passed though the middleware layer.   
 
-After adding the REST token to the request header, the current implementation requests the bitstream from the DSpace REST API. It writes the chunked response data to the Express response stream using Base64 encoding.
+After adding the REST token to the request header, the request retrieves  bitstream data via the DSpace REST API and writes chunked data to the Express response stream using Base64 encoding.
 
 It would also be possible to retrieve the DSpace token from the session store and maintain a copy client-side. This would allow us to bypass the middleware layer and retrieve bitstreams directly from the DSpace REST API.  The implications of this approach haven't been considered but some possible components (e.g. /check-session) are in place. 
 
