@@ -8,9 +8,9 @@ Data is retrieved from [DSpace using the REST API](https://wiki.duraspace.org/di
 
 The NodeJs middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store. In general, we are betting that a robust middleware layer will be helpful and plan to channel all interactions through this layer.  
 
-The front-end is a simple AngularJs prototype for testing functionality only. No effort has been made to dress it up or approximate a real user experience. 
+The front-end is a simple AngularJs prototype for testing functionality only. No effort has been made to dress it up or approximate a real user experience.  (We will begin the UI wireframes soon.)
 
-This prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Searching solr via the Express middleware has been tested but not integrated into the AngularJs prototype.  (We will begin the UI wireframes soon.)
+This prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Searching solr via the Express middleware has been tested but not integrated into the AngularJs prototype. 
 
 We decided to anchor this prototype project to our production instance of DSpace 5.4. That took some additional work.  
 
@@ -39,7 +39,7 @@ Most of the MVC  models use the request-promise `transform` callback to selectiv
 
 ### Handle requests
 
-The controller for DSpace [handle lookups](https://wiki.duraspace.org/display/DSDOC5x/Installing+DSpace#InstallingDSpace-TheHandleServer "handle lookups")  uses the [async](https://github.com/caolan/async "async") NodeJs middleware package to implement a waterfall query.  (It might be worth a reminder here that NodeJs uses asynchronous i/o throughout.) An initial DSpace REST query retrieves information via the REST handle endpoint. Then, based on the item type, a second API request is fired for additional community, collection or item information.  The client receives a single response.
+The controller for DSpace [handle lookups](https://wiki.duraspace.org/display/DSDOC5x/Installing+DSpace#InstallingDSpace-TheHandleServer "handle lookups")  uses the [async](https://github.com/caolan/async "async") NodeJs middleware package to implement a waterfall query.  (It might be worth a reminder here that NodeJs uses asynchronous i/o throughout.) An initial DSpace REST query retrieves information via the REST handle endpoint. Then additional community, collection or item information is retrieved based on item type.  The client receives a single response.
 
 
 ### Bitstream requests
