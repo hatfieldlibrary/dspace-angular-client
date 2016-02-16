@@ -35,7 +35,7 @@ It's worth mentioning that the choice between two authentication strategies is d
 
 ### Client and API mapping
 
-Most of the middleware  models use the request-promise `transform` callback to selectively return data from the DSpace response to the client. This mapping is hard-coded, but with a bit of extra work it could be transferred to JSON configuration files. 
+Most of the MVC  models use the request-promise `transform` callback to selectively return data from the DSpace response to the client. This mapping is hard-coded, but with a bit of extra work it could be transferred to JSON configuration files. 
 
 ### Handle requests
 
