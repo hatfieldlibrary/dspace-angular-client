@@ -2,7 +2,7 @@
 
 This DSpace UI prototype uses NodeJs and AngularJs. Much of the work here is based on an approach we are exploring in ernest with other projects. 
 
-Data is retrieved from DSpace using the REST API.
+Data is retrieved from [DSpace using the REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace using the REST API").
 
 ### Description of prototype
 
@@ -10,7 +10,7 @@ The NodeJs middleware includes [Express](http://expressjs.com/ "Express"), [Pass
 
 The front-end is a simple AngularJs prototype for testing functionality only. No effort has been made to dress it up or approximate a real user experience. 
 
-This prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Searching solr via the Express middleware has been tested but not integrated into the AngularJs prototype.  We will begin the UI design work soon.
+This prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Searching solr via the Express middleware has been tested but not integrated into the AngularJs prototype.  (We will begin the UI wireframes soon.)
 
 We decided to anchor this prototype project to our production instance of DSpace 5.4. That took some additional work.  
 
