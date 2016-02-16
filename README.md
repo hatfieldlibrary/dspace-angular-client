@@ -28,7 +28,7 @@ The NodeJs login middleware receives the REST token in the JSON response and add
 
 The user can choose to logout.  Middleware ends the Express session and invalidates the current DSpace token using the DSpace REST API logout endpoint.
 
-This approach shifts authentication duties to the middleware and asks the DSpace authentication plugin to check for an EPerson, assign special groups, create new users, etc. At least when working with implicit authentication via CAS or OAUTH2, this division of responsibilities seems helpful. 
+This approach shifts authentication duties to the NodeJs middleware and asks the DSpace authentication plugin to check the shared application key first, then as required retrieve an EPerson, create a new user, assign special groups, etc. At least when working with implicit authentication via CAS or OAUTH2, this division of responsibilities seems helpful. 
 
 It's worth mentioning that the choice between two authentication strategies is driven by local considerations.  Willamette uses Google Apps for Education, but in practice favors authentication with CAS for most services. It's easier to develop applications using Google OAUTH2, so this prototype switches between the two authentication strategies based the environment.  That's OK for now, but one of our next steps will be to make the authentication strategies more configurable so we could easily switch between CAS and OAUTH2 in production.
 
