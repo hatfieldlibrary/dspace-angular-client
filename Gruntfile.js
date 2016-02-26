@@ -62,7 +62,7 @@ module.exports = function (grunt) {
 
     open: {
       server: {
-        url: 'http://localhost:<%= express.options.port %>/item/'
+        url: 'http://localhost:<%= express.options.port %>/communities'
       }
     },
 

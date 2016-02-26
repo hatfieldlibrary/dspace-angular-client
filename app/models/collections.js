@@ -19,7 +19,7 @@ var utils = require('../controllers/utils');
         {
           /** From API documentation: limit and offset params can be used for
            * paging (current default 100 */
-          url: host + '/rest/collections/' + id + '?expand=items,logo,parentCommunity',
+          url: host + '/rest/collections/' + id + '?expand=logo,parentCommunity',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
@@ -50,6 +50,7 @@ var utils = require('../controllers/utils');
     parent.handle = json.parentCommunity.handle;
     ret.parentCommunity = parent;
     ret.name = json.name;
+    ret.introductoryText = json.introductoryText;
     ret.handle = json.handle;
     ret.type = json.type;
     var logo = {};
@@ -61,6 +62,7 @@ var utils = require('../controllers/utils');
     }
     ret.logo = logo;
     var items = [];
+    /*
     for (var i = 0; i < json.items.length; i++) {
       var tmp = {};
       tmp.id = json.items[i].id;
@@ -72,6 +74,7 @@ var utils = require('../controllers/utils');
       tmp.archived = json.items[i].archived;
       items[i] = tmp;
     }
+    */
     ret.items = items;
 
     return ret;

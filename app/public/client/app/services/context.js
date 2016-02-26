@@ -10,8 +10,19 @@ var dspaceContext = angular.module('dspaceContext', []);
  * the case, no need for context!
  */
 dspaceContext.factory('Data', function () {
+
   return {
-      // add stuff
+
+    root: {
+      type: '',
+      id: ''
+    },
+
+    handle: {},
+
+    hasDspaceSession: false
+
   };
+
 });
 

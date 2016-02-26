@@ -1,0 +1,52 @@
+<div>
+  <h3>Parent Community</h3>
+  <ul>
+    <li>
+      {{$ctrl.item.parentCommunity.name}}
+    </li>
+    <li>
+      {{$ctrl.item.parentCommunity.id}}
+    </li>
+    <li>
+      {{$ctrl.item.parentCommunity.handle}}
+    </li>
+  </ul>
+  <h3>Collection Info</h3>
+  <ul>
+    <li>
+      {{$ctrl.item.name}}
+    </li>
+    <li>
+      {{$ctrl.item.introductoryText}}
+    </li>
+    <li>
+      {{$ctrl.item.handle}}
+    </li>
+    <li>
+      {{$ctrl.item.id}}
+    </li>
+    <li>
+      {{$ctrl.item.type}}
+    </li>
+  </ul>
+  <h3>Logo</h3>
+  <ul>
+    <li>
+      {{$ctrl.item.logo.retrieveLink}}
+    </li>
+    <li>
+      {{$ctrl.item.logo.sizeBytes}}
+    </li>
+    <li>
+      {{$ctrl.item.logo.mimeType}}
+    </li>
+    <li>
+      <img ng-src="{{$ctrl.getLogo()}}"/>
+    </li>
+  </ul>
+  </ul>
+  <h3>Items</h3>
+
+  <item-list></item-list>
+
+</div>

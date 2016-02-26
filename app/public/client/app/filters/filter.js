@@ -7,19 +7,3 @@
  */
 var collectionFilters = angular.module('collectionFilters', []);
 
-(function () {
-
-  collectionFilters.filter('collectionFilter', function () {
-
-    return function (items, types) {
-
-      var filtered = [];
-
-      // filter login here...
-
-      return filtered;
-    };
-  });
-
-})();
-

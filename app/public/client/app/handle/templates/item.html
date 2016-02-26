@@ -1,0 +1,47 @@
+<h3>Parent Collection</h3>
+<ul>
+  <li>
+    {{$ctrl.item.parentCollection.name}}
+  </li>
+  <li>
+    {{$ctrl.item.parentCollection.id}}
+  </li>
+  <li>
+    {{$ctrl.item.parentCollection.handle}}
+  </li>
+</ul>
+<h3>Item Info</h3>
+<ul>
+  <li>
+    {{$ctrl.item.name}}
+  </li>
+  <li>
+    {{$ctrl.item.handle}}
+  </li>
+  <li>
+    {{$ctrl.item.id}}
+  </li>
+  <li>
+    {{$ctrl.item.type}}
+  </li>
+</ul>
+<h3>Metadata</h3>
+<ul>
+  <li ng-repeat="data in $ctrl.item.metadata">
+    <p><em>key:</em> {{data.key}} <em>value:</em> {{data.value}}</p>
+  </li>
+</ul>
+<h3>Bitstreams</h3>
+<ul>
+  <li ng-repeat="stream in $ctrl.item.bitstreams">
+    {{stream.name}} <br>
+    {{stream.retrieveLink}} <br>
+    {{stream.id}} <br>
+    {{stream.bundleName}}<br>
+    {{stream.mimeType}}<br>
+    {{stream.sizeBytes}} bytes<br>
+    {{stream.description}}<br>
+    <a target="_blank" href="/bitstream/{{stream.id}}/{{stream.name}}">Download File</a>
+
+  </li>
+</ul>

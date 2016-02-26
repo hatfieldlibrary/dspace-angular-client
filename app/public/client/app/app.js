@@ -6,9 +6,11 @@ var dspaceApp = angular.module('dspaceApp', [
 
   'ngMaterial',
   'ngRoute',
+  'ngSanitize',
   'dspaceControllers',
   'dspaceServices',
-  // 'dspaceDirectives',
+  'dspaceComponents',
+  'dspaceContext',
   'angulartics',
   'angulartics.google.analytics'
 
@@ -27,9 +29,11 @@ var dspaceApp = angular.module('dspaceApp', [
 
       $routeProvider.
 
-      when('/item', {
-        templateUrl: '/partials/item.html',
-        reloadOnSearch: false
+      when('/handle/:site/:item', {
+        templateUrl: '/partials/handle.html',
+
+      }).when('/communities', {
+        templateUrl: '/partials/communities.html'
       });
 
       $locationProvider.html5Mode(true).hashPrefix('!');
@@ -40,11 +44,11 @@ var dspaceApp = angular.module('dspaceApp', [
   /**
    * Singleton data object for sharing state.
    */
-  dspaceApp.factory('Data', function () {
-    return {
-      hasDspaceSession: false
-    };
-  });
+  //dspaceApp.factory('Data', function () {
+  //  return {
+  //    hasDspaceSession: false
+  //  };
+  //});
 
   // Angular Material configuration...
   dspaceApp.config(function ($mdThemingProvider) {

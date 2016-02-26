@@ -37,7 +37,10 @@ var utils = require('./utils');
         res)
         .then(function () {
 
-          res.redirect('/item');
+          if(session.url !== 'undefined') {
+
+            res.redirect(session.url);
+          }
 
         })
         .catch(function (err) {
@@ -128,10 +131,10 @@ var utils = require('./utils');
 
     models.logout(req.session)
       .then(function () {
-        res.redirect('/item');
+        res.redirect('http://libmedia.willamette.edu/commons');
       })
       .catch(function (err) {
-        res.redirect('/item');
+        res.redirect('http://libmedia.willamette.edu/commons');
         console.log(err.message);
       });
 

@@ -4,6 +4,7 @@ module.exports = function (app, config, passport) {
 
   var login = require('../app/controllers/login'),
     handle = require('../app/controllers/handle'),
+    communities = require('../app/controllers/communities'),
     bitstream = require('../app/controllers/bitstream'),
     solr = require('../app/controllers/solr');
 
@@ -78,17 +79,23 @@ module.exports = function (app, config, passport) {
 
   // REST API for dspace requests
 
+  app.get('/getCommunities', communities.getCommunities);
+
   app.get('/bitstream/:id/:file', bitstream.bitstream);
 
-  app.use('/handle/:site/:item', handle.getItem);
+  app.use('/handleRequest/:site/:item', handle.getItem);
 
   app.use('/solr/:query', solr.query);
+
+  app.use('/solrByType/:type/:id/:offset', solr.queryByType);
+
+  app.use('/solrRecentSubmissions/:type/:id', solr.recentSubmissions);
 
 
   // ANGULARJS routes
 
   /**
-   * Route to page templates.
+   * Route to page partials.
    */
   app.get('/partials/:name', function (req, res) {
 
@@ -102,7 +109,35 @@ module.exports = function (app, config, passport) {
     );
   });
 
-  // This catch-all is required by html5mode.
+
+  /**
+   * Routes to component templates.
+   */
+  app.get('/app/handle/templates/:name', function (req, res) {
+
+    var name = req.params.name;
+
+    res.sendFile(
+      app.get('appPath') +
+      '/app/handle/templates/' +
+      name
+    );
+  });
+
+  app.get('/app/communities/templates/:name', function (req, res) {
+
+    var name = req.params.name;
+
+    res.sendFile(
+      app.get('appPath') +
+      '/app/communities/templates/' +
+      name
+    );
+  });
+
+  /**
+   * Catch-all required by html5 mode.
+   */
   app.get('/*', function (req, res) {
 
     res.sendFile(

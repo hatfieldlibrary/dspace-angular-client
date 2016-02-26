@@ -1,6 +1,6 @@
 {
-  "name": "Tagger",
-  "description": "Tagger provides and adminstrative UI and REST interface for subject tags and other collection metadata.",
+  "name": "DSpace_API_Client",
+  "description": "The DSpace API client provides an angularjs front-end and nodejs middleware used with the DSpace API.",
   "version": "0.1.0",
   "homepage": "",
   "author": {

@@ -1,0 +1,45 @@
+<div>
+  <h3>Community Info</h3>
+  <ul>
+    <li>
+      {{$ctrl.handle.name}}
+    </li>
+    <li>
+      {{$ctrl.item.handle}}
+    </li>
+    <li>
+      {{$ctrl.item.id}}
+    </li>
+    <li>
+      {{$ctrl.item.type}}
+    </li>
+  </ul>
+  <h3>Logo</h3>
+  <ul>
+    <li>
+      {{$ctrl.item.logo.retrieveLink}}
+    </li>
+    <li>
+      {{$ctrl.item.logo.sizeBytes}}
+    </li>
+    <li>
+      {{$ctrl.item.logo.mimeType}}
+    </li>
+    <li>
+      <img ng-src="{{$ctrl.getLogo()}}"/>
+    </li>
+  </ul>
+  <h3>Collections</h3>
+
+
+
+  <p>As an unauthenticated user I only see the public collections.</p>
+
+  <ul>
+    <li ng-repeat="coll in $ctrl.item.items">
+      <collection-item name="{{coll.name}}" short-description="{{coll.introductoryText}}" handle="{{coll.handle}}"></collection-item>
+    </li>
+  </ul>
+
+
+</div>
