@@ -1,5 +1,5 @@
 /**
- * Created by mspalti on 2/25/16.
+ * Created by mspalti on 2/24/16.
  */
 
 'use strict';
@@ -7,18 +7,14 @@
 (function () {
 
   /**
-   * Community view controller.
+   * Collection view controller.
    */
 
   /*globals dspaceControllers*/
 
-  function CommunityCtrl(Utils, Data) {
+  function CollectionCtrl() {
 
     var ctrl = this;
-
-    ctrl.item = Data.handle;
-    ctrl.type = Utils.getType(Data.handle.type);
-
 
     /**
      * Returns the url for a logo.  This method can be called
@@ -34,16 +30,18 @@
 
   }
 
-  dspaceComponents.component('communityComponent', {
+  dspaceComponents.component('collectionComponent', {
 
-    templateUrl: '/app/handle/templates/community.html',
-    controller: CommunityCtrl
+    bindings: {
+      data: '<'
+    },
+    templateUrl: '/handle/templates/collection.html',
+    controller: CollectionCtrl
 
   });
 
 
 })();
-
 
 
 

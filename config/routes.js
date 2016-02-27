@@ -113,7 +113,18 @@ module.exports = function (app, config, passport) {
   /**
    * Routes to component templates.
    */
-  app.get('/app/handle/templates/:name', function (req, res) {
+  app.get('/common/templates/:name', function (req, res) {
+
+    var name = req.params.name;
+
+    res.sendFile(
+      app.get('appPath') +
+      '/app/common/templates/' +
+      name
+    );
+  });
+
+  app.get('/handle/templates/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -124,7 +135,7 @@ module.exports = function (app, config, passport) {
     );
   });
 
-  app.get('/app/communities/templates/:name', function (req, res) {
+  app.get('/communities/templates/:name', function (req, res) {
 
     var name = req.params.name;
 

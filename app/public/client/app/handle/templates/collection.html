@@ -1,44 +1,45 @@
 <div>
+  <main-search-component type="{{$ctrl.data.type}}" id="{{$ctrl.data.id}}"></main-search-component>
   <h3>Parent Community</h3>
   <ul>
     <li>
-      {{$ctrl.item.parentCommunity.name}}
+      {{$ctrl.data.parentCommunity.name}}
     </li>
     <li>
-      {{$ctrl.item.parentCommunity.id}}
+      {{$ctrl.data.parentCommunity.id}}
     </li>
     <li>
-      {{$ctrl.item.parentCommunity.handle}}
+      {{$ctrl.data.parentCommunity.handle}}
     </li>
   </ul>
   <h3>Collection Info</h3>
   <ul>
     <li>
-      {{$ctrl.item.name}}
+      {{$ctrl.data.name}}
     </li>
     <li>
-      {{$ctrl.item.introductoryText}}
+      {{$ctrl.data.introductoryText}}
     </li>
     <li>
-      {{$ctrl.item.handle}}
+      {{$ctrl.data.handle}}
     </li>
     <li>
-      {{$ctrl.item.id}}
+      {{$ctrl.data.id}}
     </li>
     <li>
-      {{$ctrl.item.type}}
+      {{$ctrl.type}}
     </li>
   </ul>
   <h3>Logo</h3>
   <ul>
     <li>
-      {{$ctrl.item.logo.retrieveLink}}
+      {{$ctrl.data.logo.retrieveLink}}
     </li>
     <li>
-      {{$ctrl.item.logo.sizeBytes}}
+      {{$ctrl.data.logo.sizeBytes}}
     </li>
     <li>
-      {{$ctrl.item.logo.mimeType}}
+      {{$ctrl.data.logo.mimeType}}
     </li>
     <li>
       <img ng-src="{{$ctrl.getLogo()}}"/>
@@ -47,6 +48,6 @@
   </ul>
   <h3>Items</h3>
 
-  <item-list></item-list>
+  <item-list-component></item-list-component>
 
 </div>

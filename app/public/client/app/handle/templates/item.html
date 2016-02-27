@@ -1,39 +1,41 @@
+
+<main-search-component type="{{$ctrl.data.type}}" id="{{$ctrl.data.id}}"></main-search-component>
 <h3>Parent Collection</h3>
 <ul>
   <li>
-    {{$ctrl.item.parentCollection.name}}
+    {{$ctrl.data.parentCollection.name}}
   </li>
   <li>
-    {{$ctrl.item.parentCollection.id}}
+    {{$ctrl.data.parentCollection.id}}
   </li>
   <li>
-    {{$ctrl.item.parentCollection.handle}}
+    {{$ctrl.data.parentCollection.handle}}
   </li>
 </ul>
 <h3>Item Info</h3>
 <ul>
   <li>
-    {{$ctrl.item.name}}
+    {{$ctrl.data.name}}
   </li>
   <li>
-    {{$ctrl.item.handle}}
+    {{$ctrl.data.handle}}
   </li>
   <li>
-    {{$ctrl.item.id}}
+    {{$ctrl.data.id}}
   </li>
   <li>
-    {{$ctrl.item.type}}
+    {{$ctrl.data.type}}
   </li>
 </ul>
 <h3>Metadata</h3>
 <ul>
-  <li ng-repeat="data in $ctrl.item.metadata">
+  <li ng-repeat="data in $ctrl.data.metadata">
     <p><em>key:</em> {{data.key}} <em>value:</em> {{data.value}}</p>
   </li>
 </ul>
 <h3>Bitstreams</h3>
 <ul>
-  <li ng-repeat="stream in $ctrl.item.bitstreams">
+  <li ng-repeat="stream in $ctrl.data.bitstreams">
     {{stream.name}} <br>
     {{stream.retrieveLink}} <br>
     {{stream.id}} <br>

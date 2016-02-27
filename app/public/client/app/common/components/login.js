@@ -7,33 +7,26 @@
 
   function LoginCtrl($scope,
                      Login,
-                     CheckSession,
+                     Utils,
                      Data) {
 
     var ctrl = this;
 
     ctrl.sessionStatus = Data.hasDspaceSession;
 
+    /** Login request */
     ctrl.login = function () {
       Login.query();
 
     };
 
+    /** Check DSpace session status on init. */
     var init = function () {
 
-      var sessionStatus = CheckSession.query();
-
-      sessionStatus.$promise
-        .then(function () {
-          if (sessionStatus.status === 'ok') {
-            Data.hasDspaceSession = true;
-          } else {
-            Data.hasDspaceSession = false;
-          }
-        });
+      Utils.checkSession();
 
     };
-
+    /** Watch for change in DSpace session status. */
     $scope.$watch(function () {
         return Data.hasDspaceSession;
       },

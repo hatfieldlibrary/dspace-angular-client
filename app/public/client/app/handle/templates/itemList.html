@@ -1,0 +1,4 @@
+
+<item-detail-component ng-repeat="col in $ctrl.items" title="{{col.title}}" author="col.author" publisher="{{col.publisher}}" year="{{col.year}}" handle="{{col.handle}}" id="{{col.id}}"></item-detail-component>
+
+<pager-component on-update="$ctrl.onUpdate(data)"></pager-component>

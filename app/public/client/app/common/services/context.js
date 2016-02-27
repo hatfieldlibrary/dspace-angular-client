@@ -18,8 +18,6 @@ dspaceContext.factory('Data', function () {
       id: ''
     },
 
-    handle: {},
-
     hasDspaceSession: false
 
   };

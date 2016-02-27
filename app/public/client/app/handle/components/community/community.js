@@ -7,18 +7,14 @@
 (function () {
 
   /**
-   * Item component controller.
+   * Community view controller.
    */
 
   /*globals dspaceControllers*/
 
-  function ItemCtrl(Utils, Data) {
+  function CommunityCtrl() {
 
     var ctrl = this;
-
-    ctrl.item = Data.handle;
-    ctrl.type = Utils.getType(Data.handle.type);
-
 
     /**
      * Returns the url for a logo.  This method can be called
@@ -34,16 +30,18 @@
 
   }
 
-  dspaceComponents.component('itemComponent', {
+  dspaceComponents.component('communityComponent', {
 
-    templateUrl: '/app/handle/templates/item.html',
-    controller: ItemCtrl
+    bindings: {
+      data: '<'
+    },
+    templateUrl: '/handle/templates/community.html',
+    controller: CommunityCtrl
 
   });
 
 
 })();
-
 
 
 

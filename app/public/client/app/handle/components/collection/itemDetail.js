@@ -8,7 +8,7 @@
   }
 
 
-  dspaceComponents.component('listItemDetail', {
+  dspaceComponents.component('itemDetailComponent', {
 
     bindings: {
       title: '@',

@@ -1,29 +1,30 @@
 <div>
+  <main-search-component type="{{$ctrl.data.type}}" id="{{$ctrl.data.id}}"></main-search-component>
   <h3>Community Info</h3>
   <ul>
     <li>
-      {{$ctrl.handle.name}}
+      {{$ctrl.data.name}}
     </li>
     <li>
-      {{$ctrl.item.handle}}
+      {{$ctrl.data.handle}}
     </li>
     <li>
-      {{$ctrl.item.id}}
+      {{$ctrl.data.id}}
     </li>
     <li>
-      {{$ctrl.item.type}}
+      {{$ctrl.data.type}}
     </li>
   </ul>
   <h3>Logo</h3>
   <ul>
     <li>
-      {{$ctrl.item.logo.retrieveLink}}
+      {{$ctrl.data.logo.retrieveLink}}
     </li>
     <li>
-      {{$ctrl.item.logo.sizeBytes}}
+      {{$ctrl.data.logo.sizeBytes}}
     </li>
     <li>
-      {{$ctrl.item.logo.mimeType}}
+      {{$ctrl.data.logo.mimeType}}
     </li>
     <li>
       <img ng-src="{{$ctrl.getLogo()}}"/>
@@ -36,8 +37,8 @@
   <p>As an unauthenticated user I only see the public collections.</p>
 
   <ul>
-    <li ng-repeat="coll in $ctrl.item.items">
-      <collection-item name="{{coll.name}}" short-description="{{coll.introductoryText}}" handle="{{coll.handle}}"></collection-item>
+    <li ng-repeat="coll in $ctrl.data.items">
+      <collection-item-component name="{{coll.name}}" short-description="{{coll.introductoryText}}" handle="{{coll.handle}}"></collection-item-component>
     </li>
   </ul>
 

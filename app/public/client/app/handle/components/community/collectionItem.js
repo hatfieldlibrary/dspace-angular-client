@@ -9,7 +9,7 @@
   }
 
 
-  dspaceComponents.component('collectionItem', {
+  dspaceComponents.component('collectionItemComponent', {
 
     bindings: {
       name: '@',
