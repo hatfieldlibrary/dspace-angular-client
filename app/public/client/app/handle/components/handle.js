@@ -33,15 +33,15 @@
       query.$promise.then(
         function (data) {
 
-          /** Set handle result for the community, collection or item */
+          /** Add query result to view model. */
           ctrl.data = data;
-          /** Set object type on the view model */
+          /** Normalize object type. */
           var type = Utils.getType(data.type);
+          /** Set type on the view model */
           ctrl.type = type;
-          /** Set the object type and id in shared context. */
-          Data.root.type = type;
-          Data.root.id = data.id;
-
+          /** Set the type and id in shared context. */
+          Data.query.asset.type = type;
+          Data.query.asset.id = data.id;
           /** Check whether we have a DSpace session */
           Utils.checkSession();
 

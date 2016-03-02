@@ -12,12 +12,8 @@
 
   exports.queryByType = function(req, res) {
 
-    var type = req.params.type;
-    var id = req.params.id;
-    var offset = req.params.offset;
     var session = req.session;
-
-    models.solrByType(type, id, offset, res, session);
+    models.solrQuery(req.body, res, session);
 
   };
 

@@ -1,4 +1,36 @@
+<sort-options-component
 
-<item-detail-component ng-repeat="col in $ctrl.items" title="{{col.title}}" author="col.author" publisher="{{col.publisher}}" year="{{col.year}}" handle="{{col.handle}}" id="{{col.id}}"></item-detail-component>
+  on-update="$ctrl.onUpdate(results, count, resultFormat)">
 
-<pager-component on-update="$ctrl.onUpdate(data)"></pager-component>
+</sort-options-component>
+
+
+<item-detail-component
+
+  ng-if="$ctrl.resultFormat!='author'"
+  ng-repeat="col in $ctrl.items"
+  title="{{col.title}}"
+  author="col.author[0]"
+  publisher="{{col.publisher}}"
+  year="{{col.year}}"
+  handle="{{col.handle}}"
+  id="{{col.id}}">
+
+</item-detail-component>
+
+
+<author-detail-component
+
+  ng-if="$ctrl.resultFormat=='author'"
+  ng-repeat="au in $ctrl.items"
+  author="{{au.author.author}}">
+
+</author-detail-component>
+
+
+<pager-component
+
+  on-update="$ctrl.onUpdate(results, count, resultFormat)"
+  action="$ctrl.action" >
+
+</pager-component>

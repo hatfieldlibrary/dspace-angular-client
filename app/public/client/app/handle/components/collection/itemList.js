@@ -8,9 +8,13 @@
 
     var ctrl = this;
 
-    ctrl.onUpdate = function (data) {
-      console.log(data);
-      ctrl.items = data.results;
+    ctrl.onUpdate = function (results, count, resultFormat) {
+      console.log(resultFormat);
+      console.log(count);
+      console.log(results);
+      ctrl.resultFormat = resultFormat;
+      ctrl.items = results;
+      ctrl. count = count;
 
     };
 

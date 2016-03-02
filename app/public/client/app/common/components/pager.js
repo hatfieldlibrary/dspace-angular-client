@@ -4,78 +4,118 @@
 
 (function () {
 
-  function PagerCtrl(SolrQueryByType,
-                     Utils,
-                     Data) {
+    function PagerCtrl(SolrQuery,
+                       Utils,
+                       Data) {
 
 
-    var ctrl = this;
+      var ctrl = this;
 
-    var type = Utils.getType(Data.root.type);
+      /**
+       * Intialize start index.
+       * @type {number}
+         */
+      var start = 0;
+      /**
+       * Number of items to return in pager.
+       * @type {number}
+         */
+      var setSize = 10;
+      var count = 0;
 
-    var offset = 0;
-    var count = 0;
-    ctrl.start = offset + 1;
-    ctrl.end = offset + 10;
+      /**
+       * Current start position for view model.
+       * @type {number}
+         */
+      ctrl.start = start + 1;
+      /**
+       * Current end position for view model.
+       * @type {number}
+         */
+      ctrl.end = start + 10;
 
-    function init() {
-      console.log('init pager');
-      updateList(0);
+      /**
+       * Initialize the context.
+       */
+      function init() {
+
+        // get these values defined somewhere!
+        Data.query.sort.field = 'dc.title_sort';
+        Data.query.sort.order = 'asc';
+        Data.query.resultFormat = Utils.itemType;
+        Data.query.query.action = 'list';
+
+        updateList(start);
+
+      }
+
+      init();
+
+      /**
+       * Execute node REST API call for solr query results.
+       * @param start the start position for query result.
+         */
+      function updateList(start) {
+        var items = SolrQuery.save({
+          params: Data.query,
+          offset: start
+        });
+        items.$promise.then(function (data) {
+
+          if (Data.query.resultFormat===Utils.authorType) {
+            /** Add authors to result. */
+            data.results = Utils.authorArraySlice(data.results, start, start + setSize);
+          }
+          /**
+           * Update parent component.
+           */
+          ctrl.onUpdate({results: data.results, count: data.count, resultFormat: Data.query.resultFormat});
+
+        });
+      }
+
+      /**
+       * View model method for retrieving the previous result set.
+       */
+      ctrl.previous = function () {
+
+        if (start >= 10) {
+          ctrl.start -= 10;
+          ctrl.end = ctrl.start + 9;
+          start -= 10;
+          updateList(start);
+        }
+      };
+
+      /**
+       * View model method for retrieveing the next result set.
+       */
+      ctrl.next = function () {
+
+        start += 10;
+        ctrl.start = start + 1;
+        if (ctrl.end + 10 <= count) {
+          ctrl.end += 10;
+        } else {
+          ctrl.end = count;
+        }
+        updateList(start);
+
+      };
 
     }
 
-    init();
 
-    function updateList(off) {
+    dspaceComponents.component('pagerComponent', {
 
-      var items = SolrQueryByType.query({type: type, id: Data.root.id, offset: off});
-      items.$promise.then(function (data) {
-        console.log(data.count);
-        ctrl.onUpdate({data: data});
-        count = data.count;
-      })
+      template: '<div ng-click="$ctrl.previous()"><< </div> {{$ctrl.start}} - {{$ctrl.end}} <div ng-click="$ctrl.next()"> >></div>',
 
-    }
+      bindings: {
+        onUpdate: '&'
 
-    ctrl.previous = function () {
+      },
+      controller: PagerCtrl
 
-      if (offset >= 10) {
-        ctrl.start -= 10;
-        ctrl.end = ctrl.start + 9;
-        offset -= 10;
-        updateList(offset);
-      }
-    };
+    });
 
-    ctrl.next = function () {
-
-      offset += 10;
-      ctrl.start = offset + 1;
-
-      if (ctrl.end + 10 <= count) {
-        ctrl.end += 10;
-      } else {
-        ctrl.end = count;
-      }
-
-      updateList(offset);
-
-    };
-
-  }
-
-
-  dspaceComponents.component('pagerComponent', {
-
-    template: '<div ng-click="$ctrl.previous()"><< </div> {{$ctrl.start}} - {{$ctrl.end}} <div ng-click="$ctrl.next()"> >></div>',
-
-    bindings: {
-      onUpdate: '&',
-      type: '@',
-      query: '<'
-    },
-    controller: PagerCtrl
-
-  });
-
-})();
+  })();

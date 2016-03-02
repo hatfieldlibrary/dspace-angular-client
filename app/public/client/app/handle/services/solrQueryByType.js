@@ -9,8 +9,9 @@
  */
 dspaceServices.factory('SolrQueryByType', ['$resource',
   function ($resource) {
-    return $resource('/solrByType/:type/:id/:offset', {}, {
-      query: {method: 'GET', isArray: false}
-    });
+    return $resource('/solrByType');
+    //return $resource('/solrByType/:type/:id/:offset',  {
+    //  query: {method: 'GET', isArray: false}
+   // });
   }
 ]);

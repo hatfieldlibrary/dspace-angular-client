@@ -10,9 +10,32 @@ dspaceServices.factory('Utils', ['Data', 'CheckSession',
 
     var utils = {};
 
+    // these are actually functioning like public static vars.  probably not a good idiom.
+    utils.authorType = 'author';
+    utils.itemType = 'item';
+
+
     utils.getType = function (type) {
       console.log('setting type ' + type.substring(0, 4));
       return type.substring(0, 4);
+    };
+
+
+    utils.authorArraySlice = function (data, start, end) {
+
+      var authors = Data.authorList.slice(start, end);
+      try {
+
+        for (var i = 0; i < data.length; i++) {
+          data[i].author = authors[i];
+        }
+
+        return data;
+
+      } catch (err) {
+        console.log(err);
+      }
+
     };
 
 
