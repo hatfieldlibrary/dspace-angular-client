@@ -12,6 +12,9 @@ dspaceServices.factory('Utils', ['Data', 'CheckSession',
 
     // these are actually functioning like public static vars.  probably not a good idiom.
     utils.authorType = 'author';
+    utils.titleType = 'title';
+    utils.subjectType = 'subject';
+    utils.dateType = 'date';
     utils.itemType = 'item';
 
 
@@ -23,13 +26,13 @@ dspaceServices.factory('Utils', ['Data', 'CheckSession',
 
     utils.authorArraySlice = function (data, start, end) {
 
-      var authors = Data.authorList.slice(start, end);
+
+      var authors = Data.context.authorArray.slice(start, end);
       try {
 
         for (var i = 0; i < data.length; i++) {
           data[i].author = authors[i];
         }
-
         return data;
 
       } catch (err) {

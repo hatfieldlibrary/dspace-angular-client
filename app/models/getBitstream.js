@@ -1,6 +1,6 @@
 'use strict';
 
-var utils = require('../controllers/utils');
+var utils = require('./utils');
 var http = require('http');
 
 /**

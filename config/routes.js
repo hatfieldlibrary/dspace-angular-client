@@ -85,10 +85,7 @@ module.exports = function (app, config, passport) {
 
   app.use('/handleRequest/:site/:item', handle.getItem);
 
-  app.post('/solrQuery', solr.queryByType);
-
-  //app.use('/solrByType/:type/:id/:offset', solr.queryByType);
-  app.post('/solrByType', solr.queryByType);
+  app.post('/solrQuery', solr.query);
 
   app.use('/solrRecentSubmissions/:type/:id', solr.recentSubmissions);
 

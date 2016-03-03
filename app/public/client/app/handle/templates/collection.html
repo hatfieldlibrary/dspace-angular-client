@@ -1,5 +1,5 @@
 <div>
-  <main-search-component type="{{$ctrl.data.type}}" id="{{$ctrl.data.id}}"></main-search-component>
+  <main-search-component type="{{$ctrl.type}}" id="{{$ctrl.id}}"></main-search-component>
   <h3>Parent Community</h3>
   <ul>
     <li>
@@ -24,7 +24,7 @@
       {{$ctrl.data.handle}}
     </li>
     <li>
-      {{$ctrl.data.id}}
+      {{$ctrl.id}}
     </li>
     <li>
       {{$ctrl.type}}
@@ -48,6 +48,6 @@
   </ul>
   <h3>Items</h3>
 
-  <item-list-component></item-list-component>
+  <item-list-component type="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-list-component>
 
 </div>

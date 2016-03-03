@@ -4,12 +4,85 @@
 
 'use strict';
 
-var utils = require('../controllers/utils');
 
 (function () {
 
+  var utils = require('./utils');
+  var config = require('../../config/environment');
 
-  exports.getSolrUrl = function(query) {
+  /**
+   * Checks for dspace token in the current session and
+   * returns token if present.
+   * @param session the Express session object
+   * @returns {*} token or empty string
+   */
+  exports.getDspaceToken = function (session) {
+
+    var dspaceTokenHeader;
+
+    if ('getDspaceToken' in session) {
+      dspaceTokenHeader = session.getDspaceToken;
+    } else {
+      dspaceTokenHeader = '';
+    }
+
+    return dspaceTokenHeader;
+  };
+
+  /**
+   * Sets response header and sends json.
+   * @param res  the Express response object
+   * @param json   data to return
+   */
+  exports.jsonResponse = function (res, json) {
+
+    // Set custom response header.
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.json(json);
+
+  };
+
+  /**
+   * Removes the dspace token from the current session if
+   * the token is present.
+   * @param session  the Express session object
+   */
+  exports.removeDspaceSession = function (session) {
+
+    if ('dspaceToken' in session) {
+      delete session.getDspaceToken;
+
+    }
+  };
+
+
+
+  /**
+   * Returns fully qualified URL for the host and port (from configuration).
+   * @returns {string}
+   */
+  exports.getURL = function() {
+    return config.dspace.protocol + '://' + config.dspace.host + ':' + config.dspace.port;
+  };
+
+
+  /**
+   * Returns the host name from configuration.
+   * @returns {*}
+   */
+  exports.getHost = function() {
+    return config.dspace.host;
+  };
+
+  /**
+   * Returns the host port from configuration.
+   * @returns {number|*}
+   */
+  exports.getPort = function() {
+    return config.dspace.port;
+  };
+
+  exports.getSolrUrl = function (query) {
 
     var field = '';
     var order = 'asc';
@@ -31,16 +104,50 @@ var utils = require('../controllers/utils');
     if (query.params.query.action === 'list' && field.length > 0) {
 
       if (field === 'bi_2_dis_filter') {
+
+        // collection author list
         solrUrl = 'http://localhost:1234/solr/search/select?facet=true&facet.mincount=1&facet.offset=' + query.offset + '&rows=' + rows + '&f.bi_2_dis_filter.facet.sort=index&fl=handle,search.resourcetype,search.resourceid&start=' + query.offset + '&f.bi_2_dis_filter.facet.limit=-1&q=*:*&facet.field=bi_2_dis_filter&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=location.' + query.params.asset.type + ':' + query.params.asset.id + '&wt=json';
 
       } else {
+
+        // collection title and date list
         solrUrl = 'http://localhost:1234/solr/search/select?sort=' + field + '+' + order + '&start=' + query.offset + '&q=location.' + query.params.asset.type + ':' + query.params.asset.id + '&fl=dc.title,author,dc.publisher,dateIssued.year,handle,search.resourceid,numFound&wt=json';
 
       }
 
-    }  else if (query.params.query.action === 'list' && query.params.query.terms.length > 0)         {
+    }
 
-      // todo
+    else if (query.params.query.action === 'browse' && query.params.query.terms.length > 0) {
+
+      // browse collection by field and query term
+      solrUrl = 'http://localhost:1234/solr/search/select?q=*:*&fl=handle,search.resourcetype,search.resourceid,dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=location.' +
+        query.params.asset.type + ':' +
+        query.params.asset.id +
+        '&fq={!field+f=bi_2_dis_value_filter}' +
+        encodeURIComponent(query.params.query.terms) +
+        '&fq=search.resourcetype:2&start=' +
+        query.offset +
+        '&wt=json&version=2';
+
+      solrUrl = 'http://localhost:1234/solr/search/select?fl=handle,search.resourcetype,search.resourceid,dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl&start=0&q=bi_sort_1_sort:+[*+TO+%22land%22}&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=location.coll:87&fq=search.resourcetype:2&version=2&rows=10';
+    }
+
+    else if (query.params.query.action === 'search' && query.params.query.terms.length > 0) {
+
+      var location;
+      if (query.params.query.id.length > 0) {
+        location = '&fq=location:l' + query.params.query.id;
+      }
+
+      // search (discovery) global or within collection
+      solrUrl = 'http://localhost:1234/solr/search/select?f.dc.title_hl.hl.snippets=5&f.dc.title_hl.hl.fragsize=0&spellcheck=true&sort=score+desc&spellcheck.q=' +
+        encodeURIComponent(query.params.query.terms) +
+        '&f.fulltext_hl.hl.fragsize=250&hl.fl=dc.description.abstract_hl&hl.fl=dc.title_hl&hl.fl=dc.contributor.author_hl&hl.fl=fulltext_hl&wt=json&spellcheck.collate=true&hl=true&version=2&rows=10&f.fulltext_hl.hl.snippets=2&f.dc.description.abstract_hl.hl.snippets=2&f.dc.contributor.author_hl.hl.snippets=5&fl=handle,search.resourcetype,search.resourceid&start=' +
+        query.offset +
+        '&q=' +
+        encodeURIComponent(query.params.query.terms) +
+        '&f.dc.contributor.author_hl.hl.fragsize=0&hl.usePhraseHighlighter=true&f.dc.description.abstract_hl.hl.fragsize=250&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)' +
+        location;
 
     }
 
@@ -50,6 +157,7 @@ var utils = require('../controllers/utils');
 
 
   };
+
 
   exports.processAuthor = function (solrResponse, returnAuthors) {
 

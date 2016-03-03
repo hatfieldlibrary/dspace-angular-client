@@ -34,16 +34,38 @@
          */
       ctrl.end = start + 10;
 
+      var query = {};
+
       /**
        * Initialize the context.
        */
       function init() {
 
-        // get these values defined somewhere!
-        Data.query.sort.field = 'dc.title_sort';
-        Data.query.sort.order = 'asc';
-        Data.query.resultFormat = Utils.itemType;
-        Data.query.query.action = 'list';
+        Data.clearQuery();
+
+        // may not need this on context object
+
+        if (ctrl.action === 'list') {
+
+          Data.setList(
+            ctrl.type,
+            ctrl.id,
+            'dc.title_sort',
+            'asc',
+            ctrl.action,
+            Utils.titleType
+          );
+
+          Data.shouldReturnAuthorsList(false);
+
+        } else if (ctrl.action === 'browse') {
+
+          Data.setBrowse(ctrl.type, ctrl.id, ctrl.action, ctrl.terms, ctrl.format);
+
+
+        } else if (ctrl.action === 'search') {
+
+        }
 
         updateList(start);
 
@@ -57,19 +79,19 @@
          */
       function updateList(start) {
         var items = SolrQuery.save({
-          params: Data.query,
+          params: Data.context.query,
           offset: start
         });
         items.$promise.then(function (data) {
 
-          if (Data.query.resultFormat===Utils.authorType) {
+          if (Data.context.query.browseFormat===Utils.authorType) {
             /** Add authors to result. */
             data.results = Utils.authorArraySlice(data.results, start, start + setSize);
           }
           /**
            * Update parent component.
            */
-          ctrl.onUpdate({results: data.results, count: data.count, resultFormat: Data.query.resultFormat});
+          ctrl.onUpdate({results: data.results, count: data.count, browseFormat: Data.context.query.browseFormat});
 
         });
       }
@@ -111,7 +133,11 @@
       template: '<div ng-click="$ctrl.previous()"><< </div> {{$ctrl.start}} - {{$ctrl.end}} <div ng-click="$ctrl.next()"> >></div>',
 
       bindings: {
-        onUpdate: '&'
+        onUpdate: '&',
+        action: '@',
+        type: '@',
+        id: '@',
+        format: '@'
 
       },
       controller: PagerCtrl

@@ -2,15 +2,7 @@
 
 (function() {
 
-  exports.query = function (req, res) {
-
-    var query = req.params.query;
-
-    models.solr(query, res);
-
-  };
-
-  exports.queryByType = function(req, res) {
+  exports.query = function(req, res) {
 
     var session = req.session;
     models.solrQuery(req.body, res, session);

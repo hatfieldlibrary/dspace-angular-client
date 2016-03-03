@@ -11,11 +11,15 @@
   dspaceComponents.component('authorDetailComponent', {
 
     bindings: {
+      type: '@',
+      id: '@',
+      format: '@',
       author: '@'
 
     },
     controller: ItemDetailController,
-    template: '<div><h4>{{$ctrl.author}}</h4></div>'
+    // requires new route and new controller to gather in the parameters.  Should be able to use the existing solr model.
+    template: '<div><h4><a ng-href="/handle/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.format}}/{{$ctrl.author}}">{{$ctrl.author}}</a></h4></div>'
 
   });
 

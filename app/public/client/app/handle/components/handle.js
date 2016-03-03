@@ -39,9 +39,10 @@
           var type = Utils.getType(data.type);
           /** Set type on the view model */
           ctrl.type = type;
+          ctrl.id = data.id;
           /** Set the type and id in shared context. */
-          Data.query.asset.type = type;
-          Data.query.asset.id = data.id;
+         // Data.query.asset.type = type;
+         // Data.query.asset.id = data.id;
           /** Check whether we have a DSpace session */
           Utils.checkSession();
 
@@ -61,7 +62,7 @@
 
     '<!-- Switch components based on item type -->  ' +
     '<div ng-if="$ctrl.type== \'coll\'">  ' +
-        '<collection-component data="$ctrl.data"></collection-component> '  +
+        '<collection-component data="$ctrl.data" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></collection-component> '  +
       '</div> ' +
       '<div ng-if="$ctrl.type==\'comm\'">  '   +
         '<community-component data="$ctrl.data"></community-component>  '  +

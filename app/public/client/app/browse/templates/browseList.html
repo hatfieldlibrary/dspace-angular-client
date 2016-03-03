@@ -1,0 +1,21 @@
+
+
+<browse-detail-component ng-repeat="col in $ctrl.items"
+                         title="{{col.title}}"
+                         author="col.author[0]"
+                         publisher="{{col.publisher}}"
+                         year="{{col.year}}"
+                         handle="{{col.handle}}"
+                         id="{{col.id}}">
+
+</browse-detail-component>
+
+
+
+<pager-component on-update="$ctrl.onUpdate(results, count, format)"
+                 action="{{$ctrl.action}}",
+                 type="{{$ctrl.type}}"
+                 id="{{$ctrl.id}}"
+                 format="{{$ctrl.format}}">
+
+</pager-component>

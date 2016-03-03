@@ -1,8 +1,7 @@
 'use strict';
 
 var rp = require('request-promise');
-var utils = require('../controllers/utils');
-var solrUtils = require('./utils');
+var utils = require('./utils');
 
 (function () {
 
@@ -17,14 +16,14 @@ var solrUtils = require('./utils');
     console.log(query);
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
-
-    returnAuthors = query.params.returnAuthors;
+                              console.log(query);
+    returnAuthors = query.params.returnAuthorsList;
 
     if (query.params.sort.field.length > 0) {
       processType = query.params.sort.field;
     }
 
-    var solrUrl = solrUtils.getSolrUrl(query);
+    var solrUrl = utils.getSolrUrl(query);
 
     var solr =
       rp(
@@ -57,10 +56,11 @@ var solrUtils = require('./utils');
   function processResult(solrResponse ) {
 
     if (processType === 'bi_2_dis_filter') {
-      return solrUtils.processAuthor(solrResponse, returnAuthors);
+      console.log('return authors ' + returnAuthors);
+      return utils.processAuthor(solrResponse, returnAuthors);
 
     } else {
-      return solrUtils.processTitleDate(solrResponse);
+      return utils.processTitleDate(solrResponse);
 
     }
   }

@@ -1,6 +1,6 @@
 'use strict';
 
-var utils = require('./utils');
+var utils = require('../models/utils');
 
 
 
@@ -36,7 +36,6 @@ var utils = require('./utils');
         req,
         res)
         .then(function () {
-
           if(session.url !== 'undefined') {
 
             res.redirect(session.url);

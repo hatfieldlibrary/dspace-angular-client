@@ -15,7 +15,7 @@
    * @param Data  share context object
    * @constructor
    */
-  function SortOptionsCtrl(SolrQueryByType, Utils, Data) {
+  function SortOptionsCtrl(SolrQuery, Utils, Data) {
 
     var ctrl = this;
 
@@ -45,47 +45,61 @@
     ctrl.selectedField = 'dc.title_sort';
 
     /**
-     * Update the view model.  Called by ng-change directive.
+     * Update the view model.
      */
     ctrl.setField = function () {
 
-      Data.query.sort.field = ctrl.selectedField;
-      Data.query.sort.order = "asc";
 
       /**
-       * Set returnAuthors and resultFormat query parameters.
+       * Update query model with the new values.
+       */
+      Data.setSort(ctrl.selectedField, 'asc');
+
+      /**
+       * Set returnAuthors and browseFormat parameters.
        */
       if (ctrl.selectedField === 'bi_2_dis_filter') {
-        Data.query.returnAuthors = true;
-        Data.query.resultFormat = Utils.authorType;
+        // Return a new author list.
+        Data.shouldReturnAuthorsList(true);
+        // Set the browse format to author
+        Data.setBrowseFormat(Utils.authorType);
 
       } else {
-        Data.query.resultFormat = Utils.itemType;
+        // In not browsing by author, itemType is sufficient here.
+        Data.setBrowseFormat(Utils.itemType);
       }
 
-      var items = SolrQueryByType.save({
-        params: Data.query,
+      var items = SolrQuery.save({
+        params: Data.context.query,
         offset: start
       });
       items.$promise.then(function (data) {
-        if (Data.query.returnAuthors) {
+
+
+        if (Data.context.query.returnAuthorsList) {
+
           /**
            * Add the author array to shared context.
            * @type {string|Array|*}
            */
-          Data.authorList = data.authors;
-          /** Add authors to result. */
+          Data.setAuthorsList(data.authors);
+
+          /** Add authors to the current result set. */
           data.results = Utils.authorArraySlice(data.results, start, end);
+
+          /**
+           * Reset returnAuthors boolean to default value. This way
+           * paging through authors will not return another, unneeded copy
+           * of the author list.
+           */
+          Data.shouldReturnAuthorsList(false);
 
         }
         /**
          * Update parent component.
          */
-        ctrl.onUpdate({results: data.results, count: data.count, resultFormat: Data.query.resultFormat});
-        /**
-         * Reset returnAuthors boolean to default value.
-         */
-        Data.query.returnAuthors = false;
+        ctrl.onUpdate({results: data.results, count: data.count, browseFormat: Data.context.query.browseFormat});
+
 
       });
     }

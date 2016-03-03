@@ -1,7 +1,7 @@
 'use strict';
 
 var rp = require('request-promise');
-var utils = require('../controllers/utils');
+var utils = require('./utils');
 
 (function () {
 
@@ -54,7 +54,6 @@ var utils = require('../controllers/utils');
             // 400 (malformed request) may mean that the token no
             // longer exists in DSpace, possibly because of server
             // restart. Remove the stale token if one is present.
-            // The REST API is DSpace 5.5
             utils.removeDspaceSession(req.session);
           }
           else {

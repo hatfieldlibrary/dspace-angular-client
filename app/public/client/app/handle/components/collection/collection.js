@@ -33,7 +33,9 @@
   dspaceComponents.component('collectionComponent', {
 
     bindings: {
-      data: '<'
+      data: '<',
+      type: '@',
+      id: '@'
     },
     templateUrl: '/handle/templates/collection.html',
     controller: CollectionCtrl
