@@ -8,11 +8,11 @@
   function LoginCtrl($scope,
                      Login,
                      Utils,
-                     Data) {
+                     QueryManager) {
 
     var ctrl = this;
 
-    ctrl.sessionStatus = Data.hasDspaceSession;
+    ctrl.sessionStatus = QueryManager.hasDspaceSession;
 
     /** Login request */
     ctrl.login = function () {
@@ -28,7 +28,7 @@
     };
     /** Watch for change in DSpace session status. */
     $scope.$watch(function () {
-        return Data.hasDspaceSession;
+        return QueryManager.hasDspaceSession;
       },
 
       function (newValue, oldValue) {

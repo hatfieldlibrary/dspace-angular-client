@@ -8,8 +8,7 @@
 
   function HandleCtrl($routeParams,
                       ItemByHandle,
-                      Utils,
-                      Data) {
+                      Utils) {
 
 
     var ctrl = this;

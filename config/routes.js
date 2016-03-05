@@ -85,6 +85,10 @@ module.exports = function (app, config, passport) {
 
   app.use('/handleRequest/:site/:item', handle.getItem);
 
+  app.get('/solrQuery/:type/:item/:field/:terms/:offset', solr.browse);
+
+ // app.get('/discover/:type/:id/:offset', solr.query);
+
   app.post('/solrQuery', solr.query);
 
   app.use('/solrRecentSubmissions/:type/:id', solr.recentSubmissions);
@@ -111,13 +115,13 @@ module.exports = function (app, config, passport) {
   /**
    * Routes to component templates.
    */
-  app.get('/common/templates/:name', function (req, res) {
+  app.get('/shared/templates/:name', function (req, res) {
 
     var name = req.params.name;
 
     res.sendFile(
       app.get('appPath') +
-      '/app/common/templates/' +
+      '/app/shared/templates/' +
       name
     );
   });
@@ -129,6 +133,17 @@ module.exports = function (app, config, passport) {
     res.sendFile(
       app.get('appPath') +
       '/app/handle/templates/' +
+      name
+    );
+  });
+
+  app.get('/browse/templates/:name', function (req, res) {
+
+    var name = req.params.name;
+
+    res.sendFile(
+      app.get('appPath') +
+      '/app/browse/templates/' +
       name
     );
   });

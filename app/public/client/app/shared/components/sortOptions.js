@@ -12,10 +12,10 @@
    *
    * @param SolrQueryByType  server for the node REST API endpoint
    * @param Utils  utilities
-   * @param Data  share context object
+   * @param QueryManager  share context object
    * @constructor
    */
-  function SortOptionsCtrl(SolrQuery, Utils, Data) {
+  function SortOptionsCtrl(SolrQuery, Utils, QueryManager, QueryFields) {
 
     var ctrl = this;
 
@@ -28,16 +28,18 @@
      * The end value is used to get a slice from the author array.
      * @type {number}
      */
-    var end = 10;
+    var setSize = 10;
 
     /**
      * The select fields view model.
      * @type {*[]}
      */
-    ctrl.fields = [{label: 'Title', value: 'dc.title_sort'}, {
-      label: 'Author',
-      value: 'bi_2_dis_filter'
-    }, {label: 'Date', value: 'dc.date.accessioned_dt'}];
+    // Move to angular.constant
+    ctrl.fields = [
+      {label: 'Title', value: 'dc.title_sort'},
+      {label: 'Author', value: 'bi_2_dis_filter'},
+      {label: 'Date', value: 'dc.date.accessioned_dt'}
+    ];
     /**
      * The select model. Initialize to title.
      * @type {string}
@@ -53,52 +55,49 @@
       /**
        * Update query model with the new values.
        */
-      Data.setSort(ctrl.selectedField, 'asc');
+      QueryManager.setSort(ctrl.selectedField, 'asc');
 
       /**
-       * Set returnAuthors and browseFormat parameters.
+       * Set browseFormat parameters.
+       * MOVE TO UTILITY.
        */
       if (ctrl.selectedField === 'bi_2_dis_filter') {
-        // Return a new author list.
-        Data.shouldReturnAuthorsList(true);
-        // Set the browse format to author
-        Data.setBrowseFormat(Utils.authorType);
 
-      } else {
-        // In not browsing by author, itemType is sufficient here.
-        Data.setBrowseFormat(Utils.itemType);
+        QueryManager.setSearchField(QueryFields.AUTHOR)
+
+      } else if (ctrl.selectedField === 'dc.title_sort') {
+
+        // In not browsing by author, itemType is sufficient here.    NOT
+        QueryManager.setSearchField(QueryFields.TITLE);
+
+      } else if (ctrl.selectedField === 'dc.date.accessioned_dt') {
+
+        QueryManager.setSearchField(QueryFields.DATE);
+
       }
 
       var items = SolrQuery.save({
-        params: Data.context.query,
+        params: QueryManager.context.query,
         offset: start
       });
       items.$promise.then(function (data) {
 
-
-        if (Data.context.query.returnAuthorsList) {
+        if (QueryManager.isAuthorListRequest()) {
 
           /**
            * Add the author array to shared context.
            * @type {string|Array|*}
            */
-          Data.setAuthorsList(data.authors);
+          QueryManager.setAuthorsList(data.authors);
 
           /** Add authors to the current result set. */
-          data.results = Utils.authorArraySlice(data.results, start, end);
-
-          /**
-           * Reset returnAuthors boolean to default value. This way
-           * paging through authors will not return another, unneeded copy
-           * of the author list.
-           */
-          Data.shouldReturnAuthorsList(false);
+          data.results = Utils.authorArraySlice(start, start + setSize);
 
         }
         /**
          * Update parent component.
          */
-        ctrl.onUpdate({results: data.results, count: data.count, browseFormat: Data.context.query.browseFormat});
+        ctrl.onUpdate({results: data.results, count: data.count, field: QueryManager.getSearchField()});
 
 
       });
@@ -111,9 +110,8 @@
 
     bindings: {
       onUpdate: '&'
-
     },
-    templateUrl: '/common/templates/sortOptions.html',
+    templateUrl: '/shared/templates/sortOptions.html',
     controller: SortOptionsCtrl
 
   });

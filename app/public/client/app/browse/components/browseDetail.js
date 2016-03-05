@@ -2,14 +2,33 @@
  * Created by mspalti on 3/2/16.
  */
 
+'use strict';
 
-function BrowseDetailCtrl() {
+(function () {
 
-}
+  function BrowseDetailCtrl() {
 
-dspaceComponents.constructor('browseDetailComponent', {
+    var ctrl = this;
 
-  bindings: {},
-  controller: BrowseDetailCtrl
 
-});
+  }
+
+  dspaceComponents.component('browseDetailComponent', {
+
+    bindings: {
+      title: '@',
+      author: '<',
+      publisher: '@',
+      year: '@',
+      handle: '@',
+      id: '@'
+    },
+    templateUrl: '/app/browse/templates/browseDetail.html',
+    controller: BrowseDetailCtrl
+
+  });
+
+
+
+})();
+

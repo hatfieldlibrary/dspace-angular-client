@@ -11,9 +11,9 @@
     ctrl.action = 'list';
 
 
-    ctrl.onUpdate = function (results, count, browseFormat) {
+    ctrl.onUpdate = function (results, count, field) {
 
-      ctrl.browseFormat = browseFormat;
+      ctrl.field = field;
       ctrl.items = results;
       ctrl. count = count;
 

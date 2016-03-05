@@ -15,9 +15,6 @@ var utils = require('./utils');
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
 
-    console.log('handle token ' + dspaceTokenHeader);
-    console.log('url is ' + host + '/rest/handle/' + site + '/' + item);
-
     /** DSpace handle request-promise */
     var handleRequest =
       rp(

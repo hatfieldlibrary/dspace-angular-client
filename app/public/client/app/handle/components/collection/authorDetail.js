@@ -4,7 +4,11 @@
 
 (function () {
 
-  function ItemDetailController() {
+  function ItemDetailController(QueryManager) {
+
+    var ctrl = this;
+    ctrl.offset =  QueryManager.getCurrentOffset();
+
   }
 
 
@@ -13,13 +17,13 @@
     bindings: {
       type: '@',
       id: '@',
-      format: '@',
+      field: '@',
       author: '@'
 
     },
     controller: ItemDetailController,
     // requires new route and new controller to gather in the parameters.  Should be able to use the existing solr model.
-    template: '<div><h4><a ng-href="/handle/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.format}}/{{$ctrl.author}}">{{$ctrl.author}}</a></h4></div>'
+    template: '<div><h4><a ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.author}}/{{$ctrl.offset}}" target="_top">{{$ctrl.author}}</a></h4></div>'
 
   });
 

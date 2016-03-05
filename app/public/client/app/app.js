@@ -7,6 +7,7 @@ var dspaceApp = angular.module('dspaceApp', [
   'ngMaterial',
   'ngRoute',
   'ngSanitize',
+  'appConstants',
   'dspaceServices',
   'dspaceComponents',
   'dspaceContext',
@@ -26,28 +27,24 @@ var dspaceApp = angular.module('dspaceApp', [
   dspaceApp.config(['$routeProvider', '$locationProvider',
     function ($routeProvider, $locationProvider) {
 
-      $routeProvider.
-
-      when('/handle/:site/:item', {
-        templateUrl: '/partials/handle.html',
-
-      }).when('/communities', {
-        templateUrl: '/partials/communities.html'
+      $routeProvider
+        .when('/handle/:site/:item', {
+          templateUrl: '/partials/handle.html',
+        })
+        .when('/communities', {
+          templateUrl: '/partials/communities.html'
+        })
+        .when('/browse/:type/:item/:field/:terms/:offset', {
+          templateUrl: '/partials/browse.html'
+        })
+        .when('/discover/:terms/:id/:offset', {
+        templateUrl: '/partials/discover.html'
       });
 
       $locationProvider.html5Mode(true).hashPrefix('!');
 
     }]);
 
-
-  /**
-   * Singleton data object for sharing state.
-   */
-  //dspaceApp.factory('Data', function () {
-  //  return {
-  //    hasDspaceSession: false
-  //  };
-  //});
 
   // Angular Material configuration...
   dspaceApp.config(function ($mdThemingProvider) {
@@ -62,7 +59,7 @@ var dspaceApp = angular.module('dspaceApp', [
         .accentPalette('amber');
 
     }
-  ).config(function($mdIconProvider) {
+  ).config(function ($mdIconProvider) {
     $mdIconProvider.fontSet('fa', 'fontawesome');
   });
 

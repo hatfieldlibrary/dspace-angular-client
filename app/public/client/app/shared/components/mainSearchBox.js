@@ -8,7 +8,7 @@
 
 
 
-  function MainSearchBoxCtrl(Data) {
+  function MainSearchBoxCtrl() {
 
     // set search props based on input and user changes
 
@@ -29,7 +29,7 @@
       mode: '@'
     },
 
-    templateUrl: '/common/templates/mainSearch.html',
+    templateUrl: '/shared/templates/mainSearch.html',
     controller: MainSearchBoxCtrl,
     controllerAs: 'sb'
 

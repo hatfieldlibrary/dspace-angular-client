@@ -7,8 +7,12 @@
 
 (function () {
 
+  var util = require('util');
   var utils = require('./utils');
   var config = require('../../config/environment');
+  var constants = require('./constants');
+  var solrQueries = require('./solrQueries');
+
 
   /**
    * Checks for dspace token in the current session and
@@ -56,12 +60,11 @@
   };
 
 
-
   /**
    * Returns fully qualified URL for the host and port (from configuration).
    * @returns {string}
    */
-  exports.getURL = function() {
+  exports.getURL = function () {
     return config.dspace.protocol + '://' + config.dspace.host + ':' + config.dspace.port;
   };
 
@@ -70,7 +73,7 @@
    * Returns the host name from configuration.
    * @returns {*}
    */
-  exports.getHost = function() {
+  exports.getHost = function () {
     return config.dspace.host;
   };
 
@@ -78,77 +81,104 @@
    * Returns the host port from configuration.
    * @returns {number|*}
    */
-  exports.getPort = function() {
+  exports.getPort = function () {
     return config.dspace.port;
   };
 
+  /**
+   * Returns the solr url based on the query type.
+   *
+   * @param query the query parameters
+   * @returns {string} the url
+     */
   exports.getSolrUrl = function (query) {
 
     var field = '';
     var order = 'asc';
     var solrUrl = '';
-    var rows = 10;
 
     // in practice, this may not be needed since this app will run on dspace host.
     var host = utils.getURL();
 
-    if (query.params.sort.field.length > 0) {
-      field = query.params.sort.field;
+    /**
+     * In the current implementation, only the LIST query uses the sort
+     * parameter.
+     */
+    if (query.params.query.action === constants.QueryActions.LIST) {
+
+      if (query.params.sort.field.length > 0) {
+        field = query.params.sort.field;
+      }
+
+      if (query.params.sort.order.length > 0) {
+        order = query.params.sort.order;
+      }
+
     }
 
-    if (query.params.sort.order.length > 0) {
-      order = query.params.sort.order;
-    }
-
-
-    if (query.params.query.action === 'list' && field.length > 0) {
+      /**
+       * Get the solr URL for a LIST query.
+       */
+    if (query.params.query.action === constants.QueryActions.LIST && field.length > 0) {
 
       if (field === 'bi_2_dis_filter') {
-
-        // collection author list
-        solrUrl = 'http://localhost:1234/solr/search/select?facet=true&facet.mincount=1&facet.offset=' + query.offset + '&rows=' + rows + '&f.bi_2_dis_filter.facet.sort=index&fl=handle,search.resourcetype,search.resourceid&start=' + query.offset + '&f.bi_2_dis_filter.facet.limit=-1&q=*:*&facet.field=bi_2_dis_filter&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=location.' + query.params.asset.type + ':' + query.params.asset.id + '&wt=json';
+        // List authors.
+        solrUrl = util.format(
+          solrQueries.listCollectionAuthor,
+          query.params.asset.type,
+          query.params.asset.id
+        );
 
       } else {
-
-        // collection title and date list
-        solrUrl = 'http://localhost:1234/solr/search/select?sort=' + field + '+' + order + '&start=' + query.offset + '&q=location.' + query.params.asset.type + ':' + query.params.asset.id + '&fl=dc.title,author,dc.publisher,dateIssued.year,handle,search.resourceid,numFound&wt=json';
+        // This is the default query upon opening a collection page.
+        // Used for listing by title and date fields.
+        solrUrl = util.format(
+          solrQueries.listCollectionItem,
+          field,
+          order,
+          query.offset,
+          query.params.asset.type,
+          query.params.asset.id
+        );
 
       }
 
     }
 
-    else if (query.params.query.action === 'browse' && query.params.query.terms.length > 0) {
+    /**
+     * Get the URL for a BROWSE query.
+     */
+    else if (query.params.query.action === constants.QueryActions.BROWSE ) {
 
-      // browse collection by field and query term
-      solrUrl = 'http://localhost:1234/solr/search/select?q=*:*&fl=handle,search.resourcetype,search.resourceid,dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=location.' +
-        query.params.asset.type + ':' +
-        query.params.asset.id +
-        '&fq={!field+f=bi_2_dis_value_filter}' +
-        encodeURIComponent(query.params.query.terms) +
-        '&fq=search.resourcetype:2&start=' +
-        query.offset +
-        '&wt=json&version=2';
+      if (query.params.query.terms.length > 0) {   // browse with search term
 
-      solrUrl = 'http://localhost:1234/solr/search/select?fl=handle,search.resourcetype,search.resourceid,dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl&start=0&q=bi_sort_1_sort:+[*+TO+%22land%22}&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=location.coll:87&fq=search.resourcetype:2&version=2&rows=10';
+        solrUrl = util.format(
+          solrQueries.browseCollectionTerms,
+          query.params.asset.type,
+          query.params.asset.id,
+          query.params.query.terms,
+          query.params.offset
+        );
+
+      }
     }
 
-    else if (query.params.query.action === 'search' && query.params.query.terms.length > 0) {
+    /**
+     * Get the URL for a SEARCH (discovery) query.
+     */
+    else if (query.params.query.action === constants.QueryActions.SEARCH && query.params.query.terms.length > 0) {
 
       var location;
       if (query.params.query.id.length > 0) {
         location = '&fq=location:l' + query.params.query.id;
       }
-
-      // search (discovery) global or within collection
-      solrUrl = 'http://localhost:1234/solr/search/select?f.dc.title_hl.hl.snippets=5&f.dc.title_hl.hl.fragsize=0&spellcheck=true&sort=score+desc&spellcheck.q=' +
-        encodeURIComponent(query.params.query.terms) +
-        '&f.fulltext_hl.hl.fragsize=250&hl.fl=dc.description.abstract_hl&hl.fl=dc.title_hl&hl.fl=dc.contributor.author_hl&hl.fl=fulltext_hl&wt=json&spellcheck.collate=true&hl=true&version=2&rows=10&f.fulltext_hl.hl.snippets=2&f.dc.description.abstract_hl.hl.snippets=2&f.dc.contributor.author_hl.hl.snippets=5&fl=handle,search.resourcetype,search.resourceid&start=' +
-        query.offset +
-        '&q=' +
-        encodeURIComponent(query.params.query.terms) +
-        '&f.dc.contributor.author_hl.hl.fragsize=0&hl.usePhraseHighlighter=true&f.dc.description.abstract_hl.hl.fragsize=250&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)' +
-        location;
-
+      solrUrl = util.format(
+        solrQueries.discover,
+        query.params.query.terms,
+        query.params.offset,
+        query.params.query.terms,
+        location
+      )
     }
 
     console.log('solr url is ' + solrUrl);
@@ -159,26 +189,32 @@
   };
 
 
-  exports.processAuthor = function (solrResponse, returnAuthors) {
+  /**
+   * The author response is a facet object containing a list
+   * of all authors for the collection or community. This method
+   * parses the result returns the relevant data to the client.
+   *
+   * @param solrResponse  the solr response
+   * @returns {{}}
+     */
+  exports.processAuthor = function (solrResponse)
+  {
 
     var json = solrResponse.facet_counts.facet_fields;
 
     var ret = {};
 
     var authorArr = [];
-
-
-    if (returnAuthors === true) {
-      var authors = json.bi_2_dis_filter;
-      var count = 0;
-      for (var i = 0; i < authors.length; i++) {
-        if (i % 2 === 0) {
-          var author = authors[i].split('|||');
-          authorArr[count] = {author: author[1]};
-          count++;
-        }
+    var authors = json.bi_2_dis_filter;
+    var count = 0;
+    for (var i = 0; i < authors.length; i++) {
+      if (i % 2 === 0) {
+        var author = authors[i].split('|||');
+        authorArr[count] = {author: author[1]};
+        count++;
       }
     }
+
     var docsArr = [];
     for (var i = 0; i < solrResponse.response.docs.length; i++) {
       console.log(solrResponse.response.docs[i]);
@@ -193,7 +229,15 @@
 
   };
 
-  exports.processTitleDate = function (solrResponse) {
+  /**
+   * Item lists returned by solr queries have a similar structure.
+   * This method parses the response and returns relevant data to
+   * the client.
+   *
+   * @param solrResponse
+   * @returns {{}}
+     */
+  exports.processItems = function (solrResponse) {
 
     var json = solrResponse.response.docs;
 

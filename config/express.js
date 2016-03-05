@@ -19,6 +19,8 @@ module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(methodOverride());
 
+  //app.use(express.static(path.join(config.root, 'constants')));
+
   if ('production' === env) {
     app.use(morgan('dev'));
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));

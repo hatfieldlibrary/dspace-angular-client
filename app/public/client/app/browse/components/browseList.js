@@ -4,16 +4,16 @@
 
 (function() {
 
-  function BrowseListCtrl(Data) {
+  function BrowseListCtrl(QueryManager, QueryActions) {
 
     var ctrl = this;
 
-    Data.query.query.action = 'browse';
-    ctrl.action = 'browse';
+    QueryManager.setAction(QueryActions.BROWSE);
+    ctrl.action = QueryActions.BROWSE;
 
-    ctrl.onUpdate = function (results, count, browseFormat) {
+    ctrl.onUpdate = function (results, count, field) {
 
-      ctrl.browseFormat = browseFormat;
+      ctrl.field = field;
       ctrl.items = results;
       ctrl. count = count;
 
@@ -27,12 +27,11 @@
       terms: '@',
       type: '@',
       id: '@',
-      format: '@'
+      field: '@'
     },
     controller: BrowseListCtrl,
     templateUrl: '/app/browse/templates/browseList.html'
 
-
-  })
+  });
 
 })();

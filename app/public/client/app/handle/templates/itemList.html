@@ -1,13 +1,13 @@
 <sort-options-component
 
-  on-update="$ctrl.onUpdate(results, count, browseFormat)">
+  on-update="$ctrl.onUpdate(results, count, field)">
 
 </sort-options-component>
 
 
 <item-detail-component
 
-  ng-if="$ctrl.browseFormat!='author'"
+  ng-if="$ctrl.field!='author'"
   ng-repeat="col in $ctrl.items"
   title="{{col.title}}"
   author="col.author[0]"
@@ -21,19 +21,19 @@
 
 <author-detail-component
 
-  ng-if="$ctrl.browseFormat=='author'"
+  ng-if="$ctrl.field=='author'"
   ng-repeat="au in $ctrl.items"
   author="{{au.author.author}}"
   type="{{$ctrl.type}}"
   id="{{$ctrl.id}}"
-  format="{{$ctrl.browseFormat}}">
+  field="{{$ctrl.field}}">
 
 </author-detail-component>
 
 
 <pager-component
 
-  on-update="$ctrl.onUpdate(results, count, browseFormat)"
+  on-update="$ctrl.onUpdate(results, count, field)"
   action="{{$ctrl.action}}",
   type="{{$ctrl.type}}"
   id="{{$ctrl.id}}">

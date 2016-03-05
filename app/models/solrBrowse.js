@@ -1,3 +1,7 @@
+/**
+ * Created by mspalti on 3/3/16.
+ */
+
 'use strict';
 
 var rp = require('request-promise');
@@ -11,25 +15,12 @@ var utils = require('./utils');
    */
   module.exports = function (query, res, session) {
 
+    console.log(query);
+
     var dspaceTokenHeader = utils.getDspaceToken(session);
 
-    /**
-     * Setting the processType. This allows us to distinguish requests
-     * to sort an author list from other requests for items (more typical).
-     */
-    if (query.params.sort.field.length > 0) {
-      processType = query.params.sort.field;
-    }
-
-    /**
-     * Get the solr URL.
-     * @type {string}
-       */
     var solrUrl = utils.getSolrUrl(query);
 
-    /**
-     * The request-promise.
-     */
     var solr =
       rp(
         {
@@ -45,6 +36,7 @@ var utils = require('./utils');
           transform: processResult
         }
       ).then(function (json) {
+
           res.send(json);
           res.end();
         })
@@ -57,22 +49,12 @@ var utils = require('./utils');
   };
 
 
-  /**
-   * Method that handles the request-promise transform.
-   *
-   * @param solrResponse  the response form the solr query
-   * @returns {{}}
-     */
   function processResult(solrResponse ) {
 
-    if (processType === 'bi_2_dis_filter') {
-      return utils.processAuthor(solrResponse);
-
-    } else {
       return utils.processItems(solrResponse);
 
-    }
   }
 
 
 })();
+

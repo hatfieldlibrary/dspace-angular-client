@@ -9,7 +9,7 @@ var dspaceContext = angular.module('dspaceContext', []);
  * one controller and no data to share.  If that remains
  * the case, no need for context!
  */
-dspaceContext.service('Data', function () {
+dspaceContext.service('QueryManager', ['QueryFields', function (QueryFields) {
 
 
   return {
@@ -43,15 +43,14 @@ dspaceContext.service('Data', function () {
            */
           terms: '',
           /**
-           * The browseFormat can be 'title', 'subject', 'date' or 'author'.
+           * The field can be 'title', 'subject', 'date' or 'author'.
            */
-          browseFormat: ''
-        },
-        /**
-         * Indicates whether to return authors array from solr author facet query.
-         * Facet query is used by collection view sort by author field option.
-         */
-        returnAuthorsList: false
+          field: '',
+          /**
+           * The current offset used by paging.
+           */
+          offset: ''
+        }
       },
       /**
        * The array of authors returned by browse/sort by author query. This is
@@ -67,49 +66,74 @@ dspaceContext.service('Data', function () {
     },
 
     getContext: function () {
-      return context;
+      return this.context;
     },
 
-    shouldReturnAuthorsList: function (value) {
-      this.context.query.returnAuthorsList = value;
+    setCurrentOffset: function(offset) {
+      this.context.query.offset = offset;
+    },
+
+    getCurrentOffset: function() {
+      return this.context.query.offset;
+    },
+
+    isAuthorListRequest: function() {
+      return (this.context.query.field === QueryFields.AUTHOR);
     },
 
     setAuthorsList: function(list) {
       this.context.authorArray = list;
     },
 
-    setBrowse: function (type, id, action, terms, browseFormat) {
+    getAuthors: function() {
+      return this.context.authorArray;
+    },
+
+    getAuthorsCount: function() {
+       return this.context.authorArray.length;
+    },
+
+    setAction: function(action) {
+      this.context.query.query.action = action;
+    },
+
+    getSearchField: function() {
+      return this.context.query.field;
+    },
+
+    setBrowse: function (type, id, terms, action, field) {
 
       this.context.query.asset.type = type;
       this.context.query.asset.id = id;
       this.context.query.query.action = action;
       // context.query.query.mode = '';
       this.context.query.query.terms = terms;
-      this.context.query.query.browseFormat = browseFormat;
+      this.context.query.query.field = field;
 
     },
 
-    setBrowseFormat: function (format) {
-      this.context.query.browseFormat = format;
+    setSearchField: function (field) {
+      this.context.query.field = field;
     },
 
-    setList: function (type, id, field, order, action, browseFormat) {
+    setList: function (type, id, sortField, order, action, field) {
 
       this.context.query.asset.type = type;
       this.context.query.asset.id = id;
-      this.context.query.sort.field = field;
+      this.context.query.sort.field = sortField;
       this.context.query.sort.order = order;
       this.context.query.query.action = action;
-      this.context.query.query.browseFormat = browseFormat;
+      this.context.query.query.field = field;
     },
 
     setSearch: function (terms, id) {
 
-      context.query.asset.id = id;
       context.query.query.terms = terms;
+      context.query.asset.id = id;
     },
 
     setSort: function (field, order) {
+
       this.context.query.sort.field = field;
       this.context.query.sort.order = order;
     },
@@ -123,10 +147,10 @@ dspaceContext.service('Data', function () {
       this.context.query.query.action = '';
       this.context.query.query.mode = '';
       this.context.query.query.terms = '';
-      this.context.query.query.browseFormat = '';
+      this.context.query.query.field = '';
 
     }
 
   };
-});
+}]);
 

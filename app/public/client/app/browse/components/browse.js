@@ -6,14 +6,15 @@
 
 (function() {
 
-  function BrowseCtrl($routeParams, Utils) {
+  function BrowseCtrl($routeParams, Utils, QueryActions) {
 
     var ctrl = this;
 
     ctrl.type = $routeParams.type;
-    ctrl.id = $routeParams.id;
+    ctrl.id = $routeParams.item;
     ctrl.terms = $routeParams.terms;
-    ctrl.format = $routeParams.format;
+    ctrl.field = $routeParams.field;
+    ctrl.action = QueryActions.BROWSE;
 
     /** Check whether we have a DSpace session */
     Utils.checkSession();
