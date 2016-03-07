@@ -90,7 +90,7 @@
    *
    * @param query the query parameters
    * @returns {string} the url
-     */
+   */
   exports.getSolrUrl = function (query) {
 
     var field = '';
@@ -116,9 +116,9 @@
 
     }
 
-      /**
-       * Get the solr URL for a LIST query.
-       */
+    /**
+     * Get the solr URL for a LIST query.
+     */
     if (query.params.query.action === constants.QueryActions.LIST && field.length > 0) {
 
       if (field === 'bi_2_dis_filter') {
@@ -148,7 +148,7 @@
     /**
      * Get the URL for a BROWSE query.
      */
-    else if (query.params.query.action === constants.QueryActions.BROWSE ) {
+    else if (query.params.query.action === constants.QueryActions.BROWSE) {
 
       if (query.params.query.terms.length > 0) {   // browse with search term
 
@@ -196,9 +196,8 @@
    *
    * @param solrResponse  the solr response
    * @returns {{}}
-     */
-  exports.processAuthor = function (solrResponse)
-  {
+   */
+  exports.processAuthor = function (solrResponse) {
 
     var json = solrResponse.facet_counts.facet_fields;
 
@@ -206,16 +205,35 @@
 
     var authorArr = [];
     var authors = json.bi_2_dis_filter;
+
     var count = 0;
+    var authorObj = {};
+
     for (var i = 0; i < authors.length; i++) {
-      if (i % 2 === 0) {
-        var author = authors[i].split('|||');
-        authorArr[count] = {author: author[1]};
+
+      // The odd indicies in the response array contain count.
+      // Add the count to the author object and add the author
+      // object to the return array.
+      if (i % 2 !== 0) {
+        authorObj.count = authors[i];
+        authorArr[count] = authorObj;
         count++;
+
       }
+      // The even indicies contain author information.  Add to
+      //   the author object.
+      else {
+
+        authorObj = {};
+        var author = authors[i].split('|||');
+        authorObj.author = author[1];
+
+      }
+
     }
 
     var docsArr = [];
+
     for (var i = 0; i < solrResponse.response.docs.length; i++) {
       console.log(solrResponse.response.docs[i]);
       docsArr[i] = solrResponse.response.docs[i];
@@ -223,7 +241,7 @@
 
     ret.results = docsArr;
     ret.authors = authorArr;
-    ret.count = json.numFound;
+    ret.count = authorArr.length;
 
     return ret;
 
@@ -236,7 +254,7 @@
    *
    * @param solrResponse
    * @returns {{}}
-     */
+   */
   exports.processItems = function (solrResponse) {
 
     var json = solrResponse.response.docs;

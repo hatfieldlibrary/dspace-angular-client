@@ -57,7 +57,6 @@ dspaceServices.factory('Utils', [
 
 
     utils.getType = function (type) {
-      console.log('setting type ' + type.substring(0, 4));
       return type.substring(0, 4);
     };
 
@@ -66,6 +65,10 @@ dspaceServices.factory('Utils', [
 
       var authors = QueryManager.getAuthors().slice(start, end);
       var data = new Array(authors.length);
+
+      if (end < setSize) {
+        setSize = end;
+      }
 
       try {
 
@@ -99,8 +102,19 @@ dspaceServices.factory('Utils', [
       });
     };
 
+    utils.getPageListCount = function(count, setSize) {
+
+      if (count < setSize) {
+        return count;
+      } else {
+        return setSize;
+      }
+    };
+
     return utils;
 
   }
+
+
 
 ]);

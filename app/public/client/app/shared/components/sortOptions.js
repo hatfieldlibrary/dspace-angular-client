@@ -90,8 +90,17 @@
            */
           QueryManager.setAuthorsList(data.authors);
 
+          data.count = QueryManager.getAuthorsCount();
+
+          /**
+           * Todo: this count function works for data sets
+           * less than the result set size. Need more deal with
+           * the final page of a paging request.
+           */
+          var end = Utils.getPageListCount(data.count, setSize);
+
           /** Add authors to the current result set. */
-          data.results = Utils.authorArraySlice(start, start + setSize);
+          data.results = Utils.authorArraySlice(start, start + end);
 
         }
         /**

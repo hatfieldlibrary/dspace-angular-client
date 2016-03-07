@@ -59,6 +59,8 @@
 
       QueryManager.setCurrentOffset(start);
 
+      console.log(QueryManager.isAuthorListRequest())
+
       /**
        * When not paging through an author list,
        * we need to exec a new solr query.
@@ -110,8 +112,13 @@
       else {
 
         data = [];
-        data.results = Utils.authorArraySlice(start, start + setSize);
+
         data.count = QueryManager.getAuthorsCount();
+        var end = Utils.getPageListCount(data.count, setSize);
+
+        console.log(end);
+        data.results = Utils.authorArraySlice(start, start + end);
+
         updateParent(data);
 
       }
