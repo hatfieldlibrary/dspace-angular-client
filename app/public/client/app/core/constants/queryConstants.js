@@ -2,7 +2,6 @@
  * Created by mspalti on 3/3/16.
  */
 
-var appConstants = angular.module('appConstants', []);
 
 (function () {
 
@@ -29,6 +28,22 @@ var appConstants = angular.module('appConstants', []);
     TITLE: 'title',
     DATE: 'date',
     SUBJECT: 'subject'
+  });
+
+  appConstants.constant('QuerySort', {
+    ASCENDING: 'asc',
+    DESCENDING: 'desc'
+  });
+
+  appConstants.constant('QueryTypes', {
+    AUTHOR_FACETS: 'authorFacets',
+    SUBJECT_FACETS: 'subjectFacets',
+    AUTHOR_SEARCH: 'authorBrowse',
+    SUBJECT_SEARCH: 'subjectBrowse',
+    TITLES_LIST: 'allTitlesBrowse',
+    DATES_LIST: 'allDatesBrowse',
+    DISCOVER: 'discover'
+
   });
 
 })();

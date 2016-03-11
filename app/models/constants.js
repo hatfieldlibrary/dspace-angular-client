@@ -22,11 +22,27 @@ module.exports = {
     ANY: 'any'
   },
 
-  SearchFields: {
+  QueryFields: {
     AUTHOR: 'author',
     TITLE: 'title',
     DATE: 'date',
     SUBJECT: 'subject'
+  },
+
+  QuerySort: {
+    ASCENDING: 'asc',
+    DESCENDING: 'desc'
+  },
+
+  QueryType: {
+    AUTHOR_FACETS: 'authorFacets',
+    SUBJECT_FACETS: 'subjectFacets',
+    AUTHOR_SEARCH: 'authorBrowse',
+    SUBJECT_SEARCH: 'subjectBrowse',
+    TITLES_LIST: 'allTitlesBrowse',
+    DATES_LIST: 'allDatesBrowse',
+    DISCOVER: 'discover'
+
   }
 
 };

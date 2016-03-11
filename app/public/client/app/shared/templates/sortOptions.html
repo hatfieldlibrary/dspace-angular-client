@@ -1,6 +1,4 @@
 
 <select ng-model="$ctrl.selectedField" ng-change="$ctrl.setField()">
-  <option value="{{$ctrl.fields[0].value}}">{{$ctrl.fields[0].label}}</option>
-  <option value="{{$ctrl.fields[1].value}}">{{$ctrl.fields[1].label}}</option>
-  <option value="{{$ctrl.fields[2].value}}">{{$ctrl.fields[2].label}}</option>
+  <option ng-repeat="field in $ctrl.fields" value="{{field.label}}">{{field.label}}</option>
 </select>

@@ -15,7 +15,11 @@
    * @param QueryManager  share context object
    * @constructor
    */
-  function SortOptionsCtrl(SolrQuery, Utils, QueryManager, QueryFields) {
+  function SortOptionsCtrl(SolrQuery,
+                           SolrConstants,
+                           Utils,
+                           QuerySort,
+                           QueryManager) {
 
     var ctrl = this;
 
@@ -34,52 +38,43 @@
      * The select fields view model.
      * @type {*[]}
      */
-    // Move to angular.constant
-    ctrl.fields = [
-      {label: 'Title', value: 'dc.title_sort'},
-      {label: 'Author', value: 'bi_2_dis_filter'},
-      {label: 'Date', value: 'dc.date.accessioned_dt'}
-    ];
+    ctrl.fields = SolrConstants.fields;
+
     /**
      * The select model. Initialize to title.
      * @type {string}
      */
-    ctrl.selectedField = 'dc.title_sort';
+    ctrl.selectedField = SolrConstants.fields[0].label;
+
 
     /**
-     * Update the view model.
+     * Update the view model after user selects new browse by field option.
      */
     ctrl.setField = function () {
 
+      console.log(ctrl.selectedField);
 
       /**
        * Update query model with the new values.
        */
-      QueryManager.setSort(ctrl.selectedField, 'asc');
+      QueryManager.setSort(ctrl.selectedField, QuerySort.ASCENDING);
 
       /**
-       * Set browseFormat parameters.
-       * MOVE TO UTILITY.
+       * Sets the query field and query type.
        */
-      if (ctrl.selectedField === 'bi_2_dis_filter') {
+      Utils.setListFormat(ctrl.selectedField);
 
-        QueryManager.setSearchField(QueryFields.AUTHOR)
-
-      } else if (ctrl.selectedField === 'dc.title_sort') {
-
-        // In not browsing by author, itemType is sufficient here.    NOT
-        QueryManager.setSearchField(QueryFields.TITLE);
-
-      } else if (ctrl.selectedField === 'dc.date.accessioned_dt') {
-
-        QueryManager.setSearchField(QueryFields.DATE);
-
-      }
-
+      /**
+       * Do the query.
+       * @type {Session|*|{method}}
+         */
       var items = SolrQuery.save({
         params: QueryManager.context.query,
         offset: start
       });
+      /**
+       * Handle the response.
+       */
       items.$promise.then(function (data) {
 
         if (QueryManager.isAuthorListRequest()) {
@@ -103,6 +98,28 @@
           data.results = Utils.authorArraySlice(start, start + end);
 
         }
+
+        if (QueryManager.isSubjectListRequest()) {
+          /**
+           * Add the author array to shared context.
+           * @type {string|Array|*}
+           */
+          QueryManager.setSubjectList(data.authors);
+
+          data.count = QueryManager.getSubjectsCount();
+
+          /**
+           * Todo: this count function works for data sets less than the result set size. Need more deal with the final page of a paging request.
+           */
+          var end = Utils.getPageListCount(data.count, setSize);
+
+          console.log(Utils.subjectArraySlice(start, start + end));
+
+          /** Add authors to the current result set. */
+          data.results = Utils.subjectArraySlice(start, start + end);
+
+        }
+
         /**
          * Update parent component.
          */

@@ -37,7 +37,7 @@ module.exports = {
    * Input: order, offset, terms, [location]
    */
 
-  authorBrowse:         'http://localhost:1234/solr/search/select?sort=bi_sort_1_sort+%s&fl=handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq={!field+f%3Dbi_2_dis_value_filter}%s&fq=search.resourcetype:2&version=2&rows=20%s',
+  authorBrowse:         'http://localhost:1234/solr/search/select?sort=bi_sort_1_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq={!field+f%3Dbi_2_dis_value_filter}%s&fq=search.resourcetype:2&version=2&rows=20%s',
 
   /**
    * Browse for all items with a given subject.
@@ -46,7 +46,7 @@ module.exports = {
    *
    * Input: order, offset, terms, [location]
    */
-  subjectBrowse:        'http://localhost:1234/solr/search/select?sort=bi_sort_1_sort+%s&fl=handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq={!field+f%3Dbi_4_dis_value_filter}%s&fq=search.resourcetype:2&version=2&rows=20%s',
+  subjectBrowse:        'http://localhost:1234/solr/search/select?sort=bi_sort_1_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq={!field+f%3Dbi_4_dis_value_filter}%s&fq=search.resourcetype:2&version=2&rows=20%s',
 
   /**
    * Browse all titles within a given scope.
@@ -64,7 +64,7 @@ module.exports = {
    *
    * Input: order, offset, [location]
    */
-  addDatesBrowse:     'http://localhost:1234/solr/search/select?sort=bi_sort_2_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=20%s',
+  allDatesBrowse:     'http://localhost:1234/solr/search/select?sort=bi_sort_2_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=20%s',
 
   /**
    * Discovery query. Should work as global search or scoped to location.

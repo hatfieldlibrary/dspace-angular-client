@@ -7,7 +7,7 @@
 
 <item-detail-component
 
-  ng-if="$ctrl.field!='author'"
+  ng-if="$ctrl.field!='author' && $ctrl.field!='subject'"
   ng-repeat="col in $ctrl.items"
   title="{{col.title}}"
   author="col.author[0]"
@@ -30,6 +30,19 @@
   field="{{$ctrl.field}}">
 
 </author-detail-component>
+
+
+<subject-detail-component
+
+  ng-if="$ctrl.field=='subject'"
+  ng-repeat="sub in $ctrl.items"
+  subject="{{sub.author.author}}"
+  count="{{sub.author.count}}"
+  type="{{$ctrl.type}}"
+  id="{{$ctrl.id}}"
+  field="{{$ctrl.field}}">
+
+</subject-detail-component>
 
 
 <pager-component

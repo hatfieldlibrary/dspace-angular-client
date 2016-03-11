@@ -10,11 +10,15 @@ dspaceServices.factory('Utils', [
   'CheckSession',
   'QueryActions',
   'QueryFields',
+  'SolrConstants',
+  'QueryTypes',
 
   function (QueryManager,
             CheckSession,
             QueryActions,
-            QueryFields) {
+            QueryFields,
+            SolrConstants,
+            QueryTypes) {
 
     var utils = {};
 
@@ -27,7 +31,7 @@ dspaceServices.factory('Utils', [
         QueryManager.setList(
           model.type,
           model.id,
-          'dc.title_sort',
+        //  'dc.title_sort',
           'asc',
           model.action,
           QueryFields.TITLE
@@ -63,14 +67,40 @@ dspaceServices.factory('Utils', [
 
     utils.authorArraySlice = function (start, end) {
 
-      var authors = QueryManager.getAuthors().slice(start, end);
-      var data = new Array(authors.length);
+      if (end < setSize) {
+        setSize = end;
+      }
+
+      try {
+
+        var authors = QueryManager.getAuthors().slice(start, end);
+
+        var data = new Array(authors.length);
+
+        for (var i = 0; i < setSize; i++) {
+
+          data[i] = {author: authors[i]}
+        }
+
+        return data;
+
+      } catch (err) {
+        console.log(err);
+      }
+
+    };
+
+    utils.subjectArraySlice = function (start, end) {
 
       if (end < setSize) {
         setSize = end;
       }
 
       try {
+
+        var authors = QueryManager.getSubjects().slice(start, end);
+
+        var data = new Array(authors.length);
 
         for (var i = 0; i < setSize; i++) {
 
@@ -102,7 +132,7 @@ dspaceServices.factory('Utils', [
       });
     };
 
-    utils.getPageListCount = function(count, setSize) {
+    utils.getPageListCount = function (count, setSize) {
 
       if (count < setSize) {
         return count;
@@ -111,10 +141,50 @@ dspaceServices.factory('Utils', [
       }
     };
 
+    utils.setListFormat = function (selectedField) {
+
+      console.log(selectedField);
+
+      if (selectedField === SolrConstants.fields[1].label) { // author
+
+        QueryManager.setSearchField(QueryFields.AUTHOR);
+        QueryManager.setQueryType(QueryTypes.AUTHOR_FACETS);
+
+      } else if (selectedField === SolrConstants.fields[0].label) {  // title
+
+        QueryManager.setSearchField(QueryFields.TITLE);
+        QueryManager.setQueryType(QueryTypes.TITLES_LIST);
+
+      } else if (selectedField === SolrConstants.fields[2].label) {   // date
+
+        QueryManager.setSearchField(QueryFields.DATE);
+        QueryManager.setQueryType(QueryTypes.DATES_LIST);
+
+      }
+      else if (selectedField === SolrConstants.fields[3].label) {  // title
+
+        QueryManager.setSearchField(QueryFields.SUBJECT);
+        QueryManager.setQueryType(QueryTypes.SUBJECT_FACETS);
+
+      }
+
+    };
+
+    utils.setBrowseFormat = function(format) {
+
+      if (format === QueryFields.AUTHOR) {
+       // QueryManager.setSearchField(QueryFields.AUTHOR);
+        QueryManager.setQueryType(QueryTypes.AUTHOR_SEARCH);
+      }
+      else if (format === QueryFields.SUBJECT) {
+       // QueryManager.setSearchField(QueryFields.SUBJECT);
+        QueryManager.setQueryType(QueryTypes.SUBJECT_SEARCH);
+      }
+    };
+
     return utils;
 
   }
-
 
 
 ]);

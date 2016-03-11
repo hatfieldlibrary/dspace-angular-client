@@ -8,11 +8,16 @@
 
   function DiscoverCtrl() {
 
+
   }
 
   dspaceComponents.component('discoverComponent', {
 
-    bindings: {},
+    bindings: {
+      terms: '@',
+      id: '@',
+      offset: '@'
+    },
     templateUrl: '/app/discover/templates/discover.html',
     controller: DiscoverCtrl
 

@@ -15,6 +15,24 @@
 
 
   /**
+   * Generates the location solr query value for item type
+   * and id inputs.  Returns empty string if the input strings
+   * are empty.
+   * @param type  type of item (e.g. collection, community)
+   * @param id dspace identifier
+   * @returns {string}  the location solr query param or empty string
+     */
+  function getLocation(type, id) {
+
+    var location = '';
+    if (type.length > 0 && id.length > 0) {
+      location = '&fq=location.'+ type +':'+ id;
+    }
+
+    return location;
+  }
+
+  /**
    * Checks for dspace token in the current session and
    * returns token if present.
    * @param session the Express session object
@@ -59,7 +77,6 @@
     }
   };
 
-
   /**
    * Returns fully qualified URL for the host and port (from configuration).
    * @returns {string}
@@ -100,6 +117,8 @@
     // in practice, this may not be needed since this app will run on dspace host.
     var host = utils.getURL();
 
+    console.log(query.params.query.type);
+
     /**
      * In the current implementation, only the LIST query uses the sort
      * parameter.
@@ -121,26 +140,42 @@
      */
     if (query.params.query.action === constants.QueryActions.LIST && field.length > 0) {
 
-      if (field === 'bi_2_dis_filter') {
-        // List authors.
-        solrUrl = util.format(
-          solrQueries.listCollectionAuthor,
-          query.params.asset.type,
-          query.params.asset.id
-        );
+      var location = getLocation(query.params.asset.type, query.params.asset.id);
 
-      } else {
-        // This is the default query upon opening a collection page.
-        // Used for listing by title and date fields.
+      console.log(location);
+
+
+      if (query.params.query.type === constants.QueryType.AUTHOR_FACETS) {   // get authors list
+
         solrUrl = util.format(
-          solrQueries.listCollectionItem,
-          field,
+          solrQueries[constants.QueryType.AUTHOR_FACETS],
+          location
+        );
+      }
+      else if (query.params.query.type === constants.QueryType.SUBJECT_FACETS) { // get subjects list
+        solrUrl = util.format(
+          solrQueries[constants.QueryType.SUBJECT_FACETS],
+          location
+        );
+      }
+
+      else if (query.params.query.type === constants.QueryType.TITLES_LIST) {   // list items by title
+        solrUrl = util.format(
+          solrQueries[constants.QueryType.TITLES_LIST],
           order,
           query.offset,
-          query.params.asset.type,
-          query.params.asset.id
+          location
         );
 
+      }
+
+      else if (query.params.query.type === constants.QueryType.DATES_LIST) {    // list items by date
+        solrUrl = util.format(
+          solrQueries[constants.QueryType.DATES_LIST],
+          order,
+          query.offset,
+          location
+        );
       }
 
     }
@@ -148,16 +183,28 @@
     /**
      * Get the URL for a BROWSE query.
      */
-    else if (query.params.query.action === constants.QueryActions.BROWSE) {
+    else if (query.params.query.action === constants.QueryActions.BROWSE
+      && query.params.query.terms.length > 0) {
 
-      if (query.params.query.terms.length > 0) {   // browse with search term
+      var location = getLocation(query.params.asset.type, query.params.asset.id);
 
+      if (query.params.query.field === constants.QueryFields.AUTHOR ) {   // search for items by author
         solrUrl = util.format(
-          solrQueries.browseCollectionTerms,
-          query.params.asset.type,
-          query.params.asset.id,
+          solrQueries[constants.QueryType.AUTHOR_SEARCH],
+          'asc',
+          query.params.offset,
           query.params.query.terms,
-          query.params.offset
+          location
+        );
+
+      }
+      else if (query.params.query.field === constants.QueryFields.SUBJECT) {   // search for items by subject
+        solrUrl = util.format(
+          solrQueries[constants.QueryType.SUBJECT_SEARCH],
+          'asc',
+          query.params.offset,
+          query.params.query.terms,
+          location
         );
 
       }
@@ -167,18 +214,22 @@
      * Get the URL for a SEARCH (discovery) query.
      */
     else if (query.params.query.action === constants.QueryActions.SEARCH && query.params.query.terms.length > 0) {
-
-      var location;
+      // discovery location parameter
+      var location = '';
       if (query.params.query.id.length > 0) {
         location = '&fq=location:l' + query.params.query.id;
       }
-      solrUrl = util.format(
-        solrQueries.discover,
-        query.params.query.terms,
-        query.params.offset,
-        query.params.query.terms,
-        location
-      )
+
+      if (query.params.query.type === constants.QueryType.DISCOVER) {   // discovery
+        solrUrl = util.format(
+          solrQueries[constants.QueryType.DISCOVER],
+          query.params.query.terms,
+          query.params.offset,
+          query.params.query.terms,
+          location
+        );
+
+      }
     }
 
     console.log('solr url is ' + solrUrl);
@@ -242,6 +293,61 @@
     ret.results = docsArr;
     ret.authors = authorArr;
     ret.count = authorArr.length;
+
+    return ret;
+
+  };
+
+  exports.processSubject = function(solrResponse) {
+
+    var json = solrResponse.facet_counts.facet_fields;
+
+    var ret = {};
+
+    var authorArr = [];
+    var authors = json.bi_4_dis_filter;
+
+    var count = 0;
+    var authorObj = {};
+
+
+    for (var i = 0; i < authors.length; i++) {
+
+      // The odd indicies in the response array contain count.
+      // Add the count to the author object and add the author
+      // object to the return array.
+      if (i % 2 !== 0) {
+        authorObj.count = authors[i];
+        authorArr[count] = authorObj;
+        count++;
+
+      }
+      // The even indicies contain author information.  Add to
+      //   the author object.
+      else {
+
+        authorObj = {};
+        var author = authors[i].split('|||');
+        authorObj.author = author[1];
+
+      }
+
+    }
+
+    var docsArr = [];
+
+    for (var i = 0; i < solrResponse.response.docs.length; i++) {
+      console.log(solrResponse.response.docs[i]);
+      docsArr[i] = solrResponse.response.docs[i];
+    }
+
+
+
+    ret.results = docsArr;
+    ret.authors = authorArr;
+    ret.count = authorArr.length;
+
+    console.log(ret);
 
     return ret;
 

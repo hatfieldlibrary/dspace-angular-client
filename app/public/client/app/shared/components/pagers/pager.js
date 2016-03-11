@@ -8,7 +8,10 @@
                      SolrBrowseQuery,
                      Utils,
                      QueryManager,
-                     QueryActions) {
+                     QueryActions,
+                     QueryTypes,
+                     QueryFields,
+                     QuerySort) {
 
 
     var ctrl = this;
@@ -43,7 +46,14 @@
 
       QueryManager.clearQuery();
 
-      updateList(start);
+      if (ctrl.action === QueryActions.LIST) {
+        // If pager is attached to item list, initialize
+        // to title.
+        QueryManager.setQueryType(QueryTypes.TITLES_LIST);
+        QueryManager.setSort(QueryFields.TITLE, QuerySort.ASCENDING);
+      }
+
+      updateList(0);
 
     }
 
@@ -57,17 +67,18 @@
 
       Utils.prepQueryContext(ctrl);
 
-      QueryManager.setCurrentOffset(start);
+      QueryManager.setOffset(start);
 
-      console.log(QueryManager.isAuthorListRequest())
+      console.log(QueryManager.isAuthorListRequest());
 
       /**
        * When not paging through an author list,
        * we need to exec a new solr query.
        */
-      if (!QueryManager.isAuthorListRequest()) {
+      if (!QueryManager.isAuthorListRequest() && !QueryManager.isSubjectListRequest()) {
 
         var context = QueryManager.getContext().query;
+
         var items;
         if (ctrl.action === QueryActions.LIST) {
 
@@ -113,11 +124,19 @@
 
         data = [];
 
-        data.count = QueryManager.getAuthorsCount();
-        var end = Utils.getPageListCount(data.count, setSize);
+        if (QueryManager.isAuthorListRequest()) {
 
-        console.log(end);
-        data.results = Utils.authorArraySlice(start, start + end);
+          data.count = QueryManager.getAuthorsCount();
+          var end = Utils.getPageListCount(data.count, setSize);
+          data.results = Utils.authorArraySlice(start, start + end);
+
+        } else if (QueryManager.isSubjectListRequest()) {
+
+          data.count = QueryManager.getSubjectsCount();
+          var end = Utils.getPageListCount(data.count, setSize);
+          data.results = Utils.subjectArraySlice(start, start + end);
+
+        }
 
         updateParent(data);
 

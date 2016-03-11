@@ -8,6 +8,16 @@
 
   function DiscoverListCtrl() {
 
+    var ctrl = this;
+
+    ctrl.onUpdate = function (results, count, field) {
+
+      ctrl.field = field;
+      ctrl.items = results;
+      ctrl. count = count;
+
+    };
+
   }
 
   dspaceComponents.component('discoverListComponent', {

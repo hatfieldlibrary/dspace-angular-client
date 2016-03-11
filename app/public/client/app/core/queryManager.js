@@ -31,6 +31,10 @@ dspaceContext.service('QueryManager', ['QueryFields', function (QueryFields) {
         },
         query: {
           /**
+           * The solr query type.  Possible values are defined in QueryTypes.
+           */
+          type: '',
+          /**
            * The type of query (list, browse or search).
            */
           action: '',
@@ -58,6 +62,8 @@ dspaceContext.service('QueryManager', ['QueryFields', function (QueryFields) {
        * paging request.
        */
       authorArray: [],
+
+      subjectArray: [],
       /**
        * Tracks whether or not a current DSpace session exists.
        */
@@ -69,36 +75,64 @@ dspaceContext.service('QueryManager', ['QueryFields', function (QueryFields) {
       return this.context;
     },
 
-    setCurrentOffset: function(offset) {
-      this.context.query.offset = offset;
+    setOffset: function (offset) {
+      this.context.query.query.offset = offset;
     },
 
-    getCurrentOffset: function() {
-      return this.context.query.offset;
+    getCurrentOffset: function () {
+      return this.context.query.query.offset;
     },
 
-    isAuthorListRequest: function() {
+    isAuthorListRequest: function () {
       return (this.context.query.field === QueryFields.AUTHOR);
     },
 
-    setAuthorsList: function(list) {
+    isSubjectListRequest: function () {
+      return (this.context.query.field === QueryFields.SUBJECT);
+    },
+
+    setAuthorsList: function (list) {
       this.context.authorArray = list;
     },
 
-    getAuthors: function() {
+    setSubjectList: function(list) {
+       this.context.subjectArray = list;
+    },
+
+    getAuthors: function () {
       return this.context.authorArray;
     },
 
-    getAuthorsCount: function() {
-       return this.context.authorArray.length;
+    getSubjects: function () {
+      return this.context.subjectArray;
     },
 
-    setAction: function(action) {
+    getAuthorsCount: function () {
+      if (this.context.authorArray !== undefined)
+      {
+        return this.context.authorArray.length;
+      }
+      return 0;
+    },
+
+    getSubjectsCount: function () {
+      if (this.context.subjectArray !== undefined)
+      {
+        return this.context.subjectArray.length;
+      }
+      return 0;
+    },
+
+    setAction: function (action) {
       this.context.query.query.action = action;
     },
 
-    getSearchField: function() {
+    getSearchField: function () {
       return this.context.query.field;
+    },
+
+    setQueryType: function(type) {
+        this.context.query.query.type = type;
     },
 
     setBrowse: function (type, id, terms, action, field) {
@@ -116,11 +150,11 @@ dspaceContext.service('QueryManager', ['QueryFields', function (QueryFields) {
       this.context.query.field = field;
     },
 
-    setList: function (type, id, sortField, order, action, field) {
+    setList: function (type, id, order, action, field) {
 
       this.context.query.asset.type = type;
       this.context.query.asset.id = id;
-      this.context.query.sort.field = sortField;
+     //rt.field = sortField;
       this.context.query.sort.order = order;
       this.context.query.query.action = action;
       this.context.query.query.field = field;

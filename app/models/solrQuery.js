@@ -2,6 +2,7 @@
 
 var rp = require('request-promise');
 var utils = require('./utils');
+var constants = require('./constants');
 
 (function () {
 
@@ -17,8 +18,8 @@ var utils = require('./utils');
      * Setting the processType. This allows us to distinguish requests
      * to sort an author list from other requests for items (more typical).
      */
-    if (query.params.sort.field.length > 0) {
-      processType = query.params.sort.field;
+    if (query.params.query.type.length > 0) {
+      processType = query.params.query.type;
     }
 
     /**
@@ -65,10 +66,15 @@ var utils = require('./utils');
      */
   function processResult(solrResponse ) {
 
-    if (processType === 'bi_2_dis_filter') {
+
+    if (processType === constants.QueryType.AUTHOR_FACETS  ) {
       return utils.processAuthor(solrResponse);
 
-    } else {
+    } else if (processType === constants.QueryType.SUBJECT_FACETS)   {
+      return utils.processSubject(solrResponse);
+    }
+    else
+     {
       return utils.processItems(solrResponse);
 
     }

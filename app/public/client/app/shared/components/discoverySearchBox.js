@@ -15,21 +15,24 @@
     // pass to service.
     var sb = this;
 
+    sb.update = function() {
+        var url = '/discover/'+ sb.terms +'/'+ sb.id + '/'+ sb.offset;
 
+    }
 
   }
 
-  dspaceComponents.component('mainSearchComponent', {
+  dspaceComponents.component('discoverySearchComponent', {
 
     bindings: {
       type: '@',
-      id: '@',
-      sort: '@',
-      field: '<',
-      mode: '@'
+      id: '@'
+     // sort: '@',
+    //  field: '<',
+    //  mode: '@'
     },
 
-    templateUrl: '/shared/templates/mainSearch.html',
+    templateUrl: '/shared/templates/searchBox.html',
     controller: MainSearchBoxCtrl,
     controllerAs: 'sb'
 
