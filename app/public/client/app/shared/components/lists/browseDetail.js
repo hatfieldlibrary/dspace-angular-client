@@ -7,10 +7,6 @@
 (function () {
 
   function BrowseDetailCtrl() {
-
-    var ctrl = this;
-
-
   }
 
   dspaceComponents.component('browseDetailComponent', {
@@ -23,7 +19,7 @@
       handle: '@',
       id: '@'
     },
-    templateUrl: '/app/browse/templates/browseDetail.html',
+    templateUrl: '/app/shared/templates/lists/browseDetail.html',
     controller: BrowseDetailCtrl
 
   });

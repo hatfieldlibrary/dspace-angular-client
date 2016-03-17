@@ -17,33 +17,47 @@
     var item = $routeParams.item;
 
     /**
-     * Retrieve the object by DSpace handle and add
-     * results to the application context.  Set the view
-     * model's type to indicate which component should be loaded
-     * into the view (community, collection, or item).
+     * Retrieves the item by DSpace handle. Sets the
+     * view model's type (community, collection, or item)
+     * based on the handle response.
      *
      * @param site the site handle id
      * @param item the item handle id
      */
     var init = function () {
 
+
       /** Call handle service. */
       var query = ItemByHandle.query({site: site, item: item});
       query.$promise.then(
+
         function (data) {
 
           /** Add query result to view model. */
           ctrl.data = data;
-          /** Normalize object type. */
-          var type = Utils.getType(data.type);
-          /** Set type on the view model */
-          ctrl.type = type;
-          ctrl.id = data.id;
-          /** Set the type and id in shared context. */
-         // Data.query.asset.type = type;
-         // Data.query.asset.id = data.id;
-          /** Check whether we have a DSpace session */
-          Utils.checkSession();
+
+          /** Set normalized type value.  This should correspond to one of
+           * the values defined in AssetTypes.  */
+          ctrl.nType = Utils.getNormalizedType(data.type);
+
+          /**
+           * Set result type and dspace ID on the view model. These
+           * values will be passed to the selected component and used by
+           * sub-components like the search box.
+           *
+           * Utils.getType() returns AssetTypes.COLLECTION if the nType of
+           * the current object is an AssetTypes.ITEM. Otherwise, the
+           * nType of the current object is returned.
+           */
+          ctrl.type = Utils.getType(ctrl.nType);
+
+          /**
+           * Utils.getID() will return the parent collection id
+           * if the nType equals AssetTypes.ITEM. Otherwise, the id of
+           * the current object is returned.
+           */
+          ctrl.id = Utils.getId(data, ctrl.nType);
+
 
         })
         .catch(function (err) {
@@ -57,20 +71,20 @@
   }
 
   dspaceComponents.component('handleComponent', {
-    template:
 
-    '<!-- Switch components based on item type -->  ' +
-    '<div ng-if="$ctrl.type== \'coll\'">  ' +
-        '<collection-component data="$ctrl.data" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></collection-component> '  +
-      '</div> ' +
-      '<div ng-if="$ctrl.type==\'comm\'">  '   +
-        '<community-component data="$ctrl.data"></community-component>  '  +
-      '</div>  '  +
-      '<div ng-if="$ctrl.type==\'item\'">  '  +
-      '<item-component data="$ctrl.data"></item-component>  '  +
+    template: '<!-- Switch components based on item type --> ' +
+    '<div ng-if="$ctrl.nType==\'coll\'">  ' +
+    '<collection-component data="$ctrl.data" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></collection-component> ' +
+    '</div> ' +
+    '<div ng-if="$ctrl.nType==\'comm\'">  ' +
+    '<community-component data="$ctrl.data" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></community-component>  ' +
+    '</div>' +
+    '<div ng-if="$ctrl.nType==\'item\'"> ' +
+    '<item-component data="$ctrl.data" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-component>  ' +
     '</div>',
 
     controller: HandleCtrl
+
   });
 
 })();

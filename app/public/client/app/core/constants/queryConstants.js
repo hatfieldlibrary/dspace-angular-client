@@ -8,7 +8,7 @@
   appConstants.constant('AssetTypes', {
     COLLECTION: 'coll',
     COMMUNITY: 'comm',
-    Item: 'item'
+    ITEM: 'item'
   });
 
   appConstants.constant('QueryActions', {
@@ -27,7 +27,8 @@
     AUTHOR: 'author',
     TITLE: 'title',
     DATE: 'date',
-    SUBJECT: 'subject'
+    SUBJECT: 'subject',
+    DISCOVER: 'discover'
   });
 
   appConstants.constant('QuerySort', {
@@ -42,8 +43,19 @@
     SUBJECT_SEARCH: 'subjectBrowse',
     TITLES_LIST: 'allTitlesBrowse',
     DATES_LIST: 'allDatesBrowse',
+    START_DATE: 'startDateLocation',
+    START_LETTER: 'startLetterLocation',
     DISCOVER: 'discover'
 
+  });
+
+  appConstants.constant('ListQueryFieldMap', {
+    fields: [
+      {label: 'Title', value: 'allTitlesBrowse'},
+      {label: 'Author', value: 'authorFacets'},
+      {label: 'Date', value: 'allDatesBrowse'},
+      {label: 'Subject', value: 'subjectFacets'}
+    ]
   });
 
 })();

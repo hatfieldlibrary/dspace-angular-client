@@ -10,58 +10,95 @@ dspaceServices.factory('Utils', [
   'CheckSession',
   'QueryActions',
   'QueryFields',
-  'SolrConstants',
+  'AssetTypes',
   'QueryTypes',
 
   function (QueryManager,
             CheckSession,
             QueryActions,
             QueryFields,
-            SolrConstants,
+            AssetTypes,
             QueryTypes) {
 
     var utils = {};
 
     var setSize = 10;
 
-    utils.prepQueryContext = function (model) {
 
-      if (model.action === QueryActions.LIST) {
+    /**
+     * Returns a truncated copy of the type.
+     * @param type value returned by DSpace API.
+     * @returns {string}  truncated string
+       */
+    utils.getNormalizedType = function (type) {
 
-        QueryManager.setList(
-          model.type,
-          model.id,
-        //  'dc.title_sort',
-          'asc',
-          model.action,
-          QueryFields.TITLE
-        );
+      return type.substring(0, 4);
+
+    };
+
+    /**
+     * Checks type value. If it is equal to
+     * AssetTypes.ITEM, this method returns
+     * AssetTypes.COLLECTION.  Otherwise return
+     * the input type.
+     *
+     * @param type the normalized type string
+     * @returns {*}
+       */
+    utils.getType = function(type) {
 
 
-      } else if (model.action === QueryActions.BROWSE) {
-
-        QueryManager.setBrowse(
-          model.type,
-          model.id,
-          model.terms,
-          model.action,
-          model.field
-        );
-
-
-      } else if (model.action === QueryActions.SEARCH) {
-
-        QueryManager.setSearch(
-          model.terms,
-          model.id
-        )
+      if (type === AssetTypes.ITEM) {
+        return AssetTypes.COLLECTION;
       }
+      return type;
+
+    };
+
+    /**
+     * Checks the type value and returns
+     * the id of the parent collection if the
+     * item type is equal to AssetTypes.ITEM.
+     * @param data the full DSpace response
+     * @param type the normalized object type
+     * @returns {*}
+       */
+    utils.getId = function(data, type) {
+
+      if (type === AssetTypes.ITEM) {
+        return data.parentCollection.id;
+      }
+      return data.id;
 
     };
 
 
-    utils.getType = function (type) {
-      return type.substring(0, 4);
+    utils.getDisplayListType = function (action) {
+
+      var displayListType = '';
+
+      if (QueryManager.isAuthorListRequest()) {
+
+        displayListType = QueryFields.AUTHOR;
+
+      } else if (QueryManager.isSubjectListRequest()) {
+
+        displayListType = QueryFields.SUBJECT;
+
+      } else {
+
+        if (action === QueryActions.SEARCH) {
+
+          displayListType = QueryFields.DISCOVER;
+
+        } else {
+
+          displayListType = QueryFields.TITLE;
+
+        }
+      }
+
+      return displayListType;
     };
 
 
@@ -141,43 +178,39 @@ dspaceServices.factory('Utils', [
       }
     };
 
-    utils.setListFormat = function (selectedField) {
+    utils.setQueryField = function (selectedField) {
 
       console.log(selectedField);
 
-      if (selectedField === SolrConstants.fields[1].label) { // author
+      if (selectedField === QueryTypes.AUTHOR_FACETS) {
 
         QueryManager.setSearchField(QueryFields.AUTHOR);
-        QueryManager.setQueryType(QueryTypes.AUTHOR_FACETS);
-
-      } else if (selectedField === SolrConstants.fields[0].label) {  // title
-
-        QueryManager.setSearchField(QueryFields.TITLE);
-        QueryManager.setQueryType(QueryTypes.TITLES_LIST);
-
-      } else if (selectedField === SolrConstants.fields[2].label) {   // date
-
-        QueryManager.setSearchField(QueryFields.DATE);
-        QueryManager.setQueryType(QueryTypes.DATES_LIST);
 
       }
-      else if (selectedField === SolrConstants.fields[3].label) {  // title
+      else if (selectedField === QueryTypes.TITLES_LIST) {
+
+        QueryManager.setSearchField(QueryFields.TITLE);
+
+      }
+      else if (selectedField === QueryTypes.DATES_LIST) {
+
+        QueryManager.setSearchField(QueryFields.DATE);
+
+      }
+      else if (selectedField === QueryTypes.SUBJECT_FACETS) {
 
         QueryManager.setSearchField(QueryFields.SUBJECT);
-        QueryManager.setQueryType(QueryTypes.SUBJECT_FACETS);
 
       }
 
     };
 
-    utils.setBrowseFormat = function(format) {
+    utils.setBrowseFormat = function (format) {
 
       if (format === QueryFields.AUTHOR) {
-       // QueryManager.setSearchField(QueryFields.AUTHOR);
         QueryManager.setQueryType(QueryTypes.AUTHOR_SEARCH);
       }
       else if (format === QueryFields.SUBJECT) {
-       // QueryManager.setSearchField(QueryFields.SUBJECT);
         QueryManager.setQueryType(QueryTypes.SUBJECT_SEARCH);
       }
     };

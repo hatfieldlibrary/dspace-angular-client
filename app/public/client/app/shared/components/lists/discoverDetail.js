@@ -11,10 +11,13 @@
   }
 
   dspaceComponents.component('discoverDetailComponent', {
-    bindings: {
 
+    bindings: {
+      title: '@',
+      description: '<',
+      count: '@'
     },
-    template: '<p>{{$ctrl.title}}</p>',
+    templateUrl: '/app/shared/templates/lists/discoverDetail.html',
     controller: DiscoverDetailCtrl
   })
 

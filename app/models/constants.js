@@ -41,6 +41,8 @@ module.exports = {
     SUBJECT_SEARCH: 'subjectBrowse',
     TITLES_LIST: 'allTitlesBrowse',
     DATES_LIST: 'allDatesBrowse',
+    START_DATE: 'startDateLocation',
+    START_LETTER: 'startLetterLocation',
     DISCOVER: 'discover'
 
   }

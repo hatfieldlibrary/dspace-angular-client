@@ -8,14 +8,11 @@
 
     var ctrl = this;
 
-    ctrl.action = 'list';
-
-
     ctrl.onUpdate = function (results, count, field) {
 
-      ctrl.field = field;
       ctrl.items = results;
-      ctrl. count = count;
+      ctrl.count = count;
+      ctrl.field = field;
 
     };
 
@@ -24,11 +21,7 @@
 
   dspaceComponents.component('itemListComponent', {
 
-    bindings: {
-      type: '@',
-      id: '@'
-    },
-    templateUrl: '/handle/templates/itemList.html',
+    templateUrl: '/shared/templates/lists/itemList.html',
     controller: ItemListCtrl
 
   });

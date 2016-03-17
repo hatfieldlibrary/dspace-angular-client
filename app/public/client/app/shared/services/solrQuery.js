@@ -15,7 +15,7 @@ dspaceServices.factory('SolrQuery', ['$resource',
 
 dspaceServices.factory('SolrBrowseQuery', ['$resource',
   function ($resource) {
-    return $resource('/solrQuery/:type/:id/:field/:terms/:offset', {}, {
+    return $resource('/solrQuery/:site/:id/:field/:terms/:offset', {}, {
       query: {method: 'GET', isArray: false}
     });
   }]);

@@ -34,16 +34,19 @@ var dspaceApp = angular.module('dspaceApp', [
         .when('/communities', {
           templateUrl: '/partials/communities.html'
         })
-        .when('/browse/:type/:item/:field/:terms/:offset', {
+        .when('/browse/:site/:item/:field/:terms/:offset', {
           templateUrl: '/partials/browse.html'
         })
-        .when('/discover/:terms/:id/:offset', {
+        .when('/discover', {
         templateUrl: '/partials/discover.html'
       });
 
       $locationProvider.html5Mode(true).hashPrefix('!');
 
-    }]);
+    }
+  ]);
+
+
 
 
   // Angular Material configuration...

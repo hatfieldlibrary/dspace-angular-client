@@ -14,18 +14,19 @@ var constants = require('./constants');
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
 
+    console.log(query);
     /**
      * Setting the processType. This allows us to distinguish requests
      * to sort an author list from other requests for items (more typical).
      */
-    if (query.params.query.type.length > 0) {
-      processType = query.params.query.type;
+    if (query.params.query.qType.length > 0) {
+      processType = query.params.query.qType;
     }
 
     /**
      * Get the solr URL.
      * @type {string}
-       */
+     */
     var solrUrl = utils.getSolrUrl(query);
 
     /**
@@ -63,18 +64,22 @@ var constants = require('./constants');
    *
    * @param solrResponse  the response form the solr query
    * @returns {{}}
-     */
-  function processResult(solrResponse ) {
+   */
+  function processResult(solrResponse) {
 
-
-    if (processType === constants.QueryType.AUTHOR_FACETS  ) {
+    if (processType === constants.QueryType.AUTHOR_FACETS) {
       return utils.processAuthor(solrResponse);
 
-    } else if (processType === constants.QueryType.SUBJECT_FACETS)   {
-      return utils.processSubject(solrResponse);
     }
-    else
-     {
+    else if (processType === constants.QueryType.SUBJECT_FACETS) {
+      return utils.processSubject(solrResponse);
+
+    }
+    else if (processType === constants.QueryType.DISCOVER) {
+      return utils.parseDiscoveryResult(solrResponse);
+
+    }
+    else {
       return utils.processItems(solrResponse);
 
     }

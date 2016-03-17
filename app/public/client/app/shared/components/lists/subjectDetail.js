@@ -23,7 +23,7 @@
 
     },
     controller: SubjectDetailController,
-    template: '<div><h4><a ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.subject}}/{{$ctrl.offset}}" target="_top">{{$ctrl.subject}} ({{$ctrl.count}})hi</a></h4></div>'
+    template: '<div><h4><a ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.subject}}/{{$ctrl.offset}}">{{$ctrl.subject}} ({{$ctrl.count}})hi</a></h4></div>'
 
   });
 

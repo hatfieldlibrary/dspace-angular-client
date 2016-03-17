@@ -13,34 +13,34 @@
   };
 
   exports.browse = function (req, res) {
-    console.log('lets browse')
 
     /** @type {string} the site id from the handle */
-    var type = req.params.type;
+    var site = req.params.site;
     /** @type {string} the item id from the handle */
-    var item = req.params.item;
+    var id = req.params.id;
     var field = req.params.field;
     var terms = req.params.terms;
     var offset = req.params.offset;
 
     console.log('offset ' + offset)
 
-    req.session.url = '/browse/' + type + '/' + item + '/' + field + '/' + terms + '/' + offset;
+    req.session.url = '/browse/' + site + '/' + id + '/' + field + '/' + terms + '/' + offset;
+    console.log(req.session.url);
     var session = req.session;
 
     var query = {
       params: {
         asset: {
-          type: type,
-          id: item
+          type: site,
+          id: id
         }
         ,
         query: {
           action: constants.QueryActions.BROWSE,
           terms: terms,
-          field: field
-        },
-        offset: offset
+          field: field,
+          offset: offset
+        }
       }
     };
 

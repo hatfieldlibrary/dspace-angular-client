@@ -7,18 +7,20 @@
 (function () {
 
   /**
-   * Controller for the sort options component included in
+   * Controller for the sort options component that is included in
    * the parent itemList component.
-   *
-   * @param SolrQueryByType  server for the node REST API endpoint
-   * @param Utils  utilities
-   * @param QueryManager  share context object
-   * @constructor
-   */
+   * @param SolrQuery
+   * @param ListQueryFieldMap
+   * @param Utils
+   * @param QuerySort
+   * @param QueryManager
+     * @constructor
+     */
   function SortOptionsCtrl(SolrQuery,
-                           SolrConstants,
+                           ListQueryFieldMap,
                            Utils,
                            QuerySort,
+                           QueryFields,
                            QueryManager) {
 
     var ctrl = this;
@@ -34,17 +36,19 @@
      */
     var setSize = 10;
 
+    var displayListType = QueryFields.TITLE;
+
     /**
      * The select fields view model.
      * @type {*[]}
      */
-    ctrl.fields = SolrConstants.fields;
+    ctrl.fields = ListQueryFieldMap.fields;
 
     /**
-     * The select model. Initialize to title.
+     * The selected field. Initialize to title.
      * @type {string}
      */
-    ctrl.selectedField = SolrConstants.fields[0].label;
+    ctrl.selectedField = ListQueryFieldMap.fields[0].value;
 
 
     /**
@@ -52,32 +56,43 @@
      */
     ctrl.setField = function () {
 
-      console.log(ctrl.selectedField);
+      /**
+       * Return offset to zero in case user has paged through
+       * a previous result list.
+       */
+      QueryManager.setOffset(0);
+
+      /**
+       * Set the QueryType (identifies the solr query to be used).
+       */
+      QueryManager.setQueryType(ctrl.selectedField);
+
 
       /**
        * Update query model with the new values.
        */
-      QueryManager.setSort(ctrl.selectedField, QuerySort.ASCENDING);
-
-      /**
-       * Sets the query field and query type.
-       */
-      Utils.setListFormat(ctrl.selectedField);
+      QueryManager.setSort(QuerySort.ASCENDING);
 
       /**
        * Do the query.
        * @type {Session|*|{method}}
          */
       var items = SolrQuery.save({
+
         params: QueryManager.context.query,
         offset: start
+
       });
       /**
        * Handle the response.
        */
       items.$promise.then(function (data) {
 
+        console.log(QueryManager.isAuthorListRequest())
+
         if (QueryManager.isAuthorListRequest()) {
+
+          displayListType = QueryFields.AUTHOR;
 
           /**
            * Add the author array to shared context.
@@ -97,9 +112,12 @@
           /** Add authors to the current result set. */
           data.results = Utils.authorArraySlice(start, start + end);
 
+
         }
 
-        if (QueryManager.isSubjectListRequest()) {
+        else if (QueryManager.isSubjectListRequest()) {
+
+          displayListType = QueryFields.SUBJECT;
           /**
            * Add the author array to shared context.
            * @type {string|Array|*}
@@ -113,17 +131,28 @@
            */
           var end = Utils.getPageListCount(data.count, setSize);
 
-          console.log(Utils.subjectArraySlice(start, start + end));
-
           /** Add authors to the current result set. */
           data.results = Utils.subjectArraySlice(start, start + end);
 
         }
 
+        else {
+
+          displayListType = QueryFields.TITLE;
+
+        }
+
+
         /**
          * Update parent component.
          */
-        ctrl.onUpdate({results: data.results, count: data.count, field: QueryManager.getSearchField()});
+        ctrl.onUpdate({
+          results: data.results,
+          count: data.count,
+          type: QueryManager.getAssetType(),
+          id: QueryManager.getAssetId(),
+          field: displayListType
+        });
 
 
       });
@@ -135,6 +164,7 @@
   dspaceComponents.component('sortOptionsComponent', {
 
     bindings: {
+      // callback function
       onUpdate: '&'
     },
     templateUrl: '/shared/templates/sortOptions.html',

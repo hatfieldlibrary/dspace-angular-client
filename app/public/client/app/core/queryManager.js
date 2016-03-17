@@ -9,7 +9,7 @@ var dspaceContext = angular.module('dspaceContext', []);
  * one controller and no data to share.  If that remains
  * the case, no need for context!
  */
-dspaceContext.service('QueryManager', ['QueryFields', function (QueryFields) {
+dspaceContext.service('QueryManager', ['QueryTypes', function (QueryTypes) {
 
 
   return {
@@ -25,7 +25,7 @@ dspaceContext.service('QueryManager', ['QueryFields', function (QueryFields) {
         },
         sort: {
           /** Solr sort field. */
-          field: '',
+          field: '',   // unused, the sort field is included in the full query that's assoicated with the QueryType.
           /** Solr sort order. */
           order: ''
         },
@@ -33,7 +33,7 @@ dspaceContext.service('QueryManager', ['QueryFields', function (QueryFields) {
           /**
            * The solr query type.  Possible values are defined in QueryTypes.
            */
-          type: '',
+          qType: '',
           /**
            * The type of query (list, browse or search).
            */
@@ -47,7 +47,7 @@ dspaceContext.service('QueryManager', ['QueryFields', function (QueryFields) {
            */
           terms: '',
           /**
-           * The field can be 'title', 'subject', 'date' or 'author'.
+           * The field can be 'title', 'subject', 'date', 'author' or 'discover'.
            */
           field: '',
           /**
@@ -62,7 +62,11 @@ dspaceContext.service('QueryManager', ['QueryFields', function (QueryFields) {
        * paging request.
        */
       authorArray: [],
-
+      /**
+       * The array of subjects returned by browse/sort by subject query. This is
+       * cached so that the array (which can be large) isn't returned with every
+       * paging request.
+       */
       subjectArray: [],
       /**
        * Tracks whether or not a current DSpace session exists.
@@ -84,11 +88,11 @@ dspaceContext.service('QueryManager', ['QueryFields', function (QueryFields) {
     },
 
     isAuthorListRequest: function () {
-      return (this.context.query.field === QueryFields.AUTHOR);
+      return (this.context.query.query.qType === QueryTypes.AUTHOR_FACETS);
     },
 
     isSubjectListRequest: function () {
-      return (this.context.query.field === QueryFields.SUBJECT);
+      return (this.context.query.query.qType === QueryTypes.SUBJECT_FACETS);
     },
 
     setAuthorsList: function (list) {
@@ -123,67 +127,60 @@ dspaceContext.service('QueryManager', ['QueryFields', function (QueryFields) {
       return 0;
     },
 
+    setAssetType: function(type) {
+      this.context.query.asset.type = type;
+    },
+    setAssetId: function(id) {
+      this.context.query.asset.id = id;
+    },
+
+    getAssetType: function() {
+      return this.context.query.asset.type;
+    },
+
+    getAssetId: function() {
+      return this.context.query.asset.id;
+    },
+
+    getAction: function() {
+      return this.context.query.query.action;
+    },
+
     setAction: function (action) {
       this.context.query.query.action = action;
     },
 
     getSearchField: function () {
-      return this.context.query.field;
+      return this.context.query.query.field;
+    },
+
+    setSearchField: function(field) {
+      this.context.query.query.field = field;
     },
 
     setQueryType: function(type) {
-        this.context.query.query.type = type;
+        this.context.query.query.qType = type;
     },
 
-    setBrowse: function (type, id, terms, action, field) {
+    setBrowseField: function(field) {
+      this.context.query.query.field = field;
+    },
 
-      this.context.query.asset.type = type;
-      this.context.query.asset.id = id;
-      this.context.query.query.action = action;
-      // context.query.query.mode = '';
+    getBrowseField: function() {
+      return this.context.query.query.field;
+    },
+
+    setSearchTerms: function (terms) {
+
       this.context.query.query.terms = terms;
-      this.context.query.query.field = field;
-
     },
 
-    setSearchField: function (field) {
-      this.context.query.field = field;
-    },
+    setSort: function (order) {
 
-    setList: function (type, id, order, action, field) {
-
-      this.context.query.asset.type = type;
-      this.context.query.asset.id = id;
-     //rt.field = sortField;
+    //  this.context.query.sort.field = field;
       this.context.query.sort.order = order;
-      this.context.query.query.action = action;
-      this.context.query.query.field = field;
-    },
-
-    setSearch: function (terms, id) {
-
-      context.query.query.terms = terms;
-      context.query.asset.id = id;
-    },
-
-    setSort: function (field, order) {
-
-      this.context.query.sort.field = field;
-      this.context.query.sort.order = order;
-    },
-
-    clearQuery: function () {
-
-      this.context.query.asset.type = '';
-      this.context.query.asset.id = '';
-      this.context.query.sort.field = '';
-      this.context.query.sort.order = '';
-      this.context.query.query.action = '';
-      this.context.query.query.mode = '';
-      this.context.query.query.terms = '';
-      this.context.query.query.field = '';
-
     }
+
 
   };
 }]);

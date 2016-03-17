@@ -1,5 +1,6 @@
 <div>
-  <discovery-search-component type="{{$ctrl.type}}" id="{{$ctrl.id}}"></discovery-search-component>
+  <search-box-component type="{{$ctrl.type}}" id="{{$ctrl.id}}"></search-box-component>
+
   <h3>Parent Community</h3>
   <ul>
     <li>
@@ -48,6 +49,7 @@
   </ul>
   <h3>Items</h3>
 
-  <item-list-component type="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-list-component>
+  <item-list-component handle="{{$ctrl.data.handle}}" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-list-component>
+
 
 </div>

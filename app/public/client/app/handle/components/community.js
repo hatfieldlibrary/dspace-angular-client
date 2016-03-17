@@ -1,5 +1,5 @@
 /**
- * Created by mspalti on 2/24/16.
+ * Created by mspalti on 2/25/16.
  */
 
 'use strict';
@@ -7,14 +7,17 @@
 (function () {
 
   /**
-   * Collection view controller.
+   * Community view controller.
    */
 
   /*globals dspaceControllers*/
 
-  function CollectionCtrl() {
+  function CommunityCtrl(QueryManager) {
 
     var ctrl = this;
+
+    // DSpace ID
+    QueryManager.setAssetId(ctrl.id);
 
     /**
      * Returns the url for a logo.  This method can be called
@@ -30,20 +33,23 @@
 
   }
 
-  dspaceComponents.component('collectionComponent', {
+  dspaceComponents.component('communityComponent', {
 
     bindings: {
       data: '<',
+      // asset type
       type: '@',
+      // asset id
       id: '@'
     },
-    templateUrl: '/handle/templates/collection.html',
-    controller: CollectionCtrl
+    templateUrl: '/handle/templates/community.html',
+    controller: CommunityCtrl
 
   });
 
 
 })();
+
 
 
 

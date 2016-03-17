@@ -117,7 +117,7 @@
     // in practice, this may not be needed since this app will run on dspace host.
     var host = utils.getURL();
 
-    console.log(query.params.query.type);
+    console.log(query.params.query.qType);
 
     /**
      * In the current implementation, only the LIST query uses the sort
@@ -135,31 +135,33 @@
 
     }
 
+    console.log(query.params.query.action);
+    console.log(query.params.query.qType);
     /**
      * Get the solr URL for a LIST query.
      */
-    if (query.params.query.action === constants.QueryActions.LIST && field.length > 0) {
+    if (query.params.query.action === constants.QueryActions.LIST ) {
 
       var location = getLocation(query.params.asset.type, query.params.asset.id);
 
       console.log(location);
 
 
-      if (query.params.query.type === constants.QueryType.AUTHOR_FACETS) {   // get authors list
+      if (query.params.query.qType === constants.QueryType.AUTHOR_FACETS) {   // get authors list
 
         solrUrl = util.format(
           solrQueries[constants.QueryType.AUTHOR_FACETS],
           location
         );
       }
-      else if (query.params.query.type === constants.QueryType.SUBJECT_FACETS) { // get subjects list
+      else if (query.params.query.qType === constants.QueryType.SUBJECT_FACETS) { // get subjects list
         solrUrl = util.format(
           solrQueries[constants.QueryType.SUBJECT_FACETS],
           location
         );
       }
 
-      else if (query.params.query.type === constants.QueryType.TITLES_LIST) {   // list items by title
+      else if (query.params.query.qType === constants.QueryType.TITLES_LIST) {   // list items by title
         solrUrl = util.format(
           solrQueries[constants.QueryType.TITLES_LIST],
           order,
@@ -169,7 +171,7 @@
 
       }
 
-      else if (query.params.query.type === constants.QueryType.DATES_LIST) {    // list items by date
+      else if (query.params.query.qType === constants.QueryType.DATES_LIST) {    // list items by date
         solrUrl = util.format(
           solrQueries[constants.QueryType.DATES_LIST],
           order,
@@ -192,7 +194,7 @@
         solrUrl = util.format(
           solrQueries[constants.QueryType.AUTHOR_SEARCH],
           'asc',
-          query.params.offset,
+          query.params.query.offset,
           query.params.query.terms,
           location
         );
@@ -202,7 +204,7 @@
         solrUrl = util.format(
           solrQueries[constants.QueryType.SUBJECT_SEARCH],
           'asc',
-          query.params.offset,
+          query.params.query.offset,
           query.params.query.terms,
           location
         );
@@ -216,15 +218,16 @@
     else if (query.params.query.action === constants.QueryActions.SEARCH && query.params.query.terms.length > 0) {
       // discovery location parameter
       var location = '';
-      if (query.params.query.id.length > 0) {
-        location = '&fq=location:l' + query.params.query.id;
+      if (query.params.asset.id.length > 0) {
+        location = '&fq=location:l' + query.params.asset.id;
       }
 
-      if (query.params.query.type === constants.QueryType.DISCOVER) {   // discovery
+      console.log(query.params.query.terms);
+      if (query.params.query.qType === constants.QueryType.DISCOVER) {   // discovery
         solrUrl = util.format(
           solrQueries[constants.QueryType.DISCOVER],
           query.params.query.terms,
-          query.params.offset,
+          query.params.query.offset,
           query.params.query.terms,
           location
         );
@@ -363,6 +366,8 @@
    */
   exports.processItems = function (solrResponse) {
 
+    console.log(solrResponse)
+
     var json = solrResponse.response.docs;
 
     var ret = {};
@@ -397,6 +402,39 @@
 
     return ret;
 
+  };
+
+  exports.parseDiscoveryResult = function(json) {
+
+    var docs = json.response.docs;
+    var highlights = json.highlighting;
+    var final = {};
+    var resultArr = [];
+
+    for (var i = 0; i < docs.length; i++) {
+
+      var tmp = {};
+
+      if (docs[i].handle !== undefined) {
+        tmp.handle = docs[i].handle;
+      }
+      if (docs[i]['search.resourceid'] !== undefined) {
+        tmp.resourceid =  docs[i]['search.resourceid'];
+      }
+      if (docs[i]['search.resourcetype'] !== undefined) {
+        tmp.resourcetype =  docs[i]['search.resourcetype'];
+      }
+      var key = tmp.resourcetype + '-' + tmp.resourceid;
+      tmp.title = highlights[key]['dc.title_hl'];
+      tmp.description = highlights[key]['dc.description.abstract_hl'];
+
+      resultArr[i] = tmp;
+    }
+
+    final.results = resultArr;
+    final.count = json.response.numFound;
+
+    return final;
   };
 
 

@@ -9,7 +9,6 @@ var utils = require('./utils');
 
 (function () {
 
-  var processType = '';
   /**
    * Returns API response for handle.
    */

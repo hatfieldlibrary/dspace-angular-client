@@ -4,10 +4,11 @@
 
 </sort-options-component>
 
+<p>Results: {{$ctrl.count}}</p>
 
 <item-detail-component
 
-  ng-if="$ctrl.field!='author' && $ctrl.field!='subject'"
+  ng-if="$ctrl.field!='author' && $ctrl.field!='subject' && $ctrl.field!=='discover'"
   ng-repeat="col in $ctrl.items"
   title="{{col.title}}"
   author="col.author[0]"
@@ -44,12 +45,18 @@
 
 </subject-detail-component>
 
+<discover-detail-component
+
+  ng-if="$ctrl.field=='discover'"
+  ng-repeat="item in $ctrl.items"
+  title="{{item.title[0]}}"
+  description="item.description"
+  count="{{$ctrl.count}}">
+
+</discover-detail-component>
 
 <pager-component
 
-  on-update="$ctrl.onUpdate(results, count, field)"
-  action="{{$ctrl.action}}",
-  type="{{$ctrl.type}}"
-  id="{{$ctrl.id}}">
+  on-update="$ctrl.onUpdate(results, count, field)"   >
 
 </pager-component>

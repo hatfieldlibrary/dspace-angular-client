@@ -4,13 +4,13 @@
 
 (function () {
 
-  function PagerCtrl(SolrQuery,
+  function PagerCtrl($scope,
+                     SolrQuery,
                      SolrBrowseQuery,
                      Utils,
                      QueryManager,
                      QueryActions,
                      QueryTypes,
-                     QueryFields,
                      QuerySort) {
 
 
@@ -28,6 +28,7 @@
     var setSize = 10;
     var count = 0;
 
+
     /**
      * Current start position for view model.
      * @type {number}
@@ -39,18 +40,34 @@
      */
     ctrl.end = start + 10;
 
+    var displayListType = '';
+
     /**
      * Initialize the context.
      */
     function init() {
 
-      QueryManager.clearQuery();
+      QueryManager.setOffset(0);
 
-      if (ctrl.action === QueryActions.LIST) {
+      var action = QueryManager.getAction();
+
+      if (action === QueryActions.LIST) {
         // If pager is attached to item list, initialize
         // to title.
         QueryManager.setQueryType(QueryTypes.TITLES_LIST);
-        QueryManager.setSort(QueryFields.TITLE, QuerySort.ASCENDING);
+        // setting this for now. Most all queries should accept
+        // a sort parameter, so this will be parameterized in the
+        // future.
+        QueryManager.setSort(QuerySort.ASCENDING);
+
+      } else if (action === QueryActions.BROWSE) {
+        QueryManager.setQueryType(QueryActions.BROWSE);
+        QueryManager.setSort(QuerySort.ASCENDING);
+
+      } else if (action === QueryActions.SEARCH) {
+
+        QueryManager.setQueryType(QueryTypes.DISCOVER);
+        QueryManager.setSort(QuerySort.ASCENDING);
       }
 
       updateList(0);
@@ -59,17 +76,21 @@
 
     init();
 
+    $scope.$on("discoverySubmit", function() {
+         updateList(0);
+    });
+
     /**
      * Execute node REST API call for solr query results.
      * @param start the start position for query result.
      */
     function updateList(start) {
 
-      Utils.prepQueryContext(ctrl);
-
       QueryManager.setOffset(start);
 
-      console.log(QueryManager.isAuthorListRequest());
+      var action = QueryManager.getAction();
+
+      displayListType = Utils.getDisplayListType(action);
 
       /**
        * When not paging through an author list,
@@ -80,26 +101,26 @@
         var context = QueryManager.getContext().query;
 
         var items;
-        if (ctrl.action === QueryActions.LIST) {
 
+        if (action === QueryActions.LIST) {
           items = SolrQuery.save({
             params: context,
             offset: start
 
           });
 
-        } else if (ctrl.action === QueryActions.BROWSE) {
+        } else if (action === QueryActions.BROWSE) {
 
           items = SolrBrowseQuery.query({
-            type: context.asset.type,
-            id: context.asset.id,
+            site: QueryManager.getAssetType(),
+            id: QueryManager.getAssetId(),
             field: context.query.field,
             terms: context.query.terms,
             offset: start
 
           });
 
-        } else if (ctrl.action === QueryActions.SEARCH) {
+        } else if (action === QueryActions.SEARCH) {
 
           items = SolrQuery.save({
             params: context,
@@ -110,7 +131,7 @@
         }
         // Handle result of the solr query.
         items.$promise.then(function (data) {
-          console.log(data);
+           console.log(data);
           updateParent(data);
 
         });
@@ -149,10 +170,19 @@
      */
     function updateParent(data) {
 
+
+      var nType = Utils.getNormalizedType(QueryManager.getAssetType());
+      var type = Utils.getType(nType);
+      var id = Utils.getId(data, nType);
+
       ctrl.onUpdate({
+
         results: data.results,
         count: data.count,
-        field: QueryManager.getSearchField()
+        type: type,
+        id: id,
+        field: displayListType
+
       });
 
     }
@@ -194,12 +224,7 @@
     template: '<div ng-click="$ctrl.previous()"><< </div> {{$ctrl.start}} - {{$ctrl.end}} <div ng-click="$ctrl.next()"> >></div>',
 
     bindings: {
-      onUpdate: '&',
-      action: '@',
-      type: '@',
-      id: '@',
-      field: '@',
-      terms: '@'
+      onUpdate: '&'
 
     },
     controller: PagerCtrl

@@ -4,22 +4,31 @@
 
 'use strict';
 
-(function() {
+(function () {
 
-  function DiscoverCtrl() {
+  function DiscoverCtrl(QueryManager, QueryTypes, QueryActions) {
 
+    function init() {
+
+      //  ctrl.type = QueryManager.getAssetType();
+     // ctrl.id = QueryManager.getAssetId();
+
+      // query type
+      QueryManager.setQueryType(QueryTypes.DISCOVER);
+      // query action
+      QueryManager.setAction(QueryActions.SEARCH);
+
+    }
+
+    init();
 
   }
 
   dspaceComponents.component('discoverComponent', {
 
-    bindings: {
-      terms: '@',
-      id: '@',
-      offset: '@'
-    },
     templateUrl: '/app/discover/templates/discover.html',
-    controller: DiscoverCtrl
+    controller: DiscoverCtrl,
+    controllerAs: 'sb'
 
   });
 
