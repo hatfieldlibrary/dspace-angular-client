@@ -9,9 +9,7 @@
                      SolrBrowseQuery,
                      Utils,
                      QueryManager,
-                     QueryActions,
-                     QueryTypes,
-                     QuerySort) {
+                     QueryActions) {
 
 
     var ctrl = this;
@@ -42,33 +40,16 @@
 
     var displayListType = '';
 
+    $scope.$on("discoverySubmit", function() {
+      updateList(0);
+    });
+
     /**
-     * Initialize the context.
+     * Initialize the list.
      */
     function init() {
 
       QueryManager.setOffset(0);
-
-      var action = QueryManager.getAction();
-
-      if (action === QueryActions.LIST) {
-        // If pager is attached to item list, initialize
-        // to title.
-        QueryManager.setQueryType(QueryTypes.TITLES_LIST);
-        // setting this for now. Most all queries should accept
-        // a sort parameter, so this will be parameterized in the
-        // future.
-        QueryManager.setSort(QuerySort.ASCENDING);
-
-      } else if (action === QueryActions.BROWSE) {
-        QueryManager.setQueryType(QueryActions.BROWSE);
-        QueryManager.setSort(QuerySort.ASCENDING);
-
-      } else if (action === QueryActions.SEARCH) {
-
-        QueryManager.setQueryType(QueryTypes.DISCOVER);
-        QueryManager.setSort(QuerySort.ASCENDING);
-      }
 
       updateList(0);
 
@@ -76,9 +57,6 @@
 
     init();
 
-    $scope.$on("discoverySubmit", function() {
-         updateList(0);
-    });
 
     /**
      * Execute node REST API call for solr query results.
@@ -114,6 +92,7 @@
           items = SolrBrowseQuery.query({
             site: QueryManager.getAssetType(),
             id: QueryManager.getAssetId(),
+            qType: QueryManager.getQueryType(),
             field: context.query.field,
             terms: context.query.terms,
             offset: start
@@ -131,7 +110,6 @@
         }
         // Handle result of the solr query.
         items.$promise.then(function (data) {
-           console.log(data);
           updateParent(data);
 
         });
@@ -162,6 +140,8 @@
         updateParent(data);
 
       }
+
+
     }
 
     /**
@@ -169,18 +149,12 @@
      * @param data the next set if items.
      */
     function updateParent(data) {
-
-
-      var nType = Utils.getNormalizedType(QueryManager.getAssetType());
-      var type = Utils.getType(nType);
-      var id = Utils.getId(data, nType);
+      console.log(data)
 
       ctrl.onUpdate({
 
         results: data.results,
         count: data.count,
-        type: type,
-        id: id,
         field: displayListType
 
       });

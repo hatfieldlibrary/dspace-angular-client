@@ -8,6 +8,7 @@
 
     var ctrl = this;
     ctrl.offset =  QueryManager.getCurrentOffset();
+    console.log(ctrl)
 
   }
 

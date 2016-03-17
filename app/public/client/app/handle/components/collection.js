@@ -12,16 +12,25 @@
 
   /*globals dspaceControllers*/
 
-  function CollectionCtrl(QueryManager, QueryActions) {
+  function CollectionCtrl(QueryManager, QueryActions, QueryTypes, QuerySort) {
 
     var ctrl = this;
 
-    // list action
-    QueryManager.setAction(QueryActions.LIST);
-    // item type (collection, community,item) from handle request
-    QueryManager.setAssetType(ctrl.type);
-    // DSpace ID from handle request
-    QueryManager.setAssetId(ctrl.id);
+    function init() {
+      // list action
+      QueryManager.setAction(QueryActions.LIST);
+
+      QueryManager.setQueryType(QueryTypes.TITLES_LIST);
+
+      QueryManager.setSort(QuerySort.ASCENDING);
+
+      // item type (collection, community,item) from handle request
+      QueryManager.setAssetType(ctrl.type);
+      // DSpace ID from handle request
+      QueryManager.setAssetId(ctrl.id);
+    }
+
+    init();
 
 
     /**

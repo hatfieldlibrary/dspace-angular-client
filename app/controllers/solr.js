@@ -15,28 +15,30 @@
   exports.browse = function (req, res) {
 
     /** @type {string} the site id from the handle */
-    var site = req.params.site;
+    var type = req.params.type;
     /** @type {string} the item id from the handle */
     var id = req.params.id;
+    var qType = req.params.qType;
     var field = req.params.field;
     var terms = req.params.terms;
     var offset = req.params.offset;
 
     console.log('offset ' + offset)
 
-    req.session.url = '/browse/' + site + '/' + id + '/' + field + '/' + terms + '/' + offset;
+    req.session.url = '/browse/' + type + '/' + id + '/' + qType + '/' + field + '/' + terms + '/' + offset;
     console.log(req.session.url);
     var session = req.session;
 
     var query = {
       params: {
         asset: {
-          type: site,
+          type: type,
           id: id
         }
         ,
         query: {
           action: constants.QueryActions.BROWSE,
+          qType: qType,
           terms: terms,
           field: field,
           offset: offset
@@ -45,7 +47,7 @@
     };
 
     console.log(query);
-    models.solrBrowse(query, res, session);
+    models.solrQuery(query, res, session);
 
   };
 

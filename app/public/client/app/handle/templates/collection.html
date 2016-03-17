@@ -18,8 +18,7 @@
     <li>
       {{$ctrl.data.name}}
     </li>
-    <li>
-      {{$ctrl.data.introductoryText}}
+    <li ng-bind-html="$ctrl.data.introductoryText">>
     </li>
     <li>
       {{$ctrl.data.handle}}
@@ -49,7 +48,7 @@
   </ul>
   <h3>Items</h3>
 
-  <item-list-component handle="{{$ctrl.data.handle}}" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-list-component>
+  <item-list-component  type="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-list-component>
 
 
 </div>

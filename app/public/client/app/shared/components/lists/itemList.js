@@ -4,15 +4,19 @@
 
 (function () {
 
-  function ItemListCtrl() {
+  function ItemListCtrl(QueryManager) {
 
     var ctrl = this;
+
+    ctrl.type = QueryManager.getAssetType();
+    ctrl.id = QueryManager.getAssetId();
 
     ctrl.onUpdate = function (results, count, field) {
 
       ctrl.items = results;
       ctrl.count = count;
       ctrl.field = field;
+
 
     };
 

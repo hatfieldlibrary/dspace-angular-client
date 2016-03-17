@@ -15,22 +15,61 @@
 
 
   /**
-   * Generates the location solr query value for item type
-   * and id inputs.  Returns empty string if the input strings
-   * are empty.
-   * @param type  type of item (e.g. collection, community)
+   * Generates the location solr filter for non-discovery queries.
+   * When type and id are not provided, returns an empty string so
+   * that the solr query executes without a location limit.
+   * @param type  the asset type
    * @param id dspace identifier
-   * @returns {string}  the location solr query param or empty string
-     */
+   * @returns {string}  the location filter
+   */
   function getLocation(type, id) {
 
-    var location = '';
     if (type.length > 0 && id.length > 0) {
-      location = '&fq=location.'+ type +':'+ id;
+      return '&fq=location.' + type + ':' + id;
     }
 
-    return location;
+    return '';
   }
+
+  /**
+   * Sets the solr filter for anonymous queries when the Express
+   * session cannot provide us with a valid dspaceToken.
+   * @param dspaceToken
+   * @returns {*}
+     */
+  function getAnonymousQueryFilter(dspaceToken) {
+
+    if (dspaceToken.length === 0) {
+      return '&fq=read:(g0+OR+g0+OR+g401+OR+g287)';
+    }
+    return '';
+
+  }
+
+  /**
+   * Sets the location filter for discovery queries based on
+   * the asset type (community or collection).  When type and
+   * id are not provided, returns an empty string so that the
+   * solr query executes without a location limit.
+   * @param type   the asset type
+   * @param id     the dspace id
+   * @returns {*}   the location filter
+     */
+  function getDiscoverLocationFilter(type, id) {
+
+    if (type.length > 0 && id.length > 0) {
+      if (type === constants.AssetTypes.COMMUNITY) {
+        return '&fq=location:m' + id;
+
+      } else if (type === constants.AssetTypes.COLLECTION) {
+        return '&fq=location:l' + id;
+
+      }
+    }
+    return '';
+
+  }
+
 
   /**
    * Checks for dspace token in the current session and
@@ -108,9 +147,9 @@
    * @param query the query parameters
    * @returns {string} the url
    */
-  exports.getSolrUrl = function (query) {
+  exports.getSolrUrl = function (query, dspaceToken) {
 
-    var field = '';
+
     var order = 'asc';
     var solrUrl = '';
 
@@ -125,9 +164,9 @@
      */
     if (query.params.query.action === constants.QueryActions.LIST) {
 
-      if (query.params.sort.field.length > 0) {
-        field = query.params.sort.field;
-      }
+      //if (query.params.sort.field.length > 0) {
+      //  field = query.params.sort.field;
+      //}
 
       if (query.params.sort.order.length > 0) {
         order = query.params.sort.order;
@@ -135,14 +174,15 @@
 
     }
 
-    console.log(query.params.query.action);
-    console.log(query.params.query.qType);
+    var anonymousQueryFilter = getAnonymousQueryFilter(dspaceToken);
+
     /**
      * Get the solr URL for a LIST query.
      */
-    if (query.params.query.action === constants.QueryActions.LIST ) {
+    if (query.params.query.action === constants.QueryActions.LIST) {
 
       var location = getLocation(query.params.asset.type, query.params.asset.id);
+
 
       console.log(location);
 
@@ -151,13 +191,15 @@
 
         solrUrl = util.format(
           solrQueries[constants.QueryType.AUTHOR_FACETS],
-          location
+          location,
+          anonymousQueryFilter
         );
       }
       else if (query.params.query.qType === constants.QueryType.SUBJECT_FACETS) { // get subjects list
         solrUrl = util.format(
           solrQueries[constants.QueryType.SUBJECT_FACETS],
-          location
+          location,
+          anonymousQueryFilter
         );
       }
 
@@ -166,7 +208,8 @@
           solrQueries[constants.QueryType.TITLES_LIST],
           order,
           query.offset,
-          location
+          location,
+          anonymousQueryFilter
         );
 
       }
@@ -176,7 +219,8 @@
           solrQueries[constants.QueryType.DATES_LIST],
           order,
           query.offset,
-          location
+          location,
+          anonymousQueryFilter
         );
       }
 
@@ -190,13 +234,14 @@
 
       var location = getLocation(query.params.asset.type, query.params.asset.id);
 
-      if (query.params.query.field === constants.QueryFields.AUTHOR ) {   // search for items by author
+      if (query.params.query.field === constants.QueryFields.AUTHOR) {   // search for items by author
         solrUrl = util.format(
           solrQueries[constants.QueryType.AUTHOR_SEARCH],
           'asc',
           query.params.query.offset,
           query.params.query.terms,
-          location
+          location,
+          anonymousQueryFilter
         );
 
       }
@@ -206,7 +251,8 @@
           'asc',
           query.params.query.offset,
           query.params.query.terms,
-          location
+          location,
+          anonymousQueryFilter
         );
 
       }
@@ -216,20 +262,18 @@
      * Get the URL for a SEARCH (discovery) query.
      */
     else if (query.params.query.action === constants.QueryActions.SEARCH && query.params.query.terms.length > 0) {
-      // discovery location parameter
-      var location = '';
-      if (query.params.asset.id.length > 0) {
-        location = '&fq=location:l' + query.params.asset.id;
-      }
 
-      console.log(query.params.query.terms);
+      // discovery location filter
+      var location = getDiscoverLocationFilter(query.params.asset.type, query.params.asset.id);
+
       if (query.params.query.qType === constants.QueryType.DISCOVER) {   // discovery
         solrUrl = util.format(
           solrQueries[constants.QueryType.DISCOVER],
           query.params.query.terms,
           query.params.query.offset,
           query.params.query.terms,
-          location
+          location,
+          anonymousQueryFilter
         );
 
       }
@@ -301,7 +345,7 @@
 
   };
 
-  exports.processSubject = function(solrResponse) {
+  exports.processSubject = function (solrResponse) {
 
     var json = solrResponse.facet_counts.facet_fields;
 
@@ -343,7 +387,6 @@
       console.log(solrResponse.response.docs[i]);
       docsArr[i] = solrResponse.response.docs[i];
     }
-
 
 
     ret.results = docsArr;
@@ -404,7 +447,7 @@
 
   };
 
-  exports.parseDiscoveryResult = function(json) {
+  exports.parseDiscoveryResult = function (json) {
 
     var docs = json.response.docs;
     var highlights = json.highlighting;
@@ -419,10 +462,10 @@
         tmp.handle = docs[i].handle;
       }
       if (docs[i]['search.resourceid'] !== undefined) {
-        tmp.resourceid =  docs[i]['search.resourceid'];
+        tmp.resourceid = docs[i]['search.resourceid'];
       }
       if (docs[i]['search.resourcetype'] !== undefined) {
-        tmp.resourcetype =  docs[i]['search.resourcetype'];
+        tmp.resourcetype = docs[i]['search.resourcetype'];
       }
       var key = tmp.resourcetype + '-' + tmp.resourceid;
       tmp.title = highlights[key]['dc.title_hl'];

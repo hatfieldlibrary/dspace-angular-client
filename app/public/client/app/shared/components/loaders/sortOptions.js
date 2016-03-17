@@ -38,6 +38,9 @@
 
     var displayListType = QueryFields.TITLE;
 
+    ctrl.type = QueryManager.getAssetType();
+    ctrl.id = QueryManager.getAssetId();
+
     /**
      * The select fields view model.
      * @type {*[]}
@@ -142,15 +145,12 @@
 
         }
 
-
         /**
          * Update parent component.
          */
         ctrl.onUpdate({
           results: data.results,
           count: data.count,
-          type: QueryManager.getAssetType(),
-          id: QueryManager.getAssetId(),
           field: displayListType
         });
 

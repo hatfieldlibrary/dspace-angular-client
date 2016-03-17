@@ -85,9 +85,7 @@ module.exports = function (app, config, passport) {
 
   app.use('/handleRequest/:site/:item', handle.getItem);
 
-  app.get('/solrQuery/:site/:id/:field/:terms/:offset', solr.browse);
-
- // app.get('/discover/:type/:id/:offset', solr.query);
+  app.get('/solrQuery/:type/:id/:qType/:field/:terms/:offset', solr.browse);
 
   app.post('/solrQuery', solr.query);
 

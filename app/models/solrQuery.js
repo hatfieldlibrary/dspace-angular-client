@@ -27,7 +27,7 @@ var constants = require('./constants');
      * Get the solr URL.
      * @type {string}
      */
-    var solrUrl = utils.getSolrUrl(query);
+    var solrUrl = utils.getSolrUrl(query, dspaceTokenHeader);
 
     /**
      * The request-promise.

@@ -25,7 +25,7 @@ dspaceContext.service('QueryManager', ['QueryTypes', function (QueryTypes) {
         },
         sort: {
           /** Solr sort field. */
-          field: '',   // unused, the sort field is included in the full query that's assoicated with the QueryType.
+          field: '',   // unused, the sort field is included in the solr query that's assigned to the QueryType.
           /** Solr sort order. */
           order: ''
         },
@@ -160,6 +160,11 @@ dspaceContext.service('QueryManager', ['QueryTypes', function (QueryTypes) {
 
     setQueryType: function(type) {
         this.context.query.query.qType = type;
+    },
+
+    getQueryType: function() {
+      console.log(this.context.query.query.qType)
+      return this.context.query.query.qType;
     },
 
     setBrowseField: function(field) {

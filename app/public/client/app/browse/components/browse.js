@@ -7,48 +7,47 @@
 (function () {
 
   function BrowseCtrl($routeParams,
-                      Utils,
                       QueryManager,
                       QueryTypes,
                       QueryActions,
+                      QuerySort,
                       QueryFields) {
 
     var ctrl = this;
 
-    ctrl.site = $routeParams.site;
-    ctrl.id = $routeParams.item;
+    ctrl.type = $routeParams.type;
+    ctrl.id = $routeParams.id;
     ctrl.terms = $routeParams.terms;
     ctrl.field = $routeParams.field;
     ctrl.action = QueryActions.BROWSE;
 
 
-    QueryManager.setAction(QueryActions.BROWSE);
+    function init() {
 
-    //QueryManager.setHandleSite(ctrl.site);
-    //
-    //QueryManager.setHandleId(ctrl.id);
+      QueryManager.setAction(QueryActions.BROWSE);
 
-    QueryManager.setSearchTerms(ctrl.terms);
+      QueryManager.setSearchTerms(ctrl.terms);
+
+      QueryManager.setSort(QuerySort.ASCENDING);
+
+      if (ctrl.field === QueryFields.SUBJECT) {
+
+        QueryManager.setQueryType(QueryTypes.SUBJECT_SEARCH);
+
+        QueryManager.setBrowseField(QueryFields.SUBJECT);
 
 
-    if (ctrl.field === QueryFields.SUBJECT) {
+      } else if (ctrl.field === QueryFields.AUTHOR) {
 
-      QueryManager.setQueryType(QueryTypes.SUBJECT_SEARCH);
+        QueryManager.setQueryType(QueryTypes.AUTHOR_SEARCH);
 
-      QueryManager.setBrowseField(QueryFields.SUBJECT);
+        QueryManager.setBrowseField(QueryFields.AUTHOR);
 
-
-    } else if (ctrl.field === QueryFields.AUTHOR) {
-
-      QueryManager.setQueryType(QueryTypes.AUTHOR_SEARCH);
-
-      QueryManager.setBrowseField(QueryFields.AUTHOR);
-
+      }
     }
 
+    init();
 
-    /** Check whether we have a DSpace session */
-  //  Utils.checkSession();
 
   }
 

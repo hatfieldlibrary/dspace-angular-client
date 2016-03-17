@@ -6,17 +6,19 @@
 
 (function () {
 
-  function DiscoverCtrl(QueryManager, QueryTypes, QueryActions) {
+  function DiscoverCtrl(QueryManager,
+                        QueryTypes,
+                        QueryActions,
+                        QuerySort) {
+
 
     function init() {
 
-      //  ctrl.type = QueryManager.getAssetType();
-     // ctrl.id = QueryManager.getAssetId();
-
-      // query type
       QueryManager.setQueryType(QueryTypes.DISCOVER);
-      // query action
+
       QueryManager.setAction(QueryActions.SEARCH);
+
+      QueryManager.setSort(QuerySort.ASCENDING);
 
     }
 

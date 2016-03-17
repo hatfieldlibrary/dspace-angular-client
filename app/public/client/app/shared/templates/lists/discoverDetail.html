@@ -1,4 +1,4 @@
-<p><strong>{{$ctrl.title}}</strong></p>
+<p><strong ng-bind-html="$ctrl.title">></strong></p>
 
 
-<p ng-repeat="desc in $ctrl.description"> {{desc}}</p>
+<p ng-repeat="desc in $ctrl.description" ng-bind-html="desc"></p>

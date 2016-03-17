@@ -37,7 +37,7 @@ module.exports = {
    * Input: order, offset, terms, [location]
    */
 
-  authorBrowse:        'http://localhost:1234/solr/search/select?sort=bi_sort_1_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq={!field+f%3Dbi_2_dis_value_filter}%s&fq=search.resourcetype:2&version=2&rows=20%s',
+  authorBrowse:        'http://localhost:1234/solr/search/select?sort=bi_sort_1_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq={!field+f%3Dbi_2_dis_value_filter}%s&fq=search.resourcetype:2%s&version=2&rows=20%s',
 
   /**
    * Browse for all items with a given subject.
@@ -46,7 +46,7 @@ module.exports = {
    *
    * Input: order, offset, terms, [location]
    */
-  subjectBrowse:        'http://localhost:1234/solr/search/select?sort=bi_sort_1_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq={!field+f%3Dbi_4_dis_value_filter}%s&fq=search.resourcetype:2&version=2&rows=20%s',
+  subjectBrowse:        'http://localhost:1234/solr/search/select?sort=bi_sort_1_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq={!field+f%3Dbi_4_dis_value_filter}%s&fq=search.resourcetype:2%s&s&version=2&rows=20%s',
 
   /**
    * Browse all titles within a given scope.
@@ -55,7 +55,7 @@ module.exports = {
    *
    * Input: order, offset, [location]
    */
-  allTitlesBrowse:      'http://localhost:1234/solr/search/select?sort=bi_sort_1_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=20%s',
+  allTitlesBrowse:      'http://localhost:1234/solr/search/select?sort=bi_sort_1_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=20%s%s',
 
   /**
    * Browse all titles by date within a given scope.
@@ -64,7 +64,7 @@ module.exports = {
    *
    * Input: order, offset, [location]
    */
-  allDatesBrowse:       'http://localhost:1234/solr/search/select?sort=bi_sort_2_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=20%s',
+  allDatesBrowse:       'http://localhost:1234/solr/search/select?sort=bi_sort_2_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=20%s%s',
 
   /**
    * Discovery query. Should work as global search or scoped to location.
@@ -74,18 +74,18 @@ module.exports = {
    * Input: terms, offset, terms(2), [location]
    */
 
-  discover:             'http://localhost:1234/solr/search/select?f.dc.title_hl.hl.snippets=5&f.dc.title_hl.hl.fragsize=0&spellcheck=true&sort=score+desc&spellcheck.q=%s&f.fulltext_hl.hl.fragsize=250&hl.fl=dc.description.abstract_hl&hl.fl=dc.title_hl&hl.fl=dc.contributor.author_hl&hl.fl=fulltext_hl&wt=json&spellcheck.collate=true&hl=true&version=2&rows=10&f.fulltext_hl.hl.snippets=2&f.dc.description.abstract_hl.hl.snippets=2&f.dc.contributor.author_hl.hl.snippets=5&fl=handle,search.resourcetype,search.resourceid&start=%s&q=%s&f.dc.contributor.author_hl.hl.fragsize=0&hl.usePhraseHighlighter=true&f.dc.description.abstract_hl.hl.fragsize=250&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)%s',
+  discover:             'http://localhost:1234/solr/search/select?f.dc.title_hl.hl.snippets=5&f.dc.title_hl.hl.fragsize=0&spellcheck=true&sort=score+desc&spellcheck.q=%s&f.fulltext_hl.hl.fragsize=250&hl.fl=dc.description.abstract_hl&hl.fl=dc.title_hl&hl.fl=dc.contributor.author_hl&hl.fl=fulltext_hl&wt=json&spellcheck.collate=true&hl=true&version=2&rows=10&f.fulltext_hl.hl.snippets=2&f.dc.description.abstract_hl.hl.snippets=2&f.dc.contributor.author_hl.hl.snippets=5&fl=handle,search.resourcetype,search.resourceid&start=%s&q=%s&f.dc.contributor.author_hl.hl.fragsize=0&hl.usePhraseHighlighter=true&f.dc.description.abstract_hl.hl.fragsize=250%s&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)%s',
 
 
   /**
    * input date, location
    */
-  startDateLocation:     'fl=handle,search.resourcetype,search.resourceid&start=0&q=bi_sort_2_sort:+[*+TO+"%s"}&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=0%s',
+  startDateLocation:     'fl=handle,search.resourcetype,search.resourceid&start=0&q=bi_sort_2_sort:+[*+TO+"%s"}&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=0%s%s',
 
 
   /**
    * input letter, location
    */
-  indexLetterLocation:    'fl=handle,search.resourcetype,search.resourceid&start=0&q=bi_sort_1_sort:+[*+TO+"%s"}&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=0%s'
+  indexLetterLocation:    'fl=handle,search.resourcetype,search.resourceid&start=0&q=bi_sort_1_sort:+[*+TO+"%s"}&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=0%s%s'
 
 };
