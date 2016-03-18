@@ -35,7 +35,7 @@
 
   dspaceComponents.component('discoverySearchBoxComponent', {
 
-    templateUrl: '/shared/templates/discoverySearchBox.html',
+    templateUrl: '/shared/templates/search/discoverySearchBox.html',
     controller: DiscoverSearchBoxCtrl,
     controllerAs: 'sb'
 

@@ -120,7 +120,18 @@ module.exports = function (app, config, passport) {
 
     res.sendFile(
       app.get('appPath') +
-      '/app/shared/templates/lists/' +
+      '/app/components/shared/templates/lists/' +
+      name
+    );
+  });
+
+  app.get('/shared/templates/search/:name', function (req, res) {
+
+    var name = req.params.name;
+
+    res.sendFile(
+      app.get('appPath') +
+      '/app/components/shared/templates/search/' +
       name
     );
   });
@@ -131,7 +142,7 @@ module.exports = function (app, config, passport) {
 
     res.sendFile(
       app.get('appPath') +
-      '/app/shared/templates/' +
+      '/app/components/shared/templates/' +
       name
     );
   });
@@ -142,7 +153,7 @@ module.exports = function (app, config, passport) {
 
     res.sendFile(
       app.get('appPath') +
-      '/app/handle/templates/' +
+      '/app/components/handle/templates/' +
       name
     );
   });
@@ -153,7 +164,7 @@ module.exports = function (app, config, passport) {
 
     res.sendFile(
       app.get('appPath') +
-      '/app/browse/templates/' +
+      '/app/components/browse/templates/' +
       name
     );
   });
@@ -164,7 +175,7 @@ module.exports = function (app, config, passport) {
 
     res.sendFile(
       app.get('appPath') +
-      '/app/communities/templates/' +
+      '/app/components/communities/templates/' +
       name
     );
   });
@@ -175,10 +186,14 @@ module.exports = function (app, config, passport) {
 
     res.sendFile(
       app.get('appPath') +
-      '/app/discover/templates/' +
+      '/app/components/discover/templates/' +
       name
     );
   });
+
+
+
+
 
   /**
    * Catch-all required by html5 mode.

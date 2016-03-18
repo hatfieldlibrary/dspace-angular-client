@@ -28,7 +28,7 @@
 
   dspaceComponents.component('searchBoxComponent', {
 
-    templateUrl: '/shared/templates/searchBox.html',
+    templateUrl: '/shared/templates/search/searchBox.html',
     controller: MainSearchBoxCtrl,
     controllerAs: 'sb'
 

@@ -56,7 +56,7 @@
     bindings: {
       onUpdate: '&'
     },
-    templateUrl: '/app/browse/templates/browse.html',
+    templateUrl: '/browse/templates/browse.html',
     controller: BrowseCtrl
 
   });

@@ -17,17 +17,15 @@
     var ctrl = this;
 
     function init() {
-      // list action
+      /**
+       * Set the initial collection list parameters.
+       */
       QueryManager.setAction(QueryActions.LIST);
 
       QueryManager.setQueryType(QueryTypes.TITLES_LIST);
 
       QueryManager.setSort(QuerySort.ASCENDING);
 
-      // item type (collection, community,item) from handle request
-      QueryManager.setAssetType(ctrl.type);
-      // DSpace ID from handle request
-      QueryManager.setAssetId(ctrl.id);
     }
 
     init();
@@ -50,11 +48,7 @@
 
     bindings: {
       // API handle query response
-      data: '<',
-      // asset type
-      type: '@',
-      // asset id
-      id: '@'
+      data: '<'
     },
     templateUrl: '/handle/templates/collection.html',
     controller: CollectionCtrl

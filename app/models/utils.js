@@ -24,7 +24,7 @@
    */
   function getLocation(type, id) {
 
-    if (type.length > 0 && id.length > 0) {
+    if (type.length > 0 && id !== undefined) {
       return '&fq=location.' + type + ':' + id;
     }
 
@@ -57,7 +57,7 @@
      */
   function getDiscoverLocationFilter(type, id) {
 
-    if (type.length > 0 && id.length > 0) {
+    if (type.length > 0 && id !== undefined) {
       if (type === constants.AssetTypes.COMMUNITY) {
         return '&fq=location:m' + id;
 

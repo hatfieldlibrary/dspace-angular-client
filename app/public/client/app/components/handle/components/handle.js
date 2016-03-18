@@ -8,6 +8,7 @@
 
   function HandleCtrl($routeParams,
                       ItemByHandle,
+                      QueryManager,
                       Utils) {
 
 
@@ -17,17 +18,12 @@
     var item = $routeParams.item;
 
     /**
-     * Retrieves the item by DSpace handle. Sets the
-     * view model's type (community, collection, or item)
-     * based on the handle response.
-     *
-     * @param site the site handle id
-     * @param item the item handle id
+     * Initialize the page.
      */
     var init = function () {
 
 
-      /** Call handle service. */
+      /** Retrieve data for the handle. */
       var query = ItemByHandle.query({site: site, item: item});
       query.$promise.then(
 
@@ -36,8 +32,9 @@
           /** Add query result to view model. */
           ctrl.data = data;
 
-          /** Set normalized type value.  This should correspond to one of
-           * the values defined in AssetTypes.  */
+          /** The normalized type should correspond to one of
+           * the values defined in AssetTypes.  The type is used
+           * to switch between view components. */
           ctrl.nType = Utils.getNormalizedType(data.type);
 
           /**
@@ -49,14 +46,23 @@
            * the current object is an AssetTypes.ITEM. Otherwise, the
            * nType of the current object is returned.
            */
-          ctrl.type = Utils.getType(ctrl.nType);
+          var type = Utils.getType(ctrl.nType);
 
           /**
            * Utils.getID() will return the parent collection id
            * if the nType equals AssetTypes.ITEM. Otherwise, the id of
            * the current object is returned.
            */
-          ctrl.id = Utils.getId(data, ctrl.nType);
+          var id = Utils.getId(data, ctrl.nType);
+
+          /**
+           * Set the asset type in the query context.
+           */
+          QueryManager.setAssetType(type);
+          /**
+           * Set the dspace ID in the query context.
+           */
+          QueryManager.setAssetId(id);
 
 
         })
@@ -74,13 +80,13 @@
 
     template: '<!-- Switch components based on item type --> ' +
     '<div ng-if="$ctrl.nType==\'coll\'">  ' +
-    '<collection-component data="$ctrl.data" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></collection-component> ' +
+    '<collection-component data="$ctrl.data"></collection-component> ' +
     '</div> ' +
     '<div ng-if="$ctrl.nType==\'comm\'">  ' +
-    '<community-component data="$ctrl.data" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></community-component>  ' +
+    '<community-component data="$ctrl.data"></community-component>  ' +
     '</div>' +
     '<div ng-if="$ctrl.nType==\'item\'"> ' +
-    '<item-component data="$ctrl.data" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-component>  ' +
+    '<item-component data="$ctrl.data"></item-component>  ' +
     '</div>',
 
     controller: HandleCtrl

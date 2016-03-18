@@ -28,7 +28,7 @@
 
   dspaceComponents.component('discoverComponent', {
 
-    templateUrl: '/app/discover/templates/discover.html',
+    templateUrl: '/discover/templates/discover.html',
     controller: DiscoverCtrl,
     controllerAs: 'sb'
 

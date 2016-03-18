@@ -73,35 +73,40 @@ dspaceServices.factory('Utils', [
     };
 
 
-    utils.getDisplayListType = function (action) {
-
-      var displayListType = '';
+    /**
+     * This method returns the more general QueryField
+     * associated with the specific query type. The
+     * QueryFields.TITLE value is the default.
+     * @returns {*}
+       */
+    utils.getFieldForQueryType = function () {
 
       if (QueryManager.isAuthorListRequest()) {
 
-        displayListType = QueryFields.AUTHOR;
+        return QueryFields.AUTHOR;
 
       } else if (QueryManager.isSubjectListRequest()) {
 
-        displayListType = QueryFields.SUBJECT;
+        return QueryFields.SUBJECT;
+
+      } else if (QueryManager.isDiscoveryListRequest()) {
+
+        return QueryFields.DISCOVER
 
       } else {
 
-        if (action === QueryActions.SEARCH) {
+        return QueryFields.TITLE;
 
-          displayListType = QueryFields.DISCOVER;
-
-        } else {
-
-          displayListType = QueryFields.TITLE;
-
-        }
       }
 
-      return displayListType;
     };
 
-
+    /**
+     * Returns values for a range of indices from the author facets array.
+     * @param start  the start index
+     * @param end    the end index
+     * @returns {Array}
+     */
     utils.authorArraySlice = function (start, end) {
 
       if (end < setSize) {
@@ -127,6 +132,13 @@ dspaceServices.factory('Utils', [
 
     };
 
+
+    /**
+     * Returns values for a range of indices from the subject facets array.
+     * @param start  the start index
+     * @param end    the end index
+     * @returns {Array}
+     */
     utils.subjectArraySlice = function (start, end) {
 
       if (end < setSize) {
@@ -153,6 +165,10 @@ dspaceServices.factory('Utils', [
     };
 
 
+    /**
+     * Calls the server to see if a dspaceToken is
+     * associated with the current user session.
+     */
     utils.checkSession = function () {
 
       var sessionStatus = CheckSession.query();
@@ -178,42 +194,7 @@ dspaceServices.factory('Utils', [
       }
     };
 
-    utils.setQueryField = function (selectedField) {
 
-      console.log(selectedField);
-
-      if (selectedField === QueryTypes.AUTHOR_FACETS) {
-
-        QueryManager.setSearchField(QueryFields.AUTHOR);
-
-      }
-      else if (selectedField === QueryTypes.TITLES_LIST) {
-
-        QueryManager.setSearchField(QueryFields.TITLE);
-
-      }
-      else if (selectedField === QueryTypes.DATES_LIST) {
-
-        QueryManager.setSearchField(QueryFields.DATE);
-
-      }
-      else if (selectedField === QueryTypes.SUBJECT_FACETS) {
-
-        QueryManager.setSearchField(QueryFields.SUBJECT);
-
-      }
-
-    };
-
-    utils.setBrowseFormat = function (format) {
-
-      if (format === QueryFields.AUTHOR) {
-        QueryManager.setQueryType(QueryTypes.AUTHOR_SEARCH);
-      }
-      else if (format === QueryFields.SUBJECT) {
-        QueryManager.setQueryType(QueryTypes.SUBJECT_SEARCH);
-      }
-    };
 
     return utils;
 

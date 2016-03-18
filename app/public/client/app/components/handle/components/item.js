@@ -13,18 +13,12 @@
   /*globals dspaceControllers*/
 
   function ItemCtrl() {
-    var ctrl = this;
-    console.log(ctrl.type);
   }
 
   dspaceComponents.component('itemComponent', {
 
     bindings: {
-      data: '<',
-      // asset type
-      type: '@',
-      // asset id
-      id: '@'
+      data: '<'
     },
     templateUrl: '/handle/templates/item.html',
     controller: ItemCtrl

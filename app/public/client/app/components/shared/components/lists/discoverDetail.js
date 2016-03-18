@@ -17,7 +17,7 @@
       description: '<',
       count: '@'
     },
-    templateUrl: '/app/shared/templates/lists/discoverDetail.html',
+    templateUrl: '/shared/templates/lists/discoverDetail.html',
     controller: DiscoverDetailCtrl
   })
 

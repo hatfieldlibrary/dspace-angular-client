@@ -12,16 +12,9 @@
 
   /*globals dspaceControllers*/
 
-  function CommunityCtrl(QueryManager) {
+  function CommunityCtrl() {
 
     var ctrl = this;
-
-    // DSpace ID
-    QueryManager.setAssetId(ctrl.id);
-    // Asset type
-    QueryManager.setAssetType(ctrl.type);
-
-
 
     /**
      * Returns the url for a logo.  This method can be called
@@ -40,11 +33,7 @@
   dspaceComponents.component('communityComponent', {
 
     bindings: {
-      data: '<',
-      // asset type
-      type: '@',
-      // asset id
-      id: '@'
+      data: '<'
     },
     templateUrl: '/handle/templates/community.html',
     controller: CommunityCtrl

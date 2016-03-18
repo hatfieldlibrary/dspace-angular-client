@@ -40,12 +40,16 @@
 
     var displayListType = '';
 
+    /**
+     * Recieves broadcast from the discovery-search-box component.
+     */
     $scope.$on("discoverySubmit", function() {
       updateList(0);
     });
 
+
     /**
-     * Initialize the list.
+     * Initialize data for the first set if items.
      */
     function init() {
 
@@ -68,7 +72,7 @@
 
       var action = QueryManager.getAction();
 
-      displayListType = Utils.getDisplayListType(action);
+      displayListType = Utils.getFieldForQueryType();
 
       /**
        * When not paging through an author list,

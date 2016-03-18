@@ -55,7 +55,7 @@ module.exports = {
    *
    * Input: order, offset, [location]
    */
-  allTitlesBrowse:      'http://localhost:1234/solr/search/select?sort=bi_sort_1_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=20%s%s',
+  allTitlesBrowse:      'http://localhost:1234/solr/search/select?sort=bi_sort_1_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2%s&version=2&rows=20%s',
 
   /**
    * Browse all titles by date within a given scope.
@@ -64,7 +64,7 @@ module.exports = {
    *
    * Input: order, offset, [location]
    */
-  allDatesBrowse:       'http://localhost:1234/solr/search/select?sort=bi_sort_2_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=20%s%s',
+  allDatesBrowse:       'http://localhost:1234/solr/search/select?sort=bi_sort_2_sort+%s&fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid&start=%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2%s&version=2&rows=20%s',
 
   /**
    * Discovery query. Should work as global search or scoped to location.

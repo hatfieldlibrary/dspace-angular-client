@@ -95,6 +95,10 @@ dspaceContext.service('QueryManager', ['QueryTypes', function (QueryTypes) {
       return (this.context.query.query.qType === QueryTypes.SUBJECT_FACETS);
     },
 
+    isDiscoveryListRequest: function() {
+       return (this.context.query.query.qType == QueryTypes.DISCOVER);
+    },
+
     setAuthorsList: function (list) {
       this.context.authorArray = list;
     },
