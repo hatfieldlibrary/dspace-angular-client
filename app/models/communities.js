@@ -1,12 +1,12 @@
 'use strict';
 
 var rp = require('request-promise');
-var utils = require('./utils');
+var utils = require('../core/utils');
 
 (function () {
 
   /**
-   * Model for requesting an individual dspace community.
+   * Model for an individual dspace community. Uses REST API.
    */
   module.exports = function (id, session) {
 
@@ -33,7 +33,7 @@ var utils = require('./utils');
   };
 
   /**
-   * Construct the json object that describes a community.
+   * Build the json object that describes a community.
    * @param json  the DSpace API response
    */
   function processResult(json) {

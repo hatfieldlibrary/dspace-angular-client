@@ -8,7 +8,6 @@
 (function () {
 
   var util = require('util');
-  var utils = require('./utils');
   var config = require('../../config/environment');
   var constants = require('./constants');
   var solrQueries = require('./solrQueries');
@@ -152,9 +151,6 @@
 
     var order = 'asc';
     var solrUrl = '';
-
-    // in practice, this may not be needed since this app will run on dspace host.
-    var host = utils.getURL();
 
     console.log(query.params.query.qType);
 

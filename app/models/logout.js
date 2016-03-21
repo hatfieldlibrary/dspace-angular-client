@@ -1,14 +1,22 @@
 'use strict';
 
 var rp = require('request-promise');
-var utils = require('./utils');
+var utils = require('../core/utils');
 
 
 (function () {
 
+  /**
+   * Model for logging out of a DSpace REST session.  Uses to DSpace
+   * REST API to log out the session associated with the dspace Token.
+   * @param session
+   * @returns {*}
+     */
   module.exports = function (session) {
 
+    /** Get the dspace token for this Express session. */
     var dspaceTokenHeader = utils.getDspaceToken(session);
+
     var host = utils.getURL();
 
     /** Generate a new Express session */

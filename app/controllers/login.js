@@ -1,6 +1,6 @@
 'use strict';
 
-var utils = require('../models/utils');
+var utils = require('../core/utils');
 
 
 
@@ -33,8 +33,7 @@ var utils = require('../models/utils');
       models.login(
         netid,
         config,
-        req,
-        res)
+        req)
         .then(function () {
           if(session.url !== 'undefined') {
 

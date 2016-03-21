@@ -1,12 +1,12 @@
 'use strict';
 
 var rp = require('request-promise');
-var utils = require('./utils');
+var utils = require('../core/utils');
 
 
 (function () {
   /**
-   * Model for fetching via DSpace handle.
+   * Model for fetching via DSpace handle.  Uses REST API.
    */
   module.exports = function (site, item, session) {
 

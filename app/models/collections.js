@@ -1,12 +1,12 @@
 'use strict';
 
 var rp = require('request-promise');
-var utils = require('./utils');
+var utils = require('../core/utils');
 
 (function () {
 
   /**
-   * Model for requesting an individual dspace collection.
+   * Model for an individual dspace collection.  Uses REST API.
    */
   module.exports = function (id, session) {
 
@@ -35,7 +35,7 @@ var utils = require('./utils');
   };
 
   /**
-   * Construct the json object that describes a collection.
+   * Build the json object that describes a collection.
    * @param json the DSpace API response
    */
   function processResult(json) {
@@ -61,21 +61,6 @@ var utils = require('./utils');
       logo.mimeType = json.logo.mimeType;
     }
     ret.logo = logo;
-    var items = [];
-    /*
-    for (var i = 0; i < json.items.length; i++) {
-      var tmp = {};
-      tmp.id = json.items[i].id;
-      tmp.name = json.items[i].name;
-      tmp.handle = json.items[i].handle;
-      tmp.type = json.items[i].type;
-      tmp.link = json.items[i].link;
-      tmp.withdrawn = json.items[i].withdrawn;
-      tmp.archived = json.items[i].archived;
-      items[i] = tmp;
-    }
-    */
-    ret.items = items;
 
     return ret;
   }

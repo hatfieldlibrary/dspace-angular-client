@@ -1,11 +1,11 @@
 'use strict';
 
 var rp = require('request-promise');
-var utils = require('./utils');
+var utils = require('../core/utils');
 
 (function () {
   /**
-   * Model for an item information.
+   * Model for item information. Uses REST API.
    */
   module.exports = function (id, session) {
 

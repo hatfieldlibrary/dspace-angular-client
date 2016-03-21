@@ -13,6 +13,7 @@ var fs = require('fs'),
 fs
   .readdirSync(__dirname)
   .filter(function (file) {
+    console.log(file)
     return (file.indexOf('.') !== 0) && (file !== 'index.js');
   })
   .forEach(function (file) {

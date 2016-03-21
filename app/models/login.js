@@ -1,7 +1,7 @@
 'use strict';
 
 var rp = require('request-promise');
-var utils = require('./utils');
+var utils = require('../core/utils');
 
 (function () {
 
@@ -9,7 +9,7 @@ var utils = require('./utils');
    * Requests Dspace REST API token.  Since we use implicit DSpace authorization,
    * there's no need to post email and password credentials.
    */
-  module.exports = function (netid, config, req, res) {
+  module.exports = function (netid, config, req) {
 
     var host = utils.getURL();
 

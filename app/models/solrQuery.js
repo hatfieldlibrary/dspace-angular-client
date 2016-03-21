@@ -1,8 +1,8 @@
 'use strict';
 
 var rp = require('request-promise');
-var utils = require('./utils');
-var constants = require('./constants');
+var utils = require('../core/utils');
+var constants = require('../core/constants');
 
 (function () {
 

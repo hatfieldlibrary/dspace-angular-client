@@ -4,11 +4,11 @@
 'use strict';
 
 var rp = require('request-promise');
-var utils = require('./utils');
+var utils = require('../core/utils');
 
 (function () {
   /**
-   * Returns API response for handle.
+   * Model for retrieving the communities list via the REST API.
    */
   module.exports = function (res, session) {
 
@@ -27,7 +27,6 @@ var utils = require('./utils');
           json: true
         }
       ).then(function (json) {
-        console.log(json)
           res.send(json);
           res.end();
         })

@@ -1,15 +1,14 @@
 'use strict';
 
 var async = require('async');
-var utils = require('../models/utils');
+var utils = require('../core/utils');
 
 (function () {
 
   /**
-   * This controller requests data about the item referenced by a
-   * handle.  The query result is passed to a function that inspects
-   * the json for object type and requests additional information about
-   * the object.
+   * The handle controller first retrieves information about the item via
+   * the REST API.  The callback then retrieves more information about the
+   * item based on it's type.
    * @param req
    * @param res
    */
@@ -44,9 +43,10 @@ var utils = require('../models/utils');
             });
         },
         /**
-         * Inspects type and retrieve additional data by calling the
-         * model for the current type.
-         * @param result
+         * Inspects type and retrieves additional data via REST API.  The
+         * type match is based on the string value returned in the result.type
+         * field.
+         * @param result  the object returned by the inital handle query
          * @param callback
          */
           function (result, callback) {
@@ -76,10 +76,9 @@ var utils = require('../models/utils');
                 });
 
             } else if (type === 'item') {
-                       console.log('got an item');
+
               models.items(id, session)
                 .then(function (result) {
-                  console.log('item result is: ' + result);
                   callback(null, result);
                 })
                 .catch(function (err) {

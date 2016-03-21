@@ -4,6 +4,11 @@ var request = require('request');
 
 (function() {
 
+  /**
+   * Controller for retrieving bitstreams via the rest api.
+   * @param req
+   * @param res
+   */
   exports.bitstream = function(req, res) {
 
     /** @type {string} the item id  */
@@ -12,9 +17,6 @@ var request = require('request');
     var session = req.session;
 
     var file = req.params.file;
-
-    //console.log(res);
-
 
     models.getBitstream(req, res, id, session, file);
 

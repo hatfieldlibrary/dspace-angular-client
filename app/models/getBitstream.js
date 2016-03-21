@@ -1,11 +1,11 @@
 'use strict';
 
-var utils = require('./utils');
+var utils = require('../core/utils');
 var http = require('http');
 
 /**
- * Requests bitstream from the DSpace host and
- * writes to the Express response stream using base64.
+ * Requests bitstream from the DSpace host via REST API and
+ * writes to the Express response stream using base64 encoding.
  */
 (function () {
 
