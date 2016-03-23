@@ -1,7 +1,7 @@
-<sort-options-component
 
+
+<sort-options-component ng-if="$ctrl.context=='collection'"
   on-update="$ctrl.onUpdate(results, count, field)">
-
 </sort-options-component>
 
 <p>Results: {{$ctrl.count}}</p>

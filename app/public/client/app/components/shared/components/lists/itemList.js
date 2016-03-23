@@ -22,9 +22,11 @@
 
   }
 
-
   dspaceComponents.component('itemListComponent', {
 
+    bindings: {
+      context: '@'
+    },
     templateUrl: '/shared/templates/lists/itemList.html',
     controller: ItemListCtrl
 

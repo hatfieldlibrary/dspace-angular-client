@@ -2,7 +2,6 @@
  * Created by mspalti on 2/25/16.
  */
 
-
 'use strict';
 
 (function () {
@@ -10,9 +9,6 @@
   /**
    * Collection view controller.
    */
-
-  /*globals dspaceControllers*/
-
   function CommunitiesCtrl(GetCommunities) {
 
     var ctrl = this;

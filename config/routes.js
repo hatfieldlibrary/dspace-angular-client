@@ -16,11 +16,11 @@ module.exports = function (app, config, passport) {
    */
   login.setConfig(config);
 
-  // Use Google OAUTH2
+  /**
+   * Use OAUTH2 for development.
+   */
 
-  if (app.get('env') === 'development' ||
-    app.get('env') === 'runlocal'
-  ) {
+  if (app.get('env') === 'development' || app.get('env') === 'runlocal') {
 
     // The first step in Google authentication redirects the user to google.com.
     // After authorization, Google will redirect the user back to the callback
@@ -53,7 +53,10 @@ module.exports = function (app, config, passport) {
 
   }
 
-  // Use CAS auth in production.
+  /**
+   * Use CAS in production.
+   */
+
   else if (app.get('env') === 'production') {
     /**
      * Triggers CAS authentication.
@@ -190,10 +193,6 @@ module.exports = function (app, config, passport) {
       name
     );
   });
-
-
-
-
 
   /**
    * Catch-all required by html5 mode.

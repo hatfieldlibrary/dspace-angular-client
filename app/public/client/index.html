@@ -9,10 +9,8 @@
   <meta name="description"
         content="Dspace test."/>
   <!-- build:css /css/main.min.css -->
-  <link rel="stylesheet" href="/css/main.css"/>
-  <!-- endbuild -->
-  <!-- build:css /css/level.min.css -->
-  <link rel="stylesheet" href="/css/level.css"/>
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+  <link rel="stylesheet" href="/css/style.css"/>
   <!-- endbuild -->
   <!-- build:js /js/plugins/modernizr.js -->
   <script src="/app/plugins/modernizr.optimized.js"></script>
@@ -41,8 +39,9 @@
 </head>
 <body class="{{ bodyClass }}" ng-cloak>
 
+
 <!-- Angularjs view container -->
-<div ng-view class="view-frame" style="min-height: 500px;"></div>
+<div ng-view></div>
 
 
 <!-- build:js /js/libraries.min.js -->
@@ -75,6 +74,7 @@
 
 <script src="app/components/shared/components/loaders/pager.js"></script>
 <script src="app/components/shared/components/loaders/sortOptions.js"></script>
+<script src="app/components/shared/components/header.js"></script>
 <script src="app/components/shared/components/login.js"></script>
 <script src="app/components/shared/components/search/discoverySearchBox.js"></script>
 <script src="app/components/shared/components/search/searchBox.js"></script>

@@ -1,5 +1,8 @@
-<div>
-  <search-box-component type="{{$ctrl.type}}" id="{{$ctrl.id}}"></search-box-component>
+<header-component type="{{$ctrl.type}}" id="{{$ctrl.id}}"></header-component>
+
+<md-content layout-padding>
+
+<div class="main-content">
 
   <h3>Parent Community</h3>
   <ul>
@@ -48,7 +51,8 @@
   </ul>
   <h3>Items</h3>
 
-  <item-list-component  type="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-list-component>
+  <item-list-component  context="collection" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-list-component>
 
 
 </div>
+</md-content>

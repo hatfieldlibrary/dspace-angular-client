@@ -43,7 +43,7 @@
 
   dspaceComponents.component('loginComponent', {
 
-    template: '<div> <p> <a ng-if="$ctrl.sessionStatus" href="/logout" target="_top">Logout</a> <a ng-if="!$ctrl.sessionStatus" href="auth/google" target="_top">Login</a> </p> </div>',
+    templateUrl: '/shared/templates/login.html',
     controller: LoginCtrl
 
   });
