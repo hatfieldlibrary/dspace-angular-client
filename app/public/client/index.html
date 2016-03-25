@@ -37,11 +37,11 @@
     // ga('send', 'pageview');
   </script>
 </head>
-<body class="{{ bodyClass }}" ng-cloak>
+<body class="{{ bodyClass }}" ng-cloak layout="column" layout-fill>
 
 
 <!-- Angularjs view container -->
-<div ng-view></div>
+<div ng-view layout="row"></div>
 
 
 <!-- build:js /js/libraries.min.js -->

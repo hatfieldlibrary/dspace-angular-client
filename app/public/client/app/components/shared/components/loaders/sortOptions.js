@@ -18,6 +18,7 @@
      */
   function SortOptionsCtrl(SolrQuery,
                            ListQueryFieldMap,
+                           ListSortOrderMap,
                            Utils,
                            QuerySort,
                            QueryFields,
@@ -47,34 +48,42 @@
      */
     ctrl.fields = ListQueryFieldMap.fields;
 
+    ctrl.orders = ListSortOrderMap.order;
+
+    ctrl.selectedOrder = QueryManager.getSort();
+
     /**
      * The selected field. Initialize to title.
      * @type {string}
      */
     ctrl.selectedField = ListQueryFieldMap.fields[0].value;
 
+    ctrl.resetOrder = function() {
+
+      QueryManager.setSort(ctrl.selectedOrder);
+
+      ctrl.doSearch();
+
+    };
+
+    ctrl.resetField = function setField() {
+      /**
+       * Set the QueryType (identifies the solr query to be used).
+       */
+      QueryManager.setQueryType(ctrl.selectedField);
+      ctrl.doSearch();
+    };
 
     /**
      * Update the view model after user selects new browse by field option.
      */
-    ctrl.setField = function () {
+    ctrl.doSearch = function () {
 
       /**
        * Return offset to zero in case user has paged through
        * a previous result list.
        */
       QueryManager.setOffset(0);
-
-      /**
-       * Set the QueryType (identifies the solr query to be used).
-       */
-      QueryManager.setQueryType(ctrl.selectedField);
-
-
-      /**
-       * Update query model with the new values.
-       */
-      QueryManager.setSort(QuerySort.ASCENDING);
 
       /**
        * Do the query.
@@ -90,6 +99,8 @@
        * Handle the response.
        */
       items.$promise.then(function (data) {
+
+        console.log(data)
 
         console.log(QueryManager.isAuthorListRequest())
 

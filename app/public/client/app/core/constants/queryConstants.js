@@ -57,5 +57,12 @@
       {label: 'Subject', value: 'subjectFacets'}
     ]
   });
+  
+  appConstants.constant('ListSortOrderMap', {
+    order: [
+      {label: 'Ascending', value: 'asc'},
+      {label: 'Descending', value: 'desc'},
+    ]
+  });
 
 })();

@@ -1,5 +1,7 @@
-
 <div>
-  <a ng-if="$ctrl.sessionStatus" href="/logout" target="_top">Logout</a>
-  <a ng-if="!$ctrl.sessionStatus" href="auth/google" target="_top">Login</a>
+  <md-button aria-label="Logout" ng-if="$ctrl.sessionStatus" href="/logout" target="_top">Logout
+    </md-button>
+
+    <md-button aria-label="Login" ng-if="!$ctrl.sessionStatus" href="auth/google" target="_top">Login
+    </md-button>
 </div>

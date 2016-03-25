@@ -1,4 +1,18 @@
+<div class="sort-options" layout="row">
 
-<select ng-model="$ctrl.selectedField" ng-change="$ctrl.setField()">
-  <option ng-repeat="field in $ctrl.fields" value="{{field.value}}">{{field.label}}</option>
-</select>
+  <md-input-container style="width: 200px">
+    <label>Sort items by:</label>
+    <md-select ng-model="$ctrl.selectedField" ng-change="$ctrl.resetField()" placeholder="Sort By">
+      <md-option ng-repeat="field in $ctrl.fields" value="{{field.value}}">{{field.label}}</md-option>
+    </md-select>
+  </md-input-container>
+
+
+  <md-input-container style="width: 200px">
+    <label>Sort order:</label>
+    <md-select ng-model="$ctrl.selectedOrder" ng-change="$ctrl.resetOrder()" placeholder="Sort By">
+      <md-option ng-repeat="order in $ctrl.orders"  value="{{order.value}}">{{order.label}}</md-option>
+    </md-select>
+  </md-input-container>
+
+</div>

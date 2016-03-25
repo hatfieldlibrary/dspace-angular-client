@@ -1,24 +1,16 @@
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <div flex="15"></div>
+    <md-button aria-label="Go Back" class="nav-logo">
+      Academic Commons
+    </md-button>
+    <span flex=""></span>
+    <login-component class="nav-login"></login-component>
+    <div flex="15"></div>
+  </div>
 
-  <md-toolbar class="md-tall">
-    <div class="md-toolbar-tools">
-      <md-button aria-label="Go Back">
-        Academic Commons
-      </md-button>
-      <div flex="60" layout="row" layout-align="center center">
-        <div flex="50">Community</div>
-        <div flex="50">Collection</div>
-      </div>
-      <span flex=""></span>
-      <login-component flex="20"></login-component>
-    </div>
-    <div layout="row" layout-align="center center">
+</md-toolbar>
 
-      <search-box-component ng-if="$ctrl.type!='discover'" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></search-box-component>
-
-      <discovery-search-box-component ng-if="$ctrl.type=='discover'"></discovery-search-box-component>
-
-    </div>
-  </md-toolbar>
 
 
 

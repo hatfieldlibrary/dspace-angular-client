@@ -1,3 +1,82 @@
+body {
+  background: #f0ede5;
+}
+
+a, a:visited {
+  color: #8F0100;
+  text-decoration: none;
+}
+
 .main-content {
-  padding: 20px;
+  background: #f0ede5;
+}
+
+.app-side-nav {
+  margin-top: 130px;
+}
+
+.nav-logo {
+  left: -20px;
+  color: #ffffff;
+}
+
+md-toolbar.md-default-theme:not(.md-menu-toolbar) .md-button:not(.md-raised),
+md-toolbar:not(.md-menu-toolbar) .md-button:not(.md-raised) {
+  color: #ffffff;
+}
+
+.nav-login {
+  right: 72px;
+  color: #ffffff;
+}
+
+.sub-title {
+  height: 110px;
+}
+
+.top-offset {
+  margin-top: -110px
+}
+
+.item-title {
+  line-height: 15px;
+}
+.background-highlight {
+  background: #faf8f5;
+  padding: 8px;
+}
+.search-form {
+  width: 200px;
+}
+.sort-options {
+  padding: 0px 16px;
+}
+.search-form md-input-container {
+  margin: 0;
+}
+
+.search-form md-input-container md-radio-button {
+  margin-bottom: 6px;
+}
+
+.search-form md-radio-group md-radio-button:not(:first-child) {
+  margin-top: 8px;
+}
+
+.search-form .md-errors-spacer {
+  min-height: 8px;
+}
+
+.search-form .md-button {
+  background-color: #cbc0a4;
+  margin: 8px 0;
+}
+
+.search-form .md-button:not([disabled]):hover {
+  background-color: rgba(158, 158, 158, 0.2);
+}
+
+.search-form .md-button[disabled] {
+  color: rgba(0, 0, 0, 0.26);
+  background-color: transparent;
 }

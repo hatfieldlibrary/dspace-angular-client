@@ -1,10 +1,12 @@
-
+<div class="background-highlight">
+<p class="md-body-2">This collection contains {{$ctrl.count}} items.</p>
 
 <sort-options-component ng-if="$ctrl.context=='collection'"
   on-update="$ctrl.onUpdate(results, count, field)">
 </sort-options-component>
-
-<p>Results: {{$ctrl.count}}</p>
+</div>
+<md-content>
+<md-list>
 
 <item-detail-component
 
@@ -54,8 +56,13 @@
 
 </discover-detail-component>
 
+</md-list>
+
 <pager-component
 
   on-update="$ctrl.onUpdate(results, count, field)"   >
 
 </pager-component>
+</md-content>
+
+

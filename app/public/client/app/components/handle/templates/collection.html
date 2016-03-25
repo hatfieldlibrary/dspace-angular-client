@@ -1,58 +1,67 @@
-<header-component type="{{$ctrl.type}}" id="{{$ctrl.id}}"></header-component>
+<div class="layout-padding">
 
-<md-content layout-padding>
+  <div class="md-subhead item-title"><a ng-href="/handle/{{$ctrl.data.parentCommunity.handle}}">{{$ctrl.data.parentCommunity.name}}</a></div>
+  <div class="md-display-1 item-title">{{$ctrl.data.name}}</div>
 
-<div class="main-content">
+  <md-card>
 
-  <h3>Parent Community</h3>
-  <ul>
-    <li>
-      {{$ctrl.data.parentCommunity.name}}
-    </li>
-    <li>
-      {{$ctrl.data.parentCommunity.id}}
-    </li>
-    <li>
-      {{$ctrl.data.parentCommunity.handle}}
-    </li>
-  </ul>
-  <h3>Collection Info</h3>
-  <ul>
-    <li>
-      {{$ctrl.data.name}}
-    </li>
-    <li ng-bind-html="$ctrl.data.introductoryText">>
-    </li>
-    <li>
-      {{$ctrl.data.handle}}
-    </li>
-    <li>
-      {{$ctrl.id}}
-    </li>
-    <li>
-      {{$ctrl.type}}
-    </li>
-  </ul>
-  <h3>Logo</h3>
-  <ul>
-    <li>
-      {{$ctrl.data.logo.retrieveLink}}
-    </li>
-    <li>
-      {{$ctrl.data.logo.sizeBytes}}
-    </li>
-    <li>
-      {{$ctrl.data.logo.mimeType}}
-    </li>
-    <li>
-      <img ng-src="{{$ctrl.getLogo()}}"/>
-    </li>
-  </ul>
-  </ul>
-  <h3>Items</h3>
+    <img ng-src="/images/bio_header.jpg" class="md-card-image" alt="image caption">
 
-  <item-list-component  context="collection" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-list-component>
+    <md-card-content>
+      <div ng-bind-html="$ctrl.data.introductoryText"> </div>
+     <!--
+    <h3>Parent Community</h3>
+    <ul>
+      <li>
+        {{$ctrl.data.parentCommunity.name}}
+      </li>
+      <li>
+        {{$ctrl.data.parentCommunity.id}}
+      </li>
+      <li>
+        {{$ctrl.data.parentCommunity.handle}}
+      </li>
+    </ul>
+    <h3>Collection Info</h3>
+    <ul>
+      <li>
+        {{$ctrl.data.name}}
+      </li>
+      <li ng-bind-html="$ctrl.data.introductoryText">>
+      </li>
+      <li>
+        {{$ctrl.data.handle}}
+      </li>
+      <li>
+        {{$ctrl.id}}
+      </li>
+      <li>
+        {{$ctrl.type}}
+      </li>
+    </ul>
+    <h3>Logo</h3>
+    <ul>
+      <li>
+        {{$ctrl.data.logo.retrieveLink}}
+      </li>
+      <li>
+        {{$ctrl.data.logo.sizeBytes}}
+      </li>
+      <li>
+        {{$ctrl.data.logo.mimeType}}
+      </li>
+      <li>
+        <img ng-src="{{$ctrl.getLogo()}}"/>
+      </li>
+    </ul>
+    </ul>
+    -->
+
+    <h3 class="md-headline">Collection Items</h3>
+
+    <item-list-component context="collection" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-list-component>
+    </md-card-content>
+  </md-card>
 
 
 </div>
-</md-content>

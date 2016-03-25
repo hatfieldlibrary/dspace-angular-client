@@ -1,0 +1,11 @@
+
+<div class="app-side-nav" layout="column" layout-align="center center" >
+
+  <search-box-component ng-if="$ctrl.type!='discover'" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></search-box-component>
+
+  <discovery-search-box-component ng-if="$ctrl.type=='discover'"></discovery-search-box-component>
+
+
+
+</div>
+

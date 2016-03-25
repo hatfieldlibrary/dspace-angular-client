@@ -1,9 +1,23 @@
-<div style>
-  <form novalidate layout="row" layout-align="left start">
+<div class="search-form">
+  <md-input-container>
+    <label>Enter Search Terms</label>
+    <input ng-model="sb.terms">
+  </md-input-container>
+  <md-input-container>
+    <md-radio-group ng-model="sb.scope" layout="column">
+      <md-radio-button value="this" aria-label="This Collection" class="md-caption" >
+        This Collection
+      </md-radio-button>
+      <md-radio-button value="all" aria-label="All Collections" class="md-caption" >
+        All Collections
+      </md-radio-button>
+    </md-radio-group>
+  </md-input-container>
+  <md-input-container>
+    <md-button class="md-raised" ng-click="sb.submit(sb.terms)"> Submit Search</md-button>
+  </md-input-container>
+  <input type="hidden" ng-model="sb.id"/>
 
-    <input type="text" ng-model="sb.terms">
-    <input type="hidden" ng-model="sb.id" />
-    <input type="submit" ng-click="sb.submit(sb.terms)" value="Save" />
-
-  </form>
+  <p class="md-caption"><a ng-href="">Advanced Search</a></p>
 </div>
+

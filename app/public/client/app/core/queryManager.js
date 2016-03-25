@@ -9,7 +9,7 @@ var dspaceContext = angular.module('dspaceContext', []);
  * one controller and no data to share.  If that remains
  * the case, no need for context!
  */
-dspaceContext.service('QueryManager', ['QueryTypes', function (QueryTypes) {
+dspaceContext.service('QueryManager', ['QueryTypes','QuerySort', function (QueryTypes, QuerySort) {
 
 
   return {
@@ -27,7 +27,7 @@ dspaceContext.service('QueryManager', ['QueryTypes', function (QueryTypes) {
           /** Solr sort field. */
           field: '',   // unused, the sort field is included in the solr query that's assigned to the QueryType.
           /** Solr sort order. */
-          order: ''
+          order: QuerySort.ASCENDING
         },
         query: {
           /**
@@ -188,6 +188,10 @@ dspaceContext.service('QueryManager', ['QueryTypes', function (QueryTypes) {
 
     //  this.context.query.sort.field = field;
       this.context.query.sort.order = order;
+    },
+
+    getSort: function() {
+      return this.context.query.sort.order;
     }
 
 

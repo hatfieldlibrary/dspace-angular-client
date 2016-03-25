@@ -13,6 +13,8 @@
 
     var sb = this;
 
+    sb.scope = 'this';
+
     sb.submit = function (terms) {
 
       QueryManager.setSearchTerms(terms);

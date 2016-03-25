@@ -164,10 +164,12 @@
       //  field = query.params.sort.field;
       //}
 
+      
       if (query.params.sort.order.length > 0) {
         order = query.params.sort.order;
       }
 
+      console.log('sort order: ' + query.params.sort.order);
     }
 
     var anonymousQueryFilter = getAnonymousQueryFilter(dspaceToken);
