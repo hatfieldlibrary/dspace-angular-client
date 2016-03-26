@@ -8,6 +8,8 @@
 
     var ctrl = this;
 
+    ctrl.items = [];
+
     ctrl.type = QueryManager.getAssetType();
     ctrl.id = QueryManager.getAssetId();
 
@@ -20,7 +22,22 @@
 
     };
 
+    ctrl.onPagerUpdate = function (results, count, field) {
+
+      addResults(results);
+      ctrl.count = count;
+      ctrl.field = field;
+
+
+    };
+
+    function addResults(results) {
+      ctrl.items = ctrl.items.concat(results);
+    }
+
   }
+
+
 
   dspaceComponents.component('itemListComponent', {
 

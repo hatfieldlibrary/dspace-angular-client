@@ -68,6 +68,12 @@
 
       QueryManager.setSort(ctrl.selectedOrder);
 
+      QueryManager.setSearchTerms('');
+
+      QueryManager.setOffset(0);
+
+      ctrl.filterTerms = '';
+
       if (QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS) {
 
         QueryManager.setOffset(0);
@@ -136,6 +142,15 @@
     }
 
     ctrl.getFilter = function () {
+
+      /**
+       * When jumping to a point in the result list, it's confusing if the sort
+       * order is toggled to DESCENDING.  The state of affairs argues for
+       * resetting the order to ASCENDING.
+       */
+      // QueryManager.setSort(QuerySort.ASCENDING);
+      //
+      // ctrl.selectedOrder = QuerySort.ASCENDING;
 
       if (QueryManager.getQueryType() === QueryTypes.TITLES_LIST) {
 

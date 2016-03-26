@@ -86,8 +86,7 @@ module.exports = {
   /**
    * input letter, location
    */
-  startLetterLocation: 'http://localhost:1234/solr/search/select?fl=handle,search.resourcetype,search.resourceid&start=0&q=bi_sort_1_sort:+[*+TO+"%s"}&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=0%s',
-
+  startLetterLocation: 'http://localhost:1234/solr/search/select?fl=handle,search.resourcetype,search.resourceid&start=0&q=bi_sort_1_sort:+%s&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2%s&version=2&rows=0%s',
 
   /**
    * Recent submissions to collection.  Returns five items sorted by date accessioned.

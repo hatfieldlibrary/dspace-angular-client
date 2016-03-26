@@ -151,7 +151,6 @@
      * @param data the next set if items.
      */
     function updateParent(data) {
-      console.log(data)
 
       ctrl.onUpdate({
 
@@ -204,7 +203,7 @@
 
   dspaceComponents.component('pagerComponent', {
 
-    template: '<div ng-click="$ctrl.previous()"><< </div> {{$ctrl.start}} - {{$ctrl.end}} <div ng-click="$ctrl.next()"> >></div>',
+    template: '<div layout="row" layout-align="center center"><md-button class="md-raised" ng-click="$ctrl.next()">More Results</md-button></div>',
 
     bindings: {
       onUpdate: '&'

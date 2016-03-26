@@ -152,7 +152,6 @@
     var order = 'asc';
     var solrUrl = '';
 
-    console.log(query.params.query.qType);
 
     /**
      * In the current implementation, only the LIST query uses the sort
@@ -169,7 +168,6 @@
         order = query.params.sort.order;
       }
 
-      console.log('sort order: ' + query.params.sort.order);
     }
 
     var anonymousQueryFilter = getAnonymousQueryFilter(dspaceToken);
@@ -180,9 +178,6 @@
     if (query.params.query.action === constants.QueryActions.LIST) {
 
       var location = getLocation(query.params.asset.type, query.params.asset.id);
-
-
-      console.log(location);
 
 
       if (query.params.query.qType === constants.QueryType.AUTHOR_FACETS) {   // get authors list
@@ -224,7 +219,6 @@
       }
 
       else if (query.params.query.qType === constants.QueryType.START_LETTER) {    // list items by date
-        console.log("got: " + constants.QueryType.START_LETTER);
         solrUrl = util.format(
           solrQueries[constants.QueryType.START_LETTER],
           query.params.query.terms,
@@ -290,12 +284,13 @@
       }
     }
 
-    console.log('solr url is ' + solrUrl);
-
+    console.log(solrUrl);
+    
     return solrUrl;
 
 
   };
+
 
   exports.getOffsetUrl = function(query, dspaceToken) {
 
@@ -304,13 +299,15 @@
     var location = getLocation(query.params.asset.type, query.params.asset.id);
 
     //var anonymousQueryFilter = getAnonymousQueryFilter(dspaceToken);
-       console.log('utils getting the offset')
-    console.log(query.params)
+
     if (query.params.jumpTo.type === constants.QueryType.START_LETTER) {
 
       solrUrl = util.format(
         solrQueries[constants.QueryType.START_LETTER],
-        query.params.query.terms,
+        // get the query
+        qJumpToFilter(query.params.query.terms, query.params.sort.order),
+        // get the sort filter
+        fqReverseOrderFilter(query.params.query.terms, query.params.sort.order),
         location
         //anonymousQueryFilter
       );
@@ -323,11 +320,42 @@
         //anonymousQueryFilter
       );
     }
-    // add other types here....
-     console.log(solrUrl);
+
     return solrUrl;
 
   };
+
+  /**
+   * Creates the query  for locating the position of the item. This
+   * varies with the sort order.
+   * @param term   the term to match on
+   * @param order    the sort order
+   * @returns {string}
+     */
+  function qJumpToFilter(term, order) {
+
+    if (order === constants.QuerySort.DESCENDING) {
+      return '{"' + term + '"+TO+*]';
+    } else {
+      return '[*+TO+"' + term +'"}';
+    }
+
+  }
+
+  /**
+   * Creates the filter for locating the term in reverse
+   * sort order.  If order is ascending, returns empty string.
+   * @param term  the term to match on
+   * @param order  the sort order
+   * @returns {*}
+     */
+  function fqReverseOrderFilter(term, order) {
+    if (order === constants.QuerySort.DESCENDING) {
+     return '&fq=-(bi_sort_1_sort:' + term +'*)';
+    }
+    return '';
+
+  }
 
 
   /**
@@ -377,7 +405,6 @@
     var docsArr = [];
 
     for (var i = 0; i < solrResponse.response.docs.length; i++) {
-      console.log(solrResponse.response.docs[i]);
       docsArr[i] = solrResponse.response.docs[i];
     }
 
@@ -429,7 +456,6 @@
     var docsArr = [];
 
     for (var i = 0; i < solrResponse.response.docs.length; i++) {
-      console.log(solrResponse.response.docs[i]);
       docsArr[i] = solrResponse.response.docs[i];
     }
 
@@ -437,8 +463,6 @@
     ret.results = docsArr;
     ret.facets = subjectArr;
     ret.count = subjectArr.length;
-
-    console.log(ret);
 
     return ret;
 
@@ -454,7 +478,6 @@
    */
   exports.processItems = function (solrResponse) {
 
-    console.log(solrResponse)
 
     var json = solrResponse.response.docs;
 
@@ -485,12 +508,9 @@
       resultArr[i] = tmp;
     }
 
-    console.log('check response');
-    console.log(solrResponse);
     ret.offset = solrResponse.response.start;
     ret.results = resultArr;
     ret.count = solrResponse.response.numFound;
-    console.log(ret);
 
     return ret;
 
