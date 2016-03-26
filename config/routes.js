@@ -91,6 +91,8 @@ module.exports = function (app, config, passport) {
   app.get('/solrQuery/:type/:id/:qType/:field/:terms/:offset', solr.browse);
 
   app.post('/solrQuery', solr.query);
+  
+  app.post('/solrJumpToQuery', solr.jumpTo);
 
   app.use('/solrRecentSubmissions/:type/:id', solr.recentSubmissions);
 
@@ -179,6 +181,17 @@ module.exports = function (app, config, passport) {
     res.sendFile(
       app.get('appPath') +
       '/app/components/communities/templates/' +
+      name
+    );
+  });
+
+  app.get('/wrapper/templates/:name', function (req, res) {
+
+    var name = req.params.name;
+
+    res.sendFile(
+      app.get('appPath') +
+      '/app/components/wrapper/templates/' +
       name
     );
   });

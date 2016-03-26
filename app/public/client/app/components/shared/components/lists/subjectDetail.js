@@ -6,7 +6,7 @@
   function SubjectDetailController(QueryManager) {
 
     var ctrl = this;
-    ctrl.offset =  QueryManager.getCurrentOffset();
+    ctrl.offset =  QueryManager.getOffset();
 
 
   }
@@ -23,8 +23,7 @@
 
     },
     controller: SubjectDetailController,
-    template: '<div><h4><a ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.subject}}/{{$ctrl.offset}}">{{$ctrl.subject}} ({{$ctrl.count}})</a></h4></div>'
-
+    templateUrl: '/shared/templates/lists/subjectDetail.html'
   });
 
 })();

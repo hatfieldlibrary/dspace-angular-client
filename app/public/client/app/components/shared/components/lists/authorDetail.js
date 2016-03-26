@@ -7,7 +7,7 @@
   function AuthorDetailController(QueryManager) {
 
     var ctrl = this;
-    ctrl.offset =  QueryManager.getCurrentOffset();
+    ctrl.offset =  QueryManager.getOffset();
     console.log(ctrl)
 
   }
@@ -25,7 +25,7 @@
     },
     controller: AuthorDetailController,
     // requires new route and new controller to gather in the parameters.  Should be able to use the existing solr model.
-    template: '<div><h4><a ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.author}}/{{$ctrl.offset}}">{{$ctrl.author}} ({{$ctrl.count}})</a></h4></div>'
+    templateUrl: '/shared/templates/lists/authorDetail.html'
 
   });
 

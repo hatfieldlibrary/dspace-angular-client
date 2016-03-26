@@ -36,6 +36,20 @@ dspaceServices.factory('Utils', [
 
     };
 
+    utils.reverseArray = function(arr) {
+
+      var i = 0;
+      var j = arr.length - 1;
+      while (i < j) {
+        var x = arr[i];
+        arr[i] = arr[j];
+        arr[j] = x;
+        i++;
+        j--;
+      }
+      
+    };
+
     /**
      * Checks type value. If it is equal to
      * AssetTypes.ITEM, this method returns

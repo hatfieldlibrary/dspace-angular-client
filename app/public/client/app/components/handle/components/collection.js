@@ -12,9 +12,10 @@
 
   /*globals dspaceControllers*/
 
-  function CollectionCtrl(QueryManager, QueryActions, QueryTypes, QuerySort) {
+  function CollectionCtrl($rootScope, QueryManager, QueryActions, QueryTypes, QuerySort) {
 
     var ctrl = this;
+    
 
     function init() {
       /**

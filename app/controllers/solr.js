@@ -1,14 +1,18 @@
 'use strict';
 
-(function () {
+var async = require('async');
+var utils = require('../core/utils');
+var constants = require('../core/constants');
 
-  var constants = require('../core/constants');
+(function () {
+  
+
 
   /**
    * Default solr query controller. Handles POST queries.
    * @param req
    * @param res
-     */
+   */
   exports.query = function (req, res) {
 
     var session = req.session;
@@ -22,7 +26,7 @@
    * The browse query handler.  Browse queries use GET.
    * @param req
    * @param res
-     */
+   */
   exports.browse = function (req, res) {
 
     /** @type {string} the site id from the handle */
@@ -71,6 +75,92 @@
     var id = req.params.id;
 
     models.solrRecentSubmissions(type, id, res);
+  };
+
+
+  
+  
+  exports.jumpTo = function (req, res) {
+
+    var session = req.session;
+
+    console.log(req.body);
+
+
+    async.waterfall(
+      [
+        /**
+         * Request item info by handle.
+         * @param callback
+         */
+          function (callback) {
+
+          models.solrGetOffset(req.body, res, session)
+
+            .then(function (result) {
+              console.log(result);
+              callback(null, result);
+
+            })
+            .catch(function (err) {
+              callback(err, null);
+
+            });
+        },
+        /**
+         * Inspects type and retrieves additional data via REST API.  The
+         * type match is based on the string value returned in the result.type
+         * field.
+         * @param result  the object returned by the inital handle query
+         * @param callback
+         */
+          function (result, callback) {
+
+          try {
+            
+            console.log('result in waterfall callback')
+            console.log(result)
+            req.body.params.query.offset = result.offset;
+             console.log(req.body);
+            models.solrQuery(req.body, res, session)
+              .then(function (result) {
+                callback(null, result);
+              })
+              .catch(function (err) {
+                console.log(err);
+              });
+
+          } catch (err) {
+            callback(err)
+          }
+        }
+      ],
+
+      function (err, result) {
+
+        /** handle error */
+        if (err) {
+
+          console.log('WARNING: DSpace handle request returned error: ' + err.message);
+          console.log('This will occur when an unauthenticated user attempts to access a restricted item.');
+
+          if (err.statusCode === 500 && err.error === 'undefined') {
+            // The error condition probably indicates that the DSpace host
+            // no longer has a record of the token, perhaps because the host
+            // was restarted.  This utility method deletes the Express session's
+            // dspace token one exists.  The client should have the ability
+            // to detect a change in session status and direct the user to
+            // log in again.
+            utils.removeDspaceSession(req.session)
+          }
+
+        }
+
+        /** send response */
+        utils.jsonResponse(res, result);
+
+      }
+    );
   };
 
 

@@ -6,7 +6,8 @@
 
 (function () {
 
-  function HandleCtrl($routeParams,
+  function HandleCtrl($rootScope,
+                      $routeParams,
                       ItemByHandle,
                       QueryManager,
                       Utils) {
@@ -16,6 +17,13 @@
 
     var site = $routeParams.site;
     var item = $routeParams.item;
+
+    /**
+     * Infinite scroll event.
+     */
+    ctrl.fireUpdateEvent = function () {
+      $rootScope.$broadcast('nextPage', {});
+    };
 
     /**
      * Initialize the page.

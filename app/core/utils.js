@@ -164,7 +164,7 @@
       //  field = query.params.sort.field;
       //}
 
-      
+
       if (query.params.sort.order.length > 0) {
         order = query.params.sort.order;
       }
@@ -205,7 +205,7 @@
         solrUrl = util.format(
           solrQueries[constants.QueryType.TITLES_LIST],
           order,
-          query.offset,
+          query.params.query.offset,
           location,
           anonymousQueryFilter
         );
@@ -216,13 +216,26 @@
         solrUrl = util.format(
           solrQueries[constants.QueryType.DATES_LIST],
           order,
-          query.offset,
+          query.params.query.offset,
           location,
           anonymousQueryFilter
+        );
+
+      }
+
+      else if (query.params.query.qType === constants.QueryType.START_LETTER) {    // list items by date
+        console.log("got: " + constants.QueryType.START_LETTER);
+        solrUrl = util.format(
+          solrQueries[constants.QueryType.START_LETTER],
+          query.params.query.terms,
+          location
+          //  anonymousQueryFilter
         );
       }
 
     }
+
+
 
     /**
      * Get the URL for a BROWSE query.
@@ -284,6 +297,38 @@
 
   };
 
+  exports.getOffsetUrl = function(query, dspaceToken) {
+
+    var solrUrl = '';
+
+    var location = getLocation(query.params.asset.type, query.params.asset.id);
+
+    //var anonymousQueryFilter = getAnonymousQueryFilter(dspaceToken);
+       console.log('utils getting the offset')
+    console.log(query.params)
+    if (query.params.jumpTo.type === constants.QueryType.START_LETTER) {
+
+      solrUrl = util.format(
+        solrQueries[constants.QueryType.START_LETTER],
+        query.params.query.terms,
+        location
+        //anonymousQueryFilter
+      );
+    } else if (query.params.jumpTo.type === constants.QueryType.START_DATE) {
+
+      solrUrl = util.format(
+        solrQueries[constants.QueryType.START_DATE],
+        query.params.query.terms,
+        location
+        //anonymousQueryFilter
+      );
+    }
+    // add other types here....
+     console.log(solrUrl);
+    return solrUrl;
+
+  };
+
 
   /**
    * The author response is a facet object containing a list
@@ -322,7 +367,8 @@
 
         authorObj = {};
         var author = authors[i].split('|||');
-        authorObj.author = author[1];
+        /** remove carriage returns, etc. */
+        authorObj.value = author[1].replace(/^[\n\r]+/, '');
 
       }
 
@@ -335,8 +381,9 @@
       docsArr[i] = solrResponse.response.docs[i];
     }
 
+    ret.offset = solrResponse.response.start;
     ret.results = docsArr;
-    ret.authors = authorArr;
+    ret.facets = authorArr;
     ret.count = authorArr.length;
 
     return ret;
@@ -349,21 +396,21 @@
 
     var ret = {};
 
-    var authorArr = [];
-    var authors = json.bi_4_dis_filter;
+    var subjectArr = [];
+    var subjects = json.bi_4_dis_filter;
 
     var count = 0;
-    var authorObj = {};
+    var subObj = {};
 
 
-    for (var i = 0; i < authors.length; i++) {
+    for (var i = 0; i < subjects.length; i++) {
 
       // The odd indicies in the response array contain count.
       // Add the count to the author object and add the author
       // object to the return array.
       if (i % 2 !== 0) {
-        authorObj.count = authors[i];
-        authorArr[count] = authorObj;
+        subObj.count = subjects[i];
+        subjectArr[count] = subObj;
         count++;
 
       }
@@ -371,9 +418,9 @@
       //   the author object.
       else {
 
-        authorObj = {};
-        var author = authors[i].split('|||');
-        authorObj.author = author[1];
+        subObj = {};
+        var sub = subjects[i].split('|||');
+        subObj.value = sub[1].replace(/^[\n\r]+/, '');
 
       }
 
@@ -386,10 +433,10 @@
       docsArr[i] = solrResponse.response.docs[i];
     }
 
-
+    ret.offset = solrResponse.response.start;;
     ret.results = docsArr;
-    ret.authors = authorArr;
-    ret.count = authorArr.length;
+    ret.facets = subjectArr;
+    ret.count = subjectArr.length;
 
     console.log(ret);
 
@@ -438,8 +485,12 @@
       resultArr[i] = tmp;
     }
 
+    console.log('check response');
+    console.log(solrResponse);
+    ret.offset = solrResponse.response.start;
     ret.results = resultArr;
     ret.count = solrResponse.response.numFound;
+    console.log(ret);
 
     return ret;
 
@@ -472,6 +523,7 @@
       resultArr[i] = tmp;
     }
 
+    final.offset = json.response.start;;
     final.results = resultArr;
     final.count = json.response.numFound;
 

@@ -29,6 +29,9 @@ dspaceContext.service('QueryManager', ['QueryTypes','QuerySort', function (Query
           /** Solr sort order. */
           order: QuerySort.ASCENDING
         },
+        jumpTo: {
+          type: ''
+        },
         query: {
           /**
            * The solr query type.  Possible values are defined in QueryTypes.
@@ -53,7 +56,7 @@ dspaceContext.service('QueryManager', ['QueryTypes','QuerySort', function (Query
           /**
            * The current offset used by paging.
            */
-          offset: ''
+          offset: 0
         }
       },
       /**
@@ -79,11 +82,20 @@ dspaceContext.service('QueryManager', ['QueryTypes','QuerySort', function (Query
       return this.context;
     },
 
+    setJumpType: function(type) {
+      this.context.query.jumpTo.type = type;
+    },
+
+    getJumpType: function() {
+       return this.context.query.jumpTo.type;
+    },
+
     setOffset: function (offset) {
+      console.log('setting offset to ' + offset);
       this.context.query.query.offset = offset;
     },
 
-    getCurrentOffset: function () {
+    getOffset: function () {
       return this.context.query.query.offset;
     },
 

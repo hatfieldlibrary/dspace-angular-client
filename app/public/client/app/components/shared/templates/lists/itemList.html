@@ -21,12 +21,11 @@
 
 </item-detail-component>
 
-
 <author-detail-component
 
   ng-if="$ctrl.field=='author'"
   ng-repeat="au in $ctrl.items"
-  author="{{au.author.author}}"
+  author="{{au.author.value}}"
   count="{{au.author.count}}"
   type="{{$ctrl.type}}"
   id="{{$ctrl.id}}"
@@ -38,7 +37,7 @@
 
   ng-if="$ctrl.field=='subject'"
   ng-repeat="sub in $ctrl.items"
-  subject="{{sub.author.author}}"
+  subject="{{sub.author.value}}"
   count="{{sub.author.count}}"
   type="{{$ctrl.type}}"
   id="{{$ctrl.id}}"
@@ -60,7 +59,7 @@
 
 <pager-component
 
-  on-update="$ctrl.onUpdate(results, count, field)"   >
+  on-update="$ctrl.onUpdate(results, count, field)">
 
 </pager-component>
 </md-content>

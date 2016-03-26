@@ -15,11 +15,6 @@
     var ctrl = this;
 
     /**
-     * Intialize start index.
-     * @type {number}
-     */
-    var start = 0;
-    /**
      * Number of items to return in pager.
      * @type {number}
      */
@@ -31,12 +26,12 @@
      * Current start position for view model.
      * @type {number}
      */
-    ctrl.start = start + 1;
+    ctrl.start = QueryManager.getOffset() + 1;
     /**
      * Current end position for view model.
      * @type {number}
      */
-    ctrl.end = start + 10;
+    ctrl.end = QueryManager.getOffset() + 10;
 
     var displayListType = '';
 
@@ -44,7 +39,12 @@
      * Recieves broadcast from the discovery-search-box component.
      */
     $scope.$on("discoverySubmit", function() {
+      QueryManager.setOffset(0);
       updateList(0);
+    });
+
+    $scope.$on("nextPage", function() {
+      updateList(QueryManager.getOffset());
     });
 
 
@@ -53,9 +53,9 @@
      */
     function init() {
 
-      QueryManager.setOffset(0);
+      //QueryManager.setOffset(start);
 
-      updateList(0);
+      updateList(QueryManager.getOffset());
 
     }
 
@@ -66,9 +66,9 @@
      * Execute node REST API call for solr query results.
      * @param start the start position for query result.
      */
-    function updateList(start) {
+    function updateList(newOffset) {
 
-      QueryManager.setOffset(start);
+      QueryManager.setOffset(newOffset);
 
       var action = QueryManager.getAction();
 
@@ -86,8 +86,7 @@
 
         if (action === QueryActions.LIST) {
           items = SolrQuery.save({
-            params: context,
-            offset: start
+            params: context
 
           });
 
@@ -99,15 +98,14 @@
             qType: QueryManager.getQueryType(),
             field: context.query.field,
             terms: context.query.terms,
-            offset: start
+            offset: newOffset
 
           });
 
         } else if (action === QueryActions.SEARCH) {
 
           items = SolrQuery.save({
-            params: context,
-            offset: start
+            params: context
 
           });
 
@@ -131,13 +129,13 @@
 
           data.count = QueryManager.getAuthorsCount();
           var end = Utils.getPageListCount(data.count, setSize);
-          data.results = Utils.authorArraySlice(start, start + end);
+          data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
 
         } else if (QueryManager.isSubjectListRequest()) {
 
           data.count = QueryManager.getSubjectsCount();
           var end = Utils.getPageListCount(data.count, setSize);
-          data.results = Utils.subjectArraySlice(start, start + end);
+          data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
 
         }
 
@@ -170,10 +168,13 @@
      */
     ctrl.previous = function () {
 
+      var start =  QueryManager.getOffset();
+
       if (start >= 10) {
         ctrl.start -= 10;
         ctrl.end = ctrl.start + 9;
         start -= 10;
+        QueryManager.setOffset(start);
         updateList(start);
       }
     };
@@ -183,6 +184,8 @@
      */
     ctrl.next = function () {
 
+      var start =  QueryManager.getOffset();
+
       start += 10;
       ctrl.start = start + 1;
       if (ctrl.end + 10 <= count) {
@@ -190,6 +193,8 @@
       } else {
         ctrl.end = count;
       }
+      console.log(start)
+      QueryManager.setOffset(start);
       updateList(start);
 
     };

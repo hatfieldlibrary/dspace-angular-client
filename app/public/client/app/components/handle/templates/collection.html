@@ -8,7 +8,7 @@
     <img ng-src="/images/bio_header.jpg" class="md-card-image" alt="image caption">
 
     <md-card-content>
-      <div ng-bind-html="$ctrl.data.introductoryText"> </div>
+      <div class="md-subhead" ng-bind-html="$ctrl.data.introductoryText"> </div>
      <!--
     <h3>Parent Community</h3>
     <ul>
@@ -59,7 +59,8 @@
 
     <h3 class="md-headline">Collection Items</h3>
 
-    <item-list-component context="collection" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-list-component>
+    <item-list-component load-on-scroll="$ctrl.fireUpdateEvent()" context="collection"></item-list-component>
+
     </md-card-content>
   </md-card>
 

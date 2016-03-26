@@ -19,3 +19,8 @@ dspaceServices.factory('SolrBrowseQuery', ['$resource',
       query: {method: 'GET', isArray: false}
     });
   }]);
+
+dspaceServices.factory('SolrJumpToQuery', ['$resource',
+  function ($resource) {
+    return $resource('/solrJumpToQuery');
+  }]);

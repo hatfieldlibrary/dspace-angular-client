@@ -80,13 +80,13 @@ module.exports = {
   /**
    * input date, location
    */
-  startDateLocation: 'fl=handle,search.resourcetype,search.resourceid&start=0&q=bi_sort_2_sort:+[*+TO+"%s"}&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=0%s%s',
+  startDateLocation: 'http://localhost:1234/solr/search/select?fl=handle,search.resourcetype,search.resourceid&start=0&q=bi_sort_2_sort:+[*+TO+"%s"}&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=0%s',
 
 
   /**
    * input letter, location
    */
-  indexLetterLocation: 'fl=handle,search.resourcetype,search.resourceid&start=0&q=bi_sort_1_sort:+[*+TO+"%s"}&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=0%s%s',
+  startLetterLocation: 'http://localhost:1234/solr/search/select?fl=handle,search.resourcetype,search.resourceid&start=0&q=bi_sort_1_sort:+[*+TO+"%s"}&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=0%s',
 
 
   /**
