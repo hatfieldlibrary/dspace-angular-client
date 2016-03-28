@@ -47,7 +47,7 @@ dspaceServices.factory('Utils', [
         i++;
         j--;
       }
-      
+
     };
 
     /**
@@ -134,8 +134,8 @@ dspaceServices.factory('Utils', [
         var data = new Array(authors.length);
 
         for (var i = 0; i < setSize; i++) {
-
           data[i] = {author: authors[i]}
+          
         }
 
         return data;

@@ -19,7 +19,11 @@ var constants = require('../constants');
 
     var fieldsFilter = 'fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid';
 
-    var offsetFilter = 'start=' + query.params.query.offset;
+    /**
+     * This subject browse query should always start at 0
+     * @type {string}
+     */
+    var offsetFilter = 'start=0';
 
     var queryFilter = 'fq={!field+f%3Dbi_4_dis_value_filter}' + query.params.query.terms;
 

@@ -138,7 +138,7 @@
           data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
 
         }
-
+        
         updateParent(data);
 
       }
@@ -151,11 +151,12 @@
      * @param data the next set if items.
      */
     function updateParent(data) {
-
+                 
       ctrl.onUpdate({
 
         results: data.results,
         count: data.count,
+        position: QueryManager.getOffset(),
         field: displayListType
 
       });

@@ -22,16 +22,19 @@
 
     };
 
-    ctrl.onPagerUpdate = function (results, count, field) {
+    ctrl.onPagerUpdate = function (results, count, position, field) {
 
+      //results.unshift({})
       addResults(results);
       ctrl.count = count;
-      ctrl.field = field;
 
+      ctrl.field = field;
+      console.log(field)
 
     };
 
     function addResults(results) {
+
       ctrl.items = ctrl.items.concat(results);
     }
 

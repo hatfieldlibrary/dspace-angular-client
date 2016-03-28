@@ -17,8 +17,6 @@ var rp = require('request-promise');
     var solr =
       rp(
         {
-          /** when not running on dspace host, use local port forwarding: e.g.: ssh -L 1234:127.0.0.1:8080 dspacehost.home.edu */
-          //  url: host + '/solr/search/select?q=title:' + query + '&wt=json',
           url: 'http://localhost:1234/solr/search/select?sort=dc.date.accessioned_dt+desc&rows=5&q=location.' + type + ':' + id + '&fl=dc.title,dateIssued.year,handle&wt=json',
           method: 'GET',
           headers: {'User-Agent': 'Request-Promise'},

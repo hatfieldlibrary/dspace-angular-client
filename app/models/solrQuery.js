@@ -1,7 +1,9 @@
 'use strict';
 
 var rp = require('request-promise');
+var queryGenerator = require('../core/queryGenerator');
 var utils = require('../core/utils');
+var processors = require('../core/responseProcessor');
 var constants = require('../core/constants');
 
 (function () {
@@ -27,7 +29,7 @@ var constants = require('../core/constants');
      * Get the solr URL.
      * @type {string}
      */
-    var solrUrl = utils.getSolrUrl(query, dspaceTokenHeader);
+    var solrUrl = queryGenerator.getSolrUrl(query, dspaceTokenHeader);
 
     /**
      * The request-promise.
@@ -35,8 +37,6 @@ var constants = require('../core/constants');
     var solr =
       rp(
         {
-          /** when not running on dspace host, use local port forwarding: e.g.: ssh -L 1234:127.0.0.1:8080 dspacehost.home.edu */
-          //  url: host + '/solr/search/select?q=title:' + query + '&wt=json',
           url: solrUrl,
           method: 'GET',
           headers: {
@@ -68,19 +68,19 @@ var constants = require('../core/constants');
   function processResult(solrResponse) {
 
     if (processType === constants.QueryType.AUTHOR_FACETS) {
-      return utils.processAuthor(solrResponse);
+      return processors.processAuthor(solrResponse);
 
     }
     else if (processType === constants.QueryType.SUBJECT_FACETS) {
-      return utils.processSubject(solrResponse);
+      return processors.processSubject(solrResponse);
 
     }
     else if (processType === constants.QueryType.DISCOVER) {
-      return utils.parseDiscoveryResult(solrResponse);
+      return processors.parseDiscoveryResult(solrResponse);
 
     }
     else {
-      return utils.processItems(solrResponse);
+      return processors.processItems(solrResponse);
 
     }
   }

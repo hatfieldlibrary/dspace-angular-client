@@ -5,6 +5,7 @@
 
 var rp = require('request-promise');
 var utils = require('../core/utils');
+var queryGenerator = require('../core/queryGenerator');
 
 (function () {
   
@@ -22,7 +23,7 @@ var utils = require('../core/utils');
      * Get the solr URL.
      * @type {string}
      */
-    var solrUrl = utils.getOffsetUrl(query, dspaceTokenHeader);
+    var solrUrl = queryGenerator.getOffsetUrl(query, dspaceTokenHeader);
 
     /**
      * The request-promise.
@@ -30,8 +31,6 @@ var utils = require('../core/utils');
     var solr =
       rp(
         {
-          /** when not running on dspace host, use local port forwarding: e.g.: ssh -L 1234:127.0.0.1:8080 dspacehost.home.edu */
-          //  url: host + '/solr/search/select?q=title:' + query + '&wt=json',
           url: solrUrl,
           method: 'GET',
           headers: {

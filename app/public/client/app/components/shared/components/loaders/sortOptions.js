@@ -125,18 +125,14 @@
     ctrl.placeholder = 'Jump to Letter';
 
     function placeholderMessage() {
-      console.log('place ')
       if (QueryManager.getQueryType() === QueryTypes.DATES_LIST) {
-        console.log('year')
         ctrl.placeholder = 'Enter Year';
       }
       else if (QueryManager.getQueryType() === QueryTypes.TITLES_LIST) {
-        console.log('title')
         ctrl.placeholder = 'Jump to Letter';
       }
       else if (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS ||
         QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS ) {
-        console.log('title')
         ctrl.placeholder = 'Jump to Letter';
       }
     }
@@ -315,6 +311,7 @@
 
         /** Add authors to the current result set. */
         data.results = Utils.authorArraySlice(start, start + end);
+        console.log(data);
 
 
       }
@@ -352,6 +349,7 @@
       ctrl.onUpdate({
         results: data.results,
         count: data.count,
+        position: QueryManager.getOffset(),
         field: displayListType
       });
 

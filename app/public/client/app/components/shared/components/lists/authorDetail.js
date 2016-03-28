@@ -7,7 +7,7 @@
   function AuthorDetailController(QueryManager) {
 
     var ctrl = this;
-    ctrl.offset =  QueryManager.getOffset();
+    ctrl.offset =  0;
     console.log(ctrl)
 
   }

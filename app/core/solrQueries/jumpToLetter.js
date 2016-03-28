@@ -13,7 +13,7 @@ var filters = require('./sharedFilters');
     /**
      * URL TEMPLATE: Retrieves the index for the first record that matches the query criteria.
      *
-     * input query filter, reverse query fitler, location, anonymousFilter
+     * input query filter, reverse query filter, location, anonymousFilter
      */
     var startLetterLocation = 'http://localhost:1234/solr/search/select?fl=handle,search.resourcetype,search.resourceid&start=0&%s&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2%s&version=2&rows=0&%s&%s';
 

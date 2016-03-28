@@ -12,11 +12,17 @@ a, a:visited {
 }
 
 .app-side-nav {
-  margin-top: 130px;
+  margin-top: 150px;
 }
 
+.content-width {
+  max-width: 900px;
+}
+
+.page-title {
+  margin: 0 8px;
+}
 .nav-logo {
-  left: -20px;
   color: #ffffff;
 }
 
@@ -31,20 +37,28 @@ md-toolbar:not(.md-menu-toolbar) .md-button:not(.md-raised) {
 }
 
 .sub-title {
-  height: 110px;
+  margin-top: 0px;
+  height: 140px;
 }
 
 .top-offset {
-  margin-top: -110px
+  margin-top: -130px;
 }
 
 .item-title {
-  line-height: 15px;
+  line-height: 35px;
+  margin-top: 4px;
 }
+
+.parent-title {
+  line-height: 18px;
+}
+
 .background-highlight {
   background: #faf8f5;
   padding: 8px;
 }
+
 .search-form {
   width: 200px;
 }
