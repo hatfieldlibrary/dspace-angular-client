@@ -12,7 +12,7 @@ a, a:visited {
 }
 
 .app-side-nav {
-  margin-top: 150px;
+  margin-top: 158px;
 }
 
 .content-width {
@@ -39,11 +39,11 @@ md-toolbar:not(.md-menu-toolbar) .md-button:not(.md-raised) {
 .top-highlight {
   background: #ded7c5;
   margin-top: 0px;
-  height: 280px;
+  height:154px;
 }
 
 .top-offset {
-  margin-top: -130px;
+  margin-top: -140px;
 }
 
 .item-title {
@@ -58,6 +58,10 @@ md-toolbar:not(.md-menu-toolbar) .md-button:not(.md-raised) {
 .background-highlight {
   background: #faf8f5;
   padding: 8px;
+}
+
+.list-highlight {
+  color: #8F0100 !important;
 }
 
 .search-form {

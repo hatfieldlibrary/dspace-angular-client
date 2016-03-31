@@ -1,9 +1,7 @@
 <md-list-item class="md-2-line">
-  <div class="md-list-item-text">
+  <div class="md-list-item-text"  ng-click="$ctrl.showItem($event, $ctrl.id)">
 
-    <!--<a href="/handle/{{$ctrl.handle}}">{{$ctrl.title}}</a>-->
-
-    <a href="#" ng-click=" $ctrl.showItem($event, $ctrl.id)">{{$ctrl.title}}</a>
+    <p class="list-highlight">{{$ctrl.title}}</p>
 
     <p>{{$ctrl.author}}, {{$ctrl.publisher}}, {{$ctrl.year}}, {{$ctrl.site}}, {{$ctrl.id}} </p>
 

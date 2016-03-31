@@ -5,10 +5,18 @@
 (function () {
 
 
-  function DialogCtrl($scope, result) {
-    $scope.data = result;
+  function DialogCtrl($mdDialog, data) {
+
+    var ctrl = this;
+
+    ctrl.data = data;
+
+    ctrl.cancel = function() {
+      $mdDialog.cancel();
+    };
 
   }
+
 
   function ItemDetailController($scope, $mdMedia, $mdDialog) {
 
@@ -18,25 +26,22 @@
 
       var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
 
-
       $mdDialog.show(
         {
           controller: DialogCtrl,
-          template: '<md-dialog>' +
-          '             <dialog-item-component data=data></dialog-item-component>' +
-          '           </md-dialog>',
+          controllerAs: '$ctrl',
+          templateUrl:  '/shared/templates/lists/dialogItem.html',
           parent: angular.element(document.body),
           targetEvent: ev,
           clickOutsideToClose: true,
           fullscreen: useFullScreen,
+          bindToController: true,
           resolve: {
             ItemById: 'ItemById',
-            result: function(ItemById) {
+            data: function(ItemById) {
               return ItemById.query({item: id})
             }
           }
-
-
         });
 
     };

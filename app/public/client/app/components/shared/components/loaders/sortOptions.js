@@ -58,6 +58,7 @@
 
     ctrl.selectedOrder = QueryManager.getSort();
 
+
     /**
      * The selected field. Initialize to title.
      * @type {string}
@@ -132,29 +133,30 @@
         ctrl.placeholder = 'Jump to Letter';
       }
       else if (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS ||
-        QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS ) {
+        QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS) {
         ctrl.placeholder = 'Jump to Letter';
       }
     }
 
     ctrl.getFilter = function () {
 
-      /**
-       * When jumping to a point in the result list, it's confusing if the sort
-       * order is toggled to DESCENDING.  The state of affairs argues for
-       * resetting the order to ASCENDING.
-       */
-      // QueryManager.setSort(QuerySort.ASCENDING);
-      //
-      // ctrl.selectedOrder = QuerySort.ASCENDING;
+      var queryType = QueryManager.getQueryType();
 
-      if (QueryManager.getQueryType() === QueryTypes.TITLES_LIST) {
+      if (queryType === QueryTypes.TITLES_LIST) {
 
         QueryManager.setJumpType(QueryTypes.START_LETTER);
 
-      } else if (QueryManager.getQueryType() === QueryTypes.DATES_LIST) {
+      } else if (queryType === QueryTypes.DATES_LIST) {
 
         QueryManager.setJumpType(QueryTypes.START_DATE);
+
+      } else if (queryType === QueryTypes.AUTHOR_FACETS) {
+
+        QueryManager.setJumpType(QueryTypes.AUTHOR_FACETS);
+
+      } else if (queryType === QueryTypes.SUBJECT_FACETS) {
+
+        QueryManager.setJumpType(QueryTypes.SUBJECT_FACETS);
 
       }
 
@@ -182,13 +184,13 @@
         }
         else if (QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS) {
 
-            var offset = findIndexInArray(QueryManager.getAuthors(), ctrl.filterTerms, 'author');
+          var offset = findIndexInArray(QueryManager.getAuthors(), ctrl.filterTerms, 'author');
           QueryManager.setOffset(offset);
-            ctrl.onUpdate({
-              results: Utils.authorArraySlice(offset, offset + 10),
-              count: QueryManager.getAuthorsCount(),
-              field: QueryFields.AUTHOR
-            });
+          ctrl.onUpdate({
+            results: Utils.authorArraySlice(offset, offset + 10),
+            count: QueryManager.getAuthorsCount(),
+            field: QueryFields.AUTHOR
+          });
 
         }
         else if (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS) {
@@ -202,7 +204,7 @@
           });
 
         }
-      }, 50);
+      }, 100);
 
 
     };
@@ -342,6 +344,8 @@
         displayListType = QueryFields.TITLE;
 
       }
+
+      QueryManager.setCount(data.count);
 
       /**
        * Update parent component.

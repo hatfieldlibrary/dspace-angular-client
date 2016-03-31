@@ -32,9 +32,6 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
         jumpTo: {
           type: ''
         },
-        itemId: {
-          id: ''
-        },
         query: {
           /**
            * The solr query type.  Possible values are defined in QueryTypes.
@@ -62,6 +59,7 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
           offset: 0
         }
       },
+      count: 0,
       /**
        * The array of authors returned by browse/sort by author query. This is
        * cached so that the array (which can be large) isn't returned with every
@@ -84,6 +82,14 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
     getContext: function () {
       return this.context;
     },
+    
+    setCount: function(count) {
+       this.context.count = count;
+    },
+    
+    getCount: function() {
+      return this.context.count;
+    },
 
     setJumpType: function (type) {
       this.context.query.jumpTo.type = type;
@@ -94,7 +100,6 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
     },
 
     setOffset: function (offset) {
-      console.log('setting offset to ' + offset);
       this.context.query.query.offset = offset;
     },
 
@@ -148,7 +153,6 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
       this.context.query.asset.type = type;
     },
     setAssetId: function (id) {
-      console.log('setting asset id')
       this.context.query.asset.id = id;
     },
 
@@ -206,15 +210,6 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
 
     getSort: function () {
       return this.context.query.sort.order;
-    },
-
-    setItem: function (id) {
-      this.context.query.itemId.id = id;
-    },
-
-
-    getItem: function() {
-      return this.context.query.itemId.id;
     }
 
 

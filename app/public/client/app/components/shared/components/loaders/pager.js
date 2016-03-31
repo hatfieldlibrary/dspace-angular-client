@@ -21,6 +21,10 @@
     var setSize = 10;
     var count = 0;
 
+    ctrl.more = function() {
+      return QueryManager.getCount() > QueryManager.getOffset() + 10;
+    };
+
 
     /**
      * Current start position for view model.
@@ -138,7 +142,7 @@
           data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
 
         }
-        
+
         updateParent(data);
 
       }
@@ -151,7 +155,9 @@
      * @param data the next set if items.
      */
     function updateParent(data) {
-                 
+
+      QueryManager.setCount(data.count);
+
       ctrl.onUpdate({
 
         results: data.results,
@@ -204,7 +210,7 @@
 
   dspaceComponents.component('pagerComponent', {
 
-    template: '<div layout="row" layout-align="center center"><md-button class="md-raised" ng-click="$ctrl.next()">More Results</md-button></div>',
+    template: '<div layout="row" layout-align="center center"><md-button class="md-raised" ng-click="$ctrl.next()" ng-if="$ctrl.more()">More Results</md-button></div>',
 
     bindings: {
       onUpdate: '&'
