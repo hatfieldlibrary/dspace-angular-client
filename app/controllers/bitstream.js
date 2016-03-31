@@ -19,9 +19,7 @@ var request = require('request');
     var file = req.params.file;
 
     models.getBitstream(req, res, id, session, file);
-
-
-
+    
   };
 
 })();

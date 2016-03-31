@@ -37,6 +37,9 @@
 
       ctrl.items = ctrl.items.concat(results);
     }
+    
+   
+
 
   }
 

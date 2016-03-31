@@ -36,9 +36,10 @@ md-toolbar:not(.md-menu-toolbar) .md-button:not(.md-raised) {
   color: #ffffff;
 }
 
-.sub-title {
+.top-highlight {
+  background: #ded7c5;
   margin-top: 0px;
-  height: 140px;
+  height: 280px;
 }
 
 .top-offset {

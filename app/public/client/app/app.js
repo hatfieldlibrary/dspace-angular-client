@@ -5,6 +5,7 @@
 var dspaceApp = angular.module('dspaceApp', [
 
   'ngMaterial',
+  'ngMessages',
   'ngRoute',
   'ngSanitize',
   'appConstants',

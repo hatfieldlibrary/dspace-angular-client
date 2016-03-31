@@ -1,23 +1,20 @@
-<div flex>
+<header-component></header-component>
 
-  <header-component></header-component>
+<md-content flex layout="column" class="main-content">
 
-  <md-content class="main-content"  layout="column"  flex>
+  <div layout="row" class="top-highlight"></div>
 
-    <div layout="row" flex class="sub-title" style="background: #ded7c5"></div>
+  <div layout="row" layout-align="center" class="top-offset">
 
-    <div layout="row" flex layout-align="center" class="top-offset">
+    <div layout="row" class="content-width">
 
-      <div layout="row" flex class="content-width">
+      <handle-component></handle-component>
 
-        <handle-component></handle-component>
-
-        <side-nav-component flex></side-nav-component>
-
-      </div>
+      <side-nav-component flex></side-nav-component>
 
     </div>
 
-  </md-content>
+  </div>
 
-</div>
+</md-content>
+

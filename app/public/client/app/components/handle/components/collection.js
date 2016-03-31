@@ -12,20 +12,20 @@
 
   /*globals dspaceControllers*/
 
-  function CollectionCtrl($rootScope, QueryManager, QueryActions, QueryTypes, QuerySort) {
+  function CollectionCtrl( QueryManager, QueryActions, QueryTypes, QuerySort) {
 
     var ctrl = this;
-    
+
 
     function init() {
       /**
        * Set the initial collection list parameters.
        */
-      QueryManager.setAction(QueryActions.LIST);
-
-      QueryManager.setQueryType(QueryTypes.TITLES_LIST);
-
-      QueryManager.setSort(QuerySort.ASCENDING);
+       QueryManager.setAction(QueryActions.LIST);
+      //
+       QueryManager.setQueryType(QueryTypes.TITLES_LIST);
+      //
+      // QueryManager.setSort(QuerySort.ASCENDING);
 
     }
 

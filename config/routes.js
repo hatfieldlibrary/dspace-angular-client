@@ -6,6 +6,7 @@ module.exports = function (app, config, passport) {
     handle = require('../app/controllers/handle'),
     communities = require('../app/controllers/communities'),
     bitstream = require('../app/controllers/bitstream'),
+    item = require('../app/controllers/item'),
     solr = require('../app/controllers/solr');
 
 
@@ -87,6 +88,8 @@ module.exports = function (app, config, passport) {
   app.get('/bitstream/:id/:file', bitstream.bitstream);
 
   app.use('/handleRequest/:site/:item', handle.getItem);
+  
+  app.use('/getItem/:item', item.getItem);
 
   app.get('/solrQuery/:type/:id/:qType/:field/:terms/:offset', solr.browse);
 

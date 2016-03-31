@@ -9,7 +9,7 @@ var dspaceContext = angular.module('dspaceContext', []);
  * one controller and no data to share.  If that remains
  * the case, no need for context!
  */
-dspaceContext.service('QueryManager', ['QueryTypes','QuerySort', function (QueryTypes, QuerySort) {
+dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort', 'QueryFields', function (QueryTypes, QueryActions, QuerySort, QueryFields) {
 
 
   return {
@@ -32,15 +32,18 @@ dspaceContext.service('QueryManager', ['QueryTypes','QuerySort', function (Query
         jumpTo: {
           type: ''
         },
+        itemId: {
+          id: ''
+        },
         query: {
           /**
            * The solr query type.  Possible values are defined in QueryTypes.
            */
-          qType: '',
+          qType: QueryTypes.TITLES_LIST,
           /**
            * The type of query (list, browse or search).
            */
-          action: '',
+          action: QueryActions.LIST,
           /**
            * The mode of query (any, all).
            */
@@ -52,7 +55,7 @@ dspaceContext.service('QueryManager', ['QueryTypes','QuerySort', function (Query
           /**
            * The field can be 'title', 'subject', 'date', 'author' or 'discover'.
            */
-          field: '',
+          field: QueryFields.TITLE,
           /**
            * The current offset used by paging.
            */
@@ -82,12 +85,12 @@ dspaceContext.service('QueryManager', ['QueryTypes','QuerySort', function (Query
       return this.context;
     },
 
-    setJumpType: function(type) {
+    setJumpType: function (type) {
       this.context.query.jumpTo.type = type;
     },
 
-    getJumpType: function() {
-       return this.context.query.jumpTo.type;
+    getJumpType: function () {
+      return this.context.query.jumpTo.type;
     },
 
     setOffset: function (offset) {
@@ -107,16 +110,16 @@ dspaceContext.service('QueryManager', ['QueryTypes','QuerySort', function (Query
       return (this.context.query.query.qType === QueryTypes.SUBJECT_FACETS);
     },
 
-    isDiscoveryListRequest: function() {
-       return (this.context.query.query.qType == QueryTypes.DISCOVER);
+    isDiscoveryListRequest: function () {
+      return (this.context.query.query.qType == QueryTypes.DISCOVER);
     },
 
     setAuthorsList: function (list) {
       this.context.authorArray = list;
     },
 
-    setSubjectList: function(list) {
-       this.context.subjectArray = list;
+    setSubjectList: function (list) {
+      this.context.subjectArray = list;
     },
 
     getAuthors: function () {
@@ -128,37 +131,36 @@ dspaceContext.service('QueryManager', ['QueryTypes','QuerySort', function (Query
     },
 
     getAuthorsCount: function () {
-      if (this.context.authorArray !== undefined)
-      {
+      if (this.context.authorArray !== undefined) {
         return this.context.authorArray.length;
       }
       return 0;
     },
 
     getSubjectsCount: function () {
-      if (this.context.subjectArray !== undefined)
-      {
+      if (this.context.subjectArray !== undefined) {
         return this.context.subjectArray.length;
       }
       return 0;
     },
 
-    setAssetType: function(type) {
+    setAssetType: function (type) {
       this.context.query.asset.type = type;
     },
-    setAssetId: function(id) {
+    setAssetId: function (id) {
+      console.log('setting asset id')
       this.context.query.asset.id = id;
     },
 
-    getAssetType: function() {
+    getAssetType: function () {
       return this.context.query.asset.type;
     },
 
-    getAssetId: function() {
+    getAssetId: function () {
       return this.context.query.asset.id;
     },
 
-    getAction: function() {
+    getAction: function () {
       return this.context.query.query.action;
     },
 
@@ -170,24 +172,24 @@ dspaceContext.service('QueryManager', ['QueryTypes','QuerySort', function (Query
       return this.context.query.query.field;
     },
 
-    setSearchField: function(field) {
+    setSearchField: function (field) {
       this.context.query.query.field = field;
     },
 
-    setQueryType: function(type) {
-        this.context.query.query.qType = type;
+    setQueryType: function (type) {
+      this.context.query.query.qType = type;
     },
 
-    getQueryType: function() {
+    getQueryType: function () {
       console.log(this.context.query.query.qType)
       return this.context.query.query.qType;
     },
 
-    setBrowseField: function(field) {
+    setBrowseField: function (field) {
       this.context.query.query.field = field;
     },
 
-    getBrowseField: function() {
+    getBrowseField: function () {
       return this.context.query.query.field;
     },
 
@@ -198,12 +200,21 @@ dspaceContext.service('QueryManager', ['QueryTypes','QuerySort', function (Query
 
     setSort: function (order) {
 
-    //  this.context.query.sort.field = field;
+      //  this.context.query.sort.field = field;
       this.context.query.sort.order = order;
     },
 
-    getSort: function() {
+    getSort: function () {
       return this.context.query.sort.order;
+    },
+
+    setItem: function (id) {
+      this.context.query.itemId.id = id;
+    },
+
+
+    getItem: function() {
+      return this.context.query.itemId.id;
     }
 
 

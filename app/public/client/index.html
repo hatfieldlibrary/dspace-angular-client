@@ -37,16 +37,18 @@
     // ga('send', 'pageview');
   </script>
 </head>
-<body class="{{ bodyClass }}" ng-cloak layout="column" layout-fill>
 
+
+<body class="{{ bodyClass }}" ng-cloak>
 
 <!-- Angularjs view container -->
-<div ng-view layout="row"></div>
+<div ng-view layout-fill layout="column"></div>
 
 
 <!-- build:js /js/libraries.min.js -->
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
 <script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-messages/angular-messages.js"></script>
 <!--<script src="bower_components/angular-mocks/angular-mocks.js"></script>   -->
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
@@ -97,12 +99,14 @@
 <script src="app/components/handle/components/collection.js"></script>
 <script src="app/components/handle/components/community.js"></script>
 <script src="app/components/handle/components/item.js"></script>
+<script src="app/components/handle/components/dialogItem.js"></script>
 <script src="app/components/discover/components/discover.js"></script>
 <script src="app/components/communities/components/communities.js"></script>
 <script src="app/components/browse/components/browse.js"></script>
 
 <script src="app/services/communities.js"></script>
 <script src="app/services/itemByHandle.js"></script>
+<script src="app/services/itemById.js"></script>
 <script src="app/services/checkSession.js"></script>
 <script src="app/services/login.js"></script>
 <script src="app/services/solrRecentSubs.js"></script>

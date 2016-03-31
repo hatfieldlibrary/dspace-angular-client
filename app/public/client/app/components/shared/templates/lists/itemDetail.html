@@ -1,9 +1,11 @@
 <md-list-item class="md-2-line">
   <div class="md-list-item-text">
 
-    <a href="/handle/{{$ctrl.handle}}">{{$ctrl.title}}</a>
+    <!--<a href="/handle/{{$ctrl.handle}}">{{$ctrl.title}}</a>-->
 
-    <p>{{$ctrl.author}}, {{$ctrl.publisher}}, {{$ctrl.year}}, {{$ctrl.handle}}, {{$ctrl.id}} </p>
+    <a href="#" ng-click=" $ctrl.showItem($event, $ctrl.id)">{{$ctrl.title}}</a>
+
+    <p>{{$ctrl.author}}, {{$ctrl.publisher}}, {{$ctrl.year}}, {{$ctrl.site}}, {{$ctrl.id}} </p>
 
   </div>
   <md-divider  ng-if="!$last"></md-divider>
