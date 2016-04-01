@@ -4,11 +4,28 @@
 
 (function () {
 
-  function AuthorDetailController(QueryManager) {
+  function AuthorDetailController($scope, QueryManager) {
 
     var ctrl = this;
-    ctrl.offset =  0;
-    console.log(ctrl)
+    ctrl.offset = 0;
+
+    $scope.context = QueryManager.getContext();
+
+    ctrl.selectedIndex = -1;
+
+
+    ctrl.setSelectedIndex = function () {
+      ctrl.setSelected({index: ctrl.index});
+
+    };
+
+
+    $scope.$watch(
+      "context.currentListIndex",
+      function updateSelecteIndex(newValue, oldValue) {
+        ctrl.selectedIndex = newValue;
+      }
+    );
 
   }
 
@@ -20,7 +37,9 @@
       id: '@',
       author: '@',
       field: '@',
-      offset: '@'
+      offset: '@',
+      index: '@',
+      setSelected: '&'
 
     },
     controller: AuthorDetailController,

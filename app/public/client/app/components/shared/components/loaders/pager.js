@@ -210,7 +210,7 @@
 
   dspaceComponents.component('pagerComponent', {
 
-    template: '<div layout="row" layout-align="center center"><md-button class="md-raised" ng-click="$ctrl.next()" ng-if="$ctrl.more()">More Results</md-button></div>',
+    template: '<div layout="row" layout-align="center center"><md-button class="md-raised md-accent md-fab md-mini" ng-click="$ctrl.next()" ng-if="$ctrl.more()"><md-icon md-font-library="material-icons" class="md-light">expand_more</md-icon></md-button></div>',
 
     bindings: {
       onUpdate: '&'

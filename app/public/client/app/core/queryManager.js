@@ -72,6 +72,8 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
        * paging request.
        */
       subjectArray: [],
+
+      currentListIndex: -1,
       /**
        * Tracks whether or not a current DSpace session exists.
        */
@@ -82,12 +84,20 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
     getContext: function () {
       return this.context;
     },
-    
-    setCount: function(count) {
-       this.context.count = count;
+
+    getCurrentIndex: function () {
+      return this.context.currentListIndex;
     },
-    
-    getCount: function() {
+
+    setCurrentIndex: function (index) {
+      this.context.currentListIndex = index;
+    },
+
+    setCount: function (count) {
+      this.context.count = count;
+    },
+
+    getCount: function () {
       return this.context.count;
     },
 

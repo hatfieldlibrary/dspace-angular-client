@@ -90,22 +90,22 @@ var dspaceApp = angular.module('dspaceApp', [
     });
 
     $mdThemingProvider.definePalette('Accent Palette', {
-      '50': '#fdfaf2',
-      '100': '#f4e3af',
-      '200': '#edd17e',
-      '300': '#e4bb3f',
-      '400': '#e1b224',
-      '500': '#ca9f1c',
-      '600': '#af8a18',
-      '700': '#947515',
-      '800': '#796011',
-      '900': '#5e4a0d',
-      'A100': '#fdfaf2',
-      'A200': '#f4e3af',
-      'A400': '#e1b224',
-      'A700': '#947515',
+      '50': '#fcfefe',
+      '100': '#c4e7ea',
+      '200': '#9ad7db',
+      '300': '#66c2c9',
+      '400': '#4fb9c1',
+      '500': '#3faab2',
+      '600': '#37949b',
+      '700': '#2f7f85',
+      '800': '#27696e',
+      '900': '#1f5458',
+      'A100': '#fcfefe',
+      'A200': '#c4e7ea',
+      'A400': '#4fb9c1',
+      'A700': '#2f7f85',
       'contrastDefaultColor': 'light',
-      'contrastDarkColors': '50 100 200 300 400 500 600 A100 A200 A400'
+      'contrastLightColors': '50 100 200 300 400 500 A100 A200 A400'
     });
 
       var customWarn = {

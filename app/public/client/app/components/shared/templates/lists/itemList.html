@@ -1,67 +1,70 @@
 <div class="background-highlight">
-<p class="md-body-2">This collection contains {{$ctrl.count}} items.</p>
+  <p class="md-subhead md-accent" style="margin-left: 20px;">Viewing {{$ctrl.count}} items.</p>
 
-<sort-options-component ng-if="$ctrl.context=='collection'"
-  on-update="$ctrl.onUpdate(results, count, field)">
-</sort-options-component>
+  <sort-options-component ng-if="$ctrl.context=='collection'"
+                          on-update="$ctrl.onUpdate(results, count, field)">
+  </sort-options-component>
 </div>
 <md-content>
-<md-list>
+  <md-list>
 
-<item-detail-component
+    <item-detail-component
 
-  ng-if="$ctrl.field!='author' && $ctrl.field!='subject' && $ctrl.field!=='discover'"
-  ng-repeat="col in $ctrl.items"
-  title="{{col.title}}"
-  author="col.author[0]"
-  publisher="{{col.publisher}}"
-  year="{{col.year}}"
-  handle="{{col.handle}}"
-  id="{{col.id}}">
+      ng-if="$ctrl.field!='author' && $ctrl.field!='subject' && $ctrl.field!=='discover'"
+      ng-repeat="col in $ctrl.items"
+      title="{{col.title}}"
+      author="col.author[0]"
+      publisher="{{col.publisher}}"
+      year="{{col.year}}"
+      handle="{{col.handle}}"
+      id="{{col.id}}">
 
-</item-detail-component>
+    </item-detail-component>
 
-<author-detail-component
+    <author-detail-component
 
-  ng-if="$ctrl.field=='author'"
-  ng-repeat="au in $ctrl.items"
-  author="{{au.author.value}}"
-  count="{{au.author.count}}"
-  type="{{$ctrl.type}}"
-  id="{{$ctrl.id}}"
-  field="{{$ctrl.field}}">
+      ng-if="$ctrl.field=='author'"
+      ng-repeat="au in $ctrl.items"
+      ng-class="{'selected': $index==$ctrl.selectedIndex}"
+      author="{{au.author.value}}"
+      count="{{au.author.count}}"
+      type="{{$ctrl.type}}"
+      id="{{$ctrl.id}}"
+      index="{{$index}}"
+      field="{{$ctrl.field}}"
+      set-selected="$ctrl.setSelected(index)">
 
-</author-detail-component>
+    </author-detail-component>
 
-<subject-detail-component
+    <subject-detail-component
 
-  ng-if="$ctrl.field=='subject'"
-  ng-repeat="sub in $ctrl.items"
-  subject="{{sub.author.value}}"
-  count="{{sub.author.count}}"
-  type="{{$ctrl.type}}"
-  id="{{$ctrl.id}}"
-  field="{{$ctrl.field}}">
+      ng-if="$ctrl.field=='subject'"
+      ng-repeat="sub in $ctrl.items"
+      subject="{{sub.author.value}}"
+      count="{{sub.author.count}}"
+      type="{{$ctrl.type}}"
+      id="{{$ctrl.id}}"
+      field="{{$ctrl.field}}">
 
-</subject-detail-component>
+    </subject-detail-component>
 
-<discover-detail-component
+    <discover-detail-component
 
-  ng-if="$ctrl.field=='discover'"
-  ng-repeat="item in $ctrl.items"
-  title="{{item.title[0]}}"
-  description="item.description"
-  count="{{$ctrl.count}}">
+      ng-if="$ctrl.field=='discover'"
+      ng-repeat="item in $ctrl.items"
+      title="{{item.title[0]}}"
+      description="item.description"
+      count="{{$ctrl.count}}">
 
-</discover-detail-component>
+    </discover-detail-component>
 
-</md-list>
+  </md-list>
 
-<pager-component
+  <pager-component
 
-  on-update="$ctrl.onPagerUpdate(results, count, position, field)">
+    on-update="$ctrl.onPagerUpdate(results, count, position, field)">
 
-</pager-component>
+  </pager-component>
 </md-content>
 
 
