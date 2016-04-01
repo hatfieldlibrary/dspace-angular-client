@@ -49,6 +49,28 @@ var utils = require('../core/utils');
     ret.archived = json.archived;
     ret.withdrawn = json.withdrawn;
     ret.metadata = json.metadata;
+    ret.author = '';
+    var authCount = 0;
+    for (var i = 0; i < ret.metadata.length; i++) {
+      if (ret.metadata[i].key === 'dc.contributor.author') {
+        
+        if (authCount > 0) {
+          ret.author += '; '
+        }
+        ret.author +=  ret.metadata[i].value;
+        authCount++;
+        
+      }
+      if (ret.metadata[i].key === 'dc.identifier.uri') {
+        ret.url =  ret.metadata[i].value;
+      }
+      if (ret.metadata[i].key === 'dc.date.issued') {
+        ret.date =  ret.metadata[i].value;
+      }
+      if (ret.metadata[i].key === 'dc.description.abstract') {
+        ret.description =  ret.metadata[i].value;
+      }
+    }
     var bits = [];
     for (var i = 0; i < json.bitstreams.length; i++) {
       var tmpItem = {};

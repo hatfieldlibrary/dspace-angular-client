@@ -1,5 +1,5 @@
 body {
-  background: #f0ede5;
+  background: #fdfaf2;
 }
 
 a, a:visited {
@@ -8,7 +8,7 @@ a, a:visited {
 }
 
 .main-content {
-  background: #f0ede5;
+  background: #fdfaf2;
 }
 
 .app-side-nav {
@@ -37,7 +37,7 @@ md-toolbar:not(.md-menu-toolbar) .md-button:not(.md-raised) {
 }
 
 .top-highlight {
-  background: #ded7c5;
+  background: #f4e3af;
   margin-top: 0px;
   height:154px;
 }
@@ -56,7 +56,7 @@ md-toolbar:not(.md-menu-toolbar) .md-button:not(.md-raised) {
 }
 
 .background-highlight {
-  background: #faf8f5;
+  background: #fdfaf2;
   padding: 8px;
 }
 
@@ -67,6 +67,10 @@ md-toolbar:not(.md-menu-toolbar) .md-button:not(.md-raised) {
 .search-form {
   width: 200px;
 }
+.search-form md-input-container.md-has-icon {
+  padding-left: 0px;
+}
+
 .sort-options {
   padding: 0px 16px;
 }
@@ -87,8 +91,17 @@ md-toolbar:not(.md-menu-toolbar) .md-button:not(.md-raised) {
 }
 
 .search-form .md-button {
-  background-color: #cbc0a4;
+  background-color: #e1b224;
   margin: 8px 0;
+}
+
+.file-info .md-button {
+  margin: 8px 0;
+}
+.file-info .md-button,
+.file-info .md-button md-icon{
+  color: #af8a18;
+
 }
 
 .search-form .md-button:not([disabled]):hover {

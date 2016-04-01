@@ -1,62 +1,102 @@
 <md-dialog aria-label="List dialog">
   <md-toolbar>
     <div class="md-toolbar-tools">
-      <h2>Mango (Fruit)</h2>
+      <h2>Item</h2>
       <span flex></span>
       <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
-        <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        <md-icon aria-label="Close dialog" md-font-library="material-icons">cancel</md-icon>
       </md-button>
     </div>
   </md-toolbar>
   <md-dialog-content>
     <div class="md-dialog-content">
       <div layout="column" layout-align="center" style="max-width: 900px">
-        <h3>Parent Collection</h3>
-        <ul>
-          <li>
-            {{$ctrl.data.parentCollection.name}}
-          </li>
-          <li>
-            {{$ctrl.data.parentCollection.id}}
-          </li>
-          <li>
-            {{$ctrl.data.parentCollection.handle}}
-          </li>
-        </ul>
-        <h3>Item Info</h3>
-        <ul>
-          <li>
-            {{$ctrl.data.name}}
-          </li>
-          <li>
-            {{$ctrl.data.handle}}
-          </li>
-          <li>
-            {{$ctrl.data.id}}
-          </li>
-          <li>
-            {{$ctrl.data.type}}
-          </li>
-        </ul>
-        <h3>Metadata</h3>
-        <ul>
-          <li ng-repeat="meta in $ctrl.data.metadata">
-            <p><em>key:</em> {{meta.key}} <em>value:</em> {{meta.value}}</p>
-          </li>
-        </ul>
-        <h3>Bitstreams</h3>
-        <ul>
-          <li ng-repeat="stream in $ctrl.data.bitstreams">
-            {{stream.name}} <br>
-            {{stream.retrieveLink}} <br>
-            {{stream.id}} <br>
-            {{stream.bundleName}}<br>
-            {{stream.mimeType}}<br>
-            {{stream.sizeBytes}} bytes<br>
-            {{stream.description}}<br>
-            <a target="_blank" href="/bitstream/{{stream.id}}/{{stream.name}}">Download File</a>
-          </li>
-        </ul>
+
+
+        <div layout="row" flex>
+
+          <div layout="column" flex="66">
+
+            <h3 class="md-headline">{{$ctrl.data.name}}</h3>
+          </div>
+          <div flex="33">
+          </div>
+        </div>
+        <div layout="row" flex>
+          <div layout="column" flex="66">
+
+            <p class="md-title">{{$ctrl.data.author}}</p>
+
+            <span class="md-body-2">Publication Date</span>
+            <span class="md-body-1">{{$ctrl.data.date}}</span>
+
+            <span class="md-body-2">Link Citation</span>
+            <span class="md-body-1">{{$ctrl.data.url}}</span>
+
+            <p ng-if="$ctrl.data.description.length > 0" class="md-title">Abstract / Description</p>
+            <p>{{$ctrl.data.description}}</p>
+
+            <h3>
+              <md-button class="md-subhead md-fab md-mini md-accent" style="color: #fff;" ng-click="$ctrl.toggleMeta();"
+                         ng-if="!$ctrl.showMetadata">
+                <md-icon md-font-library="material-icons">arrow_downward</md-icon>
+              </md-button>
+              <md-button class="md-subhead md-fab md-mini md-accent" style="color: #fff;" ng-click="$ctrl.toggleMeta();"
+                         ng-if="$ctrl.showMetadata">
+                <md-icon md-font-library="material-icons">arrow_upward</md-icon>
+              </md-button>
+              Metadata
+            </h3>
+            <div layout="column" style="margin-top: 8px;" ng-repeat="meta in $ctrl.data.metadata"
+                 ng-show="$ctrl.showMetadata">
+              <div class="md-body-2">{{meta.key}}</div>
+              <div class="md-body-1">{{meta.value}}</div>
+            </div>
+
+
+          </div>
+          <div flex="33">
+
+
+            <div class="file-info" layout="row" layout-align="center" ng-repeat="stream in $ctrl.data.bitstreams"
+                 ng-if="stream.bundleName==='ORIGINAL'">
+
+              <div style="margin-top: 8px;">
+              <div ng-if="stream.mimeType==='application/pdf'"><i class="material-icons"
+                                                                  style="font-size: 2.5em;color: #999;">insert_drive_file</i>
+              </div>
+                </div>
+              <div>
+                <md-button class="md-subhead" target="_blank" href="/bitstream/{{stream.id}}/{{stream.name}}">
+                  <md-icon md-font-library="material-icons">file_download</md-icon>
+                  Download File
+                </md-button>
+                <div style="margin: -8px 0px 12px 8px; color: #666;">
+                  {{stream.mimeType}}<br>
+                  {{stream.sizeBytes}} bytes<br>
+                  {{stream.description}}<br>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!--<ul>-->
+        <!--<li>-->
+        <!--{{$ctrl.data.name}}-->
+        <!--</li>-->
+        <!--<li>-->
+        <!--{{$ctrl.data.handle}}-->
+        <!--</li>-->
+        <!--<li>-->
+        <!--{{$ctrl.data.id}}-->
+        <!--</li>-->
+        <!--<li>-->
+        <!--{{$ctrl.data.type}}-->
+        <!--</li>-->
+        <!--</ul>-->
+
+
       </div>
     </div>
   </md-dialog-content>

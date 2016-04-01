@@ -11,9 +11,18 @@
 
     ctrl.data = data;
 
+    ctrl.showMetadata = false;
+
     ctrl.cancel = function() {
       $mdDialog.cancel();
     };
+
+    ctrl.toggleMeta = function() {
+       ctrl.showMetadata = !ctrl.showMetadata;
+      console.log(ctrl.showMetadata)
+    };
+
+
 
   }
 

@@ -13,6 +13,8 @@
   /*globals dspaceControllers*/
 
   function ItemCtrl() {
+    
+    
   }
 
   dspaceComponents.component('itemComponent', {

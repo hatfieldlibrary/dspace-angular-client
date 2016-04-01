@@ -5,7 +5,6 @@
 var dspaceApp = angular.module('dspaceApp', [
 
   'ngMaterial',
-  'ngMessages',
   'ngRoute',
   'ngSanitize',
   'appConstants',
@@ -71,45 +70,43 @@ var dspaceApp = angular.module('dspaceApp', [
         .definePalette('customBackground',
           customBackground);
 
-      var customPrimary = {
-        '50': '#ffffff',
-        '100': '#ffffff',
-        '200': '#ffffff',
-        '300': '#faf8f5',
-        '400': '#f0ede5',
-        '500': '#333333',
-        '600': '#ded7c5',
-        '700': '#d4ccb5',
-        '800': '#cbc0a4',
-        '900': '#c2b594',
-        'A100': '#ffffff',
-        'A200': '#ffffff',
-        'A400': '#ffffff',
-        'A700': '#b9aa84'
-      };
-      $mdThemingProvider
-        .definePalette('customPrimary',
-          customPrimary);
+    $mdThemingProvider.definePalette('Palette Primary', {
+      '50': '#efaaa9',
+      '100': '#e46968',
+      '200': '#db3a39',
+      '300': '#ad211f',
+      '400': '#931c1b',
+      '500': '#791716',
+      '600': '#5f1211',
+      '700': '#450d0d',
+      '800': '#2b0808',
+      '900': '#110303',
+      'A100': '#efaaa9',
+      'A200': '#e46968',
+      'A400': '#931c1b',
+      'A700': '#450d0d',
+      'contrastDefaultColor': 'light',
+      'contrastDarkColors': '50 100 A100 A200'
+    });
 
-      var customAccent = {
-        '50': '#da3634',
-        '100': '#cf2726',
-        '200': '#ba2322',
-        '300': '#a41f1e',
-        '400': '#8f1b1a',
-        '500': '#791716',
-        '600': '#631312',
-        '700': '#4e0f0e',
-        '800': '#380b0a',
-        '900': '#230706',
-        'A100': '#de4b4a',
-        'A200': '#e2615f',
-        'A400': '#e67675',
-        'A700': '#0d0202'
-      };
-      $mdThemingProvider
-        .definePalette('customAccent',
-          customAccent);
+    $mdThemingProvider.definePalette('Accent Palette', {
+      '50': '#fdfaf2',
+      '100': '#f4e3af',
+      '200': '#edd17e',
+      '300': '#e4bb3f',
+      '400': '#e1b224',
+      '500': '#ca9f1c',
+      '600': '#af8a18',
+      '700': '#947515',
+      '800': '#796011',
+      '900': '#5e4a0d',
+      'A100': '#fdfaf2',
+      'A200': '#f4e3af',
+      'A400': '#e1b224',
+      'A700': '#947515',
+      'contrastDefaultColor': 'light',
+      'contrastDarkColors': '50 100 200 300 400 500 600 A100 A200 A400'
+    });
 
       var customWarn = {
         '50': '#ff110f',
@@ -133,13 +130,13 @@ var dspaceApp = angular.module('dspaceApp', [
 
       // configure the Angular Material theme
       $mdThemingProvider.theme('default')
-        .primaryPalette('customPrimary', {
+        .primaryPalette('Palette Primary', {
           'default': '500', // by default use shade 400 from the pink palette for primary intentions
           'hue-1': '300', // use shade 100 for the <code>md-hue-1</code> class
           'hue-2': '600', // use shade 600 for the <code>md-hue-2</code> class
           'hue-3': 'A100' // use shade A100 for the <code>md-hue-3</code> class
         })
-        .accentPalette('customAccent', {
+        .accentPalette('Accent Palette', {
         'default': '500'
       }).warnPalette('customWarn');
       //.backgroundPalette('customBackground',  {
