@@ -5,7 +5,7 @@
 (function () {
 
 
-  function DialogCtrl($mdDialog, data) {
+  function DialogCtrl($mdDialog, $timeout, $anchorScroll, data) {
 
     var ctrl = this;
 
@@ -13,15 +13,26 @@
 
     ctrl.showMetadata = false;
 
-    ctrl.cancel = function() {
+    ctrl.cancel = function () {
       $mdDialog.cancel();
     };
 
-    ctrl.toggleMeta = function() {
-       ctrl.showMetadata = !ctrl.showMetadata;
-      console.log(ctrl.showMetadata)
-    };
+    ctrl.toggleMeta = function () {
 
+
+      $timeout(function () {
+
+        if (ctrl.showMetadata == true) {
+          $anchorScroll('metadata');
+        } else {
+          $anchorScroll('dialog-top');
+
+        }
+      }, 100);
+
+      ctrl.showMetadata = !ctrl.showMetadata;
+
+    };
 
 
   }
@@ -39,7 +50,7 @@
         {
           controller: DialogCtrl,
           controllerAs: '$ctrl',
-          templateUrl:  '/shared/templates/lists/dialogItem.html',
+          templateUrl: '/shared/templates/lists/dialogItem.html',
           parent: angular.element(document.body),
           targetEvent: ev,
           clickOutsideToClose: true,
@@ -47,7 +58,7 @@
           bindToController: true,
           resolve: {
             ItemById: 'ItemById',
-            data: function(ItemById) {
+            data: function (ItemById) {
               return ItemById.query({item: id})
             }
           }

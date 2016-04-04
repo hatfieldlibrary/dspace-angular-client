@@ -67,6 +67,9 @@
 
     ctrl.resetOrder = function () {
 
+
+      QueryManager.setCurrentIndex(-1);
+
       QueryManager.setSort(ctrl.selectedOrder);
 
       QueryManager.setSearchTerms('');
@@ -139,6 +142,8 @@
     }
 
     ctrl.getFilter = function () {
+
+      QueryManager.setCurrentIndex(-1);
 
       var queryType = QueryManager.getQueryType();
 
@@ -228,6 +233,9 @@
     }
 
     ctrl.resetField = function setField() {
+
+      QueryManager.setCurrentIndex(-1);
+
       /**
        * Set the QueryType (identifies the solr query to be used).
        */

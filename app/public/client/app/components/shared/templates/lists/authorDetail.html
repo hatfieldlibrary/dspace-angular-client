@@ -1,8 +1,8 @@
-<md-list-item layout="column" layout-align="left" flex  ng-class="{ 'md-whiteframe-z2': $ctrl.index == $ctrl.selectedIndex}">
+<md-list-item layout="column" layout-align="left" flex
+              ng-class="{ 'md-whiteframe-z2': $ctrl.index == $ctrl.selectedIndex}">
 
-  <md-item-content layout-fill
+  <md-item-content layout-fill layout="column">
 
-                   layout="column">
     <div class="md-list-item-text" layout-fill>
       <!--
       <a ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.author}}/{{$ctrl.offset}}">{{$ctrl.author}}</a>
@@ -16,13 +16,17 @@
 
     <div class="authorBrowse" layout-fill>
       <md-content layout-fill>
-      <div layout="column" class="expanded">
+        <div layout="column" class="expanded">
 
-      </div>
+
+
+
+        </div>
       </md-content>
     </div>
 
     <md-divider ng-if="!$last"></md-divider>
+
   </md-item-content>
 
 
