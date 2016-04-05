@@ -4,7 +4,7 @@
 
 (function () {
 
-  function AuthorDetailController($scope, QueryManager) {
+  function AuthorDetailController($scope, QueryManager, QueryTypes, InlineBrowseRequest) {
 
     var ctrl = this;
     ctrl.offset = 0;
@@ -16,6 +16,24 @@
 
     ctrl.setSelectedIndex = function () {
       ctrl.setSelected({index: ctrl.index});
+
+    };
+
+    ctrl.getItems = function() {
+
+      var result = InlineBrowseRequest.query(
+        {
+          type: ctrl.type,
+          id: ctrl.id,
+          qType: QueryTypes.AUTHOR_SEARCH,
+          field: ctrl.field,
+          terms: ctrl.author,
+          offset: 0
+        }
+      );
+      result.$promise.then(function (data) {
+        ctrl.items = data;
+      });
 
     };
 

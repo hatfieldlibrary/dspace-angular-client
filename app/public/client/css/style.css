@@ -116,33 +116,51 @@ md-toolbar:not(.md-menu-toolbar) .md-button:not(.md-raised) {
   background-color: transparent;
 }
 
-.selected .authorBrowse .expanded {
-  margin: 6px 6px;
+subject-detail-component .app-list-item,
+author-detail-component .app-list-item {
+  padding: 12px 16px;
+}
+
+.selected-index {
+  background: #FAF9F7;
+  margin: 10px 3px;
+  width: 99%;
+}
+
+.selected .browse-item .expanded {
+  background: #FAF9F7;
   visibility: visible;
   opacity: 1;
 }
 
-.authorBrowse .expanded {
+.selected .browse-anchor {
+  color: #505050;
+}
+
+.browse-item {
+  margin-top: 3px;
+  margin-left: -6px;
+}
+.browse-item .expanded {
+  margin:0;
   visibility: hidden;
   max-height: 0;
   opacity: 0;
   transition: all 500ms;
 }
 
-.selected .authorBrowse{
-   margin-top: 0;
+.selected .browse-item{
 
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
  }
 
-.selected .authorBrowse:last-child {
+.selected .browse-item:last-child {
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.selected  .md-whiteframe-z2 .authorBrowse   {
-
+.selected  .md-whiteframe-z1 .browse-item   {
   height: 160px;
 }
 

@@ -64,10 +64,10 @@
      * @type {string}
      */
     ctrl.selectedField = ListQueryFieldMap.fields[0].value;
-
+    
+    
     ctrl.resetOrder = function () {
-
-
+      
       QueryManager.setCurrentIndex(-1);
 
       QueryManager.setSort(ctrl.selectedOrder);

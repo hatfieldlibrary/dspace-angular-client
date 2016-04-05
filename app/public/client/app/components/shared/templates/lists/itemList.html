@@ -5,6 +5,7 @@
                           on-update="$ctrl.onUpdate(results, count, field)">
   </sort-options-component>
 </div>
+
 <md-content>
   <md-list>
 
@@ -44,8 +45,9 @@
       count="{{sub.author.count}}"
       type="{{$ctrl.type}}"
       id="{{$ctrl.id}}"
-      field="{{$ctrl.field}}">
-
+      index="{{$index}}"
+      field="{{$ctrl.field}}"
+      set-selected="$ctrl.setSelected(index)">
     </subject-detail-component>
 
     <discover-detail-component
