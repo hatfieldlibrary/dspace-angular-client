@@ -48,7 +48,7 @@ var filters = require('./sharedFilters');
       offsetFilter,
       filters.getLocationFilter(query.params.asset.type, query.params.asset.id),
       queryFilter,
-      filters.getRowsFilter(),
+      filters.getRowsFilter(query.params.query.rows),
       filters.getAnonymousQueryFilter(dspaceToken)
     );
 

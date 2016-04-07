@@ -51,10 +51,13 @@
   exports.getSolrUrl = function (query, dspaceToken) {
 
     var solrUrl = '';
+    console.log(query.params.query.action);
+    console.log(query.params.query.qType);
     /**
      * Get the solr URL for a LIST query.
      */
     if (query.params.query.action === constants.QueryActions.LIST) {
+
 
       if (query.params.query.qType === constants.QueryType.AUTHOR_FACETS) {
         solrUrl = authorFacets(query, dspaceToken);   // get authors list
@@ -71,8 +74,9 @@
       }
 
       else if (query.params.query.qType === constants.QueryType.DATES_LIST) {
-        solrUrl = datesList(query, dspaceToken);     // list items by date
 
+        solrUrl = datesList(query, dspaceToken);     // list items by date
+        
       }
 
     }
@@ -83,14 +87,20 @@
     else if (query.params.query.action === constants.QueryActions.BROWSE
       && query.params.query.terms.length > 0) {
 
+      /**
+       * These are the query types for browse searches.  Check the QueryField
+       * to determine which solrUrl will be generated.
+       */
       if (query.params.query.field === constants.QueryFields.AUTHOR) {
         solrUrl = authorBrowse(query, dspaceToken);   // search for items by author
 
       }
       else if (query.params.query.field === constants.QueryFields.SUBJECT) {
         solrUrl = subjectBrowse(query, dspaceToken);  // search for items by subject
+        console.log(solrUrl)
 
       }
+
     }
 
     /**

@@ -4,47 +4,49 @@
 
 (function () {
 
-  module.exports =  {
-      
+  module.exports = {
 
-        /**
-         * Generates the location solr filter for non-discovery queries.
-         * When type and id are not provided, returns an empty string so
-         * that the solr query executes without a location limit.
-         * @param type  the asset type
-         * @param id dspace identifier
-         * @returns {string}  the location filter
-         */
-        getLocationFilter: function (type, id) {
 
-          if (type.length > 0 && id !== undefined) {
-            return '&fq=location.' + type + ':' + id;
-          }
+    /**
+     * Generates the location solr filter for non-discovery queries.
+     * When type and id are not provided, returns an empty string so
+     * that the solr query executes without a location limit.
+     * @param type  the asset type
+     * @param id dspace identifier
+     * @returns {string}  the location filter
+     */
+    getLocationFilter: function (type, id) {
 
-          return '';
-        },
+      if (type.length > 0 && id !== undefined) {
+        return '&fq=location.' + type + ':' + id;
+      }
 
-        /**
-         * Sets the solr filter for anonymous queries when the Express
-         * session cannot provide us with a valid dspaceToken.
-         * @param dspaceToken
-         * @returns {*}
-         */
-        getAnonymousQueryFilter: function (dspaceToken) {
+      return '';
+    },
 
-          if (dspaceToken.length === 0) {
-            return '&fq=read:(g0+OR+g0+OR+g401+OR+g287)';
-          }
-          return '';
+    /**
+     * Sets the solr filter for anonymous queries when the Express
+     * session cannot provide us with a valid dspaceToken.
+     * @param dspaceToken
+     * @returns {*}
+     */
+    getAnonymousQueryFilter: function (dspaceToken) {
 
-        },
-    
-        getRowsFilter: function()  {
-             return 'rows=20';
-        }
-      
+      if (dspaceToken.length === 0) {
+        return '&fq=read:(g0+OR+g0+OR+g401+OR+g287)';
+      }
+      return '';
+
+    },
+
+    getRowsFilter: function (rows) {
+      if (rows !== undefined) {
+        return 'rows=' + rows;
+      }
+      return 'rows=20';
     }
 
-  
-  
+  }
+
+
 })();

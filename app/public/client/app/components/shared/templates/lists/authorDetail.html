@@ -10,7 +10,7 @@
 
   <md-divider ng-show="$ctrl.index == $ctrl.selectedIndex"></md-divider>
 
-  <div class="browse-item">
+  <div class="browse-item browse-item-{{$ctrl.getHeightForCount()}}">
     <md-content layout-fill>
       <div layout="column" layout-fill class="expanded">
         <item-detail-component
@@ -19,7 +19,8 @@
           author="col.author[0]"
           publisher="{{col.publisher}}"
           year="{{col.year}}"
-          handle="{{col.handle}}"
+          handle="{{col.handle}}",
+          count="{{col.count}}"
           id="{{col.id}}">
         </item-detail-component>
       </div>

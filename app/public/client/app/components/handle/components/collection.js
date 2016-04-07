@@ -7,11 +7,8 @@
 (function () {
 
   /**
-   * Collection view controller.
+   * Component controller.
    */
-
-  /*globals dspaceControllers*/
-
   function CollectionCtrl( QueryManager, QueryActions, QueryTypes, QuerySort) {
 
     var ctrl = this;
@@ -19,16 +16,20 @@
 
     function init() {
       /**
-       * Set the initial collection list parameters.
+       * Set query action to retrieve list.
        */
        QueryManager.setAction(QueryActions.LIST);
-      //
+      /**
+       * Set query type to title list.
+       */
        QueryManager.setQueryType(QueryTypes.TITLES_LIST);
-      //
-      // QueryManager.setSort(QuerySort.ASCENDING);
+
+      QueryManager.setSearchTerms('');
+
 
     }
 
+    // Initialize component state.
     init();
 
 

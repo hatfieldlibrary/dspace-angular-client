@@ -160,8 +160,35 @@ author-detail-component .app-list-item {
   border-bottom-right-radius: 2px;
 }
 
-.selected  .md-whiteframe-z1 .browse-item   {
-  height: 160px;
+.selected  .md-whiteframe-z1 .browse-item.browse-item-1   {
+  height: 72px;
+}
+.selected  .md-whiteframe-z1 .browse-item.browse-item-2   {
+  height: 144px;
+}
+.selected  .md-whiteframe-z1 .browse-item.browse-item-3   {
+  height: 216px;
+}
+.selected  .md-whiteframe-z1 .browse-item.browse-item-4   {
+  height: 288px;
+}
+.selected  .md-whiteframe-z1 .browse-item.browse-item-5   {
+  height: 360px;
+}
+.selected  .md-whiteframe-z1 .browse-item.browse-item-6   {
+  height: 432px;
+}
+.selected  .md-whiteframe-z1 .browse-item.browse-item-7   {
+  height: 514px;
+}
+.selected  .md-whiteframe-z1 .browse-item.browse-item-8   {
+  height: 576px;
+}
+.selected  .md-whiteframe-z1 .browse-item.browse-item-9   {
+  height: 621px;
+}
+.selected  .md-whiteframe-z1 .browse-item.browse-item-10   {
+  height: 720px;
 }
 
 

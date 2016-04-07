@@ -5,7 +5,7 @@ var utils = require('../core/utils');
 var constants = require('../core/constants');
 
 (function () {
-  
+
 
 
   /**
@@ -42,7 +42,9 @@ var constants = require('../core/constants');
     /** @type {string|*} the start position */
     var offset = req.params.offset;
 
-    req.session.url = '/browse/' + type + '/' + id + '/' + qType + '/' + field + '/' + terms + '/' + offset;
+    var rows = req.params.rows;
+
+    req.session.url = '/browse/' + type + '/' + id + '/' + qType + '/' + field + '/' + terms + '/' + offset + '/' + rows;
 
     var session = req.session;
 
@@ -52,14 +54,14 @@ var constants = require('../core/constants');
         asset: {
           type: type,
           id: id
-        }
-        ,
+        },
         query: {
           action: constants.QueryActions.BROWSE,
           qType: qType,
           terms: terms,
           field: field,
-          offset: offset
+          offset: offset,
+          rows: rows
         }
       }
     };
@@ -78,14 +80,11 @@ var constants = require('../core/constants');
   };
 
 
-  
-  
+
+
   exports.jumpTo = function (req, res) {
 
     var session = req.session;
-
-    console.log(req.body);
-
 
     async.waterfall(
       [
@@ -96,9 +95,7 @@ var constants = require('../core/constants');
           function (callback) {
 
           models.solrGetOffset(req.body, res, session)
-
             .then(function (result) {
-              console.log(result);
               callback(null, result);
 
             })
@@ -111,17 +108,14 @@ var constants = require('../core/constants');
          * Inspects type and retrieves additional data via REST API.  The
          * type match is based on the string value returned in the result.type
          * field.
-         * @param result  the object returned by the inital handle query
+         * @param result  the object returned by the initial handle query
          * @param callback
          */
           function (result, callback) {
 
           try {
-            
-            console.log('result in waterfall callback')
-            console.log(result)
-            req.body.params.query.offset = result.offset;
-             console.log(req.body);
+
+            req.body.params.query.offset = result.offset ;
             models.solrQuery(req.body, res, session)
               .then(function (result) {
                 callback(null, result);

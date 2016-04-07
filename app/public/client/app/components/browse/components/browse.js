@@ -19,6 +19,7 @@
     ctrl.id = $routeParams.id;
     ctrl.terms = $routeParams.terms;
     ctrl.field = $routeParams.field;
+    ctrl.rows = $routeParams.rows;
     ctrl.action = QueryActions.BROWSE;
 
 
@@ -30,9 +31,16 @@
 
       QueryManager.setSort(QuerySort.ASCENDING);
 
+      QueryManager.setRows(ctrl.rows);
+
+
       if (ctrl.field === QueryFields.SUBJECT) {
 
         QueryManager.setQueryType(QueryTypes.SUBJECT_SEARCH);
+
+        QueryManager.setAssetType(ctrl.type);
+
+        QueryManager.setAssetId(ctrl.id);
 
         QueryManager.setBrowseField(QueryFields.SUBJECT);
 

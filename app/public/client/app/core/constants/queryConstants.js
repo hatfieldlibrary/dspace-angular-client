@@ -49,12 +49,19 @@
 
   });
 
-  appConstants.constant('ListQueryFieldMap', {
+  appConstants.constant('CollectionQueryFieldMap', {
     fields: [
       {label: 'Title', value: 'allTitlesBrowse'},
       {label: 'Author', value: 'authorFacets'},
       {label: 'Date', value: 'allDatesBrowse'},
       {label: 'Subject', value: 'subjectFacets'}
+    ]
+  });
+
+  appConstants.constant('BrowseQueryFieldMap', {
+    fields: [
+      {label: 'Title', value: 'allTitlesBrowse'},
+      {label: 'Date', value: 'allDatesBrowse'},
     ]
   });
   

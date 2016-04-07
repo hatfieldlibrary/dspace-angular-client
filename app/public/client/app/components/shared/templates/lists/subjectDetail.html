@@ -5,16 +5,19 @@
 
 <md-item-content layout-fill layout="column">
 
-  <div class="md-list-item-text app-list-item" ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();">
+  <div class="md-list-item-text app-list-item" layout="row" layout-fill ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();">
     <!--
-    <a ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.author}}/{{$ctrl.offset}}">{{$ctrl.author}}</a>
+    <a ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.title}}/0">{{$ctrl.author}}</a>
     -->
     <a class="browse-anchor" ng-href="#">{{$ctrl.subject}} ({{$ctrl.count}})</a>
+    <span flex></span>
+    <a ng-hide="$ctrl.count < 20" ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.subject}}/0/20">icon</a>
+
   </div>
 
   <md-divider ng-show="$ctrl.index == $ctrl.selectedIndex"></md-divider>
 
-  <div class="browse-item">
+  <div class="browse-item browse-item-{{$ctrl.getHeightForCount()}}">
     <md-content layout-fill>
       <div layout="column" layout-fill class="expanded">
         <item-detail-component

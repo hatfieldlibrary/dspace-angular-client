@@ -27,16 +27,22 @@ dspaceServices.factory('Utils', [
 
     /**
      * Returns a truncated copy of the type.
+     *
      * @param type value returned by DSpace API.
      * @returns {string}  truncated string
-       */
+     */
     utils.getNormalizedType = function (type) {
 
       return type.substring(0, 4);
 
     };
 
-    utils.reverseArray = function(arr) {
+    /**
+     * Reverses the array values.  Used to sort subjects
+     * and authors by ascending and descending.
+     * @param arr
+     */
+    utils.reverseArray = function (arr) {
 
       var i = 0;
       var j = arr.length - 1;
@@ -51,15 +57,25 @@ dspaceServices.factory('Utils', [
     };
 
     /**
-     * Checks type value. If it is equal to
-     * AssetTypes.ITEM, this method returns
-     * AssetTypes.COLLECTION.  Otherwise return
-     * the input type.
+     * Gets the integer used to set the css style for height.
+     * The upper limit value is 10.
+     * @returns {*}
+     */
+    utils.getHeightForCount = function (count) {
+      if (count > 10) {
+        return 10;
+      }
+      return count;
+    };
+
+    /**
+     * Checks type value. If it is equal to AssetTypes.ITEM, this method returns
+     * AssetTypes.COLLECTION.  Otherwise return the input type.
      *
      * @param type the normalized type string
      * @returns {*}
-       */
-    utils.getType = function(type) {
+     */
+    utils.getType = function (type) {
 
 
       if (type === AssetTypes.ITEM) {
@@ -70,14 +86,14 @@ dspaceServices.factory('Utils', [
     };
 
     /**
-     * Checks the type value and returns
-     * the id of the parent collection if the
+     * Checks the type value and returns the id of the parent collection if the
      * item type is equal to AssetTypes.ITEM.
+     *
      * @param data the full DSpace response
      * @param type the normalized object type
      * @returns {*}
-       */
-    utils.getId = function(data, type) {
+     */
+    utils.getId = function (data, type) {
 
       if (type === AssetTypes.ITEM) {
         return data.parentCollection.id;
@@ -92,7 +108,7 @@ dspaceServices.factory('Utils', [
      * associated with the specific query type. The
      * QueryFields.TITLE value is the default.
      * @returns {*}
-       */
+     */
     utils.getFieldForQueryType = function () {
 
       if (QueryManager.isAuthorListRequest()) {
@@ -116,12 +132,34 @@ dspaceServices.factory('Utils', [
     };
 
     /**
+     * Traverses a provided array and returns the index of the
+     * first element that matches a case-insensitive regex that
+     * looks for the letters at the beginning of each line.
+     * @param arr   the input array
+     * @param letters  the characters to match
+     * @returns {number} the array index
+     */
+    utils.findIndexInArray = function (arr, letters) {
+
+      if (letters.length > 0) {
+        var regex = new RegExp('^' + letters, 'i');
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i]['value'].match(regex) !== null) {
+            return i;
+          }
+        }
+      }
+      return 0;
+    };
+
+    /**
      * Returns values for a range of indices from the author facets array.
      * @param start  the start index
      * @param end    the end index
      * @returns {Array}
      */
     utils.authorArraySlice = function (start, end) {
+
 
       if (end < setSize) {
         setSize = end;
@@ -133,9 +171,10 @@ dspaceServices.factory('Utils', [
 
         var data = new Array(authors.length);
 
-        for (var i = 0; i < setSize; i++) {
+        var arraySize = end - start;
+        for (var i = 0; i < arraySize; i++) {
           data[i] = {author: authors[i]}
-          
+
         }
 
         return data;
@@ -144,6 +183,25 @@ dspaceServices.factory('Utils', [
         console.log(err);
       }
 
+    };
+
+    /**
+     * Set the placeholder message based on query type.
+     * @param qType the QueryType
+     * @returns {*} placeholder string
+     */
+    utils.placeholderMessage = function (qType) {
+      if (qType === QueryTypes.DATES_LIST) {
+        return 'Enter Year';
+      }
+      else if (qType === QueryTypes.TITLES_LIST) {
+        return 'Jump to Letter';
+      }
+      else if (qType === QueryTypes.SUBJECT_FACETS ||
+        qType === QueryTypes.AUTHOR_FACETS) {
+        return 'Jump to Letter';
+      }
+      return '';
     };
 
 
@@ -164,8 +222,8 @@ dspaceServices.factory('Utils', [
         var authors = QueryManager.getSubjects().slice(start, end);
 
         var data = new Array(authors.length);
-
-        for (var i = 0; i < setSize; i++) {
+        var arraySize = end - start;
+        for (var i = 0; i < arraySize; i++) {
 
           data[i] = {author: authors[i]}
         }
@@ -199,20 +257,27 @@ dspaceServices.factory('Utils', [
       });
     };
 
+    /**
+     * Returns the smaller of set size or items remaining.
+     * @param count
+     * @param setSize
+     * @returns {*}
+       */
     utils.getPageListCount = function (count, setSize) {
-
-      if (count < setSize) {
-        return count;
+      var remaining = count - QueryManager.getOffset();
+      if (remaining < setSize) {
+        return remaining;
       } else {
         return setSize;
       }
     };
 
 
-
     return utils;
 
   }
+
+
 
 
 ]);

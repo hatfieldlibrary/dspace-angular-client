@@ -1,9 +1,12 @@
 <div class="background-highlight">
   <p class="md-subhead md-accent" style="margin-left: 20px;">Viewing {{$ctrl.count}} items.</p>
 
-  <sort-options-component ng-if="$ctrl.context=='collection'"
-                          on-update="$ctrl.onUpdate(results, count, field)">
+  <sort-options-component
+    context="{{$ctrl.context}}"
+    on-update="$ctrl.onUpdate(results, count, field)">
   </sort-options-component>
+
+
 </div>
 
 <md-content>
@@ -41,6 +44,7 @@
 
       ng-if="$ctrl.field=='subject'"
       ng-repeat="sub in $ctrl.items"
+      ng-class="{'selected': $index==$ctrl.selectedIndex}"
       subject="{{sub.author.value}}"
       count="{{sub.author.count}}"
       type="{{$ctrl.type}}"
@@ -64,7 +68,7 @@
 
   <pager-component
 
-    on-update="$ctrl.onPagerUpdate(results, count, position, field)">
+    on-update="$ctrl.onPagerUpdate(results, count, field)">
 
   </pager-component>
   <p>&nbsp;</p>

@@ -15,13 +15,14 @@ var filters = require('./sharedFilters');
      *
      * input query filter, reverse query fitler, location, anonymousFilter
      */
-    var startDateLocation = 'http://localhost:1234/solr/search/select?fl=handle,search.resourcetype,search.resourceid&start=0&%s%s&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=0%s&%s';
+    var startDateLocation = 'http://localhost:1234/solr/search/select?fl=handle,search.resourcetype,search.resourceid&start=0&%s%s&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=0%s%s&%s';
 
     return util.format(
 
       startDateLocation,
-      qJumpToFilter(query.params.query.terms, query.params.sort.order),
-      fqReverseOrderFilter(query.params.query.terms, query.params.sort.order),
+      qJumpToFilter(query.params.query.filter, query.params.sort.order),
+      fqReverseOrderFilter(query.params.query.filter, query.params.sort.order),
+      fqBrowseFilter(query.params.query.terms),
       filters.getLocationFilter(query.params.asset.type, query.params.asset.id),
       filters.getAnonymousQueryFilter(dspaceToken)
 
@@ -42,6 +43,15 @@ var filters = require('./sharedFilters');
         return 'q=bi_sort_2_sort:+[*+TO+"' + term + '"}';
 
       }
+    }
+
+    function fqBrowseFilter(browseFilter) {
+      if (browseFilter !== undefined) {
+        if (browseFilter.length > 0) {
+          return '&fq={!field+f%3Dbi_4_dis_value_filter}' + browseFilter;
+        }
+      }
+      return '';
     }
 
     /**

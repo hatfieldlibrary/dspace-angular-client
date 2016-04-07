@@ -24,7 +24,7 @@ var queryGenerator = require('../core/queryGenerator');
      * @type {string}
      */
     var solrUrl = queryGenerator.getOffsetUrl(query, dspaceTokenHeader);
-
+      console.log(solrUrl)
     /**
      * The request-promise.
      */

@@ -1,5 +1,27 @@
-<header-component type="{{$ctrl.type}}" id="{{$ctrl.id}}"></header-component>
 
-<div class="main-content">
-  <item-list-component context="browse" handle="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-list-component>
+<div class="layout-padding">
+
+  <div class="page-title">
+    <div class="md-subhead parent-title"><a ng-href="/handle/{{$ctrl.data.parentCommunity.handle}}">{{$ctrl.data.parentCommunity.name}}</a>
+    </div>
+    <div class="md-display-1 item-title">{{$ctrl.data.name}}</div>
+  </div>
+
+  <md-card flex>
+
+    <md-card-content>
+
+
+
+      <item-list-component context="browse"></item-list-component>
+
+    </md-card-content>
+
+  </md-card>
+
+
 </div>
+
+<!--<div class="main-content">-->
+  <!--<item-list-component context="browse" handle="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-list-component>-->
+<!--</div>-->

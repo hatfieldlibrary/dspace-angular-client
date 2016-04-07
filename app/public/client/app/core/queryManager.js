@@ -46,6 +46,10 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
            */
           mode: '',
           /**
+           * Filter terms.
+           */
+          filter: '',
+          /**
            * The query terms.
            */
           terms: '',
@@ -56,7 +60,11 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
           /**
            * The current offset used by paging.
            */
-          offset: 0
+          offset: 0,
+          /**
+           * The number of rows to return.  20 is the default.
+           */
+          rows: 20
         }
       },
       count: 0,
@@ -91,6 +99,22 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
 
     setCurrentIndex: function (index) {
       this.context.currentListIndex = index;
+    },
+
+    setFilter: function(filter)  {
+      this.context.query.query.filter = filter;
+    },
+
+    getFilter: function() {
+      return this.context.query.query.filter;
+    },
+
+    setRows: function(rowCount) {
+      this.context.query.rows = rowCount;
+    },
+
+    getRows: function() {
+      return this.context.query.rows;
     },
 
     setCount: function (count) {

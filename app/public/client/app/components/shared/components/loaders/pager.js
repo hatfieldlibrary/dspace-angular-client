@@ -2,6 +2,8 @@
  * Created by mspalti on 2/23/16.
  */
 
+'use strict';
+
 (function () {
 
   function PagerCtrl($scope,
@@ -19,13 +21,18 @@
      * @type {number}
      */
     var setSize = 10;
+    /**
+     * Count must be initialized to 0.
+     * @type {number}
+     */
     var count = 0;
-
-    ctrl.more = function() {
+    /**
+     * Get the offset for the next result set.
+     * @returns {boolean}
+     */
+    ctrl.more = function () {
       return QueryManager.getCount() > QueryManager.getOffset() + 10;
     };
-
-
     /**
      * Current start position for view model.
      * @type {number}
@@ -37,28 +44,35 @@
      */
     ctrl.end = QueryManager.getOffset() + 10;
 
+    /**
+     * This variable is used to hold the QueryField of
+     * the current query.
+     * @type {string}
+     */
     var displayListType = '';
 
     /**
-     * Recieves broadcast from the discovery-search-box component.
+     * Receives broadcast from the discovery-search-box component.
      */
-    $scope.$on("discoverySubmit", function() {
+    $scope.$on("discoverySubmit", function () {
       QueryManager.setOffset(0);
       updateList(0);
     });
 
-    $scope.$on("nextPage", function() {
+    $scope.$on("nextPage", function () {
       updateList(QueryManager.getOffset());
     });
 
 
     /**
-     * Initialize data for the first set if items.
+     * Initialize data for the first set of items.
+     *
+     * The initial QueryManager state for the query context is
+     * set outside of pager in the appropriate parent
+     * component, e.g.: collection, discover...
      */
     function init() {
-
-      //QueryManager.setOffset(start);
-
+      // The offset should be 0.
       updateList(QueryManager.getOffset());
 
     }
@@ -79,66 +93,82 @@
       displayListType = Utils.getFieldForQueryType();
 
       /**
-       * When not paging through an author list,
-       * we need to exec a new solr query.
+       * For items, we need to make a new solr query for the next
+       * result set.
+       *
+       * Here, we check to be sure the current query is not for authors
+       * or subjects.
        */
       if (!QueryManager.isAuthorListRequest() && !QueryManager.isSubjectListRequest()) {
 
         var context = QueryManager.getContext().query;
 
+        /**
+         *  Execute the query as either POST or GET.
+         */
         var items;
-
-        if (action === QueryActions.LIST) {
-          items = SolrQuery.save({
-            params: context
-
-          });
-
-        } else if (action === QueryActions.BROWSE) {
-
-          items = SolrBrowseQuery.query({
-            site: QueryManager.getAssetType(),
-            id: QueryManager.getAssetId(),
-            qType: QueryManager.getQueryType(),
-            field: context.query.field,
-            terms: context.query.terms,
-            offset: newOffset
-
-          });
-
-        } else if (action === QueryActions.SEARCH) {
-
+        /**
+         * List and search (discovery) queries use POST.
+         */
+        if (action === QueryActions.LIST || action === QueryActions.SEARCH) {
           items = SolrQuery.save({
             params: context
 
           });
 
         }
-        // Handle result of the solr query.
+        /**
+         * Browse queries use GET.
+         */
+        else if (action === QueryActions.BROWSE) {
+          console.log(QueryManager.getAssetType());
+          console.log(QueryManager.getAssetId());
+
+          items = SolrBrowseQuery.query({
+            type: QueryManager.getAssetType(),
+            id: QueryManager.getAssetId(),
+            qType: QueryManager.getQueryType(),
+            field: context.query.field,
+            terms: context.query.terms,
+            offset: newOffset,
+            rows: QueryManager.getRows()
+
+          });
+
+        }
+        /** Handle result of the solr query. */
         items.$promise.then(function (data) {
+          console.log(data)
           updateParent(data);
 
         });
       }
       /**
-       * The author list solr query returns list of all authors
-       * in the collection.  To page through results, just use a
-       * slice from the array stored on the query context.
+       * Here, we handle authors and subjects.
        */
       else {
 
-        data = [];
+        var data = [];
 
+        /**
+         * For authors or subjects, get next results from the facets
+         * array rather than executing a new solr query.  This is always
+         * safe since the author and subject facets are retrieved by
+         * the sortOptions loader.
+         */
         if (QueryManager.isAuthorListRequest()) {
-
           data.count = QueryManager.getAuthorsCount();
           var end = Utils.getPageListCount(data.count, setSize);
           data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
+          console.log(QueryManager.getOffset() + end)
+          console.log(data.results)
 
         } else if (QueryManager.isSubjectListRequest()) {
-
           data.count = QueryManager.getSubjectsCount();
-          var end = Utils.getPageListCount(data.count, setSize);
+          // In JavaScript, variables live at the function level, not the block level.
+          // Declaring the 'end' variable here would be a duplicate declaration.
+          // JavaScript 1.7 has a let declaration for block level scope.  Not currently supported.
+          end = Utils.getPageListCount(data.count, setSize);
           data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
 
         }
@@ -162,7 +192,6 @@
 
         results: data.results,
         count: data.count,
-        position: QueryManager.getOffset(),
         field: displayListType
 
       });
@@ -174,7 +203,7 @@
      */
     ctrl.previous = function () {
 
-      var start =  QueryManager.getOffset();
+      var start = QueryManager.getOffset();
 
       if (start >= 10) {
         ctrl.start -= 10;
@@ -190,7 +219,7 @@
      */
     ctrl.next = function () {
 
-      var start =  QueryManager.getOffset();
+      var start = QueryManager.getOffset();
 
       start += 10;
       ctrl.start = start + 1;
@@ -199,7 +228,6 @@
       } else {
         ctrl.end = count;
       }
-      console.log(start)
       QueryManager.setOffset(start);
       updateList(start);
 

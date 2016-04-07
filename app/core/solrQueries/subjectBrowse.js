@@ -23,7 +23,7 @@ var constants = require('../constants');
      * This subject browse query should always start at 0
      * @type {string}
      */
-    var offsetFilter = 'start=0';
+    var offsetFilter = 'start=' + query.params.query.offset;
 
     var queryFilter = 'fq={!field+f%3Dbi_4_dis_value_filter}' + query.params.query.terms;
 
@@ -31,12 +31,20 @@ var constants = require('../constants');
 
       try {
         if (query.params.sort !== undefined) {
+
+          if (query.params.query.qType == constants.QueryType.DATES_LIST) {
+            return 'sort=bi_sort_2_sort+' + query.params.sort.order;
+
+          } else if (query.params.query.qType == constants.QueryType.TITLES_LIST) {
+            return 'sort=bi_sort_1_sort+' + query.params.sort.order;
+
+          }
+          // Fall back to title
           return 'sort=bi_sort_1_sort+' + query.params.sort.order;
-
-        } else {
-          return 'sort=bi_sort_1_sort+' + constants.QuerySort.ASCENDING;
-
         }
+        // Default is title ascending
+        return 'sort=bi_sort_1_sort+asc';
+        
       } catch (e) {
         console.log(e);
         return '';
@@ -51,7 +59,7 @@ var constants = require('../constants');
       offsetFilter,
       filters.getLocationFilter(query.params.asset.type, query.params.asset.id),
       queryFilter,
-      filters.getRowsFilter(),
+      filters.getRowsFilter(query.params.query.rows),
       filters.getAnonymousQueryFilter(dspaceToken)
     );
 
