@@ -11,6 +11,8 @@
                      SolrBrowseQuery,
                      Utils,
                      QueryManager,
+                     AppContext,
+                     QueryStack,
                      QueryActions) {
 
 
@@ -20,7 +22,7 @@
      * Number of items to return in pager.
      * @type {number}
      */
-    var setSize = 10;
+    var setSize = 20;
     /**
      * Count must be initialized to 0.
      * @type {number}
@@ -31,7 +33,7 @@
      * @returns {boolean}
      */
     ctrl.more = function () {
-      return QueryManager.getCount() > QueryManager.getOffset() + 10;
+      return AppContext.getCount() > QueryManager.getOffset() + setSize;
     };
     /**
      * Current start position for view model.
@@ -42,7 +44,7 @@
      * Current end position for view model.
      * @type {number}
      */
-    ctrl.end = QueryManager.getOffset() + 10;
+    ctrl.end = QueryManager.getOffset() + setSize;
 
     /**
      * This variable is used to hold the QueryField of
@@ -72,9 +74,15 @@
      * component, e.g.: collection, discover...
      */
     function init() {
+
       // The offset should be 0.
       updateList(QueryManager.getOffset());
-
+      /**
+       * Update the query stack. Subsequent paging
+       * requests to not update the stack.
+       */
+      QueryStack.push(QueryManager.getQuery());
+      QueryStack.print();
     }
 
     init();
@@ -101,7 +109,7 @@
        */
       if (!QueryManager.isAuthorListRequest() && !QueryManager.isSubjectListRequest()) {
 
-        var context = QueryManager.getContext().query;
+        var context = QueryManager.getQuery();
 
         /**
          *  Execute the query as either POST or GET.
@@ -121,15 +129,16 @@
          * Browse queries use GET.
          */
         else if (action === QueryActions.BROWSE) {
-          console.log(QueryManager.getAssetType());
-          console.log(QueryManager.getAssetId());
+
 
           items = SolrBrowseQuery.query({
             type: QueryManager.getAssetType(),
             id: QueryManager.getAssetId(),
             qType: QueryManager.getQueryType(),
             field: context.query.field,
+            sort: QueryManager.getSort(),
             terms: context.query.terms,
+            filter: QueryManager.getFilter(),
             offset: newOffset,
             rows: QueryManager.getRows()
 
@@ -138,7 +147,6 @@
         }
         /** Handle result of the solr query. */
         items.$promise.then(function (data) {
-          console.log(data)
           updateParent(data);
 
         });
@@ -157,14 +165,12 @@
          * the sortOptions loader.
          */
         if (QueryManager.isAuthorListRequest()) {
-          data.count = QueryManager.getAuthorsCount();
+          data.count = AppContext.getAuthorsCount();
           var end = Utils.getPageListCount(data.count, setSize);
           data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
-          console.log(QueryManager.getOffset() + end)
-          console.log(data.results)
 
         } else if (QueryManager.isSubjectListRequest()) {
-          data.count = QueryManager.getSubjectsCount();
+          data.count = AppContext.getSubjectsCount();
           // In JavaScript, variables live at the function level, not the block level.
           // Declaring the 'end' variable here would be a duplicate declaration.
           // JavaScript 1.7 has a let declaration for block level scope.  Not currently supported.
@@ -186,7 +192,7 @@
      */
     function updateParent(data) {
 
-      QueryManager.setCount(data.count);
+      AppContext.setCount(data.count);
 
       ctrl.onUpdate({
 
@@ -205,10 +211,10 @@
 
       var start = QueryManager.getOffset();
 
-      if (start >= 10) {
-        ctrl.start -= 10;
+      if (start >= setSize) {
+        ctrl.start -= setSize;
         ctrl.end = ctrl.start + 9;
-        start -= 10;
+        start -= setSize;
         QueryManager.setOffset(start);
         updateList(start);
       }
@@ -221,10 +227,10 @@
 
       var start = QueryManager.getOffset();
 
-      start += 10;
+      start += setSize;
       ctrl.start = start + 1;
-      if (ctrl.end + 10 <= count) {
-        ctrl.end += 10;
+      if (ctrl.end + setSize <= count) {
+        ctrl.end += setSize;
       } else {
         ctrl.end = count;
       }

@@ -26,6 +26,8 @@
                            QuerySort,
                            QueryFields,
                            QueryTypes,
+                           QueryStack,
+                           AppContext,
                            QueryManager) {
 
     var ctrl = this;
@@ -39,8 +41,8 @@
      * The end value is used to get a slice from the author array.
      * @type {number}
      */
-    var setSize = 10;
-    
+    var setSize = 20;
+
 
     /**
      * Set default display list type to TITLE.
@@ -67,7 +69,7 @@
        * The selected field is initialized to title.
        * @type {string}
        */
-      ctrl.selectedField = CollectionQueryFieldMap.fields[0].value;
+      ctrl.selectedField = QueryManager.getQueryType();
 
     }
     else if (ctrl.context === 'browse') {
@@ -97,6 +99,8 @@
      */
     ctrl.placeholder = 'Jump to Letter';
 
+    ctrl.filterTerms = QueryManager.getFilter();
+
     /**
      * Toggle the sort order (ASCENDING, DESCENDING)
      */
@@ -105,7 +109,7 @@
       /**
        * Reset the selected item.
        */
-      QueryManager.setCurrentIndex(-1);
+      AppContext.setCurrentIndex(-1);
 
       /**
        * Set sort order to the new selected value.
@@ -117,7 +121,7 @@
        */
       QueryManager.setOffset(0);
 
-      ctrl.filterTerms = '';
+
 
       /**
        * Author sort.
@@ -125,13 +129,17 @@
       if (QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS) {
 
         QueryManager.setOffset(0);
-        var arr = QueryManager.getAuthors();
+        var arr = AppContext.getAuthors();
         // Reverse the author array.
         Utils.reverseArray(arr);
-        QueryManager.setAuthorsList(arr);
+        AppContext.setAuthorsList(arr);
         var data = {};
         data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + 10);
-        data.count = QueryManager.getAuthorsCount();
+        data.count = AppContext.getAuthorsCount();
+
+
+        QueryStack.replaceWith(QueryManager.context.query);
+        QueryStack.print();
 
         /**
          * Update parent component.
@@ -149,13 +157,17 @@
       else if (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS) {
 
         QueryManager.setOffset(0);
-        var arr = QueryManager.getSubjects();
+        var arr = AppContext.getSubjects();
         // Reverse the subject array.
         Utils.reverseArray(arr);
-        QueryManager.setSubjectList(arr);
+        AppContext.setSubjectList(arr);
         var data = {};
         data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + 10);
-        data.count = QueryManager.getSubjectsCount();
+        data.count = AppContext.getSubjectsCount();
+
+
+        QueryStack.replaceWith(QueryManager.context.query);
+        QueryStack.print();
 
         /**
          * Update parent component.
@@ -168,6 +180,9 @@
 
       }
       else {
+
+        QueryStack.replaceWith(QueryManager.context.query);
+        QueryStack.print();
 
         /**
          * Changing the sort order for other query types requires a
@@ -187,7 +202,7 @@
       /**
        * Reset the selected item.
        */
-      QueryManager.setCurrentIndex(-1);
+      AppContext.setCurrentIndex(-1);
 
       /**
        * Get the current query type.
@@ -211,6 +226,10 @@
 
         QueryManager.setJumpType(QueryTypes.START_DATE);
 
+      } else if (queryType === QueryTypes.SUBJECT_SEARCH) {
+
+        QueryManager.setJumpType(QueryTypes.START_LETTER);
+
       } else if (queryType === QueryTypes.AUTHOR_FACETS) {
 
         QueryManager.setJumpType(QueryTypes.AUTHOR_FACETS);
@@ -220,6 +239,8 @@
         QueryManager.setJumpType(QueryTypes.SUBJECT_FACETS);
 
       }
+      
+      console.log(QueryManager.getJumpType());
 
       /**
        * Slight delay before executing the search.
@@ -232,7 +253,6 @@
            * If we have a filter term, so filter query.
            */
           if (ctrl.filterTerms.length > 0) {
-            console.log('setting filter ' + ctrl.filterTerms)
             QueryManager.setFilter(ctrl.filterTerms);
             doJump();
 
@@ -270,15 +290,15 @@
           /**
            * Find the index of the first matching item.
            */
-          var offset = Utils.findIndexInArray(QueryManager.getAuthors(), ctrl.filterTerms);
+          var offset = Utils.findIndexInArray(AppContext.getAuthors(), ctrl.filterTerms);
           QueryManager.setOffset(offset);
-          var remaining = Utils.getPageListCount(QueryManager.getAuthorsCount(), setSize);
+          var remaining = Utils.getPageListCount(AppContext.getAuthorsCount(), setSize);
           /**
            * Update view here.
            */
           ctrl.onUpdate({
             results: Utils.authorArraySlice(offset, offset + remaining),
-            count: QueryManager.getAuthorsCount(),
+            count: AppContext.getAuthorsCount(),
             field: QueryFields.AUTHOR
           });
 
@@ -287,15 +307,15 @@
           /**
            * Find the index of the first matching item.
            */
-          var offset = Utils.findIndexInArray(QueryManager.getSubjects(), ctrl.filterTerms);
+          var offset = Utils.findIndexInArray(AppContext.getSubjects(), ctrl.filterTerms);
           QueryManager.setOffset(offset);
-          var remaining = Utils.getPageListCount(QueryManager.getSubjectsCount(), setSize);
+          var remaining = Utils.getPageListCount(AppContext.getSubjectsCount(), setSize);
           /**
            * Update view here.
            */
           ctrl.onUpdate({
             results: Utils.subjectArraySlice(offset, offset + remaining),
-            count: QueryManager.getSubjectsCount(),
+            count: AppContext.getSubjectsCount(),
             field: QueryFields.SUBJECT
           });
 
@@ -303,6 +323,8 @@
       }, 100);
 
 
+      QueryStack.replaceWith(QueryManager.context.query);
+      QueryStack.print();
     };
 
     /**
@@ -314,7 +336,7 @@
       /**
        * Reset the selected item.
        */
-      QueryManager.setCurrentIndex(-1);
+      AppContext.setCurrentIndex(-1);
       /**
        * Reset the filter.
        * @type {string}
@@ -337,6 +359,10 @@
        */
       QueryManager.setSort(QuerySort.ASCENDING);
       ctrl.selectedOrder = QuerySort.ASCENDING;
+
+
+      QueryStack.replaceWith(QueryManager.context.query);
+      QueryStack.print();
 
       /**
        * Do a new search.
@@ -382,7 +408,8 @@
      * Executes query to retrieve a fresh result set.
      */
     var doSearch = function () {
-      console.log(QueryManager.context.query);
+
+
       /**
        * Get promise.
        * @type {*|{method}|Session}
@@ -419,12 +446,12 @@
          * Add the author array to shared context.
          * @type {string|Array|*}
          */
-        QueryManager.setAuthorsList(data.facets);
+        AppContext.setAuthorsList(data.facets);
 
         /**
          * Total item is authors list.
          */
-        data.count = QueryManager.getAuthorsCount();
+        data.count = AppContext.getAuthorsCount();
         /**
          * The count of items remaining in list.
          * @type {*}
@@ -446,12 +473,12 @@
          * Add the author array to shared context.
          * @type {string|Array|*}
          */
-        QueryManager.setSubjectList(data.facets);
+        AppContext.setSubjectList(data.facets);
 
         /**
          * Total items in subject list.
          */
-        data.count = QueryManager.getSubjectsCount();
+        data.count = AppContext.getSubjectsCount();
 
         /**
          * The count of items remaining in list.
@@ -472,7 +499,7 @@
 
       }
 
-      QueryManager.setCount(data.count);
+      AppContext.setCount(data.count);
 
       /**
        * Update parent component.

@@ -9,6 +9,7 @@
   function AuthorDetailController($scope,
                                   Utils,
                                   QueryManager,
+                                  AppContext,
                                   QueryTypes,
                                   InlineBrowseRequest) {
 
@@ -20,14 +21,17 @@
      *
      *  @type {{context: {}}}
      */
-    $scope.context = QueryManager.getContext();
+    $scope.context = AppContext.getContext();
 
     /**
      * The selected index. This will be set by the $watch.
      * @type {number}
      */
     ctrl.selectedIndex = -1;
-    
+
+    ctrl.sort = QueryManager.getSort();
+
+
     /**
      * Sets the current index as the selected index
      * on the parent component, using the provided callback.
@@ -57,8 +61,9 @@
           id: ctrl.id,
           qType: QueryTypes.AUTHOR_SEARCH,
           field: ctrl.field,
+          sort: ctrl.sort,
           terms: ctrl.author,
-          offset: 0, 
+          offset: 0,
           rows: 50
         }
       );

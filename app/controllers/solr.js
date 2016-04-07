@@ -42,9 +42,13 @@ var constants = require('../core/constants');
     /** @type {string|*} the start position */
     var offset = req.params.offset;
 
-    var rows = req.params.rows;
+    var sort = req.params.sort;
 
-    req.session.url = '/browse/' + type + '/' + id + '/' + qType + '/' + field + '/' + terms + '/' + offset + '/' + rows;
+    var rows = req.params.rows;
+    
+    var filter = req.params.filter;
+
+    req.session.url = '/browse/' + type + '/' + id + '/' + qType + '/' + field + '/' + sort + '/' + terms + '/' + offset + '/' + rows;
 
     var session = req.session;
 
@@ -55,13 +59,17 @@ var constants = require('../core/constants');
           type: type,
           id: id
         },
+        sort: {
+          order: sort
+        },
         query: {
           action: constants.QueryActions.BROWSE,
           qType: qType,
           terms: terms,
           field: field,
           offset: offset,
-          rows: rows
+          rows: rows,
+          filter: filter
         }
       }
     };

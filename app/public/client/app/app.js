@@ -34,7 +34,7 @@ var dspaceApp = angular.module('dspaceApp', [
         .when('/communities', {
           templateUrl: '/partials/communities.html'
         })
-        .when('/browse/:type/:id/:field/:terms/:offset/:rows', {
+        .when('/browse/:type/:id/:field/:sort/:terms/:offset/:rows', {
           templateUrl: '/partials/browse.html'
         })
         .when('/discover', {
@@ -76,7 +76,7 @@ var dspaceApp = angular.module('dspaceApp', [
       '200': '#db3a39',
       '300': '#ad211f',
       '400': '#931c1b',
-      '500': '#791716',
+      '500': '#000000',
       '600': '#5f1211',
       '700': '#450d0d',
       '800': '#2b0808',

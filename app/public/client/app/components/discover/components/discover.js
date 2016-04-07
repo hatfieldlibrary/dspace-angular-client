@@ -9,6 +9,7 @@
   function DiscoverCtrl(QueryManager,
                         QueryTypes,
                         QueryActions,
+                        QueryStack,
                         QuerySort) {
 
 
@@ -19,6 +20,8 @@
       QueryManager.setAction(QueryActions.SEARCH);
 
       QueryManager.setSort(QuerySort.ASCENDING);
+
+      QueryStack.clear();
 
     }
 

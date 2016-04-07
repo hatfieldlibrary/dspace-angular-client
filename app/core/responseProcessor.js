@@ -160,7 +160,7 @@
     ret.offset = solrResponse.response.start;
     ret.results = resultArr;
     ret.count = solrResponse.response.numFound;
-      console.log(ret)
+    
     return ret;
 
   };

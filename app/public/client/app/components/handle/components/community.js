@@ -12,9 +12,11 @@
 
   /*globals dspaceControllers*/
 
-  function CommunityCtrl() {
+  function CommunityCtrl(QueryStack) {
 
     var ctrl = this;
+
+    QueryStack.clear();
 
     /**
      * Returns the url for a logo.  This method can be called

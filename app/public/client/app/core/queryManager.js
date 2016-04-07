@@ -1,8 +1,5 @@
 'use strict';
 
-var dspaceContext = angular.module('dspaceContext', []);
-
-
 /**
  * Returns singleton object used to share state
  * among controllers. At the moment, we have only
@@ -66,39 +63,17 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
            */
           rows: 20
         }
-      },
-      count: 0,
-      /**
-       * The array of authors returned by browse/sort by author query. This is
-       * cached so that the array (which can be large) isn't returned with every
-       * paging request.
-       */
-      authorArray: [],
-      /**
-       * The array of subjects returned by browse/sort by subject query. This is
-       * cached so that the array (which can be large) isn't returned with every
-       * paging request.
-       */
-      subjectArray: [],
-
-      currentListIndex: -1,
-      /**
-       * Tracks whether or not a current DSpace session exists.
-       */
-      hasDspaceSession: false
+      }
 
     },
 
-    getContext: function () {
-      return this.context;
+    getQuery: function() {
+      return this.context.query;
     },
 
-    getCurrentIndex: function () {
-      return this.context.currentListIndex;
-    },
+    setQuery: function(queryObject) {
+      this.context.query = queryObject;
 
-    setCurrentIndex: function (index) {
-      this.context.currentListIndex = index;
     },
 
     setFilter: function(filter)  {
@@ -117,14 +92,6 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
       return this.context.query.rows;
     },
 
-    setCount: function (count) {
-      this.context.count = count;
-    },
-
-    getCount: function () {
-      return this.context.count;
-    },
-
     setJumpType: function (type) {
       this.context.query.jumpTo.type = type;
     },
@@ -134,7 +101,8 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
     },
 
     setOffset: function (offset) {
-      this.context.query.query.offset = offset;
+      // Add unary plus operator to assure we are using an integer.
+      this.context.query.query.offset = +offset;
     },
 
     getOffset: function () {
@@ -151,36 +119,6 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
 
     isDiscoveryListRequest: function () {
       return (this.context.query.query.qType == QueryTypes.DISCOVER);
-    },
-
-    setAuthorsList: function (list) {
-      this.context.authorArray = list;
-    },
-
-    setSubjectList: function (list) {
-      this.context.subjectArray = list;
-    },
-
-    getAuthors: function () {
-      return this.context.authorArray;
-    },
-
-    getSubjects: function () {
-      return this.context.subjectArray;
-    },
-
-    getAuthorsCount: function () {
-      if (this.context.authorArray !== undefined) {
-        return this.context.authorArray.length;
-      }
-      return 0;
-    },
-
-    getSubjectsCount: function () {
-      if (this.context.subjectArray !== undefined) {
-        return this.context.subjectArray.length;
-      }
-      return 0;
     },
 
     setAssetType: function (type) {
@@ -219,7 +157,6 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
     },
 
     getQueryType: function () {
-      console.log(this.context.query.query.qType)
       return this.context.query.query.qType;
     },
 

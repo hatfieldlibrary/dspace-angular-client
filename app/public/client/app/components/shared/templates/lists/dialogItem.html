@@ -9,13 +9,13 @@
     </div>
   </md-toolbar>
 
-  <md-dialog-content layout-padding layout-fill>
+  <md-dialog-content layout-padding >
 
-    <div layout="column" layout-align="center" style="max-width: 900px">
+    <div layout="column" layout-align="center" class="dialog-width">
       <div id="dialog-top"></div>
       <!-- Title -->
       <div layout="row" flex>
-        <div layout="column" flex flex-gt-lg="66">
+        <div class="dialog-column-padding" layout="column" flex flex-gt-lg="66">
           <h3 class="md-headline">{{$ctrl.data.name}}</h3>
         </div>
         <div flex="33" hide-xs>
@@ -24,7 +24,7 @@
 
       <!-- Byline and files-->
       <div layout-xs="column" layout-gt-xs="row" flex>
-        <div layout="column" flex flex-gt-xs="66">
+        <div class="dialog-column-padding" layout="column" flex flex-gt-xs="66">
           <p class="md-title">{{$ctrl.data.author}}</p>
           <span class="md-body-2">Publication Date</span>
           <span class="md-body-1">{{$ctrl.data.date}}</span>
@@ -58,7 +58,7 @@
       <p></p>
       <!-- abstract and metadata -->
       <div layout="row" flex>
-        <div layout="column" flex flex-gt-xs="66">
+        <div class="dialog-column-padding" layout="column" flex flex-gt-xs="66">
           <p ng-if="$ctrl.data.description.length > 0" class="md-title">Abstract / Description</p>
           <p>{{$ctrl.data.description}}</p>
           <div id="metadata"></div>

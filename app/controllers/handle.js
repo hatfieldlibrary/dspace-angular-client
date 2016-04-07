@@ -22,8 +22,6 @@ var utils = require('../core/utils');
     var session = req.session;
     req.session.url = '/handle/'+site+'/'+item;
 
-    console.log('Fetching item');
-
     async.waterfall(
       [
         /**

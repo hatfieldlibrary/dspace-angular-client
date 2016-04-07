@@ -7,7 +7,7 @@
  */
 dspaceServices.factory('InlineBrowseRequest', ['$resource',
   function ($resource) {
-    return $resource('solrQuery/:type/:id/:qType/:field/:terms/:offset/:rows', {}, {
+    return $resource('solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', {}, {
       query: {method: 'GET', isArray: false}
     });
   }

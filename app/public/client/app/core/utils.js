@@ -7,6 +7,7 @@
 dspaceServices.factory('Utils', [
 
   'QueryManager',
+  'AppContext',
   'CheckSession',
   'QueryActions',
   'QueryFields',
@@ -14,6 +15,7 @@ dspaceServices.factory('Utils', [
   'QueryTypes',
 
   function (QueryManager,
+            AppContext,
             CheckSession,
             QueryActions,
             QueryFields,
@@ -167,7 +169,7 @@ dspaceServices.factory('Utils', [
 
       try {
 
-        var authors = QueryManager.getAuthors().slice(start, end);
+        var authors = AppContext.getAuthors().slice(start, end);
 
         var data = new Array(authors.length);
 
@@ -219,7 +221,7 @@ dspaceServices.factory('Utils', [
 
       try {
 
-        var authors = QueryManager.getSubjects().slice(start, end);
+        var authors = AppContext.getSubjects().slice(start, end);
 
         var data = new Array(authors.length);
         var arraySize = end - start;

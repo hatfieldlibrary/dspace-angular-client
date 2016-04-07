@@ -6,7 +6,7 @@
 
 (function () {
 
-  function ItemListCtrl(QueryManager) {
+  function ItemListCtrl(QueryManager, AppContext) {
 
     var ctrl = this;
 
@@ -39,7 +39,7 @@
      */
     ctrl.setSelected = function (index) {
       ctrl.selectedIndex = index;
-      QueryManager.setCurrentIndex(index);
+      AppContext.setCurrentIndex(index);
 
     };
 

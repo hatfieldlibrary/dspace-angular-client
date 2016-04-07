@@ -9,28 +9,47 @@
   /**
    * Component controller.
    */
-  function CollectionCtrl( QueryManager, QueryActions, QueryTypes, QuerySort) {
+  function CollectionCtrl(QueryManager, QueryActions, QueryTypes, QueryStack) {
 
     var ctrl = this;
 
 
     function init() {
-      /**
-       * Set query action to retrieve list.
-       */
-       QueryManager.setAction(QueryActions.LIST);
-      /**
-       * Set query type to title list.
-       */
-       QueryManager.setQueryType(QueryTypes.TITLES_LIST);
+      QueryStack.pop();
 
-      QueryManager.setSearchTerms('');
+      if (QueryStack.isEmpty()) {
+        console.log('is empty');
+        doInitialization();
+
+      } else {
+
+        QueryManager.setQuery(QueryStack.pop());
+
+        QueryStack.print();
+      }
 
 
     }
 
     // Initialize component state.
     init();
+
+    function doInitialization() {
+      /**
+       * Set query action to retrieve list.
+       */
+      QueryManager.setAction(QueryActions.LIST);
+      /**
+       * Set query type to title list.
+       */
+      QueryManager.setQueryType(QueryTypes.TITLES_LIST);
+
+      QueryManager.setSearchTerms('');
+
+     // QueryStack.push(QueryManager.getQuery());
+
+      QueryStack.print();
+    }
 
 
     /**

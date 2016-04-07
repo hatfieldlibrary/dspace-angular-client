@@ -16,15 +16,12 @@ var queryGenerator = require('../core/queryGenerator');
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
 
-    console.log('jump to');
-    console.log(query);
-
     /**
      * Get the solr URL.
      * @type {string}
      */
     var solrUrl = queryGenerator.getOffsetUrl(query, dspaceTokenHeader);
-      console.log(solrUrl)
+    
     /**
      * The request-promise.
      */
@@ -56,7 +53,7 @@ var queryGenerator = require('../core/queryGenerator');
   function processResult(solrResponse) {
    
     
-    return {offset: solrResponse.response.numFound};
+    return {offset: solrResponse.response.numFound - 1};
           
     
     

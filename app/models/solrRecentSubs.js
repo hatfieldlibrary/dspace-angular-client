@@ -11,9 +11,7 @@ var rp = require('request-promise');
    * Returns API response for handle.
    */
   module.exports = function (type, id, res) {
-
-    console.log('http://localhost:1234/solr/search/select?sort=dc.date.accessioned_dt+desc&q=location.' + type + ':' + id + '&fl=dc.title,author,dc.publisher,dateIssued.year,handle&wt=json');
-
+    
     var solr =
       rp(
         {
@@ -23,7 +21,6 @@ var rp = require('request-promise');
           json: true
         }
       ).then(function (json) {
-          console.log(json);
           res.send(json);
           res.end();
         })

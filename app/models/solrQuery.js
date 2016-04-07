@@ -15,8 +15,7 @@ var constants = require('../core/constants');
   module.exports = function (query, res, session) {
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
-
-    console.log(query);
+    
     /**
      * Setting the processType. This allows us to distinguish requests
      * to sort an author list from other requests for items (more typical).

@@ -10,6 +10,7 @@
                                    Utils,
                                    QueryManager,
                                    QueryTypes,
+                                   AppContext,
                                    InlineBrowseRequest) {
 
 
@@ -21,7 +22,7 @@
      *
      *  @type {{context: {}}}
      */
-    $scope.context = QueryManager.getContext();
+    $scope.context = AppContext.getContext();
 
     /**
      * Offset position on the controller.
@@ -34,6 +35,8 @@
      * @type {number}
      */
     ctrl.selectedIndex = -1;
+
+    ctrl.sort = QueryManager.getSort();
 
 
     /**
@@ -65,13 +68,13 @@
           id: ctrl.id,
           qType: QueryTypes.SUBJECT_SEARCH,
           field: ctrl.field,
+          sort: ctrl.sort,
           terms: ctrl.subject,
           offset: 0,
           rows: 50
         }
       );
       result.$promise.then(function (data) {
-        console.log(data);
         ctrl.items = data;
       });
 

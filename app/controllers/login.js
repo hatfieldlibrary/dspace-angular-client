@@ -79,8 +79,6 @@ var utils = require('../core/utils');
     /** @type {string} the current dspace token or an empty string */
     var dspaceTokenHeader = utils.getDspaceToken(session);
 
-    console.log('checking session');
-
     if (dspaceTokenHeader.length > 0) {
 
       models

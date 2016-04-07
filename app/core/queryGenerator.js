@@ -51,8 +51,7 @@
   exports.getSolrUrl = function (query, dspaceToken) {
 
     var solrUrl = '';
-    console.log(query.params.query.action);
-    console.log(query.params.query.qType);
+
     /**
      * Get the solr URL for a LIST query.
      */

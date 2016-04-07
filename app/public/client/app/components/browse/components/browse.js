@@ -21,6 +21,8 @@
     ctrl.field = $routeParams.field;
     ctrl.rows = $routeParams.rows;
     ctrl.action = QueryActions.BROWSE;
+    ctrl.offset = $routeParams.offset;
+    //ctrl.sort = $routeParams.sort;
 
 
     function init() {
@@ -31,7 +33,11 @@
 
       QueryManager.setSort(QuerySort.ASCENDING);
 
+      QueryManager.setOffset(ctrl.offset);
+
       QueryManager.setRows(ctrl.rows);
+
+      QueryManager.setFilter('');
 
 
       if (ctrl.field === QueryFields.SUBJECT) {
@@ -52,6 +58,8 @@
         QueryManager.setBrowseField(QueryFields.AUTHOR);
 
       }
+
+
     }
 
     init();
