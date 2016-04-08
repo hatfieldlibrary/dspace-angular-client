@@ -2,6 +2,10 @@ body {
   background: #fefefe;
 }
 
+.main {
+  border-top: .4375rem solid #791716;
+}
+
 a, a:visited {
   color: #8F0100;
   text-decoration: none;
@@ -64,7 +68,7 @@ md-dialog > md-toolbar {
 }
 
 .item-title {
-  line-height: 35px;
+  line-height: 42px;
   margin-top: 4px;
 }
 
@@ -219,6 +223,50 @@ author-detail-component .app-list-item {
 
 md-dialog-content h3 {
   color: rgb(121, 23, 22);
+}
+
+.footer {
+  min-height: 300px;
+  background-color: #791716;
+  position: relative;
+}
+
+.footer > .footer-background {
+  min-height: 300px;
+  background-position: 100% 0;
+}
+
+.footer > .footer-background {
+  padding: 3.4375em 0;
+}
+
+.footer > .footer-background {
+  background-image: url(/images/footer-watermark.png);
+  background-position: 100% 0;
+  background-repeat: no-repeat;
+  padding: 2.1875em;
+}
+
+.footer-main-nav {
+  margin-top: 40px;
+}
+
+.footer-main-nav a {
+  font-size: 1.125em;
+}
+
+.footer-main-nav a {
+  color: #c0ac7e;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-weight: 500;
+  font-size: 1.0em;
+  margin: 0 30px;
+}
+
+.footer-main-nav h4 {
+  color: #fff;
 }
 
 
