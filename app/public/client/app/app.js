@@ -50,23 +50,22 @@ var dspaceApp = angular.module('dspaceApp', [
   // Angular Material configuration...
   dspaceApp.config(function ($mdThemingProvider) {
 
-
       $mdThemingProvider
         .definePalette('Custom Background', {
           '50': '#ffffff',
           '100': '#ffffff',
-          '200': '#ffffff',
-          '300': '#ffffff',
-          '400': '#f9f7f3',
-          '500': '#efeadf',
-          '600': '#e5ddcb',
-          '700': '#dbcfb6',
-          '800': '#d0c2a2',
-          '900': '#c6b48d',
+          '200': '#fcfbf9',
+          '300': '#e4dcca',
+          '400': '#daceb5',
+          '500': '#d0c1a1',
+          '600': '#c6b48d',
+          '700': '#bca678',
+          '800': '#b19964',
+          '900': '#333333',
           'A100': '#ffffff',
           'A200': '#ffffff',
-          'A400': '#f9f7f3',
-          'A700': '#dbcfb6',
+          'A400': '#daceb5',
+          'A700': '#bca678',
           'contrastDefaultColor': 'light',
           'contrastDarkColors': '50 100 200 300 400 500 600 700 800 900 A100 A200 A400 A700'
         });
@@ -141,8 +140,8 @@ var dspaceApp = angular.module('dspaceApp', [
         .accentPalette('Accent Palette', {'default': '500'})
         .warnPalette('Custom Warn')
         .backgroundPalette('Custom Background', {
-          'default': '200',
-          'hue-1': '400'
+          'default': '100',
+          'hue-1': '200'
         });
 
     }

@@ -126,7 +126,8 @@
       publisher: '@',
       year: '@',
       handle: '@',
-      id: '@'
+      id: '@',
+      last: '<'
 
     },
     controller: ItemDetailController,

@@ -249,11 +249,11 @@ dspaceServices.factory('Utils', [
       sessionStatus.$promise.then(function () {
 
         if (sessionStatus.status === 'ok') {
-          QueryManager.hasDspaceSession = true;
+          AppContext.hasDspaceSession = true;
 
         } else {
 
-          QueryManager.hasDspaceSession = false;
+          AppContext.hasDspaceSession = false;
         }
 
       });

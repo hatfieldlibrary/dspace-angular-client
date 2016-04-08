@@ -6,5 +6,5 @@
     <p>{{$ctrl.author}}; <span ng-if="$ctrl.publisher">{{$ctrl.publisher}};</span> <span ng-if="$ctrl.year">{{$ctrl.year}}</span> </p>
 
   </div>
-  <md-divider  ng-if="!$last"></md-divider>
+  <md-divider  ng-if="!$ctrl.last"></md-divider>
 </md-list-item>

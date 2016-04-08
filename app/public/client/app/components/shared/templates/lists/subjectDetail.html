@@ -1,17 +1,18 @@
-
 <md-list-item layout="column" layout-align="left" flex
-              ng-class="{ 'md-whiteframe-z1': $ctrl.index == $ctrl.selectedIndex, 'selected-index': $ctrl.index == $ctrl.selectedIndex}"
+              ng-class="{ 'md-whiteframe-z2': $ctrl.index == $ctrl.selectedIndex, 'selected-index': $ctrl.index == $ctrl.selectedIndex}"
 
 
 <md-item-content layout-fill layout="column">
 
-  <div class="md-list-item-text app-list-item" layout="row" layout-fill ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();">
+  <div class="md-list-item-text app-list-item" layout="row" layout-fill
+       ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();">
     <!--
     <a ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.title}}/0">{{$ctrl.author}}</a>
     -->
-    <a class="browse-anchor" ng-href="#">{{$ctrl.subject}} ({{$ctrl.count}})</a>
+    <a class="browse-anchor" ng-class="{'md-title': $ctrl.index == $ctrl.selectedIndex}" $ng-href="#">{{$ctrl.subject}} ({{$ctrl.count}})</a>
     <span flex></span>
-    <a ng-hide="$ctrl.count < 20" ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.sort}}/{{$ctrl.subject}}/0/20">icon</a>
+    <a ng-hide="$ctrl.count < 20"
+       ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.sort}}/{{$ctrl.subject}}/0/20">icon</a>
 
   </div>
 
@@ -27,12 +28,14 @@
           publisher="{{col.publisher}}"
           year="{{col.year}}"
           handle="{{col.handle}}"
-          id="{{col.id}}">
+          id="{{col.id}}"
+          last="$last">
         </item-detail-component>
+
       </div>
     </md-content>
   </div>
 
-  <md-divider ng-if="!$last"></md-divider>
+  <md-divider ng-if="!$ctrl.last"></md-divider>
 
 </md-item-content>

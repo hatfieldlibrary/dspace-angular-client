@@ -1,4 +1,4 @@
-<md-content class="hue-1">
+<md-content md-default>
   <p class="md-subhead md-accent" style="margin-left: 20px;">Viewing {{$ctrl.count}} items.</p>
 
   <sort-options-component
@@ -51,6 +51,7 @@
       id="{{$ctrl.id}}"
       index="{{$index}}"
       field="{{$ctrl.field}}"
+      last="$last"
       set-selected="$ctrl.setSelected(index)">
     </subject-detail-component>
 

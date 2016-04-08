@@ -35,6 +35,7 @@
      * @type {number}
      */
     ctrl.selectedIndex = -1;
+    AppContext.setCurrentIndex(-1);
 
     ctrl.sort = QueryManager.getSort();
 
@@ -103,6 +104,7 @@
       id: '@',
       index: '@',
       field: '@',
+      last: '<',
       setSelected: '&'
 
     },
