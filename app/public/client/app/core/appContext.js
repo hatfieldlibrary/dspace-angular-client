@@ -37,8 +37,10 @@
         /**
          * The current item count.
          */
-        count: 0
-        
+        count: 0,
+
+        openMenu: false
+
       },
 
       getContext: function() {
@@ -89,7 +91,17 @@
 
       getCount: function () {
         return this.context.count;
+      },
+
+      setMenu: function(open) {
+        console.log('menu state ' + open)
+        this.context.openMenu = open;
+      },
+
+      getMenuState: function() {
+        return this.context.openMenu;
       }
+
 
 
     }

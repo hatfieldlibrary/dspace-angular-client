@@ -6,7 +6,18 @@
 
 (function () {
 
-  function HeaderCtrl() {
+  function HeaderCtrl(AppContext) {
+
+    var ctrl = this;
+
+    var open = false;
+
+    ctrl.openMenu = function () {
+
+      open = !open;
+      AppContext.setMenu(open);
+    };
+
   }
 
 

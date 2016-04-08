@@ -10,13 +10,15 @@
 
     <img ng-src="/images/bio_header.jpg" class="md-card-image" alt="image caption">
 
-    <md-card-content  flex>
+    <md-card-content flex>
 
-      <div class="md-subhead" ng-bind-html="$ctrl.data.introductoryText"></div>
+      <div layout="column"  layout-align="center center">
+      <div class="md-subhead" ng-bind-html="$ctrl.data.introductoryText" style="max-width: 800px;"></div>
 
       <p></p>
 
-      <item-list-component context="collection"></item-list-component>
+      <item-list-component context="collection" style="max-width: 800px;"></item-list-component>
+      </div>
 
     </md-card-content>
 

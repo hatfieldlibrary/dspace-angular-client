@@ -2,6 +2,10 @@ body {
   background: #fefefe;
 }
 
+.transparent {
+  background: transparent;
+}
+
 .main {
   border-top: .4375rem solid #791716;
 }
@@ -50,7 +54,6 @@ md-dialog > md-toolbar {
 
 .nav-login {
   right: 72px;
-  color: #ffffff;
 }
 
 .top-highlight {
