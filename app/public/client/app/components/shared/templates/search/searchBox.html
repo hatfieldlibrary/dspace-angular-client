@@ -1,25 +1,33 @@
 <div class="search-form" layout-padding>
 
-  <md-input-container>
-    <label>Enter Search Terms</label>
-    <input ng-model="sb.terms">
-  </md-input-container>
+  <form ng-submit="sb.submit(sb.terms)">
 
-  <md-input-container>
-    <md-radio-group ng-model="sb.scope" layout="column">
-      <md-radio-button value="this" aria-label="This Collection" class="md-caption" >
-        This Collection
-      </md-radio-button>
-      <md-radio-button value="all" aria-label="All Collections" class="md-caption" >
-        All Collections
-      </md-radio-button>
-    </md-radio-group>
-  </md-input-container>
+    <md-input-container>
+      <label>Enter Search Terms</label>
+      <input ng-model="sb.terms">
+    </md-input-container>
 
-  <md-input-container>
-    <md-button class="md-raised md-accent" ng-click="sb.submit(sb.terms)"><md-icon md-font-library="material-icons" class="md-light">search</md-icon> Search&nbsp;&nbsp; </md-button>
-  </md-input-container>
-  <input type="hidden" ng-model="sb.id"/>
+    <md-input-container>
+      <md-radio-group ng-model="sb.scope" layout="column">
+        <md-radio-button value="this" aria-label="This Collection" class="md-caption">
+          This Collection
+        </md-radio-button>
+        <md-radio-button value="all" aria-label="All Collections" class="md-caption">
+          All Collections
+        </md-radio-button>
+      </md-radio-group>
+    </md-input-container>
+
+    <md-input-container>
+      <md-button class="md-raised md-accent" ng-click="sb.submit(sb.terms)">
+        <md-icon md-font-library="material-icons" class="md-light">search</md-icon>
+        Search&nbsp;&nbsp;
+      </md-button>
+    </md-input-container>
+
+    <input type="hidden" ng-model="sb.id"/>
+
+  </form>
 
   <p class="md-caption"><a ng-href="">Advanced Search</a></p>
 

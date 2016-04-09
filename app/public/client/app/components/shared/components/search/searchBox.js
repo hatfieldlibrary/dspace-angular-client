@@ -26,6 +26,10 @@
 
     }
 
+    sb.searchText = function() {
+
+    }
+
   }
 
   dspaceComponents.component('searchBoxComponent', {
