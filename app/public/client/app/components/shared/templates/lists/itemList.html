@@ -10,12 +10,15 @@
 </md-content>
 
 <md-content>
-  <md-list>
+
+  <md-list layout-fill>
 
     <item-detail-component
 
       ng-if="$ctrl.field!='author' && $ctrl.field!='subject' && $ctrl.field!=='discover'"
+
       ng-repeat="col in $ctrl.items"
+      class="animate"
       title="{{col.title}}"
       author="col.author[0]"
       publisher="{{col.publisher}}"
@@ -28,7 +31,9 @@
     <author-detail-component
 
       ng-if="$ctrl.field=='author'"
+
       ng-repeat="au in $ctrl.items"
+      class="'animate'"
       ng-class="{'selected': $index==$ctrl.selectedIndex}"
       author="{{au.author.value}}"
       count="{{au.author.count}}"
@@ -36,6 +41,7 @@
       id="{{$ctrl.id}}"
       index="{{$index}}"
       field="{{$ctrl.field}}"
+      last="$last"
       set-selected="$ctrl.setSelected(index)">
 
     </author-detail-component>

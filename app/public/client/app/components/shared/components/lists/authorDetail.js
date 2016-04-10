@@ -97,6 +97,7 @@
       offset: '@',
       index: '@',
       count: '@',
+      last: '<',
       setSelected: '&'
 
     },

@@ -44,6 +44,13 @@ md-toolbar:not(.md-menu-toolbar) .md-button:not(.md-raised) {
   color: #ffffff;
 }
 
+md-list-item.md-2-line .md-list-item-text {
+  padding: 14px 0px;
+}
+.selected md-list-item.md-2-line .md-list-item-text {
+  padding: 14px 24px;
+}
+
 md-dialog > md-toolbar {
   background: rgb(79, 28, 27) !important;
 }
@@ -146,7 +153,7 @@ author-detail-component .app-list-item {
 
 .selected-index {
   background: #FAF9F7;
-  margin: 10px 3px;
+  margin: 3px 3px 10px;
   width: 99%;
 }
 
@@ -189,23 +196,23 @@ author-detail-component .app-list-item {
 }
 
 .selected .md-whiteframe-z2 .browse-item.browse-item-1 {
-  height: 102px;
+  height: 112px;
 }
 
 .selected .md-whiteframe-z2 .browse-item.browse-item-2 {
-  height: 174px;
+  height: 196px;
 }
 
 .selected .md-whiteframe-z2 .browse-item.browse-item-3 {
-  height: 276px;
+  height: 290px;
 }
 
 .selected .md-whiteframe-z2 .browse-item.browse-item-4 {
-  height: 318px;
+  height: 378px;
 }
 
 .selected .md-whiteframe-z2 .browse-item.browse-item-5 {
-  height: 390px;
+  height: 470px;
 }
 
 .selected .md-whiteframe-z2 .browse-item.browse-item-6 {
@@ -274,6 +281,116 @@ md-dialog-content h3 {
 
 .footer-main-nav h4 {
   color: #fff;
+}
+
+
+.animate.ng-enter,
+.animate.ng-leave {
+  -webkit-transition: 200ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+  -moz-transition: 200ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+  -ms-transition: 200ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+  -o-transition: 200ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+  transition: 200ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+  position: relative;
+  display: block;
+}
+
+.animate.ng-leave.animate.ng-leave-active,
+.animate.ng-enter {
+  -webkit-transform: scaleY(0.6);
+  -moz-transform: scaleY(0.6);
+  -ms-transform: scaleY(0.6);
+  -o-transform: scaleY(0.6);
+  transform: scaleY(0.6);
+  height: 55px;
+  opacity: 0;
+}
+
+.animate.ng-enter.ng-enter-active,
+.animate.ng-leave {
+  -webkit-transform: scaleY(1);
+  -moz-transform: scaleY(1);
+  -ms-transform: scaleY(1);
+  -o-transform: scaleY(1);
+  transform: scaleY(1);
+  height: 72px;
+  opacity: 1;
+}
+
+
+
+/*!* The starting CSS styles for the enter animation *!*/
+/*.animate.ng-enter {*/
+  /*transition:0.5s linear all;*/
+  /*opacity:0;*/
+/*}*/
+
+/*!* The finishing CSS styles for the enter animation *!*/
+/*.animate.ng-enter.ng-enter-active {*/
+  /*opacity:1;*/
+/*}*/
+/*!* now the element will fade out before it is removed from the DOM *!*/
+/*.animate.ng-leave {*/
+  /*transition:0.5s linear all;*/
+  /*opacity:1;*/
+/*}*/
+/*.animate.ng-leave.animate.ng-leave-active {*/
+  /*opacity:0;*/
+/*}*/
+
+
+
+.animate-repeat {
+  height: 92px;
+  min-height: 92px;
+}
+
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter,
+.animate-repeat.ng-leave {
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .32s ease-in-out;
+}
+
+.animate-repeat.ng-leave.ng-leave-active,
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter {
+  opacity: 0;
+  height: 0;
+  min-height: 0;
+}
+
+.animate-repeat.ng-leave,
+.animate-repeat.ng-move.ng-move-active,
+.animate-repeat.ng-enter.ng-enter-active {
+  opacity: 1;
+  height: 92px;
+  min-height: 92px;
+}
+
+.animate-repeat.ng-leave-stagger {
+  /* this will have a 100ms delay between each successive leave animation */
+  -webkit-transition-delay: 0.125s;
+  transition-delay: 0.125s;
+
+  /* in case the stagger doesn't work then these two values
+   must be set to 0 to avoid an accidental CSS inheritance */
+  -webkit-transition-duration: 0s;
+  transition-duration: 0s;
+}
+
+/**
+ * Stagger ENTER ANIMATION
+ */
+.animate-repeat.ng-enter-stagger {
+  /* this will have a 100ms delay between each successive enter animation */
+  -webkit-transition-delay: 0.125s;
+  transition-delay: 0.125s;
+
+  /* in case the stagger doesn't work then these two values
+   must be set to 0 to avoid an accidental CSS inheritance */
+  -webkit-transition-duration: 0s;
+  transition-duration: 0s;
 }
 
 

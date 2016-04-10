@@ -6,7 +6,7 @@
 
 (function () {
 
-  function ItemListCtrl(QueryManager, AppContext) {
+  function ItemListCtrl($scope, QueryManager, AppContext) {
 
     var ctrl = this;
 
