@@ -32,6 +32,8 @@
      */
     ctrl.id = QueryManager.getAssetId();
 
+    ctrl.offset = QueryManager.getOffset();
+
     /**
      * Sets the selected index in the controller and in the application
      * context.  Used by subject and author lists to toggle view state.
@@ -44,7 +46,7 @@
     };
 
     /**
-     * Updates controller values with results after pager update. Pager is
+     * Updates with data on intial load. Pager is
      * responsible for initializing with new data, including the initial
      * data on page load.
      * @param results  items in result
@@ -60,7 +62,7 @@
     };
 
     /**
-     * Updates controller after pager request for more items.
+     * Updates list after pager request for more items.
      * @param results  new items to add to list.
      * @param count  total number of items.
      * @param field  the field queried.
@@ -72,6 +74,10 @@
 
     };
 
+    ctrl.onPreviousUpdate = function (results) {
+      addPreviousResults(results);
+    };
+
     /**
      * Adds new results to current items.
      * @param results  items returned by paging query.
@@ -80,6 +86,16 @@
       ctrl.items = ctrl.items.concat(results);
 
     }
+
+    function addPreviousResults(results) {
+      ctrl.items = results.concat(ctrl.items);
+    }
+
+    function init() {
+      ctrl.showPager = QueryManager.getOffset() > 0;
+      console.log(ctrl.showPager);
+    }
+    init();
 
   }
 

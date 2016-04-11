@@ -4,15 +4,16 @@
 
 <md-item-content layout-fill layout="column">
 
-  <div class="md-list-item-text app-list-item" layout="row" layout-fill
-       ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();">
-    <!--
-    <a ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.title}}/0">{{$ctrl.author}}</a>
-    -->
+  <div  ng-if="$ctrl.count > 10"  class="md-list-item-text app-list-item" layout="row" layout-fill>
+    {{$ctrl.subject}} ({{$ctrl.count}})
+    <span flex></span>
+    <a class="md-caption"
+       ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.sort}}/{{$ctrl.subject}}/0/20">view in browse <md-icon md-svg-src="/images/ic_open_in_new_black_24px.svg"></md-icon></a>
+  </div>
+  <div  ng-if="$ctrl.count <= 10"  class="md-list-item-text app-list-item" layout="row" layout-fill
+        ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();">
     <a class="browse-anchor" ng-class="{'md-title': $ctrl.index == $ctrl.selectedIndex}" $ng-href="#">{{$ctrl.subject}} ({{$ctrl.count}})</a>
     <span flex></span>
-    <a ng-hide="$ctrl.count < 20"
-       ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.sort}}/{{$ctrl.subject}}/0/20">icon</a>
 
   </div>
 

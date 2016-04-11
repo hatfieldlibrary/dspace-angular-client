@@ -15,6 +15,7 @@
 
 
     function init() {
+
       QueryStack.pop();
 
       if (QueryStack.isEmpty()) {

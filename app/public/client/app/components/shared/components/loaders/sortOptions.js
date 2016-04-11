@@ -134,7 +134,7 @@
         Utils.reverseArray(arr);
         AppContext.setAuthorsList(arr);
         var data = {};
-        data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + 10);
+        data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + setSize);
         data.count = AppContext.getAuthorsCount();
 
 
@@ -162,7 +162,7 @@
         Utils.reverseArray(arr);
         AppContext.setSubjectList(arr);
         var data = {};
-        data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + 10);
+        data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + setSize);
         data.count = AppContext.getSubjectsCount();
 
 
@@ -239,7 +239,7 @@
         QueryManager.setJumpType(QueryTypes.SUBJECT_FACETS);
 
       }
-      
+
       console.log(QueryManager.getJumpType());
 
       /**

@@ -46,9 +46,14 @@ md-toolbar:not(.md-menu-toolbar) .md-button:not(.md-raised) {
 
 md-list-item.md-2-line .md-list-item-text {
   padding: 14px 0px;
+  border: 0;
+  outline: 0;
 }
+
 .selected md-list-item.md-2-line .md-list-item-text {
   padding: 14px 24px;
+  outline: 0;
+  border: 0;
 }
 
 md-dialog > md-toolbar {
@@ -149,10 +154,12 @@ md-dialog > md-toolbar {
 subject-detail-component .app-list-item,
 author-detail-component .app-list-item {
   padding: 12px 16px;
+  border: 0;
+  outline: 0;
 }
 
 .selected-index {
-  background: #FAF9F7;
+  background: #c6b48d;
   margin: 3px 3px 10px;
   width: 99%;
 }
@@ -163,7 +170,11 @@ author-detail-component .app-list-item {
   opacity: 1;
 }
 
+.browse-anchor {
+  cursor: pointer;
+}
 .selected .browse-anchor {
+  cursor: default;
   color: #505050;
 }
 
@@ -188,11 +199,16 @@ author-detail-component .app-list-item {
 
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
+  margin-bottom: 10px;
 }
 
 .selected .browse-item:last-child {
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
+}
+
+.selected md-list-item.md-no-proxy, .selected md-list-item .md-no-style {
+  padding: 0px 11px 0 16px;
 }
 
 .selected .md-whiteframe-z2 .browse-item.browse-item-1 {
@@ -232,7 +248,7 @@ author-detail-component .app-list-item {
 }
 
 .selected .md-whiteframe-z2 .browse-item.browse-item-10 {
-  height: 750px;
+  height: 832px;
 }
 
 md-dialog-content h3 {
@@ -283,7 +299,6 @@ md-dialog-content h3 {
   color: #fff;
 }
 
-
 .animate.ng-enter,
 .animate.ng-leave {
   -webkit-transition: 200ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
@@ -317,28 +332,24 @@ md-dialog-content h3 {
   opacity: 1;
 }
 
-
-
 /*!* The starting CSS styles for the enter animation *!*/
 /*.animate.ng-enter {*/
-  /*transition:0.5s linear all;*/
-  /*opacity:0;*/
+/*transition:0.5s linear all;*/
+/*opacity:0;*/
 /*}*/
 
 /*!* The finishing CSS styles for the enter animation *!*/
 /*.animate.ng-enter.ng-enter-active {*/
-  /*opacity:1;*/
+/*opacity:1;*/
 /*}*/
 /*!* now the element will fade out before it is removed from the DOM *!*/
 /*.animate.ng-leave {*/
-  /*transition:0.5s linear all;*/
-  /*opacity:1;*/
+/*transition:0.5s linear all;*/
+/*opacity:1;*/
 /*}*/
 /*.animate.ng-leave.animate.ng-leave-active {*/
-  /*opacity:0;*/
+/*opacity:0;*/
 /*}*/
-
-
 
 .animate-repeat {
   height: 92px;

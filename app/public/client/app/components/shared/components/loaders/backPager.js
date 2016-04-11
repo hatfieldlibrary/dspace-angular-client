@@ -1,6 +1,7 @@
 /**
- * Created by mspalti on 2/23/16.
+ * Created by mspalti on 4/10/16.
  */
+
 
 'use strict';
 
@@ -24,16 +25,12 @@
      */
     var setSize = 20;
     /**
-     * Count must be initialized to 0.
-     * @type {number}
-     */
-    var count = 0;
-    /**
      * Get the offset for the next result set.
      * @returns {boolean}
      */
     ctrl.more = function () {
-      return AppContext.getCount() > QueryManager.getOffset() + setSize;
+      console.log(AppContext.getCount() > QueryManager.getOffset() - setSize)
+      return AppContext.getCount() > QueryManager.getOffset() - setSize;
     };
     /**
      * Current start position for view model.
@@ -44,7 +41,7 @@
      * Current end position for view model.
      * @type {number}
      */
-    ctrl.end = QueryManager.getOffset() + setSize;
+    ctrl.end = QueryManager.getOffset() - setSize;
 
     /**
      * This variable is used to hold the QueryField of
@@ -64,28 +61,6 @@
     $scope.$on("nextPage", function () {
       updateList(QueryManager.getOffset());
     });
-
-
-    /**
-     * Initialize data for the first set of items.
-     *
-     * The initial QueryManager state for the query context is
-     * set outside of pager in the appropriate parent
-     * component, e.g.: collection, discover...
-     */
-    function init() {
-
-      // The offset should be 0.
-      updateList(QueryManager.getOffset());
-      /**
-       * Update the query stack. Subsequent paging
-       * requests to not update the stack.
-       */
-      QueryStack.push(QueryManager.getQuery());
-      QueryStack.print();
-    }
-
-    init();
 
 
     /**
@@ -199,8 +174,6 @@
       ctrl.onUpdate({
 
         results: data.results,
-        count: data.count,
-        field: displayListType
 
       });
 
@@ -222,31 +195,12 @@
       }
     };
 
-    /**
-     * View model method for retrieveing the next result set.
-     */
-    ctrl.next = function () {
-
-      var start = QueryManager.getOffset();
-
-      start += setSize;
-      ctrl.start = start + 1;
-      if (ctrl.end + setSize <= count) {
-        ctrl.end += setSize;
-      } else {
-        ctrl.end = count;
-      }
-      QueryManager.setOffset(start);
-      updateList(start);
-
-    };
-
   }
 
 
-  dspaceComponents.component('pagerComponent', {
+  dspaceComponents.component('pagerBackComponent', {
 
-    template: '<div layout="row" layout-align="center center"><md-button class="md-raised md-accent md-fab md-mini" ng-click="$ctrl.next()" ng-if="$ctrl.more()"><md-icon md-font-library="material-icons" class="md-light">expand_more</md-icon></md-button></div>',
+    template: '<div layout="row" layout-align="center center"><md-button class="md-raised md-accent md-fab md-mini" ng-click="$ctrl.previous()" ng-if="$ctrl.more()"><md-icon md-font-library="material-icons" class="md-light">expand_less</md-icon></md-button></div>',
 
     bindings: {
       onUpdate: '&'

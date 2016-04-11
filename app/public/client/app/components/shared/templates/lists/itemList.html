@@ -11,74 +11,84 @@
 
 <md-content>
 
-  <md-list layout-fill>
+  <div layout="column">
 
-    <item-detail-component
+    <pager-back-component ng-if="$ctrl.showPager"
 
-      ng-if="$ctrl.field!='author' && $ctrl.field!='subject' && $ctrl.field!=='discover'"
+      on-update="$ctrl.onPreviousUpdate(results)">
 
-      ng-repeat="col in $ctrl.items"
-      class="animate"
-      title="{{col.title}}"
-      author="col.author[0]"
-      publisher="{{col.publisher}}"
-      year="{{col.year}}"
-      handle="{{col.handle}}"
-      id="{{col.id}}">
+    </pager-back-component>
 
-    </item-detail-component>
+    <md-list layout-fill>
 
-    <author-detail-component
+      <item-detail-component
 
-      ng-if="$ctrl.field=='author'"
+        ng-if="$ctrl.field!='author' && $ctrl.field!='subject' && $ctrl.field!=='discover'"
 
-      ng-repeat="au in $ctrl.items"
-      class="'animate'"
-      ng-class="{'selected': $index==$ctrl.selectedIndex}"
-      author="{{au.author.value}}"
-      count="{{au.author.count}}"
-      type="{{$ctrl.type}}"
-      id="{{$ctrl.id}}"
-      index="{{$index}}"
-      field="{{$ctrl.field}}"
-      last="$last"
-      set-selected="$ctrl.setSelected(index)">
+        ng-repeat="col in $ctrl.items"
+        class="animate"
+        title="{{col.title}}"
+        author="col.author[0]"
+        publisher="{{col.publisher}}"
+        year="{{col.year}}"
+        handle="{{col.handle}}"
+        id="{{col.id}}">
 
-    </author-detail-component>
+      </item-detail-component>
 
-    <subject-detail-component
+      <author-detail-component
 
-      ng-if="$ctrl.field=='subject'"
-      ng-repeat="sub in $ctrl.items"
-      ng-class="{'selected': $index==$ctrl.selectedIndex}"
-      subject="{{sub.author.value}}"
-      count="{{sub.author.count}}"
-      type="{{$ctrl.type}}"
-      id="{{$ctrl.id}}"
-      index="{{$index}}"
-      field="{{$ctrl.field}}"
-      last="$last"
-      set-selected="$ctrl.setSelected(index)">
-    </subject-detail-component>
+        ng-if="$ctrl.field=='author'"
 
-    <discover-detail-component
+        ng-repeat="au in $ctrl.items"
+        class="'animate'"
+        ng-class="{'selected': $index==$ctrl.selectedIndex}"
+        author="{{au.author.value}}"
+        count="{{au.author.count}}"
+        type="{{$ctrl.type}}"
+        id="{{$ctrl.id}}"
+        index="{{$index}}"
+        field="{{$ctrl.field}}"
+        last="$last"
+        set-selected="$ctrl.setSelected(index)">
 
-      ng-if="$ctrl.field=='discover'"
-      ng-repeat="item in $ctrl.items"
-      title="{{item.title[0]}}"
-      description="item.description"
-      count="{{$ctrl.count}}">
+      </author-detail-component>
 
-    </discover-detail-component>
+      <subject-detail-component
 
-  </md-list>
+        ng-if="$ctrl.field=='subject'"
+        ng-repeat="sub in $ctrl.items"
+        ng-class="{'selected': $index==$ctrl.selectedIndex}"
+        subject="{{sub.author.value}}"
+        count="{{sub.author.count}}"
+        type="{{$ctrl.type}}"
+        id="{{$ctrl.id}}"
+        index="{{$index}}"
+        field="{{$ctrl.field}}"
+        last="$last"
+        set-selected="$ctrl.setSelected(index)">
+      </subject-detail-component>
 
-  <pager-component
+      <discover-detail-component
 
-    on-update="$ctrl.onPagerUpdate(results, count, field)">
+        ng-if="$ctrl.field=='discover'"
+        ng-repeat="item in $ctrl.items"
+        title="{{item.title[0]}}"
+        description="item.description"
+        count="{{$ctrl.count}}">
 
-  </pager-component>
-  <p>&nbsp;</p>
+      </discover-detail-component>
+
+    </md-list>
+
+    <pager-component
+
+      on-update="$ctrl.onPagerUpdate(results, count, field)">
+
+    </pager-component>
+
+    <p>&nbsp;</p>
+  </div>
 </md-content>
 
 

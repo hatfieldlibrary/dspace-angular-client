@@ -64,7 +64,7 @@
           sort: ctrl.sort,
           terms: ctrl.author,
           offset: 0,
-          rows: 50
+          rows: 10
         }
       );
       result.$promise.then(function (data) {

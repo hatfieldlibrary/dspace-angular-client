@@ -70,9 +70,9 @@
           qType: QueryTypes.SUBJECT_SEARCH,
           field: ctrl.field,
           sort: ctrl.sort,
-          terms: ctrl.subject,
+          terms: encodeURI(ctrl.subject),
           offset: 0,
-          rows: 50
+          rows: 10
         }
       );
       result.$promise.then(function (data) {
