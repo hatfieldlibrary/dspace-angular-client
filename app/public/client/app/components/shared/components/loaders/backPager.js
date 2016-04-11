@@ -174,6 +174,7 @@
       ctrl.onUpdate({
 
         results: data.results,
+        index: ctrl.start
 
       });
 
@@ -188,10 +189,10 @@
 
       if (start >= setSize) {
         ctrl.start -= setSize;
-        ctrl.end = ctrl.start + 9;
-        start -= setSize;
-        QueryManager.setOffset(start);
-        updateList(start);
+        ctrl.end = ctrl.start;
+        console.log(ctrl.start)
+        QueryManager.setOffset(ctrl.start);
+        updateList(ctrl.start);
       }
     };
 
@@ -200,7 +201,7 @@
 
   dspaceComponents.component('pagerBackComponent', {
 
-    template: '<div layout="row" layout-align="center center"><md-button class="md-raised md-accent md-fab md-mini" ng-click="$ctrl.previous()" ng-if="$ctrl.more()"><md-icon md-font-library="material-icons" class="md-light">expand_less</md-icon></md-button></div>',
+    template: '<div layout="row" layout-align="center center"><md-button class="md-raised md-accent md-fab md-mini" ng-click="$ctrl.previous()" ng-if="$ctrl.more()"><md-icon md-font-library="material-icons" class="md-light" aria-label="Previous Results">expand_less</md-icon></md-button></div>',
 
     bindings: {
       onUpdate: '&'

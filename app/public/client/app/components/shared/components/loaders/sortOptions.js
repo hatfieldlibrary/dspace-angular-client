@@ -422,7 +422,7 @@
        * Handle the response.
        */
       items.$promise.then(function (data) {
-        console.log(data)
+
         QueryManager.setOffset(data.offset);
         handleResult(data);
       });
@@ -519,7 +519,6 @@
   dspaceComponents.component('sortOptionsComponent', {
 
     bindings: {
-      // callback function
       onUpdate: '&',
       context: '@'
     },

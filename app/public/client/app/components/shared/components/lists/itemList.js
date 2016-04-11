@@ -46,7 +46,7 @@
     };
 
     /**
-     * Updates with data on intial load. Pager is
+     * Updates with data on initial load. Pager is
      * responsible for initializing with new data, including the initial
      * data on page load.
      * @param results  items in result
@@ -54,6 +54,8 @@
      * @param field   the field queried
      */
     ctrl.onUpdate = function (results, count, field) {
+
+      ctrl.showPager = false;
 
       ctrl.items = results;
       ctrl.count = count;
@@ -74,7 +76,10 @@
 
     };
 
-    ctrl.onPreviousUpdate = function (results) {
+    ctrl.onPreviousUpdate = function (results, index) {
+      if (index == 0) {
+        ctrl.showPager = false;
+      }
       addPreviousResults(results);
     };
 
@@ -93,7 +98,7 @@
 
     function init() {
       ctrl.showPager = QueryManager.getOffset() > 0;
-      console.log(ctrl.showPager);
+
     }
     init();
 
