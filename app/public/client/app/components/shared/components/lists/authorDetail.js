@@ -16,6 +16,8 @@
 
     var ctrl = this;
 
+    ctrl.ready = false;
+
     ctrl.isSmallScreen = ($mdMedia('sm') || $mdMedia('xs'));
 
     /**
@@ -74,6 +76,7 @@
         }
       );
       result.$promise.then(function (data) {
+        ctrl.ready = true;
         ctrl.items = data;
       });
 

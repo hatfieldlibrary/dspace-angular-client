@@ -118,6 +118,8 @@
      * Toggle the sort order (ASCENDING, DESCENDING)
      */
     ctrl.resetOrder = function () {
+      
+      ctrl.resetListView();
 
       /**
        * Reset the selected item.
@@ -211,6 +213,8 @@
      * Filter the search results.
      */
     ctrl.getFilter = function () {
+      
+      ctrl.resetListView();
 
       /**
        * Reset the selected item.
@@ -345,7 +349,8 @@
      */
     ctrl.resetField = function setField() {
 
-
+       ctrl.resetListView();
+      
       /**
        * Reset the selected item.
        */
@@ -533,6 +538,7 @@
 
     bindings: {
       onUpdate: '&',
+      resetListView: '&',
       context: '@'
     },
     templateUrl: '/shared/templates/sortOptions.html',

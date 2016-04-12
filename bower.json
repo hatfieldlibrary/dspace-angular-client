@@ -15,8 +15,7 @@
     "angular-material": "^1.0.6",
     "angular-aria": "^1.5.1",
     "angulartics": "^1.0.3",
-    "angulartics-google-analytics": "^0.1.4",
-    "angular-touch": "^1.5.3"
+    "angulartics-google-analytics": "^0.1.4"
   },
   "resolutions": {
     "angular": "^1.5.0",

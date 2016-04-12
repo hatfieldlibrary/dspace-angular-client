@@ -11,7 +11,11 @@
 
       <div class="browse-item">
         <div layout="column" layout-fill>
+
+
+
           <md-content>
+            <small-spinner ng-hide="$ctrl.ready"></small-spinner>
             <item-detail-component
               ng-repeat="col in $ctrl.items.results"
               title="{{col.title}}"

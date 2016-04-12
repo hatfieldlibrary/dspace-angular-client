@@ -233,7 +233,6 @@ md-list-item.selected-sm-index .browse-item{
 }
 
 
-
 .browse-anchor {
   cursor: pointer;
 }
@@ -242,6 +241,8 @@ md-list-item.selected-sm-index .browse-item{
 .selected-sm-index .browse-anchor {
   cursor: default;
   color: #173C3F;
+  outline: 0;
+  border: 0;
 }
 
 .selected-index .browse-anchor.md-title,

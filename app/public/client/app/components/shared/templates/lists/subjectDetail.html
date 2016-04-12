@@ -31,13 +31,8 @@
 
         <div layout="column" layout-fill>
 
-          <div layout-fill class="small-spinner" ng-hide="$ctrl.ready">
-            <div layout="row" layout-fill layout-sm="column" layout-align="space-around">
-              <md-progress-circular class="md-warn" md-mode="indeterminate" md-diameter="30"></md-progress-circular>
-            </div>
-          </div>
-
           <md-content>
+            <small-spinner ng-hide="$ctrl.ready"></small-spinner>
             <item-detail-component
               ng-repeat="col in $ctrl.items.results"
               title="{{col.title}}"

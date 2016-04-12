@@ -10,7 +10,7 @@
 
     var ctrl = this;
 
-    
+      ctrl.ready = false;
 
     /**
      * The array containing the items to present in the view.
@@ -58,7 +58,7 @@
     ctrl.onUpdate = function (results, count, field) {
 
       ctrl.showPager = false;
-
+      ctrl.ready = true;
       ctrl.items = results;
       ctrl.count = count;
       ctrl.field = field;
@@ -72,6 +72,7 @@
      * @param field  the field queried.
      */
     ctrl.onPagerUpdate = function (results, count,  field) {
+      ctrl.ready = true;
       addResults(results);
       ctrl.count = count;
       ctrl.field = field;
@@ -83,6 +84,12 @@
         ctrl.showPager = false;
       }
       addPreviousResults(results);
+    };
+
+    ctrl.resetListView = function() {
+      console.log('resetting the view')
+      ctrl.ready = false;
+      ctrl.items = [];
     };
 
     /**
