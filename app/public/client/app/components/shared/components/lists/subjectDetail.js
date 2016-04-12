@@ -7,6 +7,7 @@
 (function () {
 
   function SubjectDetailController($scope,
+                                   $mdMedia,
                                    Utils,
                                    QueryManager,
                                    QueryTypes,
@@ -15,6 +16,8 @@
 
 
     var ctrl = this;
+
+    ctrl.ready = false;
 
     /**
      * The current application context.
@@ -36,6 +39,8 @@
      */
     ctrl.selectedIndex = -1;
     AppContext.setCurrentIndex(-1);
+
+    ctrl.xsSelectedIndex = -1;
 
     ctrl.sort = QueryManager.getSort();
 
@@ -76,6 +81,7 @@
         }
       );
       result.$promise.then(function (data) {
+        ctrl.ready = true;
         ctrl.items = data;
       });
 
@@ -88,7 +94,16 @@
     $scope.$watch(
       "context.currentListIndex",
       function updateSelecteIndex(newValue, oldValue) {
-        ctrl.selectedIndex = newValue;
+        if (newValue !== oldValue) {
+          if (($mdMedia('sm') || $mdMedia('xs'))) {
+            ctrl.xsSelectedIndex = newValue;
+            console.log(ctrl.xsSelectedIndex)
+
+          } else {
+            ctrl.selectedIndex = newValue;
+
+          }
+        }
       }
     );
 

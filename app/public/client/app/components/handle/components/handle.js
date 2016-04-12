@@ -18,6 +18,8 @@
     var site = $routeParams.site;
     var item = $routeParams.item;
 
+    ctrl.ready = false;
+
     /**
      * Infinite scroll event.
      */
@@ -36,6 +38,8 @@
       query.$promise.then(
 
         function (data) {
+
+          ctrl.ready = true;
 
           /** Add query result to view model. */
           ctrl.data = data;
@@ -87,6 +91,11 @@
   dspaceComponents.component('handleComponent', {
 
     template: '<!-- Switch components based on item type --> ' +
+    '<div layout-fill class="spinner" ng-hide="$ctrl.ready" >' +
+    '<div layout="row" layout-fill layout-sm="column" layout-align="space-around">' +
+    '<md-progress-circular class="md-warn" md-mode="indeterminate" md-diameter="90"></md-progress-circular>' +
+    '</div>' +
+    '</div>' +
     '<div ng-if="$ctrl.nType==\'coll\'">  ' +
     '<collection-component data="$ctrl.data"></collection-component> ' +
     '</div> ' +

@@ -1,43 +1,61 @@
-<md-list-item layout="column" layout-align="left" flex
-              ng-class="{ 'md-whiteframe-z2': $ctrl.index == $ctrl.selectedIndex, 'selected-index': $ctrl.index == $ctrl.selectedIndex}"
+<md-list-item layout="column" layout-align="left" flex layout-fill
+              ng-class="{ 'md-whiteframe-z2': $ctrl.index == $ctrl.selectedIndex, 'selected-index': $ctrl.index == $ctrl.selectedIndex,  'selected-sm-index': $ctrl.index == $ctrl.xsSelectedIndex}">
 
 
-<md-item-content layout-fill layout="column">
+  <md-item-content layout-fill layout="column">
 
-  <div  ng-if="$ctrl.count > 10"  class="md-list-item-text app-list-item" layout="row" layout-fill>
-    {{$ctrl.subject}} ({{$ctrl.count}})
-    <span flex></span>
-    <a class="md-caption"
-       ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.sort}}/{{$ctrl.subject}}/0/20">view in browse <md-icon md-svg-src="/images/ic_open_in_new_black_24px.svg"></md-icon></a>
-  </div>
-  <div  ng-if="$ctrl.count <= 10"  class="md-list-item-text app-list-item" layout="row" layout-fill
-        ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();">
-    <a class="browse-anchor" ng-class="{'md-title': $ctrl.index == $ctrl.selectedIndex}" $ng-href="#">{{$ctrl.subject}} ({{$ctrl.count}})</a>
-    <span flex></span>
+    <div class="md-list-item-text app-list-item">
 
-  </div>
+      <div ng-if="$ctrl.count > 10" layout="row" layout-fill>
+        {{$ctrl.subject}} ({{$ctrl.count}})
+        <span flex></span>
+        <a class="md-caption"
+           ng-href="/browse/{{$ctrl.type}}/{{$ctrl.id}}/{{$ctrl.field}}/{{$ctrl.sort}}/{{$ctrl.subject}}/0/20">view in
+          browse
+          <md-icon md-svg-src="/images/ic_open_in_new_black_24px.svg"></md-icon>
+        </a>
+      </div>
 
-  <md-divider ng-show="$ctrl.index == $ctrl.selectedIndex"></md-divider>
+      <div ng-if="$ctrl.count <= 10" layout="row" layout-fill ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();">
 
-  <div class="browse-item browse-item-{{$ctrl.getHeightForCount()}}">
-    <md-content layout-fill>
-      <div layout="column" layout-fill class="expanded">
-        <item-detail-component
-          ng-repeat="col in $ctrl.items.results"
-          class="animate"
-          title="{{col.title}}"
-          author="col.author[0]"
-          publisher="{{col.publisher}}"
-          year="{{col.year}}"
-          handle="{{col.handle}}"
-          id="{{col.id}}"
-          last="$last">
-        </item-detail-component>
+        <a class="browse-anchor" ng-class="{'md-title': $ctrl.index == $ctrl.selectedIndex}" $ng-href="#">{{$ctrl.subject}}
+          ({{$ctrl.count}})</a>
+        <span flex></span>
 
       </div>
-    </md-content>
-  </div>
 
-  <md-divider ng-if="!$ctrl.last"></md-divider>
 
-</md-item-content>
+      <!--<md-divider ng-show="$ctrl.index == $ctrl.selectedIndex"></md-divider>-->
+
+      <div class="browse-item">
+
+        <div layout="column" layout-fill>
+
+          <div layout-fill class="small-spinner" ng-hide="$ctrl.ready">
+            <div layout="row" layout-fill layout-sm="column" layout-align="space-around">
+              <md-progress-circular class="md-warn" md-mode="indeterminate" md-diameter="30"></md-progress-circular>
+            </div>
+          </div>
+
+          <md-content>
+            <item-detail-component
+              ng-repeat="col in $ctrl.items.results"
+              title="{{col.title}}"
+              author="col.author[0]"
+              publisher="{{col.publisher}}"
+              year="{{col.year}}"
+              handle="{{col.handle}}"
+              id="{{col.id}}"
+              last="$last">
+            </item-detail-component>
+          </md-content>
+        </div>
+      </div>
+
+
+      <md-divider ng-if="!$ctrl.last"></md-divider>
+    </div>
+  </md-item-content>
+
+
+</md-list-item>

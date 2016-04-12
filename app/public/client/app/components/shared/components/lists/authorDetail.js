@@ -7,6 +7,7 @@
 (function () {
 
   function AuthorDetailController($scope,
+                                  $mdMedia,
                                   Utils,
                                   QueryManager,
                                   AppContext,
@@ -14,6 +15,8 @@
                                   InlineBrowseRequest) {
 
     var ctrl = this;
+
+    ctrl.isSmallScreen = ($mdMedia('sm') || $mdMedia('xs'));
 
     /**
      * The current application context.
@@ -28,6 +31,9 @@
      * @type {number}
      */
     ctrl.selectedIndex = -1;
+    AppContext.setCurrentIndex(-1);
+
+    ctrl.xsSelectedIndex = -1;
 
     ctrl.sort = QueryManager.getSort();
 
@@ -80,7 +86,16 @@
     $scope.$watch(
       "context.currentListIndex",
       function updateSelecteIndex(newValue, oldValue) {
-        ctrl.selectedIndex = newValue;
+        if (newValue !== oldValue) {
+          if (($mdMedia('sm') || $mdMedia('xs'))) {
+            ctrl.xsSelectedIndex = newValue;
+            console.log(ctrl.xsSelectedIndex)
+
+          } else {
+            ctrl.selectedIndex = newValue;
+
+          }
+        }
       }
     );
 

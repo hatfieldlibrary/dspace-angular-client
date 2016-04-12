@@ -1,9 +1,9 @@
-<md-list-item class="md-2-line">
+<md-list-item flex class="md-2-line">
   <div class="md-list-item-text"  ng-click="$ctrl.showItem($event, $ctrl.id)">
 
     <p class="list-highlight">{{$ctrl.title}}</p>
 
-    <p>{{$ctrl.author}}; <span ng-if="$ctrl.publisher">{{$ctrl.publisher}};</span> <span ng-if="$ctrl.year">{{$ctrl.year}}</span> </p>
+    <p>{{$ctrl.author}}; </span> <span ng-if="$ctrl.year">{{$ctrl.year}}</span> </p>
 
   </div>
   <md-divider  ng-if="!$ctrl.last"></md-divider>

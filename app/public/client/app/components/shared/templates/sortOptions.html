@@ -1,6 +1,6 @@
 <div class="sort-options" layout="row">
 
-  <md-input-container flex="33">
+  <md-input-container flex="{{$ctrl.fieldSelectorWidth}}">
     <label>Sort items by:</label>
     <md-select ng-model="$ctrl.selectedField" ng-change="$ctrl.resetField()" placeholder="Sort By">
       <md-option ng-repeat="field in $ctrl.fields" value="{{field.value}}">{{field.label}}</md-option>
@@ -15,7 +15,7 @@
     </md-select>
   </md-input-container>
 
-  <md-input-container flex="33" flex-xs="66">
+  <md-input-container flex="{{$ctrl.filterWidth}}" flex-xs="66">
     <label>{{$ctrl.placeholder}}</label>
     <input type="text" ng-model="$ctrl.filterTerms" ng-keydown="$ctrl.getFilter()" >
   </md-input-container>

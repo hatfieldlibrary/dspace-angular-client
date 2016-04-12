@@ -17,6 +17,7 @@
    * @constructor
    */
   function SortOptionsCtrl($timeout,
+                           $mdMedia,
                            SolrQuery,
                            SolrJumpToQuery,
                            CollectionQueryFieldMap,
@@ -43,6 +44,8 @@
      */
     var setSize = 20;
 
+
+    ctrl.filterTerms = '';
 
     /**
      * Set default display list type to TITLE.
@@ -100,6 +103,16 @@
     ctrl.placeholder = 'Jump to Letter';
 
     ctrl.filterTerms = QueryManager.getFilter();
+
+    if (($mdMedia('sm') || $mdMedia('xs'))) {
+      ctrl.fieldSelectorWidth = '50';
+      ctrl.filterWidth = '50';
+
+    } else {
+      ctrl.fieldSelectorWidth = '33';
+      ctrl.filterWidth = '66';
+
+    }
 
     /**
      * Toggle the sort order (ASCENDING, DESCENDING)

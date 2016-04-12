@@ -10,6 +10,8 @@
 
     var ctrl = this;
 
+    
+
     /**
      * The array containing the items to present in the view.
      * @type {Array}

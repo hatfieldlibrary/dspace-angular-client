@@ -1,37 +1,40 @@
-<md-list-item layout="column" layout-align="left" flex
-              ng-class="{ 'md-whiteframe-z2': $ctrl.index == $ctrl.selectedIndex, 'selected-index': $ctrl.index == $ctrl.selectedIndex}"
+<md-list-item layout="column" layout-align="left" flex layout-fill
+              ng-class="{ 'md-whiteframe-z2': $ctrl.index == $ctrl.selectedIndex, 'selected-index': $ctrl.index == $ctrl.selectedIndex, 'selected-sm-index': $ctrl.index == $ctrl.xsSelectedIndex}">
 
 
-<md-item-content layout-fill layout="column">
+  <md-item-content layout-fill layout="column">
 
-  <div class="md-list-item-text app-list-item" ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();">
-    <a class="browse-anchor" ng-href="#">{{$ctrl.author}}</a>
-  </div>
+    <div class="md-list-item-text app-list-item" ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();">
 
-  <md-divider ng-show="$ctrl.index == $ctrl.selectedIndex"></md-divider>
 
-  <div class="browse-item browse-item-{{$ctrl.getHeightForCount()}}">
-    <md-content layout-fill>
-      <div layout="column" layout-fill class="expanded">
-        <item-detail-component
-          ng-repeat="col in $ctrl.items.results"
-          title="{{col.title}}"
-          author="col.author[0]"
-          publisher="{{col.publisher}}"
-          year="{{col.year}}"
-          handle="{{col.handle}}",
-          count="{{col.count}}"
-          id="{{col.id}}"
-          last="$last">
+      <a class="browse-anchor" ng-class="{'md-title': $ctrl.index == $ctrl.selectedIndex}" ng-href="#">{{$ctrl.author}}</a>
 
-        </item-detail-component>
+      <div class="browse-item">
+        <div layout="column" layout-fill>
+          <md-content>
+            <item-detail-component
+              ng-repeat="col in $ctrl.items.results"
+              title="{{col.title}}"
+              author="col.author[0]"
+              publisher="{{col.publisher}}"
+              year="{{col.year}}"
+              handle="{{col.handle}}"
+              count="{{col.count}}"
+              id="{{col.id}}"
+              last="$last">
+            </item-detail-component>
+          </md-content>
+        </div>
       </div>
-    </md-content>
-  </div>
+    </div>
 
-  <md-divider ng-if="!$ctrl.last"></md-divider>
+    <md-divider ng-show="$ctrl.index == $ctrl.selectedIndex"></md-divider>
 
-</md-item-content>
+
+    <md-divider ng-if="!$ctrl.last"></md-divider>
+
+  </md-item-content>
+</md-list-item>
 
 
 
