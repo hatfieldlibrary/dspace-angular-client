@@ -1,17 +1,31 @@
-
 <div class="layout-padding">
 
   <div class="page-title">
-    <div class="md-subhead parent-title"><a ng-href="/handle/{{$ctrl.data.parentCommunity.handle}}">{{$ctrl.data.parentCommunity.name}}</a>
+
+    <div layout="column" layout-align="left">
+
+      <div layout="row">
+        <div style="width: 50px;"></div>
+        <div flex class="md-subhead parent-title"><a ng-href="/handle/{{$ctrl.parentHandle}}">{{$ctrl.parentName}}</a>
+        </div>
+      </div>
+
+      <div layout="row" layout-align="left center">
+        <div style="width: 50px;">
+        <md-button  ng-click="$ctrl.back()"  class="md-icon-button md-button md-ink-ripple" type="button" aria-label="Toggle Menu">
+          <md-icon md-svg-src="/images/ic_arrow_back_black_24px.svg" aria-hidden="true"></md-icon>
+          <div class="md-ripple-container"></div>
+        </md-button>
+          </div>
+        <span flex class="md-display-1 item-title">{{$ctrl.collectionTitle}}</span>
+      </div>
+
     </div>
-    <div class="md-display-1 item-title">{{$ctrl.data.name}}</div>
   </div>
 
   <md-card flex>
 
     <md-card-content>
-
-
 
       <item-list-component context="browse"></item-list-component>
 
@@ -23,5 +37,5 @@
 </div>
 
 <!--<div class="main-content">-->
-  <!--<item-list-component context="browse" handle="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-list-component>-->
+<!--<item-list-component context="browse" handle="{{$ctrl.type}}" id="{{$ctrl.id}}"></item-list-component>-->
 <!--</div>-->

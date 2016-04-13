@@ -5,6 +5,7 @@ module.exports = function (app, config, passport) {
   var login = require('../app/controllers/login'),
     handle = require('../app/controllers/handle'),
     communities = require('../app/controllers/communities'),
+    collection = require('../app/controllers/collection'),
     bitstream = require('../app/controllers/bitstream'),
     item = require('../app/controllers/item'),
     solr = require('../app/controllers/solr');
@@ -88,16 +89,18 @@ module.exports = function (app, config, passport) {
   app.get('/bitstream/:id/:file', bitstream.bitstream);
 
   app.use('/handleRequest/:site/:item', handle.getItem);
-  
+
   app.use('/getItem/:item', item.getItem);
 
   app.get('/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', solr.browse);
 
   app.post('/solrQuery', solr.query);
-  
+
   app.post('/solrJumpToQuery', solr.jumpTo);
 
   app.use('/solrRecentSubmissions/:type/:id', solr.recentSubmissions);
+
+  app.get('/collectionInfo/:item', collection.getCollectionInfo);
 
 
   // ANGULARJS routes

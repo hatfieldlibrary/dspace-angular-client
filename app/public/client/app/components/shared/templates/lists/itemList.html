@@ -1,5 +1,8 @@
-<md-content md-default>
-  <p class="md-subhead md-accent" style="margin-left: 20px;">Viewing {{$ctrl.count}} items.</p>
+<md-content md-default layout-padding="20px">
+
+  <h2 class="md-title" ng-if="$ctrl.isBrowseContext()">Browsing: {{$ctrl.browseTerms}}</h2>
+
+  <p class="md-subhead md-accent">Viewing {{$ctrl.count}} items.</p>
 
   <sort-options-component
     context="{{$ctrl.context}}"
@@ -22,7 +25,8 @@
 
     <small-spinner ng-hide="$ctrl.ready"></small-spinner>
 
-    <md-list ng-if="$ctrl.ready">
+
+    <md-list  ng-if="$ctrl.ready">
 
       <item-detail-component
 
@@ -83,7 +87,7 @@
 
     </md-list>
 
-    <pager-component ng-if="$ctrl.ready"
+    <pager-component
 
       on-update="$ctrl.onPagerUpdate(results, count, field)">
 

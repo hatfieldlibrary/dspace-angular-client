@@ -39,7 +39,9 @@
          */
         count: 0,
 
-        openMenu: false
+        openMenu: false,
+
+        pager: false
 
       },
 
@@ -100,6 +102,16 @@
 
       getMenuState: function() {
         return this.context.openMenu;
+      },
+
+      setPager: function(showPager) {
+        console.log('app context pager to ' + showPager
+        )
+        this.context.pager = showPager;
+      },
+
+      getPager: function() {
+        return this.context.pager;
       }
 
 

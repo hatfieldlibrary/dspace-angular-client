@@ -118,7 +118,7 @@
      * Toggle the sort order (ASCENDING, DESCENDING)
      */
     ctrl.resetOrder = function () {
-      
+
       ctrl.resetListView();
 
       /**
@@ -213,7 +213,7 @@
      * Filter the search results.
      */
     ctrl.getFilter = function () {
-      
+
       ctrl.resetListView();
 
       /**
@@ -350,7 +350,11 @@
     ctrl.resetField = function setField() {
 
        ctrl.resetListView();
-      
+
+
+
+
+
       /**
        * Reset the selected item.
        */
@@ -427,6 +431,11 @@
      */
     var doSearch = function () {
 
+      /**
+       * Set pager in context.  (The pager component will
+       * hide the pager button.)
+       */
+      AppContext.setPager(false);
 
       /**
        * Get promise.
@@ -527,6 +536,14 @@
         count: data.count,
         field: displayListType
       });
+
+      $timeout(function() {
+        /**
+         * Set pager in context.  (The pager component
+         * will show the pager button.)
+         */
+        AppContext.setPager(true);
+      }, 300);
 
 
     }

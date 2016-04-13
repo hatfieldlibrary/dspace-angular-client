@@ -18,6 +18,10 @@
      */
     ctrl.items = [];
 
+    if (ctrl.context === 'browse') {
+      ctrl.browseTerms = QueryManager.getSearchTerms();
+    }
+
     /**
      * The selected index. This is used to set the css .select class
      * of items in the list.
@@ -35,6 +39,10 @@
     ctrl.id = QueryManager.getAssetId();
 
     ctrl.offset = QueryManager.getOffset();
+
+    ctrl.isBrowseContext = function() {
+        return ctrl.context === 'browse';
+    };
 
     /**
      * Sets the selected index in the controller and in the application
@@ -87,7 +95,6 @@
     };
 
     ctrl.resetListView = function() {
-      console.log('resetting the view')
       ctrl.ready = false;
       ctrl.items = [];
     };

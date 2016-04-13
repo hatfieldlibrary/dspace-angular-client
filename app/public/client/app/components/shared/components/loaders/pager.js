@@ -7,6 +7,7 @@
 (function () {
 
   function PagerCtrl($scope,
+                     $timeout,
                      SolrQuery,
                      SolrBrowseQuery,
                      Utils,
@@ -28,6 +29,7 @@
      * @type {number}
      */
     var count = 0;
+
     /**
      * Get the offset for the next result set.
      * @returns {boolean}
@@ -65,6 +67,13 @@
       updateList(QueryManager.getOffset());
     });
 
+    $scope.$watch(function() {return AppContext.getPager()},
+    function(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        ctrl.showPager = newValue;
+      }
+    });
+
 
     /**
      * Initialize data for the first set of items.
@@ -77,11 +86,13 @@
 
       // The offset should be 0.
       updateList(QueryManager.getOffset());
+
       /**
        * Update the query stack. Subsequent paging
        * requests to not update the stack.
        */
       QueryStack.push(QueryManager.getQuery());
+
       QueryStack.print();
     }
 
@@ -145,6 +156,7 @@
           });
 
         }
+
         /** Handle result of the solr query. */
         items.$promise.then(function (data) {
           updateParent(data);
@@ -196,6 +208,7 @@
 
       QueryStack.replaceWith(QueryManager.context.query);
 
+     
       ctrl.onUpdate({
 
         results: data.results,
@@ -203,6 +216,20 @@
         field: displayListType
 
       });
+
+
+      $timeout(function() {
+        /**
+         * Show the pager.
+         * @type {boolean}
+           */
+        ctrl.showPager = true;
+        /**
+         * Set pager in context.
+         */
+        AppContext.setPager(true);
+      }, 300);
+
 
     }
 
@@ -246,7 +273,7 @@
 
   dspaceComponents.component('pagerComponent', {
 
-    template: '<div layout="row" layout-align="center center"><md-button class="md-raised md-accent md-fab md-mini" ng-click="$ctrl.next()" ng-if="$ctrl.more()"><md-icon md-font-library="material-icons" class="md-light" aria-label="More Results">expand_more</md-icon></md-button></div>',
+    template: '<div layout="row" layout-align="center center" ng-if="$ctrl.showPager"><md-button class="md-raised md-accent md-fab md-mini" ng-click="$ctrl.next()" ng-if="$ctrl.more()"><md-icon md-font-library="material-icons" class="md-light" aria-label="More Results">expand_more</md-icon></md-button></div>',
 
     bindings: {
       onUpdate: '&'

@@ -7,11 +7,13 @@
 (function () {
 
   function BrowseCtrl($routeParams,
+                      $window,
                       QueryManager,
                       QueryTypes,
                       QueryActions,
                       QuerySort,
-                      QueryFields) {
+                      QueryFields,
+                      GetCollectionInfo) {
 
     var ctrl = this;
 
@@ -59,10 +61,23 @@
 
       }
 
+      var info = GetCollectionInfo.query({item: ctrl.id});
+
+      info.$promise.then(function (data) {
+        console.log(data)
+        ctrl.collectionTitle = data.name;
+        ctrl.parentName = data.parentCommunity.name;
+        ctrl.parentHandle = data.parentCommunity.handle;
+      });
+
 
     }
 
     init();
+    
+    ctrl.back = function() {
+      $window.history.back();
+    }
 
 
   }

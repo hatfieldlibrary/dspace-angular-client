@@ -10,6 +10,7 @@
                       $routeParams,
                       ItemByHandle,
                       QueryManager,
+
                       Utils) {
 
 

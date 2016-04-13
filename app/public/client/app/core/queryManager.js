@@ -173,6 +173,10 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
       this.context.query.query.terms = terms;
     },
 
+    getSearchTerms: function() {
+      return this.context.query.query.terms;
+    },
+
     setSort: function (order) {
 
       //  this.context.query.sort.field = field;
