@@ -1,3 +1,41 @@
-<header-component type="communities"></header-component>
 
-<div ng-repeat="comm in $ctrl.communities"><a ng-href="/handle/{{comm.handle}}">{{comm.name}}</a></div>
+
+<div class="layout-padding" flex>
+
+  <div layout-fill class="spinner" ng-hide="$ctrl.ready">
+    <div layout="row" layout-fill layout-sm="column" layout-align="space-around">
+      <md-progress-circular class="md-warn" md-mode="indeterminate" md-diameter="90"></md-progress-circular>
+    </div>
+  </div>
+
+  <div class="page-title">
+    <div class="md-display-1 item-title">Departments</div>
+
+  </div>
+
+  <md-card class="md-hue-1" flex>
+
+    <div layout="column" layout-align="center center">
+
+      <md-card-content class="inner-width" flex>
+        <p class="md-subhead">These academic departments maintain collections in the Academic Commons.
+          You can browse their collections by selecting the department name.  Note that many collections are
+          only visible after logging in with your Willamette University credentials.</p>
+        <div layout="column" layout-align="center left">
+          <div class="md-subhead" ng-bind-html="$ctrl.data.introductoryText"></div>
+
+          <md-content layout-padding>
+            <community-item-component ng-repeat="comm in $ctrl.communities" handle="{{comm.handle}}" name="{{comm.name}}" last="$last">
+            </community-item-component>
+          </md-content>
+
+        </div>
+
+      </md-card-content>
+    </div>
+
+  </md-card>
+
+
+</div>
+

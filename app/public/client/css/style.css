@@ -36,10 +36,16 @@ a, a:visited {
   background: #fefefe;
 }
 
+.inner-width {
+  max-width: 800px;
+}
 .app-side-nav {
   margin-top: 158px;
 }
 
+md-sidenav.md-locked-open {
+  max-width: 230px;
+}
 .content-width {
   max-width: 950px;
 }

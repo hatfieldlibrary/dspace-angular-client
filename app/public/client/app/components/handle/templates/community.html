@@ -1,49 +1,77 @@
-<header-component type="{{$ctrl.type}}" id="{{$ctrl.id}}"></header-component>
+<!--<header-component type="{{$ctrl.type}}" id="{{$ctrl.id}}"></header-component>-->
 
-<div class="main-content">
-
-
-  <h3>Community Info</h3>
-  <ul>
-    <li>
-      {{$ctrl.data.name}}
-    </li>
-    <li>
-      {{$ctrl.data.handle}}
-    </li>
-    <li>
-      {{$ctrl.data.id}}
-    </li>
-    <li>
-      {{$ctrl.data.type}}
-    </li>
-  </ul>
-  <h3>Logo</h3>
-  <ul>
-    <li>
-      {{$ctrl.data.logo.retrieveLink}}
-    </li>
-    <li>
-      {{$ctrl.data.logo.sizeBytes}}
-    </li>
-    <li>
-      {{$ctrl.data.logo.mimeType}}
-    </li>
-    <li>
-      <img ng-src="{{$ctrl.getLogo()}}"/>
-    </li>
-  </ul>
-  <h3>Collections</h3>
+<!--<div class="main-content">-->
 
 
+<!--<h3>Community Info</h3>-->
+<!--<ul>-->
+<!--<li>-->
+<!--{{$ctrl.data.name}}-->
+<!--</li>-->
+<!--<li>-->
+<!--{{$ctrl.data.handle}}-->
+<!--</li>-->
+<!--<li>-->
+<!--{{$ctrl.data.id}}-->
+<!--</li>-->
+<!--<li>-->
+<!--{{$ctrl.data.type}}-->
+<!--</li>-->
+<!--</ul>-->
+<!--<h3>Logo</h3>-->
+<!--<ul>-->
+<!--<li>-->
+<!--{{$ctrl.data.logo.retrieveLink}}-->
+<!--</li>-->
+<!--<li>-->
+<!--{{$ctrl.data.logo.sizeBytes}}-->
+<!--</li>-->
+<!--<li>-->
+<!--{{$ctrl.data.logo.mimeType}}-->
+<!--</li>-->
+<!--<li>-->
+<!--<img ng-src="{{$ctrl.getLogo()}}"/>-->
+<!--</li>-->
+<!--</ul>-->
+<!--<h3>Collections</h3>-->
 
-  <p>As an unauthenticated user I only see the public collections.</p>
 
-  <ul>
-    <li ng-repeat="coll in $ctrl.data.items">
-      <collection-detail-component name="{{coll.name}}" short-description="{{coll.introductoryText}}" handle="{{coll.handle}}"></collection-detail-component>
-    </li>
-  </ul>
+<!--<p>As an unauthenticated user I only see the public collections.</p>-->
+
+
+
+
+
+<div class="layout-padding" flex>
+
+  <div class="page-title">
+    <div class="md-display-1 item-title">{{$ctrl.data.name}}</div>
+  </div>
+
+  <md-card class="md-hue-1" flex>
+
+    <img ng-src="/images/bio_header.jpg" class="md-card-image" alt="image caption">
+
+    <div layout="column"  layout-align="center center">
+    <md-card-content class="inner-width" flex>
+
+      <div layout="column" layout-align="center left">
+        <div class="md-subhead" ng-bind-html="$ctrl.data.introductoryText"></div>
+
+        <p class="md-headline">Collections</p>
+        <md-content layout-padding>
+          <collection-item-component ng-repeat="coll in $ctrl.data.items" title="{{coll.name}}"
+                                     description="{{coll.introductoryText}}" handle="{{coll.handle}}"
+                                     last="$last"></collection-item-component>
+        </md-content>
+
+      </div>
+
+    </md-card-content>
+      </div>
+
+  </md-card>
 
 
 </div>
+

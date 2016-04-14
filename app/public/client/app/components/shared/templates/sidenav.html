@@ -5,17 +5,23 @@
 
     <md-toolbar ng-if="!$ctrl.greaterThanMd()">
       <div class="md-toolbar-tools">
-    <md-button class="md-icon-button md-button md-ink-ripple" ng-if="!$ctrl.greaterThanMd()" ng-click="$ctrl.close()" class="md-primary" aria-label="Close">
-      <md-icon md-svg-src="/images/ic_close_white_32px.svg" aria-hidden="true"></md-icon>
-      <div class="md-ripple-container"></div>
-    </md-button>
-        </div>
-      </md-toolbar>
+        <md-button class="md-icon-button md-button md-ink-ripple" ng-if="!$ctrl.greaterThanMd()"
+                   ng-click="$ctrl.close()" class="md-primary" aria-label="Close">
+          <md-icon md-svg-src="/images/ic_close_white_32px.svg" aria-hidden="true"></md-icon>
+          <div class="md-ripple-container"></div>
+        </md-button>
+      </div>
+    </md-toolbar>
 
 
     <search-box-component ng-if="$ctrl.type!='discover'" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></search-box-component>
 
     <discovery-search-box-component ng-if="$ctrl.type=='discover'"></discovery-search-box-component>
+
+    <div layout="column" layout-padding layout-align="center left">
+      <md-divider></md-divider>
+      <p><a ng-href="/communities">View all Departments</a></p>
+    </div>
 
 
   </div>

@@ -12,9 +12,11 @@
   function CommunitiesCtrl(GetCommunities) {
 
     var ctrl = this;
+    ctrl.ready = false;
 
     var fetch = GetCommunities.query();
     fetch.$promise.then(function (data) {
+      ctrl.ready = true;
       ctrl.communities = data;
     });
 
