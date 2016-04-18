@@ -10,6 +10,7 @@
                      $timeout,
                      SolrQuery,
                      SolrBrowseQuery,
+                     SolrDiscoveryQuery,
                      Utils,
                      QueryManager,
                      AppContext,
@@ -60,7 +61,7 @@
      */
     $scope.$on("discoverySubmit", function () {
       QueryManager.setOffset(0);
-      updateList(0);
+     // initDiscovery();
     });
 
     $scope.$on("nextPage", function () {
@@ -93,12 +94,35 @@
        */
       QueryStack.push(QueryManager.getQuery());
 
+
+      if (QueryManager.getAction() === QueryActions.SEARCH) {
+        console.log('init the page')
+        initDiscovery();
+      }
+
       QueryStack.print();
     }
 
     init();
 
 
+    function initDiscovery() {
+
+      console.log('using init')
+
+      var items = SolrDiscoveryQuery.query({
+        terms: QueryManager.getSearchTerms(),
+        id: QueryManager.getAssetId()
+
+      });
+
+      /** Handle result of the solr query. */
+      items.$promise.then(function (data) {
+        updateParent(data);
+
+      });
+
+    }
     /**
      * Execute node REST API call for solr query results.
      * @param start the start position for query result.
@@ -208,7 +232,7 @@
 
       QueryStack.replaceWith(QueryManager.context.query);
 
-     
+
       ctrl.onUpdate({
 
         results: data.results,

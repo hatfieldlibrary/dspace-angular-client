@@ -21,6 +21,45 @@ var constants = require('../core/constants');
 
   };
 
+  /**
+   * Initial discovery query (uses GET).
+   * @param req
+   * @param res
+     */
+  exports.discover = function(req, res) {
+    /** @type {string} the site id from the handle */
+    var terms = req.params.terms;
+    /** @type {string} the item id from the handle */
+    var id = req.params.id;
+
+    var session = req.session;
+
+    /** The new query object */
+    var query = {
+      params: {
+        asset: {
+          type: 'coll',
+          id: id
+        },
+        sort: {
+          order: constants.QuerySort.ASCENDING
+        },
+        query: {
+          action: constants.QueryActions.DISCOVER,
+          qType: '',
+          terms: terms,
+          field: '',
+          offset: 0,
+          rows: 20,
+          filter: ''
+        }
+      }
+    };
+    
+    models.solrQuery(query, res, session);
+
+  };
+
 
   /**
    * The browse query handler.  Browse queries use GET.
@@ -45,7 +84,7 @@ var constants = require('../core/constants');
     var sort = req.params.sort;
 
     var rows = req.params.rows;
-    
+
     var filter = req.params.filter;
 
     req.session.url = '/browse/' + type + '/' + id + '/' + qType + '/' + field + '/' + sort + '/' + terms + '/' + offset + '/' + rows;

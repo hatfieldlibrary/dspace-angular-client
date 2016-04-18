@@ -1,8 +1,6 @@
-<md-content md-default layout-padding="20px">
+<md-content md-default layout-padding>
 
   <h2 class="md-title" ng-if="$ctrl.isBrowseContext()">Browsing: {{$ctrl.browseTerms}}</h2>
-
-  <p class="md-subhead md-accent">Viewing {{$ctrl.count}} items.</p>
 
   <sort-options-component
     context="{{$ctrl.context}}"
@@ -10,6 +8,7 @@
     reset-list-view ="$ctrl.resetListView()">
   </sort-options-component>
 
+  <div class="md-subhead md-accent">Viewing {{$ctrl.count}} items.</div>
 
 </md-content>
 
@@ -80,6 +79,8 @@
         ng-if="$ctrl.field=='discover'"
         ng-repeat="item in $ctrl.items"
         title="{{item.title[0]}}"
+        default-title="{{item.defaultTitle}}"
+        id="{{item.resourceid}}"
         description="item.description"
         count="{{$ctrl.count}}">
 

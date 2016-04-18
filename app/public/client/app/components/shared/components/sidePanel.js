@@ -47,6 +47,9 @@ function SideNavCtrl($scope, $window, $mdSidenav, AppContext) {
 
 dspaceComponents.component('sideNavComponent', {
 
+  bindings: {
+    type: '@'
+  },
   templateUrl: '/shared/templates/sidenav.html',
   controller: SideNavCtrl
 

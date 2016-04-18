@@ -46,6 +46,7 @@ a, a:visited {
 md-sidenav.md-locked-open {
   max-width: 230px;
 }
+
 .content-width {
   max-width: 950px;
 }
@@ -114,7 +115,15 @@ md-dialog > md-toolbar {
   padding: 8px;
 }
 
+.discover-item em {
+  border: 1px solid #3FAAB2;
+  color: #18676D;
+  padding: 0 3px;
+
+}
+
 .list-highlight {
+  cursor: pointer;
   color: #8F0100 !important;
 }
 

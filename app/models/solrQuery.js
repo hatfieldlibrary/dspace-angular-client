@@ -75,7 +75,7 @@ var constants = require('../core/constants');
 
     }
     else if (processType === constants.QueryType.DISCOVER) {
-      return processors.parseDiscoveryResult(solrResponse);
+      return processors.processDiscoveryResult(solrResponse);
 
     }
     else {

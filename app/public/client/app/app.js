@@ -40,7 +40,7 @@ var dspaceApp = angular.module('dspaceApp', [
         .when('/browse/:type/:id/:field/:sort/:terms/:offset/:rows', {
           templateUrl: '/partials/browse.html'
         })
-        .when('/discover', {
+        .when('/discover/:type/:id/:terms', {
           templateUrl: '/partials/discover.html'
         });
 

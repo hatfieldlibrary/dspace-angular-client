@@ -13,7 +13,9 @@
 
     var sb = this;
 
-    sb.scope = 'this';
+    sb.id = QueryManager.getAssetId();
+
+    sb.type = QueryManager.getAssetType();
 
     sb.submit = function (terms) {
 
@@ -22,9 +24,13 @@
       QueryManager.setAction(QueryActions.SEARCH);
      // QueryManager.setAssetId(sb.id);
 
-      $location.path('/discover');
+      if (sb.scope === 'all') {
+        QueryManager.setAssetId('');
+      }
 
-    }
+      $location.path('/discover/' + sb.type + '/' + sb.id + '/' + terms);
+
+    };
 
     sb.searchText = function() {
 

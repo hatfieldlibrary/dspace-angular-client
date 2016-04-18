@@ -1,7 +1,57 @@
-<header-component type="discover"></header-component>
+<div class="layout-padding">
 
-<div class="main-content">
-  <item-list-component  context="discover"></item-list-component>
+  <div class="page-title">
+
+    <div layout="column" layout-align="left">
+
+      <div layout="row">
+        <div flex class="md-display-1 item-title">Search Departmental Collections</a>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <md-card flex>
+
+    <md-card-content>
+
+      <div layout="column" layout-padding>
+
+        <div flex="40">
+          <md-input-container>
+            <label class="md-no-sticky">Choose Search Scope</label>
+            <md-select ng-model="sb.id">
+              <md-option class="md-2-line" ng-repeat="item in sb.searchItems" value="{{item.id}}" ng-click="select(item.id)">
+                <div class="md-list-item-text" layout="column">
+                  <div class="md-subhead">{{ item.name }}</div>
+                </div>
+              </md-option>
+
+              </md-list>
+            </md-select>
+          </md-input-container>
+        </div>
+
+        <div flex="50">
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Enter Search Terms</label>
+            <input ng-model="sb.terms">
+          </md-input-container>
+        </div>
+      </div>
+
+
+      <item-list-component context="discover"></item-list-component>
+
+    </md-card-content>
+
+  </md-card>
+
+
 </div>
+
+
 
 

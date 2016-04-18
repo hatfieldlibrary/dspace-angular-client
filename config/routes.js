@@ -96,6 +96,8 @@ module.exports = function (app, config, passport) {
 
   app.post('/solrQuery', solr.query);
 
+  app.get('/solrQuery/:id/:terms', solr.discover);
+
   app.post('/solrJumpToQuery', solr.jumpTo);
 
   app.use('/solrRecentSubmissions/:type/:id', solr.recentSubmissions);

@@ -160,13 +160,13 @@
     ret.offset = solrResponse.response.start;
     ret.results = resultArr;
     ret.count = solrResponse.response.numFound;
-    
+
     return ret;
 
   };
-  
 
-  exports.parseDiscoveryResult = function (json) {
+
+  exports.processDiscoveryResult = function (json) {
 
     var docs = json.response.docs;
     var highlights = json.highlighting;
@@ -187,16 +187,18 @@
         tmp.resourcetype = docs[i]['search.resourcetype'];
       }
       var key = tmp.resourcetype + '-' + tmp.resourceid;
+
       tmp.title = highlights[key]['dc.title_hl'];
+      tmp.defaultTitle = docs[i]['dc.title'][0];
       tmp.description = highlights[key]['dc.description.abstract_hl'];
 
       resultArr[i] = tmp;
     }
 
     final.offset = json.response.start;
-    ;
     final.results = resultArr;
     final.count = json.response.numFound;
+    
 
     return final;
   };

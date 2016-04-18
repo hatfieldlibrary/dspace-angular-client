@@ -1,6 +1,10 @@
-<md-list-item>
-<p><strong ng-bind-html="$ctrl.title">></strong></p>
-                hi
+<md-list-item class="discover-item">
+  <div layout="column">
 
-<p ng-repeat="desc in $ctrl.description" ng-bind-html="desc"></p>
+    <p class="list-highlight" ng-if="$ctrl.title.length > 0" ng-click="$ctrl.showItem($event, $ctrl.id)"><strong ng-bind-html="$ctrl.title">></strong></p>
+    <p class="list-highlight" ng-if="$ctrl.title.length == 0" ng-click="$ctrl.showItem($event, $ctrl.id)"><strong ng-bind-html="$ctrl.defaultTitle">></strong></p>
+
+    <div class="md-body-1" ng-repeat="desc in $ctrl.description" ng-bind-html="desc"></div>
+  </div>
+
 </md-list-item>

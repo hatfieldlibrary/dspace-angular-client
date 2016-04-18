@@ -24,3 +24,11 @@ dspaceServices.factory('SolrJumpToQuery', ['$resource',
   function ($resource) {
     return $resource('/solrJumpToQuery');
   }]);
+
+
+dspaceServices.factory('SolrDiscoveryQuery', ['$resource',
+  function ($resource) {
+    return $resource('/solrQuery/:type/:id/:terms', {}, {
+      query: {method: 'GET', isArray: false}
+    });
+  }]);
