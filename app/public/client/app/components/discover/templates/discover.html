@@ -1,4 +1,4 @@
-<div class="layout-padding">
+<div class=" layout-fill layout-padding">
 
   <div class="page-title">
 
@@ -13,13 +13,13 @@
     </div>
   </div>
 
-  <md-card flex>
+  <md-card layout-fill flex>
 
     <md-card-content>
 
       <div layout="column" layout-padding>
 
-        <div flex="40">
+        <div >
           <md-input-container>
             <label class="md-no-sticky">Choose Search Scope</label>
             <md-select ng-model="sb.id">
@@ -33,8 +33,7 @@
             </md-select>
           </md-input-container>
         </div>
-
-        <div flex="50">
+        <div>
           <md-input-container class="md-block" flex-gt-sm>
             <label>Enter Search Terms</label>
             <input ng-model="sb.terms">

@@ -34,6 +34,7 @@ a, a:visited {
 }
 .main-content {
   background: #fefefe;
+
 }
 
 .inner-width {
@@ -91,10 +92,7 @@ md-dialog > md-toolbar {
   background-image: url('/images/masthead-bottom-img.jpg'), url('/images/background-grain.jpg');
   background-repeat: no-repeat, repeat-x;
   background-position: top center, top center;
-  padding: 1em 0 2em;
-  margin: 0 auto;
-  margin-top: 0px;
-  height: 200px;
+
 }
 
 .top-offset {
@@ -237,8 +235,8 @@ md-list-item.selected-sm-index .browse-item{
   opacity: 1;
   max-height: 900px;
   margin-left: -10px;
-  margin-right: -10px;
   margin-bottom: 3px;
+  width: 100%;
   transition: height 200ms, max-height 200ms, margin-left 400ms, opacity 400ms, visibility 400ms;
 
 }
@@ -325,10 +323,7 @@ md-dialog-content h3 {
   margin-top: 200px;
   min-height: 300px;
   background-color: #791716;
-  position: relative;
-  right: 0;
-  bottom: 0;
-  left: 0;
+
   text-align: center;
 }
 

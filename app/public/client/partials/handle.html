@@ -1,38 +1,42 @@
 <header-component></header-component>
 
-<md-content class="main-content">
+<!-- Without explicit height, Firefox (44.0.1) does not calculate the height of the flex container. -->
+<div style="height: 100%;">
 
-  <div layout="column" layout-fill >
+  <md-content class="main-content" flex="100">
 
-    <div layout="row" layout-fill class="top-highlight"></div>
+    <div layout="column" flex="100" layout-fill layout-align="top" class="top-highlight">
 
-    <div layout-xs="column" layout-gt-xs="row" layout-align="center" class="top-offset">
+      <div layout-xs="column" flex layout-fill layout-gt-xs="row" layout-align="center">
 
-      <div layout="row" class="content-width">
+        <div layout="row" class="content-width">
 
-        <handle-component layout-fill style="min-height: 1800px"></handle-component>
+          <handle-component flex="90" layout-fill></handle-component>
+          <side-nav-component flex="10"></side-nav-component>
 
-        <side-nav-component flex></side-nav-component>
-
+        </div>
       </div>
-
     </div>
 
-    <footer layout="row" layout-align="center center" id="footer" class="footer">
-
-      <div layout-fill class="footer-background content-width">
-        <div layout="row" layout-align="center center" class="footer-main-nav">
-          <a href="#">About the Commons</a>
-          <a href="#">Mark O. Hatfield Library</a>
-          <a href="#">Willamette University</a>
+    <div flex>
+      <footer layout="row" id="footer" layout-align="center center" class="footer">
+        <div layout-fill class="footer-background content-width">
+          <div layout="row" layout-align="center center" class="footer-main-nav">
+            <a href="#">About the Commons</a>
+            <a href="#">Mark O. Hatfield Library</a>
+            <a href="#">Willamette University</a>
+          </div>
+          <div layout="row" layout-align="center center" class="footer-main-nav">
+            <h4 class="md-subhead">The Academic Commons uses DSpace open source software.</h4>
+          </div>
         </div>
-        <div layout="row" layout-align="center center" class="footer-main-nav">
-          <h4 class="md-subhead">The Academic Commons uses DSpace open source software.</h4>
-        </div>
-      </div>
+      </footer>
+    </div>
 
-    </footer>
-  </div>
+  </md-content>
 
-</md-content>
+</div>
+
+
+
 
