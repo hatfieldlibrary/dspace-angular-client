@@ -120,7 +120,8 @@
       defaultTitle: '@',
       id: '@',
       description: '<',
-      count: '@'
+      count: '@',
+      last: '<'
     },
     templateUrl: '/shared/templates/lists/discoverDetail.html',
     controller: DiscoverDetailCtrl

@@ -1,19 +1,44 @@
+
 <header-component></header-component>
 
-<md-content class="main-content">
+<!-- Without explicit height, Firefox (44.0.1) does not calculate the height of the flex container. -->
+<div style="height: 100%;">
 
-  <div layout="row" class="top-highlight"></div>
+  <md-content class="main-content" flex="100">
 
-  <div layout-xs="column" layout-gt-xs="row" layout-align="center" class="top-offset">
+    <div layout="column" flex="100" layout-fill layout-align="top" class="top-highlight">
 
-    <div layout="row" class="content-width">
+      <div layout-xs="column" flex layout-fill layout-gt-xs="row" layout-align="center">
 
-      <communities-component></communities-component>
+        <div layout="row" class="content-width">
 
-      <side-nav-component flex></side-nav-component>
+          <communities-component flex="90" layout-fill></communities-component>
+          <side-nav-component flex="10"></side-nav-component>
 
+        </div>
+      </div>
     </div>
 
-  </div>
+    <div flex>
+      <footer layout="row" id="footer" layout-align="center center" class="footer">
+        <div layout-fill class="footer-background content-width">
+          <div layout="row" layout-align="center center" class="footer-main-nav">
+            <a href="#">About the Commons</a>
+            <a href="#">Mark O. Hatfield Library</a>
+            <a href="#">Willamette University</a>
+          </div>
+          <div layout="row" layout-align="center center" class="footer-main-nav">
+            <h4 class="md-subhead">The Academic Commons uses DSpace open source software.</h4>
+          </div>
+        </div>
+      </footer>
+    </div>
 
-</md-content>
+  </md-content>
+
+</div>
+
+
+
+
+
