@@ -11,3 +11,14 @@ dspaceServices.factory('GetCommunities', ['$resource',
     });
   }
 ]);
+
+/**
+ * Retrieves list of collections for community.
+ */
+dspaceServices.factory('GetCollectionsForCommunity', ['$resource',
+  function ($resource) {
+    return $resource('/collectionsForCommunity/:id', {}, {
+      query: {method: 'GET', isArray: true}
+    });
+  }
+]);

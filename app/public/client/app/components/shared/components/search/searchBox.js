@@ -15,16 +15,17 @@
 
     sb.id = QueryManager.getAssetId();
 
-    sb.type = QueryManager.getAssetType();
-
     sb.submit = function (terms) {
+
+      sb.id = QueryManager.getAssetId();
+
+      sb.type = QueryManager.getAssetType();
 
       QueryManager.setSearchTerms(terms);
 
       QueryManager.setAction(QueryActions.SEARCH);
-     // QueryManager.setAssetId(sb.id);
 
-      if (sb.scope === 'all') {
+      if (sb.id === 'all') {
         QueryManager.setAssetId('');
       }
 

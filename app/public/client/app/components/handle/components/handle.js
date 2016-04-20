@@ -10,7 +10,8 @@
                       $routeParams,
                       ItemByHandle,
                       QueryManager,
-
+                      AssetTypes,
+                      AppContext,
                       Utils) {
 
 
@@ -37,7 +38,6 @@
       /** Retrieve data for the handle. */
       var query = ItemByHandle.query({site: site, item: item});
       query.$promise.then(
-
         function (data) {
 
           ctrl.ready = true;
@@ -49,6 +49,7 @@
            * the values defined in AssetTypes.  The type is used
            * to switch between view components. */
           ctrl.nType = Utils.getNormalizedType(data.type);
+
 
           /**
            * Set result type and dspace ID on the view model. These

@@ -122,9 +122,11 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
     },
 
     setAssetType: function (type) {
+      console.log('setting asset type to ' + type);
       this.context.query.asset.type = type;
     },
     setAssetId: function (id) {
+      console.log('setting asset id to ' + id);
       this.context.query.asset.id = id;
     },
 

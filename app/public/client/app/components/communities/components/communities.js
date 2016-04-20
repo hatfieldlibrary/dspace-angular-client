@@ -9,10 +9,12 @@
   /**
    * Collection view controller.
    */
-  function CommunitiesCtrl(GetCommunities) {
+  function CommunitiesCtrl(GetCommunities, QueryStack) {
 
     var ctrl = this;
     ctrl.ready = false;
+    
+    QueryStack.clear();
 
     var fetch = GetCommunities.query();
     fetch.$promise.then(function (data) {

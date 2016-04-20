@@ -16,26 +16,44 @@
     <md-card-content>
 
       <div layout="column" layout-padding>
-        <div >
-          <md-input-container>
-            <label class="md-no-sticky">Choose Search Scope</label>
-            <md-select ng-model="sb.id">
-              <md-option class="md-2-line" ng-repeat="item in sb.searchItems" value="{{item.id}}" ng-click="select(item.id)">
+
+        <form ng-submit="sb.submit(sb.terms)">
+          <div>
+            <md-input-container>
+              <label class="md-no-sticky">Choose Department or Collection Area</label>
+              <md-select ng-model="sb.communityId" ng-change="sb.selectCommunity()">
+                <md-option class="md-2-line" ng-repeat="item in sb.searchItems" value="{{item.id}}"
+                ">
                 <div class="md-list-item-text" layout="column">
                   <div class="md-subhead">{{ item.name }}</div>
                 </div>
-              </md-option>
+                </md-option>
+                </md-list>
+              </md-select>
+            </md-input-container>
+          </div>
+          <div>
+            <md-input-container>
+              <label class="md-no-sticky">Choose Collection</label>
+              <md-select ng-model="sb.collectionId">
+                <md-option class="md-2-line" ng-repeat="item in sb.collections" value="{{item.id}}"
+                           ng-click="selectCollection(item.id)">
+                  <div class="md-list-item-text" layout="column">
+                    <div class="md-subhead">{{ item.name }}</div>
+                  </div>
+                </md-option>
+                </md-list>
+              </md-select>
+            </md-input-container>
+          </div>
+          <div>
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>Enter Search Terms</label>
+              <input ng-model="sb.terms">
+            </md-input-container>
+          </div>
+        </form>
 
-              </md-list>
-            </md-select>
-          </md-input-container>
-        </div>
-        <div>
-          <md-input-container class="md-block" flex-gt-sm>
-            <label>Enter Search Terms</label>
-            <input ng-model="sb.terms">
-          </md-input-container>
-        </div>
       </div>
 
 

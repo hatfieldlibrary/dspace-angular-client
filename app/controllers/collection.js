@@ -14,10 +14,8 @@
   exports.getCollectionInfo = function (req, res) {
 
     var id = req.params.item;
-    console.log(id);
 
     var session = req.session;
-
 
     models.collectionInfo(id, session)
       .then(function (result) {

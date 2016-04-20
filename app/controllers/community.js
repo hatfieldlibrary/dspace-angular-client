@@ -21,6 +21,26 @@
     models.listCommunities(res, session);
 
 
-  }
+  };
+  
+  exports.getCollections = function( req, res ) {
+
+    var id = req.params.id;
+    
+    var session = req.session;
+
+    models.getCollectionsForCommunity(id, session)
+      
+      .then(function (result) {
+        res.send(result);
+        res.end();
+
+      })
+      .catch(function (err) {
+        console.log(err);
+
+      });
+    
+  };
 
 })();

@@ -4,7 +4,7 @@ module.exports = function (app, config, passport) {
 
   var login = require('../app/controllers/login'),
     handle = require('../app/controllers/handle'),
-    communities = require('../app/controllers/communities'),
+    community = require('../app/controllers/community'),
     collection = require('../app/controllers/collection'),
     bitstream = require('../app/controllers/bitstream'),
     item = require('../app/controllers/item'),
@@ -84,7 +84,9 @@ module.exports = function (app, config, passport) {
 
   // REST API for dspace requests
 
-  app.get('/getCommunities', communities.getCommunities);
+  app.get('/getCommunities', community.getCommunities);
+  
+  app.get('/collectionsForCommunity/:id', community.getCollections);
 
   app.get('/bitstream/:id/:file', bitstream.bitstream);
 

@@ -5,7 +5,7 @@ var utils = require('../core/utils');
 
 (function () {
   /**
-   * Model for item information. Uses REST API.
+   * Model for collection information. 
    */
   module.exports = function (id, session) {
 
@@ -35,7 +35,7 @@ var utils = require('../core/utils');
    * @param json  the DSpace API response
    */
   function processResult(json) {
-                    console.log(json);
+                  
     var ret = {};
     ret.id = json.id;
     var parent = {};

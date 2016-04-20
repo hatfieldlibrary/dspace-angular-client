@@ -41,11 +41,13 @@
 
         openMenu: false,
 
-        pager: false
+        pager: false,
+        
+        discoveryCommunities: []
 
       },
 
-      getContext: function() {
+      getContext: function () {
         return this.context;
       },
 
@@ -95,25 +97,32 @@
         return this.context.count;
       },
 
-      setMenu: function(open) {
+      setMenu: function (open) {
         console.log('menu state ' + open)
         this.context.openMenu = open;
       },
 
-      getMenuState: function() {
+      getMenuState: function () {
         return this.context.openMenu;
       },
 
-      setPager: function(showPager) {
+      setPager: function (showPager) {
         console.log('app context pager to ' + showPager
         )
         this.context.pager = showPager;
       },
 
-      getPager: function() {
+      getPager: function () {
         return this.context.pager;
+      },
+      
+      setDiscoverCommunities: function(arr) {
+        this.context.discoveryCommunities = arr;
+      },
+      
+      getDiscoverCommunities: function() {
+        return this.context.discoveryCommunities;
       }
-
 
 
     }
