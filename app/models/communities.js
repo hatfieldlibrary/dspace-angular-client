@@ -17,7 +17,7 @@ var utils = require('../core/utils');
     var communityRequest =
       rp(
         {
-          url: host + '/rest/communities/' + id + '?expand=collections,logo',
+          url: host + '/rest/communities/' + utils.getId(id) + '?expand=collections,logo',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
@@ -31,6 +31,7 @@ var utils = require('../core/utils');
     return communityRequest;
 
   };
+  
 
   /**
    * Build the json object that describes a community.

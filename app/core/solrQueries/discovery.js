@@ -1,7 +1,10 @@
 /**
  * Created by mspalti on 3/28/16.
  */
-(function() {
+
+'use strict';
+
+(function () {
 
   var util = require('util');
   var constants = require('../constants');
@@ -40,15 +43,35 @@
      */
     function getDiscoverLocationFilter(type, id) {
 
-      if (type.length > 0 && id !== undefined) {
-        if (type === constants.AssetTypes.COMMUNITY) {
-          return '&fq=location:m' + id;
+      try {
+        /**
+         * Queries with id value of zero are global queries.
+         * Do not add a location fitler.
+         */
+        if (id > 0) {
+          /**
+           * Community query scope.
+           */
+          if (type === constants.AssetTypes.COMMUNITY) {
+            return '&fq=location:m' + id;
 
-        } else if (type === constants.AssetTypes.COLLECTION) {
-          return '&fq=location:l' + id;
+          }
+          /**
+           * Collection query scope.
+           */
+          else if (type === constants.AssetTypes.COLLECTION) {
+            return '&fq=location:l' + id;
 
+          }
         }
+        
       }
+      catch (err) {   
+        
+        console.log(err);
+        
+      }
+
       return '';
 
     }

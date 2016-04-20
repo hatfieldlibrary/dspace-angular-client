@@ -19,38 +19,89 @@
                         GetCollectionInfo,
                         GetCollectionsForCommunity) {
 
-    var sb = this;
+    var disc = this;
 
-    var parent = {};
+    disc.searchItems = [];
+    disc.collections = [];
 
 
-    sb.searchItems = [];
+    /**
+     * Handles selection of a collection.
+     */
+    disc.selectCollection = function (id) {
 
-    sb.selectCommunity = function () {
+          console.log('setting collection')
+      /**
+       * If the collection id is zero, the asset type
+       * becomes COMMUNITY. Otherwise, the asset type
+       * is COLLECTION.
+       */
+      if (id === 0) {
 
-      if (sb.communityId !== 0) {
-        QueryManager.setAssetId(sb.communityId);
+
+        QueryManager.setAssetType(AssetTypes.COMMUNITY);
+        QueryManager.setAssetId(disc.communityId);
+
+      }  else {
+
+        QueryManager.setAssetType(AssetTypes.COLLECTION);
+        /**
+         * Set the asset id to the id of the collection.
+         */
+        QueryManager.setAssetId(disc.collectionId);
       }
-      getCollectionsForCommunity(sb.communityId);
+
     };
 
-    sb.submit = function (terms) {
+    /**
+     * Handles selection of community.
+     */
+    disc.selectCommunity = function () {
+
+      QueryManager.setAssetId(disc.communityId);
+      QueryManager.setAssetType(AssetTypes.COMMUNITY);
+      /**
+       * Get new collections list for this community.
+       */
+      getCollectionsForCommunity(disc.communityId);
+
+    };
+
+    /**
+     * Handles search form submission.
+     * @param terms  the query terms
+     */
+    disc.submit = function (terms) {
 
       var type = 'all';
       var id = 0;
 
-      if (sb.collectionId !== 0) {
+      /**
+       * Community search.
+       */
+      if (QueryManager.getAssetType() === AssetTypes.COLLECTION) {
+
         type = AssetTypes.COLLECTION;
         QueryManager.setAssetType(type);
-        QueryManager.setAssetId(sb.collectionId);
-        id = sb.collectionId;
-      } else {
+        QueryManager.setAssetId(disc.collectionId);
+        id = disc.collectionId;
+
+      }
+      /**
+       * Collection search.
+       */
+      else {
+
         type = AssetTypes.COMMUNITY;
         QueryManager.setAssetType(type);
-        QueryManager.setAssetId(sb.communityId);
-        id = sb.communityId;
+        QueryManager.setAssetId(disc.communityId);
+        id = disc.communityId;
+
       }
 
+      /**
+       * If search terms are provided, execute the search.
+       */
       if (terms.length > 0) {
         $location.path('/discover/' + type + '/' + id + '/' + terms);
       }
@@ -59,12 +110,12 @@
 
     function init() {
 
-      sb.type = $routeParams.type;
+      disc.type = $routeParams.type;
       var id = $routeParams.id;
-      sb.terms = $routeParams.terms;
+      disc.terms = $routeParams.terms;
 
 
-      QueryManager.setAssetType(sb.type);
+      QueryManager.setAssetType(disc.type);
 
       QueryManager.setQueryType(QueryTypes.DISCOVER);
 
@@ -72,33 +123,59 @@
 
       QueryManager.setSort(QuerySort.ASCENDING);
 
-      QueryManager.setSearchTerms(sb.terms);
+      QueryManager.setSearchTerms(disc.terms);
+
+      QueryManager.setOffset(0);
 
       QueryStack.clear();
 
-      console.log(sb.type + ' ' + AssetTypes.COLLECTION);
-
       /**
-       * If collection, get the parent community id.
+       * Initialize the search component with collection
+       * and community information.
        */
-      if (sb.type === AssetTypes.COLLECTION) {
-
+      if (disc.type === AssetTypes.COLLECTION) {
+        /**
+         * Set collection id on the component scope.
+         */
+        disc.collectionId = id;
+        /**
+         * The asset id is the id of the collection.
+         */
         QueryManager.setAssetId(id);
-        sb.collectionId = id;
-
+        /**
+         * Initialize communities list if not already
+         * available in app context.
+         */
         getCommunities();
+        /**
+         * Get the parent community info.
+         */
         getCommunityParentInfo(id);
       }
-      /**
-       * If community, use the provided id.
-       */
       else {
-        sb.collectionId = 0;
-        sb.communityId = id;
+        /**
+         * If community query, set the collection id to zero.
+         * @type {number}
+         */
+        disc.collectionId = 0;
+        /**
+         * Set the community id on the component scope.
+         */
+        disc.communityId = id;
+        /**
+         * The asset id is the id of the community.
+         */
         QueryManager.setAssetId(id);
+        /**
+         * Initialize communities list if not already
+         * available in app context.
+         */
         getCommunities();
-        if (sb.communityId !== 0) {
-          getCollectionsForCommunity(sb.communityId);
+        /**
+         * Get list of collections for this community.
+         */
+        if (disc.communityId !== 0) {
+          getCollectionsForCommunity(disc.communityId);
         }
       }
 
@@ -107,16 +184,27 @@
 
     init();
 
+
+    /**
+     * Retrieves parent community information for collection
+     * and updates component scope.
+     * @param id  the community id
+     */
     function getCommunityParentInfo(id) {
       if (id !== 0) {
         var info = GetCollectionInfo.query({item: id});
-        info.$promise.then(function(data) {
-          sb.communityId = data.parentCommunity.id;
+        info.$promise.then(function (data) {
+          disc.communityId = data.parentCommunity.id;
           getCollectionsForCommunity(data.parentCommunity.id);
         });
       }
     }
 
+    /**
+     * Retrieves list of communities if not already available
+     * in the application context. Adds community list to the
+     * component scope.
+     */
     function getCommunities() {
 
       if (AppContext.getDiscoverCommunities().length === 0) {
@@ -125,36 +213,30 @@
         items.$promise.then(function (data) {
           data.unshift({id: "0", name: "All Departments"});
           AppContext.setDiscoverCommunities(data);
-          sb.searchItems = data;
+          disc.searchItems = data;
 
         });
 
       }
       else {
-        sb.searchItems = AppContext.getDiscoverCommunities();
+        disc.searchItems = AppContext.getDiscoverCommunities();
       }
 
     }
 
+    /**
+     * Gets list of collections for a community.  Adds collection
+     * list to the component scope.
+     * @param id  the community id
+     */
     function getCollectionsForCommunity(id) {
-
+         
       if (id !== 0) {
         var collections = GetCollectionsForCommunity.query({id: id});
         collections.$promise.then(function (data) {
           data.unshift({id: 0, name: 'All Collections'});
-          sb.collections = data;
+          disc.collections = data;
 
-        });
-      }
-
-    }
-
-    function getCollectionParent(id) {
-
-      if (id !== 0) {
-        var info = GetCollectionInfo.query({item: id});
-        info.$promise.then(function(data) {
-           sb.communityId = data.parentCommunity.id;
         });
       }
 
@@ -166,7 +248,7 @@
 
     templateUrl: '/discover/templates/discover.html',
     controller: DiscoverCtrl,
-    controllerAs: 'sb'
+    controllerAs: 'disc'
 
   });
 

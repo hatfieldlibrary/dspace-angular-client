@@ -10,7 +10,6 @@
                      $timeout,
                      SolrQuery,
                      SolrBrowseQuery,
-                     SolrDiscoveryQuery,
                      Utils,
                      QueryManager,
                      AppContext,
@@ -55,25 +54,20 @@
      * @type {string}
      */
     var displayListType = '';
-
-    /**
-     * Receives broadcast from the discovery-search-box component.
-     */
-    $scope.$on("discoverySubmit", function () {
-      QueryManager.setOffset(0);
-     // initDiscovery();
-    });
+    
 
     $scope.$on("nextPage", function () {
       updateList(QueryManager.getOffset());
     });
 
-    $scope.$watch(function() {return AppContext.getPager()},
-    function(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        ctrl.showPager = newValue;
-      }
-    });
+    $scope.$watch(function () {
+        return AppContext.getPager()
+      },
+      function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+          ctrl.showPager = newValue;
+        }
+      });
 
 
     /**
@@ -85,20 +79,13 @@
      */
     function init() {
 
-      // The offset should be 0.
-      updateList(QueryManager.getOffset());
 
       /**
        * Update the query stack. Subsequent paging
        * requests to not update the stack.
        */
       QueryStack.push(QueryManager.getQuery());
-
-
-      if (QueryManager.getAction() === QueryActions.SEARCH) {
-        console.log('init the page')
-        initDiscovery();
-      }
+      updateList(QueryManager.getOffset());
 
       QueryStack.print();
     }
@@ -106,23 +93,6 @@
     init();
 
 
-    function initDiscovery() {
-
-      console.log('using init')
-
-      var items = SolrDiscoveryQuery.query({
-        terms: QueryManager.getSearchTerms(),
-        id: QueryManager.getAssetId()
-
-      });
-
-      /** Handle result of the solr query. */
-      items.$promise.then(function (data) {
-        updateParent(data);
-
-      });
-
-    }
     /**
      * Execute node REST API call for solr query results.
      * @param start the start position for query result.
@@ -160,6 +130,7 @@
           });
 
         }
+
         /**
          * Browse queries use GET.
          */
@@ -232,7 +203,6 @@
 
       QueryStack.replaceWith(QueryManager.context.query);
 
-
       ctrl.onUpdate({
 
         results: data.results,
@@ -242,11 +212,11 @@
       });
 
 
-      $timeout(function() {
+      $timeout(function () {
         /**
          * Show the pager.
          * @type {boolean}
-           */
+         */
         ctrl.showPager = true;
         /**
          * Set pager in context.

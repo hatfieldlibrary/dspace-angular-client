@@ -50,21 +50,21 @@
      */
     var displayListType = '';
 
-    /**
-     * Receives broadcast from the discovery-search-box component.
-     */
-    $scope.$on("discoverySubmit", function () {
-      QueryManager.setOffset(0);
-      updateList(0);
-    });
-
+    // /**
+    //  * Receives broadcast from the discovery-search-box component.
+    //  */
+    // $scope.$on("discoverySubmit", function () {
+    //   QueryManager.setOffset(0);
+    //   updateList(0);
+    // });
+    //
     $scope.$on("nextPage", function () {
       updateList(QueryManager.getOffset());
     });
 
 
     /**
-     * Execute node REST API call for solr query results.
+     * This update function executes solr query.
      * @param start the start position for query result.
      */
     function updateList(newOffset) {

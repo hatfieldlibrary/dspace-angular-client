@@ -13,11 +13,13 @@ var utils = require('../core/utils');
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
 
+    console.log('/rest/communities/' + utils.getId(id) + '?expand=collections');
+
     /** DSpace communities request-promise */
     var collections =
       rp(
         {
-          url: host + '/rest/communities/' + id + '?expand=collections',
+          url: host + '/rest/communities/' + utils.getId(id) + '?expand=collections',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
@@ -32,6 +34,7 @@ var utils = require('../core/utils');
 
   };
 
+
   /**
    * Build the json object that describes a community.
    * @param json  the DSpace API response
@@ -39,17 +42,23 @@ var utils = require('../core/utils');
   function processResult(json) {
 
     var collections = [];
-    for (var i = 0; i < json.collections.length; i++) {
-      var tmp = {};
-      tmp.id = json.collections[i].id;
-      tmp.name = json.collections[i].name;
-      tmp.handle = json.collections[i].handle;
-      tmp.type = json.collections[i].type;
-      tmp.numberItems = json.collections[i].numberItems;
-      collections[i] = tmp;
+
+    if ( json.collections !== undefined) {
+
+      for (var i = 0; i < json.collections.length; i++) {
+        var tmp = {};
+        tmp.id = json.collections[i].id;
+        tmp.name = json.collections[i].name;
+        tmp.handle = json.collections[i].handle;
+        tmp.type = json.collections[i].type;
+        tmp.numberItems = json.collections[i].numberItems;
+        collections[i] = tmp;
+      }
+
     }
-   
+
     return collections;
+    
   }
 
 

@@ -6,7 +6,7 @@
 
 (function () {
 
-  function ItemListCtrl($scope, QueryManager, AppContext) {
+  function ItemListCtrl(QueryManager, AppContext) {
 
     var ctrl = this;
 
@@ -113,9 +113,12 @@
     }
 
     function init() {
+
+      ctrl.items = [];
       ctrl.showPager = QueryManager.getOffset() > 0;
 
     }
+
     init();
 
   }

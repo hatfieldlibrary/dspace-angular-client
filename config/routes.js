@@ -85,7 +85,9 @@ module.exports = function (app, config, passport) {
   // REST API for dspace requests
 
   app.get('/getCommunities', community.getCommunities);
-  
+
+  app.get('/collectionInfo/:item', collection.getCollectionInfo);
+
   app.get('/collectionsForCommunity/:id', community.getCollections);
 
   app.get('/bitstream/:id/:file', bitstream.bitstream);
@@ -96,15 +98,13 @@ module.exports = function (app, config, passport) {
 
   app.get('/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', solr.browse);
 
-  app.post('/solrQuery', solr.query);
+  //app.get('/solrQuery/:type/:id/:terms', solr.discover);
 
-  app.get('/solrQuery/:id/:terms', solr.discover);
+  app.post('/solrQuery', solr.query);
 
   app.post('/solrJumpToQuery', solr.jumpTo);
 
   app.use('/solrRecentSubmissions/:type/:id', solr.recentSubmissions);
-
-  app.get('/collectionInfo/:item', collection.getCollectionInfo);
 
 
   // ANGULARJS routes

@@ -80,6 +80,24 @@
     return config.dspace.port;
   };
 
+  /**
+   * Sets the DSpace ID to an empty string when
+   * the id is zero.  The zero value id for community 
+   * is used by the middleware to request a global search.
+   * This function assures that the zero value is not included
+   * in the DSpace API request itself.
+   * @param id  dspace ID
+   * @returns {*}
+     */
+  exports.getId = function(id) {
+
+    if (id === 0 || id === '0') {
+      return '';
+    }
+    return id;
+    
+  };
+
 
 
 })();

@@ -7,7 +7,6 @@ var constants = require('../core/constants');
 (function () {
 
 
-
   /**
    * Default solr query controller. Handles POST queries.
    * @param req
@@ -25,40 +24,42 @@ var constants = require('../core/constants');
    * Initial discovery query (uses GET).
    * @param req
    * @param res
-     */
-  exports.discover = function(req, res) {
-    /** @type {string} the site id from the handle */
-    var terms = req.params.terms;
-    /** @type {string} the item id from the handle */
-    var id = req.params.id;
-
-    var session = req.session;
-
-    /** The new query object */
-    var query = {
-      params: {
-        asset: {
-          type: 'coll',
-          id: id
-        },
-        sort: {
-          order: constants.QuerySort.ASCENDING
-        },
-        query: {
-          action: constants.QueryActions.DISCOVER,
-          qType: '',
-          terms: terms,
-          field: '',
-          offset: 0,
-          rows: 20,
-          filter: ''
-        }
-      }
-    };
-    
-    models.solrQuery(query, res, session);
-
-  };
+   */
+  // exports.discover = function (req, res) {
+  //   /** @type {string} the site id from the handle */
+  //   var terms = req.params.terms;
+  //   /** @type {string} the item id from the handle */
+  //   var id = req.params.id;
+  //
+  //   var type = req.params.type;
+  //
+  //   var session = req.session;
+  //
+  //   /** The new query object */
+  //   var query = {
+  //     params: {
+  //       asset: {
+  //         type: type,
+  //         id: id
+  //       },
+  //       sort: {
+  //         order: constants.QuerySort.ASCENDING
+  //       },
+  //       query: {
+  //         action: constants.QueryActions.SEARCH,
+  //         qType: constants.QueryType.DISCOVER,
+  //         terms: terms,
+  //         field: '',
+  //         offset: 0,
+  //         rows: 20,
+  //         filter: ''
+  //       }
+  //     }
+  //   };
+  //
+  //   models.solrQuery(query, res, session);
+  //
+  // };
 
 
   /**
@@ -127,8 +128,6 @@ var constants = require('../core/constants');
   };
 
 
-
-
   exports.jumpTo = function (req, res) {
 
     var session = req.session;
@@ -162,7 +161,7 @@ var constants = require('../core/constants');
 
           try {
 
-            req.body.params.query.offset = result.offset ;
+            req.body.params.query.offset = result.offset;
             models.solrQuery(req.body, res, session)
               .then(function (result) {
                 callback(null, result);

@@ -26,9 +26,9 @@ dspaceServices.factory('SolrJumpToQuery', ['$resource',
   }]);
 
 
-dspaceServices.factory('SolrDiscoveryQuery', ['$resource',
-  function ($resource) {
-    return $resource('/solrQuery/:type/:id/:terms', {}, {
-      query: {method: 'GET', isArray: false}
-    });
-  }]);
+// dspaceServices.factory('SolrDiscoveryQuery', ['$resource',
+//   function ($resource) {
+//     return $resource('/solrQuery/:type/:id/:terms', {}, {
+//       query: {method: 'GET', isArray: false}
+//     });
+//   }]);
