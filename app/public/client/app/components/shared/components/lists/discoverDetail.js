@@ -22,6 +22,8 @@
 
     var ctrl = this;
 
+
+
     /**
      * The item data to show.
      */

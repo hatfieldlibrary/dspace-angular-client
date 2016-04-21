@@ -140,7 +140,10 @@ var dspaceApp = angular.module('dspaceApp', [
           'hue-2': '600', // use shade 600 for the <code>md-hue-2</code> class
           'hue-3': 'A100' // use shade A100 for the <code>md-hue-3</code> class
         })
-        .accentPalette('Accent Palette', {'default': '500'})
+        .accentPalette('Accent Palette', {
+          'default': '500',
+          'hue-2': '900'
+        })
         .warnPalette('Custom Warn')
         .backgroundPalette('Custom Background', {
           'default': '100',

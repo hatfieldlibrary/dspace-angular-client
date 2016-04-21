@@ -18,6 +18,12 @@
 
     QueryStack.clear();
 
+    console.log(ctrl)
+
+    if (ctrl.data.countItems === ctrl.data.itemTotal) {
+      ctrl.hideLoginMessage = true;
+    }
+
     /**
      * Returns the url for a logo.  This method can be called
      * for communities and collections.

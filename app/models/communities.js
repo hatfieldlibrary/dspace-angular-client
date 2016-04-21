@@ -31,13 +31,14 @@ var utils = require('../core/utils');
     return communityRequest;
 
   };
-  
+
 
   /**
    * Build the json object that describes a community.
    * @param json  the DSpace API response
    */
   function processResult(json) {
+    console.log(json)
 
     var ret = {};
     ret.id = json.id;
@@ -57,7 +58,9 @@ var utils = require('../core/utils');
     }
     ret.logo = logo;
     var collections = [];
+    var itemTotal = 0;
     for (var i = 0; i < json.collections.length; i++) {
+
       var tmp = {};
       tmp.id = json.collections[i].id;
       tmp.name = json.collections[i].name;
@@ -68,8 +71,13 @@ var utils = require('../core/utils');
       tmp.shortDescription = json.collections[i].shortDescription;
       tmp.numberItems = json.collections[i].numberItems;
       collections[i] = tmp;
+
+      // increment total item count
+      itemTotal += tmp.numberItems;
+
     }
     ret.items = collections;
+    ret.itemTotal = itemTotal;
 
     return ret;
   }

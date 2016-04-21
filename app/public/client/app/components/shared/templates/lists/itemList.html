@@ -2,13 +2,19 @@
 
   <h2 class="md-title" ng-if="$ctrl.isBrowseContext()">Browsing: {{$ctrl.browseTerms}}</h2>
 
-  <sort-options-component
-    context="{{$ctrl.context}}"
-    on-update="$ctrl.onUpdate(results, count, field)"
-    reset-list-view ="$ctrl.resetListView()">
+  <sort-options-component ng-if="$ctrl.context!='discover'"
+                          context="{{$ctrl.context}}"
+                          on-update="$ctrl.onUpdate(results, count, field)"
+                          reset-list-view ="$ctrl.resetListView()">
   </sort-options-component>
 
+  <discover-filter-container ng-if="$ctrl.context=='discover'"
+                          on-update="$ctrl.onUpdate(results, count, field)" >
+
+  </discover-filter-container>
+
   <div class="md-subhead md-accent">Viewing {{$ctrl.count}} items.</div>
+
 
 </md-content>
 
@@ -72,6 +78,7 @@
         field="{{$ctrl.field}}"
         last="$last"
         set-selected="$ctrl.setSelected(index)">
+
       </subject-detail-component>
 
       <discover-detail-component

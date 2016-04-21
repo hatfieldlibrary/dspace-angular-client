@@ -151,6 +151,17 @@ module.exports = function (app, config, passport) {
     );
   });
 
+  app.get('/shared/templates/loaders/:name', function (req, res) {
+
+    var name = req.params.name;
+
+    res.sendFile(
+      app.get('appPath') +
+      '/app/components/shared/templates/loaders/' +
+      name
+    );
+  });
+
   app.get('/shared/templates/:name', function (req, res) {
 
     var name = req.params.name;

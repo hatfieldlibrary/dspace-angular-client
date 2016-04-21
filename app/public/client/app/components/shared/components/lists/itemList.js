@@ -10,13 +10,10 @@
 
     var ctrl = this;
 
-      ctrl.ready = false;
+    ctrl.ready = false;
 
-    /**
-     * The array containing the items to present in the view.
-     * @type {Array}
-     */
-    ctrl.items = [];
+    console.log(ctrl.context)
+
 
     if (ctrl.context === 'browse') {
       ctrl.browseTerms = QueryManager.getSearchTerms();
@@ -40,8 +37,9 @@
 
     ctrl.offset = QueryManager.getOffset();
 
-    ctrl.isBrowseContext = function() {
-        return ctrl.context === 'browse';
+    ctrl.isBrowseContext = function () {
+      return ctrl.context === 'browse';
+
     };
 
     /**
@@ -56,9 +54,7 @@
     };
 
     /**
-     * Updates with data on initial load. Pager is
-     * responsible for initializing with new data, including the initial
-     * data on page load.
+     * Non-pager updates.
      * @param results  items in result
      * @param count  total number of items
      * @param field   the field queried
@@ -70,39 +66,47 @@
       ctrl.items = results;
       ctrl.count = count;
       ctrl.field = field;
+      console.log('filter')
+      console.log(ctrl.items)
 
     };
 
     /**
-     * Updates list after pager request for more items.
+     * Pager updates, including the initial page load.
      * @param results  new items to add to list.
      * @param count  total number of items.
      * @param field  the field queried.
      */
-    ctrl.onPagerUpdate = function (results, count,  field) {
+    ctrl.onPagerUpdate = function (results, count, field) {
+
       ctrl.ready = true;
       addResults(results);
       ctrl.count = count;
       ctrl.field = field;
+      console.log('pager')
+      console.log(ctrl.items)
 
     };
 
     ctrl.onPreviousUpdate = function (results, index) {
+
       if (index == 0) {
         ctrl.showPager = false;
       }
       addPreviousResults(results);
+
     };
 
-    ctrl.resetListView = function() {
+    ctrl.resetListView = function () {
       ctrl.ready = false;
       ctrl.items = [];
+
     };
 
     /**
      * Adds new results to current items.
      * @param results  items returned by paging query.
-       */
+     */
     function addResults(results) {
       ctrl.items = ctrl.items.concat(results);
 
@@ -114,7 +118,12 @@
 
     function init() {
 
+      /**
+       * The array containing the items to present in the view.
+       * @type {Array}
+       */
       ctrl.items = [];
+
       ctrl.showPager = QueryManager.getOffset() > 0;
 
     }

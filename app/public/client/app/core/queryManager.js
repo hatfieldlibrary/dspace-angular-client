@@ -8,7 +8,6 @@
  */
 dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort', 'QueryFields', function (QueryTypes, QueryActions, QuerySort, QueryFields) {
 
-
   return {
 
     context: {
@@ -29,6 +28,11 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
         jumpTo: {
           type: ''
         },
+        /**
+         * Filters for solr queries
+         */
+        filters: [],
+
         query: {
           /**
            * The solr query type.  Possible values are defined in QueryTypes.
@@ -43,7 +47,7 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
            */
           mode: '',
           /**
-           * Filter terms.
+           * Filter terms for collection browsing.
            */
           filter: '',
           /**
@@ -180,13 +184,24 @@ dspaceContext.service('QueryManager', ['QueryTypes', 'QueryActions', 'QuerySort'
     },
 
     setSort: function (order) {
-
-      //  this.context.query.sort.field = field;
       this.context.query.sort.order = order;
     },
 
     getSort: function () {
       return this.context.query.sort.order;
+    },
+
+    addDiscoveryFilter: function(filter) {
+      this.context.query.filters.push(filter);
+    },
+
+    removeDiscoveryFilter: function(position) {
+        this.context.query.filters.splice(position, 1);
+
+    },
+
+    clearDiscoveryFilters: function() {
+      this.context.query.filters = [];
     }
 
 

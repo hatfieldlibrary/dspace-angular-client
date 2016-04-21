@@ -54,7 +54,7 @@
      * @type {string}
      */
     var displayListType = '';
-    
+
 
     $scope.$on("nextPage", function () {
       updateList(QueryManager.getOffset());
@@ -198,6 +198,7 @@
      * @param data the next set if items.
      */
     function updateParent(data) {
+      console.log('pager update')
 
       AppContext.setCount(data.count);
 

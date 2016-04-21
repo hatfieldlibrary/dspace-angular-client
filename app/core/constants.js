@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-
+  
   AssetTypes: {
     COLLECTION: 'coll',
     COMMUNITY: 'comm',
@@ -45,7 +45,13 @@ module.exports = {
     START_LETTER: 'startLetterLocation',
     DISCOVER: 'discover'
 
+  },
+  
+  DiscoveryMode: {
+    CONTAINS: 'contains',
+    NOT_CONTAINS: 'notContains'
   }
+  
 
 };
 

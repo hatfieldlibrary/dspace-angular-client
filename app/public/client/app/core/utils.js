@@ -266,6 +266,7 @@ dspaceServices.factory('Utils', [
      * @returns {*}
        */
     utils.getPageListCount = function (count, setSize) {
+
       var remaining = count - QueryManager.getOffset();
       if (remaining < setSize) {
         return remaining;
@@ -274,12 +275,22 @@ dspaceServices.factory('Utils', [
       }
     };
 
+    /**
+     * Get the discovery query filter for the input.
+     * @param field the QueryFilterField
+     * @param type the QueryMode
+     * @param terns the query terms
+     * @returns {*}
+     */
+    utils.getDiscoveryFilter = function (field, type, terms) {
+
+      return {field: field, type: type, terms: terms};
+
+    };
 
     return utils;
 
   }
-
-
 
 
 ]);

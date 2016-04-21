@@ -457,8 +457,8 @@
 
 
     /**
-     * Handle the result of queries for field queries. This function exists
-     * to preprocess data from author and subject results before sending the
+     * Handle the result of field queries. This function exists
+     * to preprocess data from author and subject results before sending 
      * to the parent component.
      * @param data
      */
@@ -558,7 +558,7 @@
       resetListView: '&',
       context: '@'
     },
-    templateUrl: '/shared/templates/sortOptions.html',
+    templateUrl: '/shared/templates/loaders/sortOptions.html',
     controller: SortOptionsCtrl
 
   });

@@ -30,7 +30,6 @@
      */
     disc.selectCollection = function (id) {
 
-          console.log('setting collection')
       /**
        * If the collection id is zero, the asset type
        * becomes COMMUNITY. Otherwise, the asset type
@@ -114,6 +113,8 @@
       var id = $routeParams.id;
       disc.terms = $routeParams.terms;
 
+      QueryManager.clearDiscoveryFilters();
+
 
       QueryManager.setAssetType(disc.type);
 
@@ -124,6 +125,8 @@
       QueryManager.setSort(QuerySort.ASCENDING);
 
       QueryManager.setSearchTerms(disc.terms);
+
+      QueryManager.clearDiscoveryFilters();
 
       QueryManager.setOffset(0);
 
@@ -230,7 +233,7 @@
      * @param id  the community id
      */
     function getCollectionsForCommunity(id) {
-         
+
       if (id !== 0) {
         var collections = GetCollectionsForCommunity.query({id: id});
         collections.$promise.then(function (data) {
