@@ -42,6 +42,9 @@ var dspaceApp = angular.module('dspaceApp', [
         })
         .when('/discover/:type/:id/:terms', {
           templateUrl: '/partials/discover.html'
+        })
+        .when('/discover', {
+          templateUrl: '/partials/discover.html'
         });
 
       $locationProvider.html5Mode(true).hashPrefix('!');

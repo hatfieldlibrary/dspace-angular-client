@@ -7,12 +7,23 @@
       <input ng-model="sb.terms">
     </md-input-container>
 
-    <md-input-container>
+    <md-input-container ng-hide="!sb.showOptionsForCollection()">
       <md-radio-group ng-model="sb.id" layout="column">
-        <md-radio-button value="{{sb.id}}" aria-label="This Collection" class="md-caption">
+        <md-radio-button value="{{sb.currentCollectionId}}" aria-label="This Collection" class="md-caption">
           This Collection
         </md-radio-button>
-        <md-radio-button value="all" aria-label="All Collections" class="md-caption">
+        <md-radio-button value="0" aria-label="All Collections" class="md-caption">
+          All Collections
+        </md-radio-button>
+      </md-radio-group>
+    </md-input-container>
+
+    <md-input-container ng-hide="!sb.showOptionsForCommunity()">
+      <md-radio-group ng-model="sb.id" layout="column">
+        <md-radio-button value="{{sb.currentCollectionId}}" aria-label="This Department" class="md-caption">
+          This Department
+        </md-radio-button>
+        <md-radio-button value="0" aria-label="All Collections" class="md-caption">
           All Collections
         </md-radio-button>
       </md-radio-group>
@@ -29,7 +40,7 @@
 
   </form>
 
-  <p class="md-caption"><a ng-href="">Advanced Search</a></p>
+  <p class="md-caption"><a ng-href="/discover" class="md-accent">Advanced Search</a></p>
 
 </div>
 

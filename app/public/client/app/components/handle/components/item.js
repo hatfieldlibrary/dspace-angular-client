@@ -12,9 +12,22 @@
 
   /*globals dspaceControllers*/
 
-  function ItemCtrl() {
+  function ItemCtrl($timeout, $anchorScroll) {
+
+    var ctrl = this;
+
+    ctrl.showMetadata = false;
+
+    ctrl.toggleMeta = function () {
+
     
-    
+
+      // Toggle
+      ctrl.showMetadata = !ctrl.showMetadata;
+
+    };
+
+
   }
 
   dspaceComponents.component('itemComponent', {

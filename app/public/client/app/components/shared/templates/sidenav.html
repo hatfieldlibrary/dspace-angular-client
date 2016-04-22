@@ -14,14 +14,18 @@
       </div>
     </md-toolbar>
 
+    <div layout="column" layout-padding layout-align="center left">
+      <md-divider></md-divider>
+      <a ng-href="/communities" class="md-subhead">View all Departments</a>
 
-    <search-box-component ng-if="$ctrl.type!='discover'" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></search-box-component>
+    </div>
 
-    <discovery-search-box-component ng-if="$ctrl.type=='discover'"></discovery-search-box-component>
+    <search-box-component ng-if="$ctrl.type!='global' && $ctrl.type!='discover'" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></search-box-component>
+
+    <global-search-box-component ng-if="$ctrl.type=='global'"></global-search-box-component>
 
     <div layout="column" layout-padding layout-align="center left">
       <md-divider></md-divider>
-      <p><a ng-href="/communities">View all Departments</a></p>
     </div>
 
 

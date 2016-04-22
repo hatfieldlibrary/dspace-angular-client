@@ -7,17 +7,29 @@
 (function () {
 
 
-  function MainSearchBoxCtrl($location,
+  function MainSearchBoxCtrl($scope,
+                             $location,
                              QueryActions,
+                             AssetTypes,
                              QueryManager) {
 
     var sb = this;
 
     sb.id = QueryManager.getAssetId();
 
+    sb.currentCollectionId = QueryManager.getAssetId();
+    
+    sb.showOptionsForCollection = function() {
+      return QueryManager.getAssetType() === AssetTypes.COLLECTION;
+    };
+
+    sb.showOptionsForCommunity = function() {
+      return QueryManager.getAssetType() === AssetTypes.COMMUNITY;
+    };
+
     sb.submit = function (terms) {
 
-      sb.id = QueryManager.getAssetId();
+      QueryManager.setAssetId(sb.id);
 
       sb.type = QueryManager.getAssetType();
 
@@ -25,17 +37,23 @@
 
       QueryManager.setAction(QueryActions.SEARCH);
 
-      if (sb.id === 'all') {
-        QueryManager.setAssetId('');
-      }
 
       $location.path('/discover/' + sb.type + '/' + sb.id + '/' + terms);
 
     };
 
-    sb.searchText = function() {
-
-    }
+    /**
+     * Watch for changes in current DSpace ID.  This value
+     * can change after this component has been added to
+     * the parent.
+     */
+    $scope.$watch(function() { return QueryManager.getAssetId()},
+    function(newValue, oldValue) {
+          if (newValue !== oldValue) {
+            sb.id = QueryManager.getAssetId();
+            sb.currentCollectionId = newValue;
+          }
+    })
 
   }
 

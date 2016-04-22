@@ -21,9 +21,17 @@
 
     var disc = this;
 
+    /**
+     * Array containing list of communities.
+     * @type {Array}
+     */
     disc.searchItems = [];
-    disc.collections = [];
 
+    /**
+     * Array containing list of collection within a community.
+     * @type {Array}
+     */
+    disc.collections = [];
 
     /**
      * Handles selection of a collection.
@@ -41,7 +49,7 @@
         QueryManager.setAssetType(AssetTypes.COMMUNITY);
         QueryManager.setAssetId(disc.communityId);
 
-      }  else {
+      } else {
 
         QueryManager.setAssetType(AssetTypes.COLLECTION);
         /**
@@ -109,13 +117,21 @@
 
     function init() {
 
+      /**
+       * Input route parameters.
+       */
       disc.type = $routeParams.type;
       var id = $routeParams.id;
       disc.terms = $routeParams.terms;
 
+      /**
+       * Remove any previous discovery filters.
+       */
       QueryManager.clearDiscoveryFilters();
 
-
+      /**
+       * Normal initialization.
+       */
       QueryManager.setAssetType(disc.type);
 
       QueryManager.setQueryType(QueryTypes.DISCOVER);
@@ -126,11 +142,20 @@
 
       QueryManager.setSearchTerms(disc.terms);
 
-      QueryManager.clearDiscoveryFilters();
-
       QueryManager.setOffset(0);
 
       QueryStack.clear();
+
+      disc.hideComponents = false;
+
+      /**
+       * If the DSpace ID parameter is undefined then hide unnecessary
+       * components and set this initial id to zero ('All Departments').
+       */
+      if (id === undefined) {
+        disc.hideComponents = true;
+        id = 0;
+      }
 
       /**
        * Initialize the search component with collection

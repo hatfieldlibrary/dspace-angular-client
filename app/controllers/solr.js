@@ -191,7 +191,9 @@ var constants = require('../core/constants');
             // dspace token one exists.  The client should have the ability
             // to detect a change in session status and direct the user to
             // log in again.
-            utils.removeDspaceSession(req.session)
+            utils.removeDspaceSession(req.session);
+            
+
           }
 
         }
