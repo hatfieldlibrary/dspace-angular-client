@@ -21,10 +21,10 @@
     <input type="text" ng-model="$ctrl.filterTerms" >
   </md-input-container>
   <md-input-container ng-if="$ctrl.status=='add'">
-  <md-button class="md-raised md-accent" ng-click="$ctrl.addFilter();">Add Filter</md-button>
+  <md-button class="md-accent" ng-click="$ctrl.addFilter();">Add Filter</md-button>
    </md-input-container>
   <md-input-container ng-if="$ctrl.status=='remove'">
-    <md-button class="md-raised md-accent md-hue-2" ng-click="$ctrl.removeFilter();">Remove</md-button>
+    <md-button class="md-warn" ng-click="$ctrl.removeFilter();">Remove</md-button>
   </md-input-container>
 </div>
 

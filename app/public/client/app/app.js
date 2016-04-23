@@ -9,6 +9,7 @@ var dspaceApp = angular.module('dspaceApp', [
   'ngSanitize',
   'appConstants',
   'ngAnimate',
+  'ngMessages',
   'ngAria',
   'dspaceServices',
   'dspaceDirectives',

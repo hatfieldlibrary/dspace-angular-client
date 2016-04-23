@@ -16,13 +16,14 @@
    * @constructor
    */
   function DialogCtrl($mdDialog,
+                      $mdMedia,
                       $timeout,
                       $anchorScroll,
                       data) {
 
     var ctrl = this;
 
-
+    ctrl.isLargeScreen = ($mdMedia('lg') || $mdMedia('xl'));
 
     /**
      * The item data to show.

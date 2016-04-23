@@ -56,10 +56,15 @@
     var displayListType = '';
 
 
-    $scope.$on("nextPage", function () {
-      updateList(QueryManager.getOffset());
-    });
-
+    /**
+     * This watch will show/hide the pager button
+     * based on the app context.  This allows sort
+     * options components to hide the pager button
+     * so that it doesn't flash into view when changing
+     * the option. Since both pager and sort options
+     * are children of item list, this might be done
+     * more efficiently via callbacks.
+     */
     $scope.$watch(function () {
         return AppContext.getPager()
       },
@@ -116,14 +121,12 @@
 
         var context = QueryManager.getQuery();
 
-        /**
-         *  Execute the query as either POST or GET.
-         */
         var items;
         /**
-         * List and search (discovery) queries use POST.
+         * List query: POST.
          */
-        if (action === QueryActions.LIST || action === QueryActions.SEARCH) {
+        if (action === QueryActions.LIST) {
+
           items = SolrQuery.save({
             params: context
 
@@ -132,7 +135,18 @@
         }
 
         /**
-         * Browse queries use GET.
+         * Discovery query: POST.
+         */
+        else if (action === QueryActions.SEARCH && QueryManager.getSearchTerms() !== undefined) {
+
+          items = SolrQuery.save({
+            params: context
+
+          });
+        }
+
+        /**
+         * Browse query: GET.
          */
         else if (action === QueryActions.BROWSE) {
 
@@ -152,14 +166,18 @@
 
         }
 
-        /** Handle result of the solr query. */
-        items.$promise.then(function (data) {
-          updateParent(data);
+        if (items !== undefined) {
 
-        });
+          items.$promise.then(function (data) {
+            /** Handle result of the solr query. */
+            updateParent(data);
+
+          });
+        }
+
       }
       /**
-       * Here, we handle authors and subjects.
+       * List author and subject.
        */
       else {
 

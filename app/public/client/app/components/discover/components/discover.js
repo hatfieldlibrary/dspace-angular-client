@@ -83,6 +83,8 @@
       var type = 'all';
       var id = 0;
 
+      disc.showHints = false;
+
       /**
        * Community search.
        */
@@ -116,6 +118,8 @@
     };
 
     function init() {
+
+      disc.showHints = true;
 
       /**
        * Input route parameters.

@@ -10,7 +10,7 @@
     </div>
   </md-toolbar>
 
-  <md-dialog-content layout-padding class="dialog-width">
+  <md-dialog-content layout-padding class="dialog-width" ng-class="{'large-dialog': $ctrl.isLargeScreen }">
 
     <div id="dialog-top" style="height: 0px; padding:0;"></div>
 
@@ -19,8 +19,8 @@
       <!-- Title, layout row-->
       <div layout="row" layout-align="start start" layout-fill layout-margin layout-padding>
 
-        <div flex="20" hide-xs></div>
-        <div class="dialog-column-padding" flex="75">
+        <div flex="20"  hide show-gt-md ></div>
+        <div class="dialog-column-padding" flex>
           <h3 class="md-headline">{{$ctrl.data.name}}</h3>
         </div>
 
@@ -45,7 +45,7 @@
               <div style="padding-left: 30px;max-width: 162px;">
                 <div class="md-subhead" aria-label="{{stream.description}}">{{stream.description}}
                 </div>
-                <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis"
+                <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis;margin-top: 3px;"
                      aria-label="{{stream.name}}">{{stream.name}}
                 </div>
                 <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis"

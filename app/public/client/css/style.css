@@ -37,6 +37,10 @@ a, a:visited {
 
 }
 
+.main-card {
+  min-height: 650px;
+}
+
 .inner-width {
   max-width: 800px;
 }
@@ -62,6 +66,10 @@ md-sidenav.md-locked-open {
 
 .nav-logo {
   color: #ffffff;
+}
+
+.large-dialog {
+  min-width: 800px;
 }
 
 md-toolbar.md-default-theme:not(.md-menu-toolbar) .md-button:not(.md-raised),
@@ -115,6 +123,10 @@ md-dialog.item-details {
 .background-highlight {
   background: #fdfaf2;
   padding: 8px;
+}
+
+discover-filter-component .sort-options {
+  margin-top: -15px;
 }
 
 .discover-item em {
@@ -477,6 +489,24 @@ md-dialog-content h3 {
   -webkit-transition-duration: 0s;
   transition-duration: 0s;
 }
+
+.discoveryMessages {
+  /* NOTE: Check the demo's HTML to see some additional RTL support CSS */
+  /* Setup animations similar to the ng-messages */ }
+.discoveryMessages .hint {
+  /* Position the hint */
+  position: absolute;
+  left: 2px;
+  right: auto;
+  bottom: 7px;
+  /* Copy styles from ng-messages */
+  font-size: 12px;
+  line-height: 14px;
+  /* Set our own color */
+  color: grey;
+}
+
+
 
 
 

@@ -15,6 +15,7 @@
    * @constructor
    */
   function DialogCtrl($mdDialog,
+                      $mdMedia,
                       $timeout,
                       $anchorScroll,
                       data) {
@@ -25,6 +26,8 @@
      * The item data to show.
      */
     ctrl.data = data;
+
+    ctrl.isLargeScreen = ($mdMedia('lg') || $mdMedia('xl'));
 
     /**
      * Controls whether or not metadata is shown in the view.
