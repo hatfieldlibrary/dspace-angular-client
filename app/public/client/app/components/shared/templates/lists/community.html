@@ -1,7 +1,7 @@
-<md-list-item flex class="md-1-line">
-  <div class="md-list-item-text"  >
+<md-list-item flex class="md-1-line" ng-click="$ctrl.openCommunityHandle($ctrl.handle)">
+  <div class="md-list-item-text list-highlight"  >
 
-    <a ng-href="/handle/{{$ctrl.handle}}" class="list-highlight">{{$ctrl.name}}</a>
+    {{$ctrl.name}}
 
   </div>
   <md-divider  ng-if="!$ctrl.last"></md-divider>

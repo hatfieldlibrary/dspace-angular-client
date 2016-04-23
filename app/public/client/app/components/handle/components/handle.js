@@ -6,7 +6,7 @@
 
 (function () {
 
-  function HandleCtrl($rootScope,
+  function HandleCtrl(
                       $routeParams,
                       ItemByHandle,
                       QueryManager,
@@ -17,8 +17,6 @@
 
     var site = $routeParams.site;
     var item = $routeParams.item;
-
-    var ready = false;
 
     ctrl.ready = false;
 
@@ -100,6 +98,8 @@
             ctrl.loginRequired = true;
             ctrl.ready = true;
           }
+
+
         });
 
     };

@@ -5,7 +5,15 @@
 
 (function () {
 
-  function CommunityItemCtrl() {
+  function CommunityItemCtrl($location) {
+
+    var ctrl = this;
+
+    ctrl.openCommunityHandle = function(handle) {
+
+      $location.path('/handle/' + handle);
+
+    }
 
   }
 
@@ -17,7 +25,7 @@
       last: '='
     },
     templateUrl: '/shared/templates/lists/community.html',
-    
+
     controller: CommunityItemCtrl
 
   });

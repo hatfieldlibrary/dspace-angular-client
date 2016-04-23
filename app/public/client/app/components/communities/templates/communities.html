@@ -23,7 +23,7 @@
           only visible after logging in with your Willamette University credentials.</p>
         <div layout="column" layout-align="center left">
           <div class="md-subhead" ng-bind-html="$ctrl.data.introductoryText"></div>
-          <md-content layout-padding>
+          <md-content>
             <community-item-component ng-repeat="comm in $ctrl.communities" handle="{{comm.handle}}" name="{{comm.name}}" last="$last">
             </community-item-component>
           </md-content>
