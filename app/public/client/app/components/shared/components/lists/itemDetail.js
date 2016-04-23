@@ -5,7 +5,7 @@
 'use strict';
 
 (function () {
-  
+
   /**
    * The dialog controller.
    * @param $mdDialog
@@ -63,7 +63,7 @@
 
 
   }
-  
+
   /**
    * The component controller.
    * @param $scope
@@ -88,7 +88,7 @@
         {
           controller: DialogCtrl,
           controllerAs: '$ctrl',
-          templateUrl: '/shared/templates/lists/dialogItem.html',
+          templateUrl: '/handle/templates/item/dialogItem.html',
           parent: angular.element(document.body),
           targetEvent: ev,
           clickOutsideToClose: true,

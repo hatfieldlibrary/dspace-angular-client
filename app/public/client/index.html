@@ -19,6 +19,15 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
         rel="stylesheet">
 
+  <!-- If you want to use Roboto as the default font, uncomment this stylesheet link.  If Roboto
+        is not available, Angular Material defaults to Helvetica Neue and sans serif.-->
+  <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">-->
+
+  <!-- Here we are using an Adobe typekit account (to assure Helvetica Neue is available).
+      This is specific to our site. -->
+  <script src="//use.typekit.net/ata4lfd.js"></script>
+  <script>try{Typekit.load();}catch(e){}</script>
+
   <script>
     (function (i, s, o, g, r, a, m) {
       i['GoogleAnalyticsObject'] = r;
@@ -45,7 +54,6 @@
 <!-- Angularjs view container -->
 
 <div class="main" ng-view layout-fill layout="column"></div>
-
 
 
 <!-- build:js /js/libraries.min.js -->
@@ -113,7 +121,7 @@
 <script src="app/components/handle/components/collection.js"></script>
 <script src="app/components/handle/components/community.js"></script>
 <script src="app/components/handle/components/item.js"></script>
-<script src="app/components/handle/components/dialogItem.js"></script>
+<!--<script src="app/components/handle/components/dialogItem.js"></script>-->
 <script src="app/components/discover/components/discover.js"></script>
 <script src="app/components/communities/components/communities.js"></script>
 <script src="app/components/browse/components/browse.js"></script>

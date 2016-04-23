@@ -35,7 +35,7 @@
     bindings: {
       data: '<'
     },
-    templateUrl: '/handle/templates/item.html',
+    templateUrl: '/handle/templates/item/item.html',
     controller: ItemCtrl
 
   });

@@ -1,8 +1,8 @@
-<md-list-item layout-fill flex class="md-2-line">
+<md-list-item class="md-2-line">
 
-  <div layout="column" class="md-list-item-text" layout-fill flex ng-click="$ctrl.showItem($event, $ctrl.id)">
+  <div layout="column" class="md-list-item-text" layout-fill ng-click="$ctrl.showItem($event, $ctrl.id)">
 
-    <div layout-fill flex class="list-highlight">{{$ctrl.title}}</div>
+    <div  class="list-highlight">{{$ctrl.title}}</div>
 
     <p>{{$ctrl.author}}; <span ng-if="$ctrl.publisher">{{$ctrl.publisher}};</span> <span ng-if="$ctrl.year">{{$ctrl.year}}</span> </p>
 

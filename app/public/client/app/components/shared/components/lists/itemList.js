@@ -12,9 +12,6 @@
 
     ctrl.ready = false;
 
-    console.log(ctrl.context)
-
-
     if (ctrl.context === 'browse') {
       ctrl.browseTerms = QueryManager.getSearchTerms();
     }

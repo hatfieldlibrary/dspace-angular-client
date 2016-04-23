@@ -173,6 +173,17 @@ module.exports = function (app, config, passport) {
     );
   });
 
+  app.get('/handle/templates/item/:name', function (req, res) {
+
+    var name = req.params.name;
+
+    res.sendFile(
+      app.get('appPath') +
+      '/app/components/handle/templates/item/' +
+      name
+    );
+  });
+
   app.get('/handle/templates/:name', function (req, res) {
 
     var name = req.params.name;

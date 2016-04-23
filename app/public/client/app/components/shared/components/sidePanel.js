@@ -31,14 +31,13 @@ function SideNavCtrl($scope, $window, $mdSidenav, AppContext) {
 
 
   /**
-   * Build handler to open/close a SideNav; when animation finishes
-   * report completion in console
+   * Build handler to open/close a SideNav.
    */
   function buildToggler(navID) {
     $mdSidenav(navID)
       .toggle()
       .then(function () {
-        // $log.debug("toggle " + navID + " is done");
+        
       });
   }
 
@@ -50,7 +49,7 @@ dspaceComponents.component('sideNavComponent', {
   bindings: {
     type: '@'
   },
-  templateUrl: '/shared/templates/sidenav.html',
+  templateUrl: '/shared/templates/sidePanel.html',
   controller: SideNavCtrl
 
 });

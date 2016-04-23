@@ -18,14 +18,16 @@
     var site = $routeParams.site;
     var item = $routeParams.item;
 
+    var ready = false;
+
     ctrl.ready = false;
 
     /**
      * Infinite scroll event.
      */
-    ctrl.fireUpdateEvent = function () {
-      $rootScope.$broadcast('nextPage', {});
-    };
+    // ctrl.fireUpdateEvent = function () {
+    //   $rootScope.$broadcast('nextPage', {});
+    // };
 
     /**
      * Initialize the page.
@@ -40,6 +42,7 @@
         function (data) {
 
           if (data.type !== undefined) {
+
 
             ctrl.ready = true;
 
