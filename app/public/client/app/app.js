@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Welcome to Tagger.
+ *
  */
 var dspaceApp = angular.module('dspaceApp', [
 

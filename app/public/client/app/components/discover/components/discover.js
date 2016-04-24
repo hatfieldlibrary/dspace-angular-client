@@ -15,7 +15,7 @@
                         QueryStack,
                         QuerySort,
                         AppContext,
-                        GetCommunities,
+                        GetCommunitiesForDiscover,
                         GetCollectionInfo,
                         GetCollectionsForCommunity) {
 
@@ -241,7 +241,7 @@
 
       if (AppContext.getDiscoverCommunities().length === 0) {
 
-        var items = GetCommunities.query();
+        var items = GetCommunitiesForDiscover.query();
         items.$promise.then(function (data) {
           data.unshift({id: "0", name: "All Departments"});
           AppContext.setDiscoverCommunities(data);
@@ -263,7 +263,7 @@
      */
     function getCollectionsForCommunity(id) {
 
-      if (id !== 0) {
+      if (id !== 0 && id !== '0' && id !== undefined) {
         var collections = GetCollectionsForCommunity.query({id: id});
         collections.$promise.then(function (data) {
           data.unshift({id: 0, name: 'All Collections'});

@@ -18,9 +18,13 @@ var utils = require('../core/utils');
     var site = req.params.site;
     /** @type {string} the item id from the handle */
     var item = req.params.item;
+
+    req.session.url = '/handle/'+site+'/'+item;
+
     /** @type {Object} Express session */
     var session = req.session;
-    req.session.url = '/handle/'+site+'/'+item;
+
+
 
     async.waterfall(
       [

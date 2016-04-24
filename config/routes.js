@@ -86,6 +86,8 @@ module.exports = function (app, config, passport) {
 
   app.get('/getCommunities', community.getCommunities);
 
+  app.get('/communitiesForDiscover', community.getCommunitiesForDiscover);
+
   app.get('/collectionInfo/:item', collection.getCollectionInfo);
 
   app.get('/collectionsForCommunity/:id', community.getCollections);

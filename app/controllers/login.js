@@ -26,7 +26,6 @@ var utils = require('../core/utils');
 
     var session = req.session;
 
-
     // If session does not already have DSpace token, login
     // to the DSpace REST API.
     if (!session.getDspaceToken) {
@@ -36,7 +35,6 @@ var utils = require('../core/utils');
         req)
         .then(function () {
           if(session.url !== 'undefined') {
-
             res.redirect(session.url);
           }
 
@@ -52,7 +50,7 @@ var utils = require('../core/utils');
 
 
   /**
-   * Sets local config variable.  The app configuration
+   * Returns the application environment.  The app configuration
    * includes the application key used by DSpace RestAuthentication.
    *
    * @param configuration  the app config object

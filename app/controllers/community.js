@@ -15,22 +15,35 @@
   exports.getCommunities = function (req, res) {
 
     req.session.url = '/communities';
-
     var session = req.session;
 
     models.listCommunities(res, session);
 
 
   };
-  
+
+  /**
+   * Retrieves community list without setting session url. Used
+   * by discovery.
+   * @param req
+   * @param res
+     */
+  exports.getCommunitiesForDiscover = function (req, res) {
+
+    var session = req.session;
+
+    models.listCommunities(res, session);
+
+  };
+
   exports.getCollections = function( req, res ) {
 
     var id = req.params.id;
-    
+
     var session = req.session;
 
     models.getCollectionsForCommunity(id, session)
-      
+
       .then(function (result) {
         res.send(result);
         res.end();
@@ -40,7 +53,7 @@
         console.log(err);
 
       });
-    
+
   };
 
 })();

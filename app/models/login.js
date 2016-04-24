@@ -40,7 +40,6 @@ var utils = require('../core/utils');
             // Add DSpace token to session.
             session.getDspaceToken = body;
             session.save(function (err) {
-
               if (err === null) {
                 console.log('DSpace API token: ' + session.getDspaceToken);
 

@@ -14,7 +14,13 @@ var constants = require('../core/constants');
    */
   exports.query = function (req, res) {
 
+    var type = req.body.params.asset.type;
+    var id = req.body.params.asset.id;
+    var term = req.body.params.query.terms;
+    req.session.url = '/discover/'+type+'/'+id + '/' + term;
+
     var session = req.session;
+
     console.log(req.body);
     models.solrQuery(req.body, res, session);
 
@@ -192,7 +198,7 @@ var constants = require('../core/constants');
             // to detect a change in session status and direct the user to
             // log in again.
             utils.removeDspaceSession(req.session);
-            
+
 
           }
 
