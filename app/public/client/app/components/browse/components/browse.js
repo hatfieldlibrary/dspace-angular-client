@@ -13,6 +13,7 @@
                       QueryActions,
                       QuerySort,
                       QueryFields,
+                      Utils,
                       GetCollectionInfo) {
 
     var ctrl = this;
@@ -24,10 +25,11 @@
     ctrl.rows = $routeParams.rows;
     ctrl.action = QueryActions.BROWSE;
     ctrl.offset = $routeParams.offset;
-    //ctrl.sort = $routeParams.sort;
 
 
     function init() {
+      
+      Utils.resetQuerySettings();
 
       QueryManager.setAction(QueryActions.BROWSE);
 
@@ -38,8 +40,7 @@
       QueryManager.setOffset(ctrl.offset);
 
       QueryManager.setRows(ctrl.rows);
-
-      QueryManager.setFilter('');
+      
 
 
       if (ctrl.field === QueryFields.SUBJECT) {
@@ -64,7 +65,7 @@
       var info = GetCollectionInfo.query({item: ctrl.id});
 
       info.$promise.then(function (data) {
-        console.log(data)
+        
         ctrl.collectionTitle = data.name;
         ctrl.parentName = data.parentCommunity.name;
         ctrl.parentHandle = data.parentCommunity.handle;

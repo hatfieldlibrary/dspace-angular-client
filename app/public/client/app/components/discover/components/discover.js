@@ -15,6 +15,7 @@
                         QueryStack,
                         QuerySort,
                         AppContext,
+                        Utils,
                         GetCommunitiesForDiscover,
                         GetCollectionInfo,
                         GetCollectionsForCommunity) {
@@ -121,6 +122,8 @@
 
       disc.showHints = true;
 
+      Utils.resetQuerySettings();
+
       /**
        * Input route parameters.
        */
@@ -145,8 +148,6 @@
       QueryManager.setSort(QuerySort.ASCENDING);
 
       QueryManager.setSearchTerms(disc.terms);
-
-      QueryManager.setOffset(0);
 
       QueryStack.clear();
 

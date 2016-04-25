@@ -36,6 +36,11 @@
 
   };
 
+  /**
+   * Retrieves collections that belong to the community.
+   * @param req
+   * @param res
+     */
   exports.getCollections = function( req, res ) {
 
     var id = req.params.id;

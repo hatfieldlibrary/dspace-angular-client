@@ -287,6 +287,19 @@ dspaceServices.factory('Utils', [
       return {field: field, type: type, terms: terms};
 
     };
+    
+    
+    utils.resetQuerySettings = function() {
+      
+      QueryManager.setFilter('');
+
+      QueryManager.setSearchTerms('');
+      
+      QueryManager.setOffset(0);
+      
+    };
+    
+    
 
     return utils;
 

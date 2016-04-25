@@ -12,17 +12,22 @@
 
   /*globals dspaceControllers*/
 
-  function ItemCtrl($timeout, $anchorScroll) {
+  function ItemCtrl(GetCollectionInfo) {
 
     var ctrl = this;
 
     ctrl.showMetadata = false;
+    console.log(ctrl.data)
+
+    var parent = GetCollectionInfo.query({item: ctrl.data.parentCollection.id});
+    parent.$promise.then(function(data) {
+      console.log(data)
+       ctrl.parentName = data.parentCommunity.name;
+      ctrl.parentHandle = data.parentCommunity.handle;
+    });
 
     ctrl.toggleMeta = function () {
 
-    
-
-      // Toggle
       ctrl.showMetadata = !ctrl.showMetadata;
 
     };

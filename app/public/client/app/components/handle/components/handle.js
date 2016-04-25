@@ -32,6 +32,8 @@
      */
     var init = function () {
 
+      Utils.resetQuerySettings();
+
       /** Retrieve data for the handle. */
       var query = ItemByHandle.query({site: site, item: item});
 
