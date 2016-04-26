@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/css/style.css"/>
   <!-- endbuild -->
   <!-- build:js /js/plugins/modernizr.js -->
-  <script src="/app/plugins/modernizr.optimized.js"></script>
+  <script src="bower_components/modernizr/bin/modernizr"></script>
   <!-- endbuild -->
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -46,6 +46,13 @@
     // Delete this automatic tracking...
     // ga('send', 'pageview');
   </script>
+
+  <!--[if !IE]><!--><script>
+  if (/*@cc_on!@*/false) {
+    document.documentElement.className+=' ie10';
+  }
+</script><!--<![endif]-->
+
 </head>
 
 

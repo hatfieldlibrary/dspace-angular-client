@@ -10,14 +10,14 @@
     </div>
   </md-toolbar>
 
-  <md-dialog-content layout-padding class="dialog-width" ng-class="{'large-dialog': $ctrl.isLargeScreen }">
+  <md-dialog-content layout-padding class="dialog-width" ng-class="{'large-dialog': $ctrl.isLargeScreen }" >
 
     <div id="dialog-top" style="height: 0px; padding:0;"></div>
 
-    <div layout="column" layout-fill>
+    <div layout="column" >
 
       <!-- Title, layout row-->
-      <div layout="row" layout-align="start start" layout-fill layout-margin layout-padding>
+      <div layout="row" layout-align="start start" layout-margin layout-padding>
 
         <div flex="20"  hide show-gt-md ></div>
         <div class="dialog-column-padding" flex>
@@ -29,13 +29,13 @@
       <md-divider style="padding-bottom: 0px;"></md-divider>
 
       <!-- Main content area, layout row < lg, layout column > md -->
-      <div layout="row" layout-align="start start" layout-fill layout-margin>
+      <div layout="row" layout-align="start start" layout-margin >
 
         <div hide show-gt-md flex="20">
 
           <!-- Files, gt-md -->
           <div layout="column">
-            <div class="file-info" layout="column" layout-fill layout-align="start start" layout-align-xs="start"
+            <div class="file-info" layout="column"  layout-align="start start" layout-align-xs="start"
                  ng-repeat="stream in $ctrl.data.bitstreams"
                  ng-if="stream.bundleName==='ORIGINAL'">
               <md-button class="md-subhead" target="_top" href="/bitstream/{{stream.id}}/{{stream.name}}">
@@ -60,12 +60,12 @@
         </div>
 
 
-        <div layout="column" layout-padding>
+        <div layout="column" style="width: 100%" layout-padding>
 
-          <div class="dialog-column-padding" layout="column" layout-fill>
+          <div class="dialog-column-padding" layout="column" >
 
             <!-- Byline and citation -->
-            <div layout-xs="column" layout-fill layout-gt-xs="row">
+            <div layout-xs="column" layout-gt-xs="row">
               <div class="dialog-column-padding" layout="column">
                 <p class="md-title">{{$ctrl.data.author}}</p>
                 <span class="md-body-1">Publication Date</span>
@@ -78,7 +78,7 @@
             <md-divider hide-gt-md style="margin: 18px 0;"></md-divider>
 
             <!-- Files, lt-lg -->
-            <div hide-gt-md layout="column" layout-align="start start" flex="100" flex-gt-md="25">
+            <div hide-gt-md  style="width: 140px" layout="column" layout-align="start start" flex="100" flex-gt-md="25">
               <div class="file-info" layout="row" layout-align="center" layout-align-xs="start"
                    ng-repeat="stream in $ctrl.data.bitstreams"
                    ng-if="stream.bundleName==='ORIGINAL'">
