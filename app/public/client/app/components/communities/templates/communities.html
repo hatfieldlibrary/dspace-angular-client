@@ -1,6 +1,4 @@
-
-
-<div class="layout-padding" flex>
+<div layout="column" layout-fill layout-align="start start" style="max-width: 100%;height:100%;box-sizing:border-box;" layout-padding>
 
   <div layout-fill class="spinner" ng-hide="$ctrl.ready">
     <div layout="row" layout-fill layout-sm="column" layout-align="space-around">
@@ -8,30 +6,29 @@
     </div>
   </div>
 
-  <div class="page-title">
+  <div class="page-title" ng-hide="!$ctrl.ready">
     <div class="md-display-1 item-title">Departments</div>
 
   </div>
 
-  <md-card class="main-card md-hue-1" flex>
+  <md-card class="main-card md-hue-1" style="max-width:100%;" ng-hide="!$ctrl.ready">
 
-    <div layout="column" layout-align="center center">
+    <!--<div layout="column" layout-align="center center" style="min-width: 100%;">-->
 
-      <md-card-content class="inner-width" flex>
-        <p class="md-subhead">These academic departments maintain collections in the Academic Commons.
+      <md-card-content  style="max-width:100%;">
+        <div class="md-subhead">These academic departments maintain collections in the Academic Commons.
           You can browse their collections by selecting the department name.  Note that many collections are
-          only visible after logging in with your Willamette University credentials.</p>
-        <div layout="column" layout-align="center left">
-          <div class="md-subhead" ng-bind-html="$ctrl.data.introductoryText"></div>
-          <md-content>
+          only visible after logging in with your Willamette University credentials.</div>
+        <!--<div layout="column" layout-fill layout-align="start start" style="max-width:100%;height:100%">-->
+          <md-content style="max-width:100%;">
             <community-item-component ng-repeat="comm in $ctrl.communities" handle="{{comm.handle}}" name="{{comm.name}}" last="$last">
             </community-item-component>
           </md-content>
 
-        </div>
+        <!--</div>-->
 
       </md-card-content>
-    </div>
+    <!--</div>-->
 
   </md-card>
 

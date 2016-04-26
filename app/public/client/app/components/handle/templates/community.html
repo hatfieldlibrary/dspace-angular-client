@@ -1,13 +1,10 @@
-<div flex="100" layout-fill layout-padding>
+<div flex="100" layout="column" layout-align="top top" layout-fill layout-padding>
 
   <div layout="column" class="page-title">
     <div>
       <div class="md-display-1 item-title">{{$ctrl.data.name}}</div>
     </div>
-    <div layout="row" layout-align="left center" ng-hide="$ctrl.hideLoginMessage">
-      <div layout-fill>Login to see additional collections.</div>
-      <login-component></login-component>
-    </div>
+
   </div>
 
   <md-card class="main-card md-hue-1" flex>
@@ -19,6 +16,12 @@
 
         <div layout="column" layout-align="center left">
           <div class="md-subhead" ng-bind-html="$ctrl.data.introductoryText"></div>
+
+          <md-content layout-padding layout="row" layout-align="left center" ng-hide="$ctrl.hideLoginMessage">
+            <div class="md-subhead" layout-fill>Login to see additional collections.</div>
+            <login-component></login-component>
+          </md-content>
+          <md-divider></md-divider>
 
           <md-content layout-padding>
             <collection-item-component ng-repeat="coll in $ctrl.data.items" title="{{coll.name}}"

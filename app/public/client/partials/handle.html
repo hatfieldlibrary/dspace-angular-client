@@ -1,4 +1,4 @@
-<header-component></header-component>
+<header-component style="width: 100%"></header-component>
 
 <!-- Without explicit height, Firefox (44.0.1) does not calculate the height of the flex container. -->
 <div style="height: 100%;">
@@ -7,7 +7,7 @@
 
     <div layout="column" flex="100" layout-fill layout-align="top" class="top-highlight">
 
-      <div layout-xs="column" flex layout-fill layout-gt-xs="row" layout-align="center">
+      <div layout-xs="column" flex="100" layout-fill layout-gt-xs="row" layout-align="center">
 
         <div layout="row" class="content-width">
 
@@ -19,7 +19,8 @@
       </div>
     </div>
 
-    <div flex>
+    <div >
+
       <footer layout="row" id="footer" layout-align="center center" class="footer">
         <div layout-fill class="footer-background content-width">
           <div layout="row" layout-align="center center" class="footer-main-nav">

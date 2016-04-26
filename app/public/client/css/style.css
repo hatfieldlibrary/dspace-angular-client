@@ -1,15 +1,3 @@
-@media screen and (min-width:0) {
-  span[flex], md-card-content, md-dialog-content {
-  display: block;
-}
-}
-
-.ie10 span[flex] { display: block; }
-.ie10 md-dialog { padding: 0px 20px;}
-.ie10 .ie10FixDivWithSidenav {
-  display: inline-block;
-  width: calc(100% - 280px);
-}
 
 html {
   height: 100%;
@@ -66,7 +54,8 @@ md-sidenav.md-locked-open {
 }
 
 .content-width {
-  max-width: 950px;
+  max-width: 950px !important;
+  box-sizing:border-box;
 }
 
 .dialog-width {
