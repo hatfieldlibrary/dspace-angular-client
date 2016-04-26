@@ -16,11 +16,9 @@
     <!--<div layout="column" layout-align="center center" style="min-width: 100%;">-->
 
       <md-card-content  style="max-width:100%;">
-        <div class="md-subhead">These academic departments maintain collections in the Academic Commons.
-          You can browse their collections by selecting the department name.  Note that many collections are
-          only visible after logging in with your Willamette University credentials.</div>
+        <div class="md-subhead">{{$ctrl.intro}}</div>
         <!--<div layout="column" layout-fill layout-align="start start" style="max-width:100%;height:100%">-->
-          <md-content style="max-width:100%;">
+          <md-content style="max-width:100%;margin-top: 20px;">
             <community-item-component ng-repeat="comm in $ctrl.communities" handle="{{comm.handle}}" name="{{comm.name}}" last="$last">
             </community-item-component>
           </md-content>
