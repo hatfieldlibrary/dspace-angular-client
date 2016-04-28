@@ -5,7 +5,13 @@
 
 (function () {
 
-  function CollectionItemCtrl() {
+  function CollectionItemCtrl($location) {
+    
+    var ctrl = this;
+    
+    ctrl.openCollectionHandle = function(handle) {
+      $location.path('/handle/' + handle);
+    };
 
   }
 
@@ -18,14 +24,7 @@
       last: '=',
       id: '@'
     },
-    template:
-    '<div layout-padding>' +
-    '<div class="md-title">' +
-    '<a href="/handle/{{$ctrl.handle}}">{{$ctrl.title}}</a>' +
-    '</div>' +
-    '<p ng-bind-html="$ctrl.description" class="md-subhead"></p>' +
-    '</div>' +
-    '<md-divider  ng-if="!$ctrl.last"></md-divider>',
+    templateUrl: '/shared/templates/lists/collectionItem.html',
     controller: CollectionItemCtrl
 
   });

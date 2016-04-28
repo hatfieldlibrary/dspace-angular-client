@@ -12,6 +12,7 @@ dspaceServices.factory('Utils', [
   'QueryActions',
   'QueryFields',
   'AssetTypes',
+  'QuerySort',
   'QueryTypes',
 
   function (QueryManager,
@@ -20,6 +21,7 @@ dspaceServices.factory('Utils', [
             QueryActions,
             QueryFields,
             AssetTypes,
+            QuerySort,
             QueryTypes) {
 
     var utils = {};
@@ -287,19 +289,42 @@ dspaceServices.factory('Utils', [
       return {field: field, type: type, terms: terms};
 
     };
-    
-    
+
+
     utils.resetQuerySettings = function() {
-      
+
       QueryManager.setFilter('');
 
       QueryManager.setSearchTerms('');
-      
+
+      QueryManager.setSort(QuerySort.ASCENDING);
+
       QueryManager.setOffset(0);
-      
+
     };
-    
-    
+
+      /**
+       * Returns the number of original files in an array
+       * of bitstream objects.
+       * @param streams  stream object from DSpace API
+       * @returns {number}
+       */
+    utils.getFileCount = function(streams) {
+
+      console.log(streams);
+
+      var count = 0;
+      for (var i = 0; i < streams.length; i++) {
+        if (streams[i].bundleName === 'ORIGINAL') {
+          console.log('inc')
+          count++;
+        }
+      }
+      return count;
+
+    };
+
+
 
     return utils;
 

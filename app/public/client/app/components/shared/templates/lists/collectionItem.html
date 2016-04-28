@@ -1,3 +1,17 @@
-<p><a href="{{$ctrl.handle}}">{{$ctrl.title}}</a>{{$ctrl.title}}</p>
-<p>{{$ctrl.description}}</p>
+<md-list-item flex="100" class="md-3-line" ng-click="$ctrl.openCollectionHandle($ctrl.handle)">
+
+  <div class="md-list-item-text">
+
+    <div layout="column" flex="100" style="max-width: 100%;" class="md-list-item-text" layout-padding layout-fill>
+
+      <div class="list-highlight">
+        {{$ctrl.title}}
+      </div>
+      <div class="md-subhead" ng-bind-html="$ctrl.description"></div>
+
+    </div>
+  </div>
+
+  <md-divider ng-if="!$ctrl.last"></md-divider>
+</md-list-item>
 

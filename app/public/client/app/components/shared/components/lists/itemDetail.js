@@ -17,6 +17,7 @@
   function DialogCtrl($mdDialog,
                       $mdMedia,
                       $timeout,
+                      Utils,
                       $anchorScroll,
                       data) {
 
@@ -26,9 +27,8 @@
      * The item data to show.
      */
     ctrl.data = data;
-
-    ctrl.isLargeScreen = ($mdMedia('lg') || $mdMedia('xl'));
-
+    
+    ctrl.isLargeScreen = $mdMedia('gt-sm');
     /**
      * Controls whether or not metadata is shown in the view.
      * @type {boolean}
@@ -41,6 +41,14 @@
     ctrl.cancel = function () {
       $mdDialog.cancel();
     };
+
+    /**
+     * Get the number of bitstreams for this item.
+     */
+    ctrl.data.$promise.then(function() {
+      ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
+    });
+
 
     /**
      * Toggles the metadata view.

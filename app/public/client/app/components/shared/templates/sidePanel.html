@@ -1,4 +1,3 @@
-
 <md-sidenav class="md-sidenav-right" md-component-id="right" md-is-locked-open="$mdMedia('gt-md')"
             ng-class="{'transparent': $ctrl.greaterThanMd()}">
 
@@ -16,11 +15,12 @@
 
     <div layout="column" layout-padding layout-align="center left">
       <md-divider></md-divider>
-      <a ng-href="/communities" class="md-subhead">View all Departments</a>
+      <a ng-if="$ctrl.type!='global'" ng-href="/communities" class="md-subhead">View all Departments</a>
 
     </div>
 
-    <search-box-component ng-if="$ctrl.type!='global' && $ctrl.type!='discover'" type="{{$ctrl.type}}" id="{{$ctrl.id}}"></search-box-component>
+    <search-box-component ng-if="$ctrl.type!='global' && $ctrl.type!='discover'" type="{{$ctrl.type}}"
+                          id="{{$ctrl.id}}"></search-box-component>
 
     <global-search-box-component ng-if="$ctrl.type=='global'"></global-search-box-component>
 

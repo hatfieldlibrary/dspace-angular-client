@@ -1,8 +1,8 @@
-<md-content md-default layout-padding>
+<div layout-padding>
 
   <h2 class="md-title" ng-if="$ctrl.isBrowseContext()">Browsing: {{$ctrl.browseTerms}}</h2>
 
-  <sort-options-component ng-if="$ctrl.context!='discover'"
+  <sort-options-component ng-if="$ctrl.context!='discover' && $ctrl.count > 20"
                           context="{{$ctrl.context}}"
                           on-update="$ctrl.onUpdate(results, count, field)"
                           reset-list-view ="$ctrl.resetListView()">
@@ -10,18 +10,17 @@
 
   <discover-filter-container ng-if="$ctrl.context=='discover'"
                           on-update="$ctrl.onUpdate(results, count, field)" >
-
   </discover-filter-container>
 
-  <div class="md-body-1 md-accent">Viewing {{$ctrl.count}} items.</div>
+  <div ng-if="$ctrl.count <= 20" class="md-body-1 md-accent" style="padding-top: 30px;">Viewing {{$ctrl.count}} items.</div>
+
+  <div ng-if="$ctrl.count > 20" class="md-body-1 md-accent">Viewing {{$ctrl.count}} items.</div>
 
   <md-divider></md-divider>
 
-</md-content>
 
-<md-content>
 
-  <div layout="column">
+  <div flex="100" layout-fill layout="column" style="min-height: 100%;margin-top: -33px;">
 
     <pager-back-component ng-if="$ctrl.showPager"
 
@@ -104,6 +103,6 @@
 
     <p>&nbsp;</p>
   </div>
-</md-content>
+</div>
 
 

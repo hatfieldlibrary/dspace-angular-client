@@ -42,11 +42,15 @@ a, a:visited {
   min-height: 650px;
 }
 
-.inner-width {
+.list-width {
   max-width: 800px;
 }
 .app-side-nav {
-  margin-top: 90px;
+  margin-top: 102px;
+}
+
+.app-primary-content-container {
+  margin-top: 10px;
 }
 
 md-sidenav.md-locked-open {
@@ -80,7 +84,7 @@ md-toolbar:not(.md-menu-toolbar) .md-button:not(.md-raised) {
 }
 
 md-list-item.md-2-line .md-list-item-text {
-  padding: 14px 6px;
+  /*padding: 14px 6px;*/
   min-height: 20px;
   border: 0;
   outline: 0;
@@ -95,7 +99,7 @@ md-dialog.item-details {
   max-width: 1100px;
 }
 .dialog-column-padding {
-  padding: 0px 12px;
+  padding: 0px 12px !important;
 }
 
 .nav-login {
@@ -119,7 +123,7 @@ md-dialog.item-details {
 }
 
 .parent-title {
-  line-height: 18px;
+  line-height: 21px;
 }
 
 .background-highlight {
@@ -129,6 +133,10 @@ md-dialog.item-details {
 
 discover-filter-component .sort-options {
   margin-top: -15px;
+}
+
+collection-component md-content {
+  background: transparent;
 }
 
 .discover-item em {
@@ -141,6 +149,9 @@ discover-filter-component .sort-options {
 .list-highlight {
   cursor: pointer;
   color: #8F0100 !important;
+  padding-top: 10px;
+  border: 0;
+  outline: none;
 }
 
 .search-form {

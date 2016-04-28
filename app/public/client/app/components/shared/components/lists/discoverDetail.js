@@ -19,11 +19,12 @@
                       $mdMedia,
                       $timeout,
                       $anchorScroll,
+                      Utils,
                       data) {
 
     var ctrl = this;
 
-    ctrl.isLargeScreen = ($mdMedia('lg') || $mdMedia('xl'));
+    ctrl.isLargeScreen = $mdMedia('gt-sm');
 
     /**
      * The item data to show.
@@ -42,6 +43,13 @@
     ctrl.cancel = function () {
       $mdDialog.cancel();
     };
+
+    /**
+     * Get the number of bitstreams for this item.
+     */
+    ctrl.data.$promise.then(function() {
+      ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
+    });
 
     /**
      * Toggles the metadata view.

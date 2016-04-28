@@ -18,7 +18,7 @@
 
     QueryStack.clear();
 
-    console.log(ctrl)
+    
 
     if (ctrl.data.countItems === ctrl.data.itemTotal) {
       ctrl.hideLoginMessage = true;

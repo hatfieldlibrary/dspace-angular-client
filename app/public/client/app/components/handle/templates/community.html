@@ -1,43 +1,48 @@
-<div flex="100" layout="column" layout-align="top top" layout-fill layout-padding>
+<div layout="column" layout-fill layout-align="start start" style="max-width: 100%;height:100%;box-sizing:border-box;" layout-padding>
 
-  <div layout="column" class="page-title">
-    <div>
-      <div class="md-display-1 item-title">{{$ctrl.data.name}}</div>
-    </div>
+
+  <div class="page-title" >
+    <div class="md-display-1 item-title">{{$ctrl.data.name}}</div>
 
   </div>
 
-  <md-card class="main-card md-hue-1" flex>
+  <md-card class="main-card md-hue-1" style="max-width:100%;" >
 
     <img ng-src="/images/bio_header.jpg" class="md-card-image" alt="image caption">
 
-    <div layout="column" layout-align="center center">
-      <md-card-content class="inner-width" flex>
+    <md-card-content  style="max-width:100%;">
 
-        <div layout="column" layout-align="center left">
-          <div class="md-subhead" ng-bind-html="$ctrl.data.introductoryText"></div>
+      <div layout="column" layout-align="center left">
 
-          <md-content layout-padding layout="row" layout-align="left center" ng-hide="$ctrl.hideLoginMessage">
-            <div class="md-subhead" layout-fill>Login to see additional collections.</div>
-            <login-component></login-component>
-          </md-content>
-          <md-divider></md-divider>
+        <div class="md-subhead" ng-bind-html="$ctrl.data.introductoryText"></div>
 
-          <md-content layout-padding>
-            <collection-item-component ng-repeat="coll in $ctrl.data.items" title="{{coll.name}}"
-                                       description="{{coll.introductoryText}}" handle="{{coll.handle}}"
-                                       last="$last"></collection-item-component>
+        <md-content layout-padding layout="row" layout-align="left center" ng-hide="$ctrl.hideLoginMessage">
+          <div class="md-subhead" layout-fill>Login to see additional collections.</div>
+          <login-component></login-component>
+        </md-content>
 
-          </md-content>
+
+        <div style="margin-top: 30px;">
+
+          <collection-item-component ng-repeat="coll in $ctrl.data.items" title="{{coll.name}}"
+                                     description="{{coll.introductoryText}}" handle="{{coll.handle}}"
+                                     last="$last"></collection-item-component>
 
         </div>
-        <p>&nbsp;</p>
 
-      </md-card-content>
-    </div>
+        </md-content>
+
+      </div>
+      <p>&nbsp;</p>
+    </md-card-content>
+
 
   </md-card>
 
 
 </div>
+
+
+
+
 

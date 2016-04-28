@@ -17,12 +17,10 @@
     var ctrl = this;
 
     ctrl.showMetadata = false;
-    console.log(ctrl.data)
 
     var parent = GetCollectionInfo.query({item: ctrl.data.parentCollection.id});
-    parent.$promise.then(function(data) {
-      console.log(data)
-       ctrl.parentName = data.parentCommunity.name;
+    parent.$promise.then(function (data) {
+      ctrl.parentName = data.parentCommunity.name;
       ctrl.parentHandle = data.parentCommunity.handle;
     });
 
