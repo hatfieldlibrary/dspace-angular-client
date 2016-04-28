@@ -12,7 +12,6 @@ var dspaceApp = angular.module('dspaceApp', [
   'ngMessages',
   'ngAria',
   'dspaceServices',
-  'dspaceDirectives',
   'dspaceComponents',
   'dspaceContext',
   'angulartics',

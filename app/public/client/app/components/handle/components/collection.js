@@ -16,10 +16,11 @@
 
     function init() {
 
-      QueryStack.pop();
+     // QueryStack.pop();
+
+      console.log(QueryStack)
 
       if (QueryStack.isEmpty()) {
-        console.log('is empty');
         doInitialization();
 
       } else {
@@ -44,9 +45,9 @@
        * Set query type to title list.
        */
       QueryManager.setQueryType(QueryTypes.TITLES_LIST);
-      
 
-     // QueryStack.push(QueryManager.getQuery());
+
+      QueryStack.push(QueryManager.getQuery());
 
       QueryStack.print();
     }

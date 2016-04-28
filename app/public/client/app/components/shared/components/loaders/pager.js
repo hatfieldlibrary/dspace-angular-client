@@ -13,7 +13,6 @@
                      Utils,
                      QueryManager,
                      AppContext,
-                     QueryStack,
                      QueryActions) {
 
 
@@ -89,10 +88,10 @@
        * Update the query stack. Subsequent paging
        * requests to not update the stack.
        */
-      QueryStack.push(QueryManager.getQuery());
+
       updateList(QueryManager.getOffset());
 
-      QueryStack.print();
+
     }
 
     init();
@@ -216,11 +215,9 @@
      * @param data the next set if items.
      */
     function updateParent(data) {
-      console.log('pager update')
+
 
       AppContext.setCount(data.count);
-
-      QueryStack.replaceWith(QueryManager.context.query);
 
       ctrl.onUpdate({
 

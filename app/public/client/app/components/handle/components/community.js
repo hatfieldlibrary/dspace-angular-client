@@ -10,16 +10,11 @@
    * Community view controller.
    */
 
-  /*globals dspaceControllers*/
-
-  function CommunityCtrl(QueryStack) {
+  function CommunityCtrl() {
 
     var ctrl = this;
 
-    QueryStack.clear();
-
     
-
     if (ctrl.data.countItems === ctrl.data.itemTotal) {
       ctrl.hideLoginMessage = true;
     }

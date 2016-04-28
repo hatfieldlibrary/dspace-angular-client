@@ -12,11 +12,15 @@
    * @param ItemDialogFactory
    * @constructor
      */
-  
+
   function DiscoverDetailCtrl($scope, $mdMedia, ItemDialogFactory) {
-    
+
     var ctrl = this;
-    
+
+    if (ctrl.description !== undefined) {
+      ctrl.description[0] += ' ... ';
+    }
+
     /**
      * Sets fullscreen view via media query.
      */
@@ -25,6 +29,7 @@
     }, function (wantsFullScreen) {
       $scope.customFullscreen = wantsFullScreen;
     });
+
 
 
     /**

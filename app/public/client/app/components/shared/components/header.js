@@ -6,7 +6,7 @@
 
 (function () {
 
-  function HeaderCtrl(AppContext) {
+  function HeaderCtrl(AppContext, AppConfig, $window) {
 
     var ctrl = this;
 
@@ -17,6 +17,10 @@
       open = !open;
       AppContext.setMenu(open);
     };
+
+    ctrl.goToHome = function() {
+      $window.location.href = AppConfig.HOME_LINK;
+    }
 
   }
 

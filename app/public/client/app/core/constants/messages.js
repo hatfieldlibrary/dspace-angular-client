@@ -1,5 +1,6 @@
 /**
- * Created by mspalti on 4/26/16.
+ * This module defines text strings used throughout the application view.  Changes to
+ * these values will change the corresponding UI elements.
  */
 
 'use strict';
@@ -21,6 +22,8 @@
     SEARCHBOX_ALL: 'All Collections',
 
     SEARCHBOX_SEARCH_TEXT_LABEL: 'Enter Search Terms',
+    
+    SEARCHBOX_BUTTON_LABEL: 'Search',
 
     ADVANCED_SEARCH_COMMUNITY_LABEL: 'Choose Department or Collection Area',
 

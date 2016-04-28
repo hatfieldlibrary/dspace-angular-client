@@ -1,5 +1,5 @@
 /**
- * Created by mspalti on 2/23/16.
+ * Factory for untility methods that help to keep component controllers lean.
  */
 
 'use strict';

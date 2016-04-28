@@ -13,7 +13,7 @@
     var ctrl = this;
 
     ctrl.ready = false;
-    
+
     ctrl.resultCountLabel = Messages.RESULTS_LABEL;
 
     if (ctrl.context === 'browse') {
@@ -67,7 +67,6 @@
       ctrl.items = results;
       ctrl.count = count;
       ctrl.field = field;
-      console.log('filter')
       console.log(ctrl.items)
 
     };
@@ -84,14 +83,12 @@
       addResults(results);
       ctrl.count = count;
       ctrl.field = field;
-      console.log('pager')
-      console.log(ctrl.items)
 
     };
 
     ctrl.onPreviousUpdate = function (results, index) {
 
-      if (index == 0) {
+      if (index === 1) {
         ctrl.showPager = false;
       }
       addPreviousResults(results);

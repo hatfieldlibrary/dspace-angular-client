@@ -1,5 +1,6 @@
 /**
- * Created by mspalti on 4/7/16.
+ * The application context service is a place for storing and updating
+ * objects that the application needs to maintain state.
  */
 
 'use strict';
@@ -42,17 +43,13 @@
         openMenu: false,
 
         pager: false,
-        
+
         discoveryCommunities: []
 
       },
 
       getContext: function () {
         return this.context;
-      },
-
-      getCurrentIndex: function () {
-        return this.context.currentListIndex;
       },
 
       setCurrentIndex: function (index) {
@@ -107,19 +104,17 @@
       },
 
       setPager: function (showPager) {
-        console.log('app context pager to ' + showPager
-        )
         this.context.pager = showPager;
       },
 
       getPager: function () {
         return this.context.pager;
       },
-      
+
       setDiscoverCommunities: function(arr) {
         this.context.discoveryCommunities = arr;
       },
-      
+
       getDiscoverCommunities: function() {
         return this.context.discoveryCommunities;
       }

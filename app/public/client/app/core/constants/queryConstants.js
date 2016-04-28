@@ -1,10 +1,20 @@
 /**
- * Created by mspalti on 3/3/16.
+ * The values defined in this module are used in the construction
+ * of queries.  There is no need to edit these values in normal circumstances.
+ * Since many of the constants defined here are mirrored on the server,
+ * changes to this file will have an immediate impact on queries.  In short,
+ * the values here are meant to stay unchanged!
+ * 
+ * The one exception are the 'label' elements in the various mapping constants.
+ * These labels appear in the user interface select inputs and can be
+ * modified without affecting functionality. When editing the map objects, do not
+ * change the 'value' elements.
  */
 
+'use strict';
 
 (function () {
-  
+
   var authorSearch = 'authorFacets';  
   var subjectSearch = 'subjectFacets';
   var titleList = 'allTitlesBrowse';

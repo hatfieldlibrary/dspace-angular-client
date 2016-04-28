@@ -2,7 +2,7 @@
 
   <md-toolbar>
     <div class="md-toolbar-tools">
-      <h2>Item</h2>
+      <h2>{{$ctrl.pageHeader}}</h2>
       <span flex></span>
       <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
         <md-icon aria-label="Close dialog" md-font-library="material-icons">cancel</md-icon>
@@ -10,17 +10,16 @@
     </div>
   </md-toolbar>
 
-  <md-dialog-content class="dialog-width" ng-class="{'large-dialog': $ctrl.isLargeScreen }" >
-
+  <md-dialog-content  class="dialog-width" ng-class="{'large-dialog': $ctrl.isLargeScreen }" >
 
     <div id="dialog-top" style="height: 0px; padding:0;"></div>
 
-    <div layout="column" >
+    <div layout-fill>
 
       <!-- Title, layout row-->
       <div layout="row" layout-align="start start" layout-margin>
 
-        <div flex="20" hide show-gt-md ></div>
+        <div flex="20" hide show-gt-md class="item-left-col-width"></div>
         <div flex="100" flex-gt-md="80" layout="column" layout-margin >
           <div class="md-headline">{{$ctrl.data.name}}</div>
         </div>
@@ -30,11 +29,13 @@
       <md-divider style="padding-bottom: 0px;"></md-divider>
 
       <!-- Main content area, layout row < lg, layout column > md -->
-      <div layout="row" layout-align="start start"  layout-margin layout-padding>
+      <div >
 
-        <div hide show-gt-md flex="20">
+      <div layout="row" layout-align="start start" flex="100" style="height:100%" layout-margin layout-padding>
 
-          <div class="md-caption" style="padding-left: 12px;">Files ({{$ctrl.fileCount}})</div>
+        <div hide show-gt-md flex="20" class="item-left-col-width">
+
+          <div class="md-caption" style="padding-left: 12px;">{{$ctrl.filesLabel}} ({{$ctrl.fileCount}})</div>
 
           <!-- Files, gt-md -->
           <div layout="column"  layout-fill>
@@ -45,8 +46,8 @@
                 <md-icon md-font-library="material-icons">file_download</md-icon>
                 Download File
               </md-button>
-              <div style="padding-left: 30px;max-width: 162px;">
-                <div class="md-subhead" aria-label="{{stream.description}}">{{stream.description}}
+              <div style="padding-left: 30px;max-width: 142px;">
+                <div class="md-subhead file-name" aria-label="{{stream.description}}">{{stream.description}}
                 </div>
                 <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis;margin-top: 3px;"
                      aria-label="{{stream.name}}">{{stream.name}}
@@ -66,12 +67,12 @@
         <div layout="column" flex="100" flex-gt-sm="80" style="max-width:100%;box-sizing:border-box">
 
             <!-- Byline and citation -->
-              <div layout="column" layout-align="start start" style="max-width:100%;box-sizing:border-box">
+              <div layout="column" layout-align="start start" style="max-width:100%;box-sizing:border-box;">
                 <!-- IE 10/11 style hack -->
-                <div class="md-title" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.author}}</div>
-                <div class="md-body-1">Publication Date</div>
+                <div class="md-title byline" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.author}}</div>
+                <div class="md-body-1">{{$ctrl.publicationLabel}}</div>
                 <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.date}}</div>
-                <div class="md-body-1">Link Citation</div>
+                <div class="md-body-1 citation-margin">{{$ctrl.citationLabel}}</div>
                 <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.url}}</div>
               </div>
 
@@ -106,22 +107,23 @@
             <md-divider hide-gt-md style="margin: 26px 0;"></md-divider>
 
             <!-- abstract and metadata -->
-            <div style="padding-top: 20px;" layout="column">
-              <div ng-if="$ctrl.data.description.length > 0" class="md-title">Abstract / Description</div>
+            <div class="abstract" layout="column">
+              <div ng-if="$ctrl.data.description.length > 0" class="md-title">{{$ctrl.abstractLabel}}</div>
               <div>{{$ctrl.data.description}}</div>
               <div id="metadata"></div>
               <h3>
+                {{$ctrl.metadataLabel}}
                 <md-button class="md-subhead md-fab md-mini md-accent" style="color: #fff;"
                            ng-click="$ctrl.toggleMeta();"
                            ng-if="!$ctrl.showMetadata">
                   <md-icon md-font-library="material-icons">expand_more</md-icon>
                 </md-button>
+
                 <md-button class="md-subhead md-fab md-mini md-accent" style="color: #fff;"
                            ng-click="$ctrl.toggleMeta();"
                            ng-if="$ctrl.showMetadata">
                   <md-icon md-font-library="material-icons">expand_less</md-icon>
                 </md-button>
-                Metadata
               </h3>
               <div layout="column" style="margin-top: 4px;" ng-repeat="meta in $ctrl.data.metadata"
                    ng-show="$ctrl.showMetadata">
@@ -131,7 +133,7 @@
               <p></p>
               <p></p>
             </div>
-
+          </div>
 
         </div>
       </div>

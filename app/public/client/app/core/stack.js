@@ -1,19 +1,22 @@
 /**
- * Created by mspalti on 4/7/16.
+ * This stack is used to maintain query history.  History is needed
+ * only when the user follows a link from a list of items in the collection
+ * view to a new view for browsing items (e.g. a long list of items classified 
+ * under a subject).  Since this is the only time that knowledge of the previous
+ * query is needed for back navigation, a stack is not actually necessary, but it works
+ * for the current requirement and might be useful if new requirements emerge.
  */
 'use strict';
 
 (function () {
 
-  dspaceContext.factory('QueryStack', ['QueryManager', function (QueryManager) {
+  dspaceContext.factory('QueryStack', function () {
 
     var stack = {};
 
     stack.queries = [];
 
     stack.push = function (query) {
-
-      console.log('push');
 
       (function () {
         var q = makeCopy(query);
@@ -23,38 +26,31 @@
     };
 
     stack.pop = function () {
-      console.log('pop');
       return stack.queries.pop();
     };
 
     stack.peek = function () {
-      console.log('peek')
       return queries[stack.queries.length - 1];
     };
 
     stack.replaceWith = function (queryObject) {
-      console.log('replace')
       stack.queries.pop();
       (function () {
         var q = makeCopy(queryObject);
         stack.queries.push(q)
       })(queryObject);
 
-
     };
 
     stack.isEmpty = function () {
-      console.log('is empty')
       return stack.queries.length === 0;
     };
 
     stack.size = function () {
-      console.log('size')
       return stack.queries.length;
     };
 
     stack.clear = function () {
-      console.log('clear')
       stack.queries = [];
     };
 
@@ -85,5 +81,6 @@
     return stack;
 
 
-
-  }])})();
+  });
+  
+})();

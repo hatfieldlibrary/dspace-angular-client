@@ -1,5 +1,6 @@
 /**
- * Created by mspalti on 4/28/16.
+ * Factory provides a public showItem method that launches the
+ * $mdDialog.
  */
 
 'use strict';
@@ -8,37 +9,38 @@
 
 
   dspaceServices.factory('ItemDialogFactory', [
-    
+
     '$mdDialog',
     '$mdMedia',
     'ItemById',
 
-    function (
-              $mdDialog,
+    function ($mdDialog,
               $mdMedia,
               ItemById) {
 
       /**
-       * The dialog controller.
-       * @param $mdDialog
+       * Dialog controller.
+       * @param $mdDialog the angular material dialog directive
+       * @param Utils  utility methods
+       * @param Messages  text strings used in dialog
+       *  @param $mdMedia
        * @param $timeout
        * @param $anchorScroll
-       * @param data
        * @constructor
        */
       function DialogController($mdDialog,
-                                $mdMedia,
-                                $timeout,
                                 Utils,
                                 Messages,
-                                $anchorScroll) {
+                                $anchorScroll,
+                                $mdMedia,
+                                $timeout) {
 
         var ctrl = this;
 
         /**
-         * The item data to show.
+         * Set label values.
          */
-        //ctrl.data = data;
+        ctrl.pageHeader = Messages.ITEM_DIALOG_HEADER;
 
         ctrl.filesLabel = Messages.ITEM_FILES_LABEL;
 
@@ -50,6 +52,9 @@
 
         ctrl.metadataLabel = Messages.ITEM_METADATA_LABEL;
 
+        /**
+         * Set screen size boolean.
+         */
         ctrl.isLargeScreen = $mdMedia('gt-sm');
         /**
          * Controls whether or not metadata is shown in the view.
@@ -77,7 +82,7 @@
          */
         ctrl.toggleMeta = function () {
 
-          // Add a brief timeout before scrolling to
+          // A brief timeout before scrolling to
           // position.
           $timeout(function () {
 
@@ -123,7 +128,7 @@
 
       };
 
-      return { showItem: showItem };
+      return {showItem: showItem};
 
     }
 

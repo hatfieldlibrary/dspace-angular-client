@@ -44,7 +44,6 @@
     disc.textLabel = Messages.ADVANCED_SEARCH_TEXT_LABEL;
 
     disc.submitLabel = Messages.ADVANCED_SEARCH_SUBMIT_LABEL;
-    
 
 
     /**

@@ -1,16 +1,15 @@
-<md-list-item class="discover-item" flex ng-click="$ctrl.showItem($event, $ctrl.id)">
+<md-list-item class="discover-item" ng-click="$ctrl.showItem($event, $ctrl.id)">
 
-  <div layout="column" class="md-list-item-text" layout-fill>
+  <div class="md-list-item-text" layout-fill layout-padding>
 
     <div class="list-highlight" ng-if="$ctrl.title.length > 0" ng-bind-html="$ctrl.title"></div>
-
-    <div class="list-highlight" ng-if="$ctrl.title.length == 0"  ng-bind-html="$ctrl.defaultTitle"></div>
-
-    <div class="md-body-1" ng-repeat="desc in $ctrl.description" ng-bind-html="desc"></div>
-
+    <div class="list-highlight" ng-if="$ctrl.title.length == 0" ng-bind-html="$ctrl.defaultTitle"></div>
+    <div>
+      <span class="md-body-1" ng-repeat="desc in $ctrl.description" ng-bind-html="desc"></span>
+    </div>
   </div>
 
-  <md-divider  ng-if="!$ctrl.last"></md-divider>
+  <md-divider ng-if="!$ctrl.last"></md-divider>
 
 </md-list-item>
 

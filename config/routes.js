@@ -100,16 +100,13 @@ module.exports = function (app, config, passport) {
 
   app.get('/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', solr.browse);
 
-  //app.get('/solrQuery/:type/:id/:terms', solr.discover);
-
   app.post('/solrQuery', solr.query);
 
   app.post('/solrJumpToQuery', solr.jumpTo);
 
+  // currently unused.
   app.use('/solrRecentSubmissions/:type/:id', solr.recentSubmissions);
-
-
-  // ANGULARJS routes
+  
 
   /**
    * Route to page partials.
