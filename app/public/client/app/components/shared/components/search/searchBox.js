@@ -11,14 +11,25 @@
                              $location,
                              QueryActions,
                              AssetTypes,
+                             Messages,
                              QueryManager) {
 
     var sb = this;
 
     sb.id = QueryManager.getAssetId();
 
+    sb.thisCommunityLabel = Messages.SEARCHBOX_THIS_COMMUNITY;
+
+    sb.thisCollectionLabel = Messages.SEARCHBOX_THIS_COLLECTION;
+
+    sb.searchAll = Messages.SEARCHBOX_ALL;
+
+    sb.advancedLink = Messages.SEARCHBOX_ADVANCED_LINK;
+
+    sb.searchTextLabel = Messages.SEARCHBOX_SEARCH_TEXT_LABEL;
+
     sb.currentCollectionId = QueryManager.getAssetId();
-    
+
     sb.showOptionsForCollection = function() {
       return QueryManager.getAssetType() === AssetTypes.COLLECTION;
     };

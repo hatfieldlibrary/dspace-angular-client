@@ -2,12 +2,13 @@
  * Created by mspalti on 2/23/16.
  */
 
-
+'use strict';
 
 dspaceServices.factory('Utils', [
 
   'QueryManager',
   'AppContext',
+  'Messages',
   'CheckSession',
   'QueryActions',
   'QueryFields',
@@ -17,6 +18,7 @@ dspaceServices.factory('Utils', [
 
   function (QueryManager,
             AppContext,
+            Messages,
             CheckSession,
             QueryActions,
             QueryFields,
@@ -196,14 +198,14 @@ dspaceServices.factory('Utils', [
      */
     utils.placeholderMessage = function (qType) {
       if (qType === QueryTypes.DATES_LIST) {
-        return 'Enter Year';
+        return Messages.SORT_JUMP_TO_YEAR_LABEL;
       }
       else if (qType === QueryTypes.TITLES_LIST) {
-        return 'Jump to Letter';
+        return Messages.SORT_JUMP_TO_LETTER_LABEL;
       }
       else if (qType === QueryTypes.SUBJECT_FACETS ||
         qType === QueryTypes.AUTHOR_FACETS) {
-        return 'Jump to Letter';
+        return Messages.SORT_JUMP_TO_LETTER_LABEL;
       }
       return '';
     };
@@ -266,7 +268,7 @@ dspaceServices.factory('Utils', [
      * @param count
      * @param setSize
      * @returns {*}
-       */
+     */
     utils.getPageListCount = function (count, setSize) {
 
       var remaining = count - QueryManager.getOffset();
@@ -291,7 +293,7 @@ dspaceServices.factory('Utils', [
     };
 
 
-    utils.resetQuerySettings = function() {
+    utils.resetQuerySettings = function () {
 
       QueryManager.setFilter('');
 
@@ -303,13 +305,13 @@ dspaceServices.factory('Utils', [
 
     };
 
-      /**
-       * Returns the number of original files in an array
-       * of bitstream objects.
-       * @param streams  stream object from DSpace API
-       * @returns {number}
-       */
-    utils.getFileCount = function(streams) {
+    /**
+     * Returns the number of original files in an array
+     * of bitstream objects.
+     * @param streams  stream object from DSpace API
+     * @returns {number}
+     */
+    utils.getFileCount = function (streams) {
 
       console.log(streams);
 
@@ -323,7 +325,6 @@ dspaceServices.factory('Utils', [
       return count;
 
     };
-
 
 
     return utils;

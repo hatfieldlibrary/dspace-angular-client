@@ -1,16 +1,16 @@
 <div class="sort-options" layout="row">
 
   <md-input-container flex="{{$ctrl.fieldSelectorWidth}}">
-    <label>Sort items by:</label>
-    <md-select ng-model="$ctrl.selectedField" ng-change="$ctrl.resetField()" placeholder="Sort By">
+    <label>{{$ctrl.fieldLabel}}</label>
+    <md-select ng-model="$ctrl.selectedField" ng-change="$ctrl.resetField()" placeholder="{{$ctrl.fieldLabel}}">
       <md-option ng-repeat="field in $ctrl.fields" value="{{field.value}}">{{field.label}}</md-option>
     </md-select>
   </md-input-container>
 
 
   <md-input-container hide-xs flex="33">
-    <label>Sort order:</label>
-    <md-select ng-model="$ctrl.selectedOrder" ng-change="$ctrl.resetOrder()" placeholder="Sort By">
+    <label>{{$ctrl.orderLabel}}</label>
+    <md-select ng-model="$ctrl.selectedOrder" ng-change="$ctrl.resetOrder()" placeholder="{{$ctrl.orderLabel}}">
       <md-option ng-repeat="order in $ctrl.orders"  value="{{order.value}}">{{order.label}}</md-option>
     </md-select>
   </md-input-container>

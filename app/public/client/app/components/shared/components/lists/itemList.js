@@ -6,11 +6,15 @@
 
 (function () {
 
-  function ItemListCtrl(QueryManager, AppContext) {
+  function ItemListCtrl(QueryManager,
+                        AppContext,
+                        Messages) {
 
     var ctrl = this;
 
     ctrl.ready = false;
+    
+    ctrl.resultCountLabel = Messages.RESULTS_LABEL;
 
     if (ctrl.context === 'browse') {
       ctrl.browseTerms = QueryManager.getSearchTerms();

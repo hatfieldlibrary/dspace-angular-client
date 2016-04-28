@@ -20,11 +20,22 @@
   function DiscoverFilterCtrl($mdMedia,
                               DiscoveryFieldMap,
                               QueryModeMap,
+                              Messages,
                               QueryManager) {
 
     var ctrl = this;
 
     ctrl.status = 'add';
+
+    ctrl.fieldLabel = Messages.FILTER_FIELD_LABEL;
+
+    ctrl.modeLabel = Messages.FILTER_MODE_LABEL;
+
+    ctrl.textLabel = Messages.FILTER_BY_LETTER;
+
+    ctrl.addButtonLabel = Messages.FILTER_ADD_BUTTON_LABEL;
+    
+    ctrl.removeButtonLabel = Messages.FILTER_REMOVE_BUTTON_LABEL;
 
     ctrl.addFilter = function () {
 
@@ -66,13 +77,7 @@
      * @type {Array}
      */
     ctrl.modes = QueryModeMap.modes;
-
-
-    /**
-     * The default placeholder message for the filter query.
-     * @type {string}
-     */
-    ctrl.placeholder = 'Terms';
+    
 
     ctrl.filterTerms = QueryManager.getFilter();
 

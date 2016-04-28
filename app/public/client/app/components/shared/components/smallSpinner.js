@@ -8,7 +8,7 @@
 
   dspaceComponents.component('smallSpinner', {
 
-    templateUrl: '/shared/templates/smallSpinner.html',
+    templateUrl: '/shared/templates/smallSpinner.html'
 
   });
 

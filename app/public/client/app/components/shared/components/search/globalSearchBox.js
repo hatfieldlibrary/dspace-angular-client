@@ -14,13 +14,21 @@
    * @param QueryManager
    * @param QueryActions
    * @param AssetTypes
-     * @constructor
-     */
-  function GlobalSearchBoxCtrl( $location, QueryManager, QueryActions, AssetTypes) {
+   * @constructor
+   */
+  function GlobalSearchBoxCtrl($location,
+                               QueryManager,
+                               QueryActions,
+                               AssetTypes,
+                               Messages) {
 
     var sb = this;
 
     sb.id = 0;
+
+    sb.advancedLink = Messages.SEARCHBOX_ADVANCED_LINK;
+
+    sb.searchTextLabel = Messages.SEARCHBOX_SEARCH_TEXT_LABEL;
 
     sb.submit = function (terms) {
 

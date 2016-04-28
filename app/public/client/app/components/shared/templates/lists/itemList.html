@@ -12,12 +12,11 @@
                           on-update="$ctrl.onUpdate(results, count, field)" >
   </discover-filter-container>
 
-  <div ng-if="$ctrl.count <= 20" class="md-body-1 md-accent" style="padding-top: 30px;">Viewing {{$ctrl.count}} items.</div>
+  <div ng-if="$ctrl.count <= 20" class="md-body-1 md-accent" style="padding-top: 30px;">{{$ctrl.resultCountLabel}} {{$ctrl.count}}</div>
 
-  <div ng-if="$ctrl.count > 20" class="md-body-1 md-accent">Viewing {{$ctrl.count}} items.</div>
+  <div ng-if="$ctrl.count > 20" class="md-body-1 md-accent">{{$ctrl.resultCountLabel}} {{$ctrl.count}}</div>
 
   <md-divider></md-divider>
-
 
 
   <div flex="100" layout-fill layout="column" style="min-height: 100%;margin-top: -33px;">

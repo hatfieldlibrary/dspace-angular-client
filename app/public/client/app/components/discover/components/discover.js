@@ -16,6 +16,7 @@
                         QuerySort,
                         AppContext,
                         Utils,
+                        Messages,
                         GetCommunitiesForDiscover,
                         GetCollectionInfo,
                         GetCollectionsForCommunity) {
@@ -33,6 +34,18 @@
      * @type {Array}
      */
     disc.collections = [];
+
+    disc.pageHeader = Messages.DISCOVERY_PAGE_HEADER;
+
+    disc.communityLabel  = Messages.ADVANCED_SEARCH_COMMUNITY_LABEL;
+
+    disc.collectionLabel = Messages.ADVANCED_SEARCH_COLLECTION_LABEL;
+
+    disc.textLabel = Messages.ADVANCED_SEARCH_TEXT_LABEL;
+
+    disc.submitLabel = Messages.ADVANCED_SEARCH_SUBMIT_LABEL;
+    
+
 
     /**
      * Handles selection of a collection.

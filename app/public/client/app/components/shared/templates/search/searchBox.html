@@ -3,25 +3,25 @@
   <form ng-submit="sb.submit(sb.terms)">
 
     <md-input-container>
-      <label>Enter Search Terms</label>
+      <label>{{sb.searchTextLabel}}</label>
       <input ng-model="sb.terms">
     </md-input-container>
 
     <md-input-container ng-hide="!sb.showOptionsForCollection()">
       <md-radio-group ng-model="sb.id" layout="column">
-        <md-radio-button value="{{sb.currentCollectionId}}" aria-label="This Collection" class="md-caption">
-          This Collection
+        <md-radio-button value="{{sb.currentCollectionId}}" aria-label="{{sb.thisCollectionLabel}}" class="md-caption">
+          {{sb.thisCollectionLabel}}
         </md-radio-button>
-        <md-radio-button value="0" aria-label="All Collections" class="md-caption">
-          All Collections
+        <md-radio-button value="0" aria-label="{{sb.searchAll}}" class="md-caption">
+          {{sb.searchAll}}
         </md-radio-button>
       </md-radio-group>
     </md-input-container>
 
     <md-input-container ng-hide="!sb.showOptionsForCommunity()">
       <md-radio-group ng-model="sb.id" layout="column">
-        <md-radio-button value="{{sb.currentCollectionId}}" aria-label="This Department" class="md-caption">
-          This Department
+        <md-radio-button value="{{sb.currentCollectionId}}" aria-label="{{sb.thisCommunityLabel}}" class="md-caption">
+          {{sb.thisCommunityLabel}}
         </md-radio-button>
         <md-radio-button value="0" aria-label="All Collections" class="md-caption">
           All Collections
@@ -40,7 +40,7 @@
 
   </form>
 
-  <p class="md-caption"><a ng-href="/discover" class="md-accent" style="color: #3faab2;">Advanced Search</a></p>
+  <p class="md-caption"><a ng-href="/discover" class="md-accent" style="color: #3faab2;">{{sb.advancedLink}}</a></p>
 
 </div>
 

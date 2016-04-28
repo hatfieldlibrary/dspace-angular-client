@@ -8,9 +8,14 @@
   function LoginCtrl($scope,
                      Login,
                      Utils,
+                     Messages,
                      AppContext) {
 
     var ctrl = this;
+    
+    ctrl.loginLabel = Messages.LOGIN_LABEL;
+    
+    ctrl.logoutLabel = Messages.LOGOUT_LABEL;
 
     ctrl.sessionStatus = AppContext.hasDspaceSession;
 

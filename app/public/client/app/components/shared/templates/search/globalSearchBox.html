@@ -3,7 +3,7 @@
   <form ng-submit="sb.submit(sb.terms)">
 
     <md-input-container>
-      <label>Enter Search Terms</label>
+      <label>{{sb.searchTextLabel}}</label>
       <input ng-model="sb.terms">
     </md-input-container>
 
@@ -19,7 +19,7 @@
 
   </form>
 
-  <p class="md-caption"><a ng-href="/discover" class="md-accent" style="color: #3faab2;">Advanced Search</a></p>
+  <p class="md-caption"><a ng-href="/discover" class="md-accent" style="color: #3faab2;">{{sb.advancedLink}}</a></p>
 
 </div>
 

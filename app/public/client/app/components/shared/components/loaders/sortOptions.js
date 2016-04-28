@@ -24,6 +24,7 @@
                            BrowseQueryFieldMap,
                            ListSortOrderMap,
                            Utils,
+                           Messages,
                            QuerySort,
                            QueryFields,
                            QueryTypes,
@@ -32,6 +33,10 @@
                            QueryManager) {
 
     var ctrl = this;
+
+    ctrl.fieldLabel = Messages.SORT_BY_FIELD_LABEL;
+
+    ctrl.orderLabel = Messages.SORT_ORDER_LABEL;
 
     /**
      * The start position for results returned by solr.
@@ -100,7 +105,7 @@
      * The default placeholder message for the filter query.
      * @type {string}
      */
-    ctrl.placeholder = 'Jump to Letter';
+    ctrl.placeholder = Messages.SORT_JUMP_TO_LETTER_LABEL;
 
     ctrl.filterTerms = QueryManager.getFilter();
 
@@ -458,7 +463,7 @@
 
     /**
      * Handle the result of field queries. This function exists
-     * to preprocess data from author and subject results before sending 
+     * to preprocess data from author and subject results before sending
      * to the parent component.
      * @param data
      */

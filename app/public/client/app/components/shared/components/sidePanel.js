@@ -3,9 +3,15 @@
  */
 
 
-function SideNavCtrl($scope, $window, $mdSidenav, AppContext) {
+function SideNavCtrl($scope,
+                     $window,
+                     $mdSidenav,
+                     Messages,
+                     AppContext) {
 
   var ctrl = this;
+
+  ctrl.allCommunitiesLink = Messages.VIEW_ALL_COMMUNITIES;
 
   $scope.$watch(function () {
       return AppContext.getMenuState()
@@ -37,7 +43,7 @@ function SideNavCtrl($scope, $window, $mdSidenav, AppContext) {
     $mdSidenav(navID)
       .toggle()
       .then(function () {
-        
+
       });
   }
 

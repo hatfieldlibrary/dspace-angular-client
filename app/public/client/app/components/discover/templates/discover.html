@@ -3,7 +3,7 @@
 
 
   <div class="page-title">
-    <div class="md-title parent-title">Search Departmental Collections
+    <div class="md-title parent-title">{{disc.pageHeader}}
     </div>
   </div>
 
@@ -16,7 +16,7 @@
         <form name="discoveryForm" ng-submit="disc.submit(disc.terms)">
           <div>
             <md-input-container>
-              <label class="md-no-sticky">Choose Department or Collection Area</label>
+              <label class="md-no-sticky">{{disc.communityLabel}}</label>
               <md-select ng-model="disc.communityId" ng-change="disc.selectCommunity()">
                 <md-option class="md-2-line" ng-repeat="item in disc.searchItems" value="{{item.id}}"
                 ">
@@ -30,7 +30,7 @@
           </div>
           <div ng-if="disc.communityId > 0">
             <md-input-container>
-              <label class="md-no-sticky">Choose Collection</label>
+              <label class="md-no-sticky">{{disc.collectionLabel}}</label>
               <md-select ng-model="disc.collectionId">
                 <md-option class="md-2-line" ng-repeat="item in disc.collections" value="{{item.id}}"
                            ng-click="disc.selectCollection(item.id)">
@@ -44,7 +44,7 @@
           </div>
           <div layout="column" layout-gt-sm="row" layout="left top">
             <md-input-container class="md-block" flex-gt-sm="70">
-              <label>Enter Search Terms</label>
+              <label>{{disc.textLabel}}</label>
               <input ng-model="disc.terms" required name="terms">
               <div class="hint">Search term is required.</div>
               <!--<div ng-messages="discoveryForm.terms.$error">-->
@@ -53,7 +53,7 @@
             </md-input-container>
             <div flex></div>
             <md-input-container flex-gt-sm="20">
-              <md-button class="md-raised md-accent" ng-click="disc.submit(disc.terms)">Submit</md-button>
+              <md-button class="md-raised md-accent" ng-click="disc.submit(disc.terms)">{{disc.submitLabel}}</md-button>
             </md-input-container>
           </div>
 

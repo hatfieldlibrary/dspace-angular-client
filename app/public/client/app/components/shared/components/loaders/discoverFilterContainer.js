@@ -7,11 +7,17 @@
 
 (function () {
 
-  function FilterContainerController(Utils, QueryManager, AppContext, SolrQuery) {
+  function FilterContainerController(Utils,
+                                     QueryManager,
+                                     AppContext,
+                                     Messages,
+                                     SolrQuery) {
 
     var ctrl = this;
 
     ctrl.filters = [];
+
+    ctrl.filterLabel = Messages.FILTER_LABEL;
 
 
     function addFilter() {
