@@ -22,7 +22,7 @@
     SEARCHBOX_ALL: 'All Collections',
 
     SEARCHBOX_SEARCH_TEXT_LABEL: 'Enter Search Terms',
-    
+
     SEARCHBOX_BUTTON_LABEL: 'Search',
 
     ADVANCED_SEARCH_COMMUNITY_LABEL: 'Choose Department or Collection Area',
@@ -78,7 +78,9 @@
 
     ITEM_ABSTRACT_LABEL: 'Abstract / Description',
 
-    ITEM_METADATA_LABEL: 'Metadata'
+    ITEM_METADATA_LABEL: 'Metadata',
+
+    FILE_DOWNLOAD: 'Download File'
 
   });
 

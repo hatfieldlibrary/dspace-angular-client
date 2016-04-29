@@ -11,138 +11,94 @@
 
   <md-card class="main-card md-hue-1" flex>
 
-
     <md-card-content>
-    <div id="dialog-top" style="height: 0px; padding:0;"></div>
+      <div id="dialog-top" style="height: 0px; padding:0;"></div>
 
-    <div layout-fill >
+      <div layout-fill>
 
-      <!-- Title, layout row-->
-      <div layout="row" layout-align="start start" >
+        <!-- Title, layout row-->
+        <div layout="row" layout-align="start start">
 
-        <div flex="20" hide show-gt-md class="item-left-col-width"></div>
-        <div flex="100" flex-gt-md="80" layout="column" layout-padding >
-          <div class="md-headline">{{$ctrl.data.name}}</div>
+          <div flex="20" hide show-gt-md class="item-left-col-width"></div>
+          <div flex="100" flex-gt-md="80" layout="column" layout-padding>
+            <div class="md-headline">{{$ctrl.data.name}}</div>
+          </div>
+
         </div>
 
-      </div>
+        <md-divider style="padding-bottom: 0px;"></md-divider>
 
-      <md-divider style="padding-bottom: 0px;"></md-divider>
-
-      <!-- Main content area, layout row < lg, layout column > md -->
-      <div layout="row" layout-align="start start" style="height:100%">
-
-        <div hide show-gt-md flex="20" class="item-left-col-position">
-
-          <div class="md-caption" style="padding-left: 12px;">{{$ctrl.filesLabel}} ({{$ctrl.fileCount}})</div>
+        <!-- Main content area, layout row < lg, layout column > md -->
+        <div layout="row" layout-align="start start" style="height:100%">
 
           <!-- Files, gt-md -->
-          <div layout="column" layout-fill>
-            <div class="file-info" layout="column" layout-align="start start" layout-align-xs="start"
-                 ng-repeat="stream in $ctrl.data.bitstreams"
-                 ng-if="stream.bundleName==='ORIGINAL'">
-              <md-button class="md-subhead" target="_top" href="/bitstream/{{stream.id}}/{{stream.name}}">
-                <md-icon md-font-library="material-icons">file_download</md-icon>
-                Download File
-              </md-button>
-              <div style="padding-left: 30px;max-width: 142px;">
-                <div class="md-subhead file-name" aria-label="{{stream.description}}">{{stream.description}}
-                </div>
-                <div class="md-caption"
-                     style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis;margin-top: 3px;"
-                     aria-label="{{stream.name}}">{{stream.name}}
-                </div>
-                <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis"
-                     aria-label="{{stream.mimeType}}">
-                  {{stream.mimeType}}
-                </div>
-                <div class="md-caption" aria-label="{{stream.sizeBytes}}">{{stream.sizeBytes}} bytes</div>
-              </div>
+          <div hide show-gt-md flex="20" class="item-left-col-position">
+
+            <div class="md-caption" style="padding-left: 12px;">{{$ctrl.filesLabel}} ({{$ctrl.fileCount}})</div>
+
+            <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
+
+          </div>
+
+          <div layout="column" flex="100" flex-gt-sm="80" style="max-width:100%;box-sizing:border-box" layout-padding>
+
+            <!-- Byline and citation -->
+            <div layout="column" layout-align="start start" style="max-width:100%;box-sizing:border-box;">
+              <!-- IE 10/11 style hack -->
+              <div class="md-title byline" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.author}}</div>
+              <div class="md-body-1">{{$ctrl.publicationLabel}}</div>
+              <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.date}}</div>
+              <div class="md-body-1 citation-margin">{{$ctrl.citationLabel}}</div>
+              <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.url}}</div>
             </div>
-          </div>
 
-        </div>
+            <md-divider hide-gt-md style="margin: 18px 0;"></md-divider>
 
+            <!-- Files, lt-lg -->
+            <div hide-gt-md layout="column" layout-align="start start">
 
-        <div layout="column" flex="100" flex-gt-sm="80" style="max-width:100%;box-sizing:border-box" layout-padding>
+              <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
 
-          <!-- Byline and citation -->
-          <div layout="column" layout-align="start start" style="max-width:100%;box-sizing:border-box;">
-            <!-- IE 10/11 style hack -->
-            <div class="md-title byline" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.author}}</div>
-            <div class="md-body-1">{{$ctrl.publicationLabel}}</div>
-            <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.date}}</div>
-            <div class="md-body-1 citation-margin">{{$ctrl.citationLabel}}</div>
-            <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.url}}</div>
-          </div>
+            </div>
 
-          <md-divider hide-gt-md style="margin: 18px 0;"></md-divider>
+            <md-divider hide-gt-md style="margin: 26px 0;"></md-divider>
 
-          <!-- Files, lt-lg -->
-          <div hide-gt-md  layout="column" layout-align="start start" >
-            <div class="file-info" layout="row" layout-align="center" layout-align-xs="start"
-                 ng-repeat="stream in $ctrl.data.bitstreams"
-                 ng-if="stream.bundleName==='ORIGINAL'">
-              <div style="width: 200px;">
-                <md-button class="md-subhead" target="_top" href="/bitstream/{{stream.id}}/{{stream.name}}">
-                  <md-icon md-font-library="material-icons">file_download</md-icon>
-                  Download File
+            <!-- abstract and metadata -->
+            <div class="abstract" layout="column">
+              <div ng-if="$ctrl.data.description.length > 0" class="md-subhead">{{$ctrl.abstractLabel}}</div>
+              <div class="md-body-1">{{$ctrl.data.description}}</div>
+              <div id="metadata"></div>
+              <h3 class="md-title">
+                {{$ctrl.metadataLabel}}
+                <md-button class="md-subhead md-fab md-mini md-accent" style="color: #fff;"
+                           ng-click="$ctrl.toggleMeta();"
+                           ng-if="!$ctrl.showMetadata">
+                  <md-icon md-font-library="material-icons">expand_more</md-icon>
                 </md-button>
-                <div style="padding-left: 30px;">
-                  <div class="md-subhead" aria-label="{{stream.description}}">{{stream.description}}
-                  </div>
-                  <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis"
-                       aria-label="{{stream.name}}">{{stream.name}}
-                  </div>
-                  <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis"
-                       aria-label="{{stream.mimeType}}">
-                    {{stream.mimeType}}
-                  </div>
-                  <div class="md-caption" aria-label="{{stream.sizeBytes}}">{{stream.sizeBytes}} bytes</div>
-                </div>
+
+                <md-button class="md-subhead md-fab md-mini md-accent" style="color: #fff;"
+                           ng-click="$ctrl.toggleMeta();"
+                           ng-if="$ctrl.showMetadata">
+                  <md-icon md-font-library="material-icons">expand_less</md-icon>
+                </md-button>
+              </h3>
+              <div layout="column" style="margin-top: 4px;" ng-repeat="meta in $ctrl.data.metadata"
+                   ng-show="$ctrl.showMetadata">
+                <div class="md-body-2">{{meta.key}}</div>
+                <div class="md-body-1">{{meta.value}}</div>
               </div>
+              <p></p>
+              <p></p>
             </div>
+
+
           </div>
-
-          <md-divider hide-gt-md style="margin: 26px 0;"></md-divider>
-
-          <!-- abstract and metadata -->
-          <div class="abstract" layout="column">
-            <div ng-if="$ctrl.data.description.length > 0" class="md-subhead">{{$ctrl.abstractLabel}}</div>
-            <div class="md-body-1">{{$ctrl.data.description}}</div>
-            <div id="metadata"></div>
-            <h3 class="md-title">
-              {{$ctrl.metadataLabel}}
-              <md-button class="md-subhead md-fab md-mini md-accent" style="color: #fff;"
-                         ng-click="$ctrl.toggleMeta();"
-                         ng-if="!$ctrl.showMetadata">
-                <md-icon md-font-library="material-icons">expand_more</md-icon>
-              </md-button>
-
-              <md-button class="md-subhead md-fab md-mini md-accent" style="color: #fff;"
-                         ng-click="$ctrl.toggleMeta();"
-                         ng-if="$ctrl.showMetadata">
-                <md-icon md-font-library="material-icons">expand_less</md-icon>
-              </md-button>
-            </h3>
-            <div layout="column" style="margin-top: 4px;" ng-repeat="meta in $ctrl.data.metadata"
-                 ng-show="$ctrl.showMetadata">
-              <div class="md-body-2">{{meta.key}}</div>
-              <div class="md-body-1">{{meta.value}}</div>
-            </div>
-            <p></p>
-            <p></p>
-          </div>
-
-
         </div>
       </div>
-    </div>
 
 
-
-</md-card-content>
-</md-card>
+    </md-card-content>
+  </md-card>
 
 
 </div>

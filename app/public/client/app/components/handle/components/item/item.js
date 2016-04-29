@@ -10,8 +10,6 @@
    * Item component controller.
    */
 
-  /*globals dspaceControllers*/
-
   function ItemCtrl(GetCollectionInfo, Utils, Messages) {
 
     var ctrl = this;

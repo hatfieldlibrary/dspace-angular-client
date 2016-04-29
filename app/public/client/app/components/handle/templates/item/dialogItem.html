@@ -10,7 +10,7 @@
     </div>
   </md-toolbar>
 
-  <md-dialog-content  class="dialog-width" ng-class="{'large-dialog': $ctrl.isLargeScreen }" >
+  <md-dialog-content ng-class="{'large-dialog': $ctrl.isLargeScreen }" >
 
     <div id="dialog-top" style="height: 0px; padding:0;"></div>
 
@@ -33,33 +33,12 @@
 
       <div layout="row" layout-align="start start" flex="100" style="height:100%" layout-margin layout-padding>
 
-        <div hide show-gt-md flex="20" class="item-left-col-width">
 
+        <!-- Files, gt-md -->
+        <div hide show-gt-md flex="20" class="item-left-col-width">
           <div class="md-caption" style="padding-left: 12px;">{{$ctrl.filesLabel}} ({{$ctrl.fileCount}})</div>
 
-          <!-- Files, gt-md -->
-          <div layout="column"  layout-fill>
-            <div class="file-info" layout="column"  layout-align="start start" layout-align-xs="start"
-                 ng-repeat="stream in $ctrl.data.bitstreams"
-                 ng-if="stream.bundleName==='ORIGINAL'">
-              <md-button class="md-subhead" target="_top" href="/bitstream/{{stream.id}}/{{stream.name}}">
-                <md-icon md-font-library="material-icons">file_download</md-icon>
-                Download File
-              </md-button>
-              <div style="padding-left: 30px;max-width: 142px;">
-                <div class="md-subhead file-name" aria-label="{{stream.description}}">{{stream.description}}
-                </div>
-                <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis;margin-top: 3px;"
-                     aria-label="{{stream.name}}">{{stream.name}}
-                </div>
-                <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis"
-                     aria-label="{{stream.mimeType}}">
-                  {{stream.mimeType}}
-                </div>
-                <div class="md-caption" aria-label="{{stream.sizeBytes}}">{{stream.sizeBytes}} bytes</div>
-              </div>
-            </div>
-          </div>
+           <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
 
         </div>
 
@@ -80,28 +59,9 @@
 
             <!-- Files, lt-lg -->
             <div hide-gt-md  layout="column" layout-align="start start" >
-              <div class="file-info" layout="row" layout-align="center" layout-align-xs="start"
-                   ng-repeat="stream in $ctrl.data.bitstreams"
-                   ng-if="stream.bundleName==='ORIGINAL'">
-                <div style="width: 200px;">
-                  <md-button class="md-subhead" target="_top" href="/bitstream/{{stream.id}}/{{stream.name}}">
-                    <md-icon md-font-library="material-icons">file_download</md-icon>
-                    Download File
-                  </md-button>
-                  <div style="padding-left: 30px;">
-                    <div class="md-subhead" aria-label="{{stream.description}}">{{stream.description}}
-                    </div>
-                    <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis"
-                         aria-label="{{stream.name}}">{{stream.name}}
-                    </div>
-                    <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis"
-                         aria-label="{{stream.mimeType}}">
-                      {{stream.mimeType}}
-                    </div>
-                    <div class="md-caption" aria-label="{{stream.sizeBytes}}">{{stream.sizeBytes}} bytes</div>
-                  </div>
-                </div>
-              </div>
+
+              <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
+
             </div>
 
             <md-divider hide-gt-md style="margin: 26px 0;"></md-divider>

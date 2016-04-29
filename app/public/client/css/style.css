@@ -59,11 +59,8 @@ md-sidenav.md-locked-open {
   box-sizing:border-box;
 }
 
-.dialog-width {
-  max-width: 1000px;
-}
-
 .dialog-item-title {
+  max-width: 1000px;
   background: #e4dcca;
   color: #753D3D;
 }
