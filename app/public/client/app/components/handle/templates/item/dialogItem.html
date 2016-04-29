@@ -1,6 +1,6 @@
 <md-dialog class="item-details" aria-label="List dialog">
 
-  <md-toolbar>
+  <md-toolbar class="md-primary md-hue-3">
     <div class="md-toolbar-tools">
       <h2>{{$ctrl.pageHeader}}</h2>
       <span flex></span>
@@ -17,7 +17,7 @@
     <div layout-fill>
 
       <!-- Title, layout row-->
-      <div layout="row" layout-align="start start" layout-margin>
+      <div layout="row" layout-align="start start" layout-padding class="dialog-item-title">
 
         <div flex="20" hide show-gt-md class="item-left-col-width"></div>
         <div flex="100" flex-gt-md="80" layout="column" layout-margin >
@@ -108,10 +108,10 @@
 
             <!-- abstract and metadata -->
             <div class="abstract" layout="column">
-              <div ng-if="$ctrl.data.description.length > 0" class="md-title">{{$ctrl.abstractLabel}}</div>
-              <div>{{$ctrl.data.description}}</div>
+              <div ng-if="$ctrl.data.description.length > 0" class="md-subhead">{{$ctrl.abstractLabel}}</div>
+              <div class="md-body-1">{{$ctrl.data.description}}</div>
               <div id="metadata"></div>
-              <h3>
+              <h3 class="md-title">
                 {{$ctrl.metadataLabel}}
                 <md-button class="md-subhead md-fab md-mini md-accent" style="color: #fff;"
                            ng-click="$ctrl.toggleMeta();"
@@ -127,7 +127,7 @@
               </h3>
               <div layout="column" style="margin-top: 4px;" ng-repeat="meta in $ctrl.data.metadata"
                    ng-show="$ctrl.showMetadata">
-                <div class="md-title">{{meta.key}}</div>
+                <div class="md-body-2">{{meta.key}}</div>
                 <div class="md-body-1">{{meta.value}}</div>
               </div>
               <p></p>

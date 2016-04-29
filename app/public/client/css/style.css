@@ -17,7 +17,7 @@ body {
 }
 
 a, a:visited {
-  color: #8F0100;
+  color: #9A302F;
   text-decoration: none;
 }
 
@@ -63,6 +63,11 @@ md-sidenav.md-locked-open {
   max-width: 1000px;
 }
 
+.dialog-item-title {
+  background: #e4dcca;
+  color: #753D3D;
+}
+
 .page-title {
   margin: 0 8px;
 }
@@ -73,23 +78,6 @@ md-sidenav.md-locked-open {
 
 .large-dialog {
   min-width: 800px;
-}
-
-md-toolbar.md-default-theme:not(.md-menu-toolbar) .md-button:not(.md-raised),
-md-toolbar:not(.md-menu-toolbar) .md-button:not(.md-raised) {
-  color: #ffffff;
-}
-
-md-list-item.md-2-line .md-list-item-text {
-  /*padding: 14px 6px;*/
-  min-height: 20px;
-  border: 0;
-  outline: 0;
-}
-
-
-md-dialog > md-toolbar {
-  background: rgb(79, 28, 27) !important;
 }
 
 md-dialog.item-details {
@@ -153,7 +141,7 @@ collection-component md-content {
 
 .list-highlight {
   cursor: pointer;
-  color: #8F0100 !important;
+  color: #9A302F !important;
   padding-top: 10px;
   border: 0;
   outline: none;
@@ -222,7 +210,8 @@ collection-component md-content {
   margin-bottom: 20px;
 }
 
-.item-left-col-width  {
+.item-left-col-position {
+  margin-top: 16px;
   min-width: 172px;
 }
 
