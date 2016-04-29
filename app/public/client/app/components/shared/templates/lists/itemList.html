@@ -2,7 +2,7 @@
 
   <h2 class="md-title" ng-if="$ctrl.isBrowseContext()">Browsing: {{$ctrl.browseTerms}}</h2>
 
-  <sort-options-component ng-if="$ctrl.context!='discover' && $ctrl.count > 20"
+  <sort-options-component ng-if="$ctrl.context!='discover' && $ctrl.count > 10"
                           context="{{$ctrl.context}}"
                           on-update="$ctrl.onUpdate(results, count, field)"
                           reset-list-view ="$ctrl.resetListView()">
@@ -12,9 +12,9 @@
                           on-update="$ctrl.onUpdate(results, count, field)" >
   </discover-filter-container>
 
-  <div ng-if="$ctrl.count <= 20" class="md-body-1 md-accent" style="padding-top: 30px;">{{$ctrl.resultCountLabel}} {{$ctrl.count}}</div>
+  <div ng-if="$ctrl.count <= 10" class="md-body-1 md-accent" style="padding-top: 30px;">{{$ctrl.resultCountLabel}} {{$ctrl.count}}</div>
 
-  <div ng-if="$ctrl.count > 20" class="md-body-1 md-accent">{{$ctrl.resultCountLabel}} {{$ctrl.count}}</div>
+  <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent">{{$ctrl.resultCountLabel}} {{$ctrl.count}}</div>
 
   <md-divider></md-divider>
 

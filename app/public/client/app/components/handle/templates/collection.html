@@ -1,7 +1,6 @@
 <div layout="column" layout-fill layout-align="start start" style="max-width: 100%;height:100%;box-sizing:border-box;"
      layout-padding>
 
-
   <div class="page-title">
     <div class="md-subhead parent-title"><a ng-href="/handle/{{$ctrl.data.parentCommunity.handle}}">{{$ctrl.data.parentCommunity.name}}</a>
     </div>
@@ -14,6 +13,7 @@
     <img ng-src="/images/bio_header.jpg" class="md-card-image" alt="image caption">
 
     <md-card-content style="max-width:100%;">
+
       <div layout="column" layout-align="center left">
 
         <div class="md-subhead" ng-bind-html="$ctrl.data.introductoryText"></div>

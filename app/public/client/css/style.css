@@ -139,7 +139,6 @@ collection-component md-content {
 .list-highlight {
   cursor: pointer;
   color: #9A302F !important;
-  padding-top: 10px;
   border: 0;
   outline: none;
 }
