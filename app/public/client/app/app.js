@@ -150,7 +150,8 @@ var dspaceApp = angular.module('dspaceApp', [
         .warnPalette('Custom Warn')
         .backgroundPalette('Custom Background', {
           'default': '100',
-          'hue-1': '200'
+          'hue-1': '200',
+          'hue-2': '300'
         });
 
     }
