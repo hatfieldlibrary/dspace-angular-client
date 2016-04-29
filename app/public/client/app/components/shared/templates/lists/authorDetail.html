@@ -4,18 +4,16 @@
 
   <md-item-content layout-fill>
 
-    <div layout-fill flex class="md-list-item-text app-list-item" flex layout="column">
+    <div layout-fill flex class="md-list-item-text app-list-item">
 
       <div layout="row" flex ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();">
         <a class="browse-anchor" ng-class="{'md-title': $ctrl.index == $ctrl.selectedIndex}" ng-href="#">{{$ctrl.author}}</a>
       </div>
 
 
-      <!--<md-divider ng-show="$ctrl.index == $ctrl.selectedIndex"></md-divider>-->
+      <div style="background: #FAF9F7;height: 100%;max-height: 900px;width:100%;margin-bottom: 3px;" layout-fill flex>
 
-      <div class="browse-item" layout-fill flex>
-
-        <div layout="column" layout-fill flex>
+        <div class="browse-item" layout="column" layout-fill flex>
 
           <md-content>
             <small-spinner ng-hide="$ctrl.ready"></small-spinner>
@@ -26,7 +24,6 @@
               publisher="{{col.publisher}}"
               year="{{col.year}}"
               handle="{{col.handle}}"
-              count="{{col.count}}"
               id="{{col.id}}"
               last="$last">
             </item-detail-component>

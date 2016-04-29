@@ -282,10 +282,10 @@ md-list-item.selected-sm-index .browse-item{
   visibility: visible;
   opacity: 1;
   max-height: 900px;
-  margin-left: -10px;
-  margin-bottom: 3px;
+  margin-left: -7px;
+  /*margin-bottom: 3px;*/
   width: 100%;
-  transition: height 200ms, max-height 200ms, margin-left 400ms, opacity 400ms, visibility 400ms;
+  transition: height 200ms, max-height 200ms, margin-left 300ms, opacity 300ms, visibility 300ms;
 
 }
 
