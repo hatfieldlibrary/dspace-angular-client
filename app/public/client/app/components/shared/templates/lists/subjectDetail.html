@@ -1,4 +1,4 @@
-<md-list-item flex
+<md-list-item flex ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();"
               ng-class="{ 'md-whiteframe-z2': $ctrl.index == $ctrl.selectedIndex, 'selected-index': $ctrl.index == $ctrl.selectedIndex,  'selected-sm-index': $ctrl.index == $ctrl.xsSelectedIndex}">
 
 
@@ -16,7 +16,7 @@
         </a>
       </div>
 
-      <div ng-if="$ctrl.count <= 10" layout="row" flex ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();">
+      <div ng-if="$ctrl.count <= 10" layout="row" flex >
 
         <a class="browse-anchor" ng-class="{'md-title': $ctrl.index == $ctrl.selectedIndex}" $ng-href="#">{{$ctrl.subject}}
           ({{$ctrl.count}})</a>
