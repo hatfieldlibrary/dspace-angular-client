@@ -75,7 +75,7 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        url: 'http://localhost:<%= express.options.port %>'
+        url: 'http://localhost:<%= express.options.port %>/communities'
       }
     },
     watch: {
@@ -87,17 +87,17 @@ module.exports = function (grunt) {
       //  files: ['<%= yeoman.server %>/config/environment/shared.js'],
       //  tasks: ['ngconstant']
       //},
-      //injectJS: {
-      //  files: [
-      //    '<%= yeoman.client %>/{app,components}/**/!(*.spec|*.mock).js',
-      //    '!<%= yeoman.client %>/app/app.js'
-      //  ],
-      //  tasks: ['injector:scripts']
-      //},
-      //injectCss: {
-      //  files: ['<%= yeoman.client %>/{app,components}/**/*.css'],
-      //  tasks: ['injector:css']
-      //},
+      injectJS: {
+        files: [
+          '<%= public %>/client/{app,components}/**/!(*.spec|*.mock).js',
+          '!<%= public %>/client/app/app.js'
+        ],
+        tasks: ['injector:scripts']
+      },
+      injectCss: {
+        files: ['<%= public %>/client/{app,components}/**/*.css'],
+        tasks: ['injector:css']
+      },
       //mochaTest: {
       //  files: ['<%= yeoman.server %>/**/*.{spec,integration}.js'],
       //  tasks: ['env:test', 'mochaTest']
@@ -111,9 +111,9 @@ module.exports = function (grunt) {
       },
       livereload: {
         files: [
-          '{.tmp,<%= public %>}/{app,components}/**/*.{css,html}',
-          '{.tmp,<%= public %>}/{app,components}/**/!(*.spec|*.mock).js',
-          '<%= public %>/assets/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
+          '{.tmp,<%= public %>}/client/{app,components}/**/*.{css,html}',
+          '{.tmp,<%= public %>}/client/{app,components}/**/!(*.spec|*.mock).js',
+          '<%= public %>/client/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
         ],
         options: {
           livereload: true
@@ -149,9 +149,9 @@ module.exports = function (grunt) {
       client: {
         src: [
           'Gruntfile.js',
-          '<%= app %>/controllers/**/*.js',
-          '<%= app %>/models/**/**/*.js',
-          '<%= public %>/javascripts/app/**/*.js',
+          '<%= app %>/components/**/*.js',
+          '<%= app %>/services/**/**/*.js',
+          '<%= public %>/core/**/*.js',
           '<%= config %>/**/*.js',
           './server.js'
         ]
@@ -267,6 +267,7 @@ module.exports = function (grunt) {
 
     // Automatically inject Bower components into the app and karma.conf.js
     wiredep: {
+      directory: '<%= public %>/client/bower_components',
       options: {
         exclude: [
           '/json3/',
@@ -299,19 +300,19 @@ module.exports = function (grunt) {
     useminPrepare: {
       html: ['<%= public %>/client/index.html'],
       options: {
-        dest: '<%= dist %>/<%= public %>'
+        dest: '<%= dist %>/<%= public %>/client'
       }
     },
 
     // Performs rewrites based on rev and the useminPrepare configuration
     usemin: {
-      html: ['<%= dist %>/<%= public %>/{,!(bower_components)/**/}*.html'],
-      css: ['<%= dist %>/<%= public %>/!(bower_components){,*/}*.css'],
-      js: ['<%= dist %>/<%= public %>/!(bower_components){,*/}*.js'],
+      html: ['<%= dist %>/<%= public %>/client/{,!(bower_components)/**/}*.html'],
+      css: ['<%= dist %>/<%= public %>/client/!(bower_components){,*/}*.css'],
+      js: ['<%= dist %>/<%= public %>/client/!(bower_components){,*/}*.js'],
       options: {
         assetsDirs: [
-          '<%= dist %>/<%= public %>',
-          '<%= dist %>/<%= public %>/images'
+          '<%= dist %>/<%= public %>client/',
+          '<%= dist %>/<%= public %>/client/images'
         ],
         // This is so we update image references in our ng-templates
         patterns: {
@@ -330,9 +331,9 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= public %>/assets/images',
+          cwd: '<%= public %>/client/images',
           src: '{,*/}*.{png,jpg,jpeg,gif,svg}',
-          dest: '<%= dist %>/<%= public %>/images'
+          dest: '<%= dist %>/<%= public %>/client/images'
         }]
       }
     },
@@ -387,13 +388,18 @@ module.exports = function (grunt) {
         usemin: 'app/app.js'
       },
       main: {
-        cwd: '<%= public %>',
-        src: ['{app,components}/**/*.html'],
+        cwd: '<%= public %>/client',
+        src: ['{partials}/**/*.html'],
         dest: '.tmp/templates.js'
       },
+      //shared: {
+      //  cwd: '<%= public %>/client/app/components',
+      //  src: ['{partials}/**/*.html'],
+      //  dest: '.tmp/tmp-templates.js'
+      //},
       tmp: {
         cwd: '.tmp',
-        src: ['{app,components}/**/*.html'],
+        src: ['{partials}/**/*.html'],
         dest: '.tmp/tmp-templates.js'
       }
     },
@@ -411,8 +417,8 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           dot: true,
-          cwd: '<%= public %>',
-          dest: '<%= dist %>/<%= yeoman.client %>',
+          cwd: '<%= public %>/client',
+          dest: '<%= dist %>/<%= public %>/client',
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
@@ -487,7 +493,7 @@ module.exports = function (grunt) {
         }
       },
       dist: [
-        'newer:babel:client',
+    //    'newer:babel:client',
         'imagemin'
       ]
     },
@@ -507,10 +513,10 @@ module.exports = function (grunt) {
         timeout: 5000 // set default mocha spec timeout
       },
       unit: {
-        src: ['<%= yeoman.server %>/**/*.spec.js']
+        src: ['<%= app %>/**/*.spec.js']
       },
       integration: {
-        src: ['<%= yeoman.server %>/**/*.integration.js']
+        src: ['<%= app %>/**/*.integration.js']
       }
     },
 
@@ -616,7 +622,7 @@ module.exports = function (grunt) {
         options: {
           transform: function(filePath) {
             var yoClient = grunt.config.get('public');
-            filePath = filePath.replace('/' + yoClient + '/', '');
+            filePath = filePath.replace('/' + yoClient + '/client/', '');
             filePath = filePath.replace('/.tmp/', '');
             return '<script src="' + filePath + '"></script>';
           },
@@ -645,7 +651,7 @@ module.exports = function (grunt) {
         options: {
           transform: function(filePath) {
             var yoClient = grunt.config.get('public');
-            filePath = filePath.replace('/' + yoClient + '/', '');
+            filePath = filePath.replace('/' + yoClient + '/client/', '');
             filePath = filePath.replace('/.tmp/', '');
             return '<link rel="stylesheet" href="' + filePath + '">';
           },
