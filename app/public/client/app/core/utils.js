@@ -127,7 +127,7 @@ dspaceServices.factory('Utils', [
 
       } else if (QueryManager.isDiscoveryListRequest()) {
 
-        return QueryFields.DISCOVER
+        return QueryFields.DISCOVER;
 
       } else {
 
@@ -150,7 +150,7 @@ dspaceServices.factory('Utils', [
       if (letters.length > 0) {
         var regex = new RegExp('^' + letters, 'i');
         for (var i = 0; i < arr.length; i++) {
-          if (arr[i]['value'].match(regex) !== null) {
+          if (arr[i].value.match(regex) !== null) {
             return i;
           }
         }
@@ -179,7 +179,7 @@ dspaceServices.factory('Utils', [
 
         var arraySize = end - start;
         for (var i = 0; i < arraySize; i++) {
-          data[i] = {author: authors[i]}
+          data[i] = {author: authors[i]};
 
         }
 
@@ -231,7 +231,7 @@ dspaceServices.factory('Utils', [
         var arraySize = end - start;
         for (var i = 0; i < arraySize; i++) {
 
-          data[i] = {author: authors[i]}
+          data[i] = {author: authors[i]};
         }
 
         return data;
@@ -318,12 +318,16 @@ dspaceServices.factory('Utils', [
       var count = 0;
       for (var i = 0; i < streams.length; i++) {
         if (streams[i].bundleName === 'ORIGINAL') {
-          console.log('inc')
           count++;
         }
       }
       return count;
 
+    };
+
+    utils.getLogoPath = function (logoId) {
+      var path = '/bitstream/' + logoId + '/logo';
+      return path;
     };
 
 

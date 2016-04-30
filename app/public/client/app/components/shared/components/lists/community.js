@@ -13,7 +13,7 @@
 
       $location.path('/handle/' + handle);
 
-    }
+    };
 
   }
 

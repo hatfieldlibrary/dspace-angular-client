@@ -29,7 +29,7 @@
     sb.searchTextLabel = Messages.SEARCHBOX_SEARCH_TEXT_LABEL;
 
     sb.currentCollectionId = QueryManager.getAssetId();
-    
+
     sb.searchButtonLabel = Messages.SEARCHBOX_BUTTON_LABEL;
 
     sb.showOptionsForCollection = function() {
@@ -60,13 +60,13 @@
      * can change after this component has been added to
      * the parent.
      */
-    $scope.$watch(function() { return QueryManager.getAssetId()},
+    $scope.$watch(function() { return QueryManager.getAssetId();},
     function(newValue, oldValue) {
           if (newValue !== oldValue) {
             sb.id = QueryManager.getAssetId();
             sb.currentCollectionId = newValue;
           }
-    })
+    });
 
   }
 

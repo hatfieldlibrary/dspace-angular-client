@@ -58,6 +58,7 @@
     },
     templateUrl: '/shared/templates/lists/discoverDetail.html',
     controller: DiscoverDetailCtrl
-  })
+
+  });
 
 })();

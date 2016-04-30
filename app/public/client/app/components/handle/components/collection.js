@@ -13,12 +13,26 @@
 
     var ctrl = this;
 
+    function doInitialization() {
+      /**
+       * Set query action to retrieve list.
+       */
+      QueryManager.setAction(QueryActions.LIST);
+      /**
+       * Set query type to title list.
+       */
+      QueryManager.setQueryType(QueryTypes.TITLES_LIST);
+
+
+      QueryStack.push(QueryManager.getQuery());
+
+      QueryStack.print();
+
+    }
 
     function init() {
 
-     // QueryStack.pop();
-
-      console.log(QueryStack)
+      console.log(QueryStack);
 
       if (QueryStack.isEmpty()) {
         doInitialization();
@@ -36,23 +50,6 @@
     // Initialize component state.
     init();
 
-    function doInitialization() {
-      /**
-       * Set query action to retrieve list.
-       */
-      QueryManager.setAction(QueryActions.LIST);
-      /**
-       * Set query type to title list.
-       */
-      QueryManager.setQueryType(QueryTypes.TITLES_LIST);
-
-
-      QueryStack.push(QueryManager.getQuery());
-
-      QueryStack.print();
-    }
-
-
     /**
      * Returns the url for a logo.  This method can be called
      * for communities and collections.
@@ -60,7 +57,7 @@
      */
     ctrl.getLogo = function () {
       //  if (Data.root.logo.retrieveLink) {
-      //     GetLogoPath(Data.root.logo.id);
+      //     Utils.getLogoPath(Data.root.logo.id);
       //  }
     };
 

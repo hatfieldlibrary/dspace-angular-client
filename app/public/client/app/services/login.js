@@ -1,6 +1,4 @@
-/**
- * Created by mspalti on 2/23/16.
- */
+'use strict';
 
 /**
  * Google OAUTH2 login service.

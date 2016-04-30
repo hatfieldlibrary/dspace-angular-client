@@ -16,6 +16,7 @@
 
     function ($mdDialog,
               $mdMedia,
+              /*jshint unused:false */
               ItemById) {
 
       /**
@@ -86,7 +87,7 @@
           // position.
           $timeout(function () {
 
-            if (ctrl.showMetadata == true) {
+            if (ctrl.showMetadata === true) {
               $anchorScroll('metadata');
             } else {
               $anchorScroll('dialog-top');
@@ -99,8 +100,7 @@
 
         };
 
-
-      };
+      }
 
 
       var showItem = function (ev, id, scopeFullScreen) {
@@ -121,7 +121,7 @@
             resolve: {
               ItemById: 'ItemById',
               data: function (ItemById) {
-                return ItemById.query({item: id})
+                return ItemById.query({item: id});
               }
             }
           });

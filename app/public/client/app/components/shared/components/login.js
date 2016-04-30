@@ -1,7 +1,7 @@
 /**
  * Created by mspalti on 2/23/16.
  */
-
+'use strict';
 
 (function () {
 
@@ -12,9 +12,9 @@
                      AppContext) {
 
     var ctrl = this;
-    
+
     ctrl.loginLabel = Messages.LOGIN_LABEL;
-    
+
     ctrl.logoutLabel = Messages.LOGOUT_LABEL;
 
     ctrl.sessionStatus = AppContext.hasDspaceSession;

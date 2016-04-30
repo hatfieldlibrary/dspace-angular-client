@@ -43,6 +43,23 @@
 
     };
 
+
+    /**
+     * Adds new results to current items.
+     * @param results  items returned by paging query.
+     */
+    function addResults(results) {
+      ctrl.items = ctrl.items.concat(results);
+
+    }
+    /**
+     * Adds new results to current items at start of the array.
+     * @param results  items returned by paging query.
+     */
+    function addPreviousResults(results) {
+      ctrl.items = results.concat(ctrl.items);
+    }
+
     /**
      * Sets the selected index in the controller and in the application
      * context.  Used by subject and author lists to toggle view state.
@@ -67,7 +84,6 @@
       ctrl.items = results;
       ctrl.count = count;
       ctrl.field = field;
-      console.log(ctrl.items)
 
     };
 
@@ -101,18 +117,6 @@
 
     };
 
-    /**
-     * Adds new results to current items.
-     * @param results  items returned by paging query.
-     */
-    function addResults(results) {
-      ctrl.items = ctrl.items.concat(results);
-
-    }
-
-    function addPreviousResults(results) {
-      ctrl.items = results.concat(ctrl.items);
-    }
 
     function init() {
 

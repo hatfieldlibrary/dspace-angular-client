@@ -119,6 +119,157 @@
 
     }
 
+
+    /**
+     * Handle the result of field queries. This function exists
+     * to preprocess data from author and subject results before sending
+     * to the parent component.
+     * @param data
+     */
+    function handleResult(data) {
+
+      var end;
+
+      if (QueryManager.isAuthorListRequest()) {
+
+        displayListType = QueryFields.AUTHOR;
+
+        /**
+         * Add the author array to shared context.
+         * @type {string|Array|*}
+         */
+        AppContext.setAuthorsList(data.facets);
+
+        /**
+         * Total item is authors list.
+         */
+        data.count = AppContext.getAuthorsCount();
+        /**
+         * The count of items remaining in list.
+         * @type {*}
+         */
+        end = Utils.getPageListCount(data.count, setSize);
+
+
+        /** Add authors to the current result set. */
+        data.results = Utils.authorArraySlice(start, start + end);
+
+
+      }
+
+      else if (QueryManager.isSubjectListRequest()) {
+
+        displayListType = QueryFields.SUBJECT;
+
+        /**
+         * Add the author array to shared context.
+         * @type {string|Array|*}
+         */
+        AppContext.setSubjectList(data.facets);
+
+        /**
+         * Total items in subject list.
+         */
+        data.count = AppContext.getSubjectsCount();
+
+        /**
+         * The count of items remaining in list.
+         * @type {*}
+         */
+        end = Utils.getPageListCount(data.count, setSize);
+
+        /** Add subjects to the current result set. */
+        data.results = Utils.subjectArraySlice(start, start + end);
+
+      }
+      else {
+        /**
+         * Fields other than author and subject use the title list type
+         * @type {string}
+         */
+        displayListType = QueryFields.TITLE;
+
+      }
+
+      AppContext.setCount(data.count);
+
+      /**
+       * Update parent component.
+       */
+      ctrl.onUpdate({
+        results: data.results,
+        count: data.count,
+        field: displayListType
+      });
+
+      $timeout(function () {
+        /**
+         * Set pager in context.  (The pager component
+         * will show the pager button.)
+         */
+        AppContext.setPager(true);
+      }, 300);
+
+    }
+
+    /**
+     * Executes filter query.
+     */
+    var doJump = function () {
+
+      /**
+       * Get promise.
+       * @type {*|{method}|Session}
+       */
+      var items = SolrJumpToQuery.save({
+        params: QueryManager.context.query
+      });
+      /**
+       * Handle the response.
+       */
+      items.$promise.then(function (data) {
+        QueryManager.setOffset(data.offset);
+        /**
+         * Update parent component.
+         */
+        ctrl.onUpdate({
+          results: data.results,
+          count: data.count,
+          field: displayListType
+        });
+      });
+
+    };
+
+    /**
+     * Executes query to retrieve a fresh result set.
+     */
+    var doSearch = function () {
+
+      /**
+       * Set pager in context.  (The pager component will
+       * hide the pager button.)
+       */
+      AppContext.setPager(false);
+
+      /**
+       * Get promise.
+       * @type {*|{method}|Session}
+       */
+      var items = SolrQuery.save({
+        params: QueryManager.context.query
+
+      });
+      /**
+       * Handle the response.
+       */
+      items.$promise.then(function (data) {
+
+        QueryManager.setOffset(data.offset);
+        handleResult(data);
+      });
+    };
+
     /**
      * Toggle the sort order (ASCENDING, DESCENDING)
      */
@@ -141,7 +292,9 @@
        */
       QueryManager.setOffset(0);
 
+      var arr = [];
 
+      var data = {};
 
       /**
        * Author sort.
@@ -149,11 +302,10 @@
       if (QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS) {
 
         QueryManager.setOffset(0);
-        var arr = AppContext.getAuthors();
+        arr = AppContext.getAuthors();
         // Reverse the author array.
         Utils.reverseArray(arr);
         AppContext.setAuthorsList(arr);
-        var data = {};
         data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + setSize);
         data.count = AppContext.getAuthorsCount();
 
@@ -177,11 +329,10 @@
       else if (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS) {
 
         QueryManager.setOffset(0);
-        var arr = AppContext.getSubjects();
+        arr = AppContext.getSubjects();
         // Reverse the subject array.
         Utils.reverseArray(arr);
         AppContext.setSubjectList(arr);
-        var data = {};
         data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + setSize);
         data.count = AppContext.getSubjectsCount();
 
@@ -262,12 +413,14 @@
 
       }
 
-      console.log(QueryManager.getJumpType());
-
       /**
        * Slight delay before executing the search.
        */
       $timeout(function () {
+
+        var remaining;
+
+        var offset;
 
 
         if (QueryManager.getJumpType() === QueryTypes.START_LETTER) {
@@ -312,9 +465,9 @@
           /**
            * Find the index of the first matching item.
            */
-          var offset = Utils.findIndexInArray(AppContext.getAuthors(), ctrl.filterTerms);
+          offset = Utils.findIndexInArray(AppContext.getAuthors(), ctrl.filterTerms);
           QueryManager.setOffset(offset);
-          var remaining = Utils.getPageListCount(AppContext.getAuthorsCount(), setSize);
+          remaining = Utils.getPageListCount(AppContext.getAuthorsCount(), setSize);
           /**
            * Update view here.
            */
@@ -329,9 +482,9 @@
           /**
            * Find the index of the first matching item.
            */
-          var offset = Utils.findIndexInArray(AppContext.getSubjects(), ctrl.filterTerms);
+          offset = Utils.findIndexInArray(AppContext.getSubjects(), ctrl.filterTerms);
           QueryManager.setOffset(offset);
-          var remaining = Utils.getPageListCount(AppContext.getSubjectsCount(), setSize);
+          remaining = Utils.getPageListCount(AppContext.getSubjectsCount(), setSize);
           /**
            * Update view here.
            */
@@ -354,10 +507,7 @@
      */
     ctrl.resetField = function setField() {
 
-       ctrl.resetListView();
-
-
-
+      ctrl.resetListView();
 
 
       /**
@@ -397,161 +547,6 @@
       doSearch();
 
     };
-
-
-    /**
-     * Executes filter query.
-     */
-    var doJump = function () {
-
-      /**
-       * Get promise.
-       * @type {*|{method}|Session}
-       */
-      var items = SolrJumpToQuery.save({
-        params: QueryManager.context.query
-
-      });
-      /**
-       * Handle the response.
-       */
-      items.$promise.then(function (data) {
-        QueryManager.setOffset(data.offset);
-        /**
-         * Update parent component.
-         */
-        ctrl.onUpdate({
-          results: data.results,
-          count: data.count,
-          field: displayListType
-        });
-
-      });
-
-    };
-
-
-    /**
-     * Executes query to retrieve a fresh result set.
-     */
-    var doSearch = function () {
-
-      /**
-       * Set pager in context.  (The pager component will
-       * hide the pager button.)
-       */
-      AppContext.setPager(false);
-
-      /**
-       * Get promise.
-       * @type {*|{method}|Session}
-       */
-      var items = SolrQuery.save({
-        params: QueryManager.context.query
-
-      });
-      /**
-       * Handle the response.
-       */
-      items.$promise.then(function (data) {
-
-        QueryManager.setOffset(data.offset);
-        handleResult(data);
-      });
-    };
-
-
-    /**
-     * Handle the result of field queries. This function exists
-     * to preprocess data from author and subject results before sending
-     * to the parent component.
-     * @param data
-     */
-    function handleResult(data) {
-
-
-      if (QueryManager.isAuthorListRequest()) {
-
-        displayListType = QueryFields.AUTHOR;
-
-        /**
-         * Add the author array to shared context.
-         * @type {string|Array|*}
-         */
-        AppContext.setAuthorsList(data.facets);
-
-        /**
-         * Total item is authors list.
-         */
-        data.count = AppContext.getAuthorsCount();
-        /**
-         * The count of items remaining in list.
-         * @type {*}
-         */
-        var end = Utils.getPageListCount(data.count, setSize);
-
-
-        /** Add authors to the current result set. */
-        data.results = Utils.authorArraySlice(start, start + end);
-
-
-      }
-
-      else if (QueryManager.isSubjectListRequest()) {
-
-        displayListType = QueryFields.SUBJECT;
-
-        /**
-         * Add the author array to shared context.
-         * @type {string|Array|*}
-         */
-        AppContext.setSubjectList(data.facets);
-
-        /**
-         * Total items in subject list.
-         */
-        data.count = AppContext.getSubjectsCount();
-
-        /**
-         * The count of items remaining in list.
-         * @type {*}
-         */
-        var end = Utils.getPageListCount(data.count, setSize);
-
-        /** Add subjects to the current result set. */
-        data.results = Utils.subjectArraySlice(start, start + end);
-
-      }
-      else {
-        /**
-         * Fields other than author and subject use the title list type
-         * @type {string}
-         */
-        displayListType = QueryFields.TITLE;
-
-      }
-
-      AppContext.setCount(data.count);
-
-      /**
-       * Update parent component.
-       */
-      ctrl.onUpdate({
-        results: data.results,
-        count: data.count,
-        field: displayListType
-      });
-
-      $timeout(function() {
-        /**
-         * Set pager in context.  (The pager component
-         * will show the pager button.)
-         */
-        AppContext.setPager(true);
-      }, 300);
-
-
-    }
 
 
   }

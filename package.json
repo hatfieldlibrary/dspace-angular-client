@@ -1,7 +1,7 @@
 {
   "name": "DSpace_API_Client",
   "description": "The DSpace API client provides an angularjs front-end and nodejs middleware used with the DSpace API.",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "license": "(MIT)",
   "homepage": "",
   "author": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://mspalti@stash.app.willamette.edu/scm/dac/angularjs-dspace.git"
+    "url": ""
   },
   "dependencies": {
     "async": "^1.5.2",
@@ -67,7 +67,6 @@
     "grunt-angular-templates": "^1.0.3",
     "grunt-dom-munger": "^3.4.0",
     "grunt-protractor-runner": "^2.0.0",
-    "grunt-injector": "^0.6.0",
     "grunt-karma": "~0.12.0",
     "grunt-build-control": "^0.7.0",
     "jit-grunt": "~0.10.0",
@@ -104,15 +103,6 @@
     "phantomjs-prebuilt": "^2.1.4",
     "proxyquire": "^1.0.1",
     "supertest": "^1.1.0"
-  },
-  "engines": {
-    "node": "^4.4.0",
-    "npm": "^2.14.20"
-  },
-  "scripts": {
-    "start": "node server",
-    "test": "grunt test",
-    "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
   },
   "private": true
 }

@@ -92,12 +92,11 @@
      * Sets a $watch on the context's currentListIndex.
      */
     $scope.$watch(
-      "context.currentListIndex",
+      'context.currentListIndex',
       function updateSelecteIndex(newValue, oldValue) {
         if (newValue !== oldValue) {
           if (($mdMedia('sm') || $mdMedia('xs'))) {
             ctrl.xsSelectedIndex = newValue;
-            console.log(ctrl.xsSelectedIndex)
 
           } else {
             ctrl.selectedIndex = newValue;

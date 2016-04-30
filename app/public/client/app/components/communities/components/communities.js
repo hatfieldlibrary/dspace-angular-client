@@ -9,21 +9,21 @@
   /**
    * Collection view controller.
    */
-  function CommunitiesCtrl(GetCommunities, 
-                           QueryStack, 
+  function CommunitiesCtrl(GetCommunities,
+                           QueryStack,
                            Messages) {
 
     var ctrl = this;
 
     ctrl.intro = Messages.COMMUNITIES_LIST_INTRO;
 
-    ctrl.heading = Messages.COMMUNITIES_LIST_HEADING
-    
+    ctrl.heading = Messages.COMMUNITIES_LIST_HEADING;
+
     ctrl.ready = false;
-    
+
     QueryStack.clear();
-    
-    
+
+
 
     var fetch = GetCommunities.query();
     fetch.$promise.then(function (data) {

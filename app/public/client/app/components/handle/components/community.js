@@ -14,7 +14,7 @@
 
     var ctrl = this;
 
-    
+
     if (ctrl.data.countItems === ctrl.data.itemTotal) {
       ctrl.hideLoginMessage = true;
     }
@@ -26,7 +26,7 @@
      */
     ctrl.getLogo = function () {
       //  if (Data.root.logo.retrieveLink) {
-      //     GetLogoPath(Data.root.logo.id);
+      //     Utils.getLogoPath(Data.root.logo.id);
 
       //  }
     };

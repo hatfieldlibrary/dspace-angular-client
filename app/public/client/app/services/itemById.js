@@ -1,6 +1,4 @@
-/**
- * Created by mspalti on 3/30/16.
- */
+'use strict';
 
 /**
  * Retrieves information about object via it's handle.

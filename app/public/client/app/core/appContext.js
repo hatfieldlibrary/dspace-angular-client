@@ -95,7 +95,6 @@
       },
 
       setMenu: function (open) {
-        console.log('menu state ' + open)
         this.context.openMenu = open;
       },
 
@@ -119,8 +118,7 @@
         return this.context.discoveryCommunities;
       }
 
-
-    }
+    };
   });
 
 })();

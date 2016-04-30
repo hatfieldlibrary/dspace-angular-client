@@ -14,20 +14,14 @@ var
    * Express session store
    * @type {session|exports|module.exports}
    */
-  session = require('express-session'),
-
-
-  /**
-   * Confidential route and credential parameters
-   */
-  credentials = require('./credentials');
+  session = require('express-session');
 
 
 module.exports = function (app, config, passport) {
 
   // For development purposes, use Google OAUTH2 and express-session
   // in lieu of Redisstore.
-  if (app.get('env') === 'development' || app.get('env') === 'runlocal') {
+  if (app.get('env') === 'development') {
 
     var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
@@ -78,6 +72,8 @@ module.exports = function (app, config, passport) {
     // Use CAS authentication and redis as the session store.
     // http://redis.io/
   } else if (app.get('env') === 'production') {
+
+    console.log('Using CAS.');
 
     /**
      * CAS authentication strategy

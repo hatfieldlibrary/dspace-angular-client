@@ -22,7 +22,7 @@ module.exports = function (app, config, passport) {
    * Use OAUTH2 for development.
    */
 
-  if (app.get('env') === 'development' || app.get('env') === 'runlocal') {
+  if (app.get('env') === 'development') {
 
     // The first step in Google authentication redirects the user to google.com.
     // After authorization, Google will redirect the user back to the callback
@@ -33,6 +33,7 @@ module.exports = function (app, config, passport) {
             'https://www.googleapis.com/auth/userinfo.email']
         }
       ),
+      /* jslint unused: false */
       function (req, res) {
         // The request will be redirected to Google for authentication, so this
         // function will not be called.
@@ -106,7 +107,7 @@ module.exports = function (app, config, passport) {
 
   // currently unused.
   app.use('/solrRecentSubmissions/:type/:id', solr.recentSubmissions);
-  
+
 
   /**
    * Route to page partials.

@@ -1,8 +1,9 @@
 var path = require('path'),
   rootPath = path.normalize(__dirname + '/../app/'),
+  distPath = path.normalize(__dirname + '/../dist/app/'),
   credentials = require('./credentials');
 
-env = process.env.NODE_ENV || 'development';
+var env = process.env.NODE_ENV || 'development';
 
 var config = {
 
@@ -88,14 +89,14 @@ var config = {
   },
 
   production: {
-    root: rootPath,
+    root: distPath,
     app: {
       name: 'dspace'
     },
     sync: {force: false},
     uid: credentials.uid,
     gid: credentials.gid,
-    port: 3003,
+    port: 3000,
     redisPort: 6379,
     secret: credentials.restSecret,
     dspace: {

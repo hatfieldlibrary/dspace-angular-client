@@ -35,15 +35,10 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     app: 'app',
     config: 'config',
-    public: 'app/public',
+    client: 'app/public/client/app',
+    public: 'app/public/client',
     dist: 'dist',
 
-    yeoman: {
-      // configurable paths
-      client: require('./bower.json').appPath || 'client',
-      server: 'server',
-      dist: 'dist'
-    },
     express: {
       options: {
         port: process.env.PORT || 3000
@@ -79,23 +74,23 @@ module.exports = function (grunt) {
       }
     },
     watch: {
-      //babel: {
-      //  files: ['<%= yeoman.client %>/{app,components}/**/!(*.spec|*.mock).js'],
-      //  tasks: ['newer:babel:client']
-      //},
+      babel: {
+        files: ['<%= client %>/**/!(*.spec|*.mock|*.html).js'],
+        tasks: ['newer:babel:client']
+      },
       //ngconstant: {
       //  files: ['<%= yeoman.server %>/config/environment/shared.js'],
       //  tasks: ['ngconstant']
       //},
       injectJS: {
         files: [
-          '<%= public %>/client/{app,components}/**/!(*.spec|*.mock).js',
-          '!<%= public %>/client/app/app.js'
+          '<%= client %>/**/!(*.spec|*.mock).js',
+          '!<%= client %>/app.js'
         ],
         tasks: ['injector:scripts']
       },
       injectCss: {
-        files: ['<%= public %>/client/{app,components}/**/*.css'],
+        files: ['<%= public %>/**/*.css'],
         tasks: ['injector:css']
       },
       //mochaTest: {
@@ -111,9 +106,9 @@ module.exports = function (grunt) {
       },
       livereload: {
         files: [
-          '{.tmp,<%= public %>}/client/{app,components}/**/*.{css,html}',
-          '{.tmp,<%= public %>}/client/{app,components}/**/!(*.spec|*.mock).js',
-          '<%= public %>/client/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
+          '{.tmp,<%= public %>}/**/*.{css,html}',
+          '{.tmp,<%= public %>}/**/!(*.spec|*.mock).js',
+          '<%= public %>/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
         ],
         options: {
           livereload: true
@@ -126,11 +121,11 @@ module.exports = function (grunt) {
           livereload: true,
           spawn: false //Without this option specified express won't be reloaded
         }
-      }//,
-      //bower: {
-      //  files: ['bower.json'],
-      //  tasks: ['wiredep']
-      //},
+      },
+      bower: {
+        files: ['bower.json'],
+        tasks: ['wiredep']
+      },
     },
 
     // Make sure code styles are up to par and there are no obvious mistakes
@@ -149,9 +144,9 @@ module.exports = function (grunt) {
       client: {
         src: [
           'Gruntfile.js',
-          '<%= app %>/components/**/*.js',
-          '<%= app %>/services/**/**/*.js',
-          '<%= public %>/core/**/*.js',
+          '<%= client %>/components/**/*.js',
+          '<%= client %>/services/**/**/*.js',
+          '<%= client %>/core/**/*.js',
           '<%= config %>/**/*.js',
           './server.js'
         ]
@@ -243,7 +238,7 @@ module.exports = function (grunt) {
     // Use nodemon to run server in debug mode with an initial breakpoint
     nodemon: {
       debug: {
-        script: '<%= yeoman.server %>',
+        script: '<%= app %>',
         options: {
           nodeArgs: ['--debug-brk'],
           env: {
@@ -266,30 +261,31 @@ module.exports = function (grunt) {
     },
 
     // Automatically inject Bower components into the app and karma.conf.js
-    wiredep: {
-      directory: '<%= public %>/client/bower_components',
-      options: {
-        exclude: [
-          '/json3/',
-          '/es5-shim/'
-        ]
-      },
-      client: {
-        src: '<%= public %>/client/index.html',
-        ignorePath: '<%= public %>/',
-      },
-      test: {
-        src: './karma.conf.js',
-        devDependencies: true
-      }
-    },
+    //wiredep: {
+    //  directory: '<%= public %>/bower_components',
+    //  options: {
+    //    exclude: [
+    //      '/jasmine-core/'
+    //    ]
+    //  },
+    //  client: {
+    //    src: '<%= public %>/index.html',
+    //    ignorePath: '<%= public %>/',
+    //  },
+    //  test: {
+    //    src: './karma.conf.js',
+    //    devDependencies: true
+    //  }
+    //},
 
     // Renames files for browser caching purposes
     filerev: {
       dist: {
         src: [
-          '<%= dist %>/<%= public %>/!(bower_components){,*/}*.{js,css}',
-          '<%= dist %>/<%= public %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          '<%= dist %>/<%= public %>/!(bower_components){,*/}*.css}',
+          '<%= dist %>/<%= public %>/!(bower_components){,*/}*.html',
+          '<%= dist %>/<%= client %>/!(bower_components){,*/}*.js}',
+          '<%= dist %>/<%= public %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
     },
@@ -298,21 +294,23 @@ module.exports = function (grunt) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: ['<%= public %>/client/index.html'],
+      html: ['<%= public %>/index.html'],
       options: {
-        dest: '<%= dist %>/<%= public %>/client'
+        root: '<%= public %>',
+        dest: '<%= dist %>/<%= public %>'
       }
     },
 
     // Performs rewrites based on rev and the useminPrepare configuration
     usemin: {
-      html: ['<%= dist %>/<%= public %>/client/{,!(bower_components)/**/}*.html'],
-      css: ['<%= dist %>/<%= public %>/client/!(bower_components){,*/}*.css'],
-      js: ['<%= dist %>/<%= public %>/client/!(bower_components){,*/}*.js'],
+      html: ['<%= dist %>/<%= public %>/{,!(bower_components)/**/}*.html'],
+      css: ['<%= dist %>/<%= public %>/!(bower_components){,*/}*.css'],
+      js: ['<%= dist %>/<%= client %>/!(bower_components){,*/}*.js'],
       options: {
+        root: '<%= public %>',
         assetsDirs: [
-          '<%= dist %>/<%= public %>client/',
-          '<%= dist %>/<%= public %>/client/images'
+          '<%= dist %>/<%= public %>',
+          '<%= dist %>/<%= public %>/images'
         ],
         // This is so we update image references in our ng-templates
         patterns: {
@@ -331,9 +329,9 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= public %>/client/images',
+          cwd: '<%= public %>/images',
           src: '{,*/}*.{png,jpg,jpeg,gif,svg}',
-          dest: '<%= dist %>/<%= public %>/client/images'
+          dest: '<%= dist %>/<%= public %>/images'
         }]
       }
     },
@@ -388,7 +386,7 @@ module.exports = function (grunt) {
         usemin: 'app/app.js'
       },
       main: {
-        cwd: '<%= public %>/client',
+        cwd: '<%= public %>',
         src: ['{partials}/**/*.html'],
         dest: '.tmp/templates.js'
       },
@@ -417,12 +415,12 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           dot: true,
-          cwd: '<%= public %>/client',
-          dest: '<%= dist %>/<%= public %>/client',
+          cwd: '<%= public %>',
+          dest: '<%= dist %>/<%= public %>',
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
-            'bower_components/**/*',
+           // 'bower_components/**/*',
             'images/{,*/}*.{webp}',
             'fonts/**/*',
             'index.html'
@@ -430,7 +428,7 @@ module.exports = function (grunt) {
         }, {
           expand: true,
           cwd: '.tmp/images',
-          dest: '<%= dist %>/<%= publict %>/images',
+          dest: '<%= dist %>/<%= public %>/images',
           src: ['generated/*']
         }, {
           expand: true,
@@ -441,13 +439,14 @@ module.exports = function (grunt) {
             '!<%= app %>/config/local.env.sample.js'
           ]
         }]
-      },
-      styles: {
-        expand: true,
-        cwd: '<%= public %>',
-        dest: '.tmp/',
-        src: ['{app,components}/**/*.css']
       }
+      //},
+      //styles: {
+      //  expand: true,
+      //  cwd: '<%= public %>',
+      //  dest: '.tmp/',
+      //  src: ['css/**/*.css']
+      //}
     },
 
     //buildcontrol: {
@@ -493,7 +492,7 @@ module.exports = function (grunt) {
         }
       },
       dist: [
-    //    'newer:babel:client',
+        'newer:babel:client',
         'imagemin'
       ]
     },
@@ -529,7 +528,7 @@ module.exports = function (grunt) {
           mask: '**/*.spec.js',
           coverageFolder: 'coverage/server/unit'
         },
-        src: '<%= yeoman.server %>'
+        src: '<%= app %>'
       },
       integration: {
         options: {
@@ -539,7 +538,7 @@ module.exports = function (grunt) {
           mask: '**/*.integration.js',
           coverageFolder: 'coverage/server/integration'
         },
-        src: '<%= yeoman.server %>'
+        src: '<%= app %>'
       }
     },
 
@@ -584,36 +583,36 @@ module.exports = function (grunt) {
     },
 
     // Compiles ES6 to JavaScript using Babel
-    //babel: {
-    //  options: {
-    //    sourceMap: true
-    //  },
-    //  client: {
-    //    files: [{
-    //      expand: true,
-    //      cwd: '<%= yeoman.client %>',
-    //      src: ['{app,components}/**/!(*.spec).js'],
-    //      dest: '.tmp'
-    //    }]
-    //  },
-    //  server: {
-    //    options: {
-    //      plugins: [
-    //        'transform-class-properties',
-    //        'transform-runtime'
-    //      ]
-    //    },
-    //    files: [{
-    //      expand: true,
-    //      cwd: '<%= yeoman.server %>',
-    //      src: [
-    //        '**/*.js',
-    //        '!config/local.env.sample.js'
-    //      ],
-    //      dest: '<%= yeoman.dist %>/<%= yeoman.server %>'
-    //    }]
-    //  }
-    //},
+    babel: {
+      options: {
+        sourceMap: true
+      },
+      client: {
+        files: [{
+          expand: true,
+          cwd: '<%= client %>',
+          src: ['{app,components}/**/!(*.spec).js'],
+          dest: '.tmp'
+        }]
+      },
+      server: {
+        options: {
+          plugins: [
+            'transform-class-properties',
+            'transform-runtime'
+          ]
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= app %>',
+          src: [
+            '!(<%= client %>)/**/*.js',
+            '!config/local.env.sample.js'
+          ],
+          dest: '<%= dist %>/<%= app %>'
+        }]
+      }
+    },
 
     injector: {
       options: {},
@@ -621,8 +620,8 @@ module.exports = function (grunt) {
       scripts: {
         options: {
           transform: function(filePath) {
-            var yoClient = grunt.config.get('public');
-            filePath = filePath.replace('/' + yoClient + '/client/', '');
+            var yoClient = grunt.config.get('client');
+            filePath = filePath.replace('/' + yoClient , '');
             filePath = filePath.replace('/.tmp/', '');
             return '<script src="' + filePath + '"></script>';
           },
@@ -637,34 +636,34 @@ module.exports = function (grunt) {
           endtag: '<!-- endinjector -->'
         },
         files: {
-          '<%= public %>/client/index.html': [
+          '<%= public %>/index.html': [
             [
-              '<%= public %>/{app,components}/**/!(*.spec|*.mock).js',
-              '!{.tmp,<%= public %>}/client/app/app.{js,ts}'
+              '<%= public %>/**/!(*.spec|*.mock).js',
+              '!{.tmp,<%= client %>}/app.{js,ts}'
             ]
           ]
         }
       },
 
       // Inject component css into index.html
-      css: {
-        options: {
-          transform: function(filePath) {
-            var yoClient = grunt.config.get('public');
-            filePath = filePath.replace('/' + yoClient + '/client/', '');
-            filePath = filePath.replace('/.tmp/', '');
-            return '<link rel="stylesheet" href="' + filePath + '">';
-          },
-          starttag: '<!-- injector:css -->',
-          endtag: '<!-- endinjector -->'
-        },
-        files: {
-          '<%= public %>/client/index.html': [
-            '<%= public %>/client/{app,components}/**/*.css'
-          ]
-        }
-      }
-    },
+      //css: {
+      //  options: {
+      //    transform: function(filePath) {
+      //      var yoClient = grunt.config.get('client');
+      //      filePath = filePath.replace('/' + yoClient, '');
+      //      filePath = filePath.replace('/.tmp/', '');
+      //      return '<link rel="stylesheet" href="' + filePath + '">';
+      //    },
+      //    starttag: '<!-- injector:css -->',
+      //    endtag: '<!-- endinjector -->'
+      //  },
+      //  files: {
+      //    '<%= public %>/index.html': [
+      //      '<%= public %>/**/*.css'
+      //    ]
+      //  }
+      //}
+    }
   });
 
   // Used for delaying livereload until after server has restarted
@@ -695,7 +694,7 @@ module.exports = function (grunt) {
         // 'concurrent:pre',
         'concurrent:server',
         'injector',
-        'wiredep:client',
+      //  'wiredep:client',
         // 'postcss',
         'concurrent:debug'
       ]);
@@ -706,8 +705,8 @@ module.exports = function (grunt) {
       'env:all',
       //  'concurrent:pre',
       // 'concurrent:server',
-      'injector',
-      'wiredep:client',
+    //  'injector',
+      //'wiredep:client',
       //  'postcss',
       'express:dev',
       'wait',
@@ -737,9 +736,9 @@ module.exports = function (grunt) {
         'env:all',
         //  'concurrent:pre',
         //  'concurrent:test',
-        'injector',
+       // 'injector',
         'postcss',
-        'wiredep:test',
+      //  'wiredep:test',
         'karma'
       ]);
     }
@@ -764,7 +763,7 @@ module.exports = function (grunt) {
           //   'concurrent:pre',
           //   'concurrent:test',
           'injector',
-          'wiredep:client',
+        //  'wiredep:client',
           'postcss',
           'express:dev',
           'protractor'
@@ -807,35 +806,37 @@ module.exports = function (grunt) {
 
     }
 
-    else grunt.task.run([
+    else {
+      grunt.task.run([
         'test:server',
         'test:client'
       ]);
+    }
   });
 
   grunt.registerTask('build', [
     'clean:dist',
     //  'concurrent:pre',
     'concurrent:dist',
-    'injector',
-    'wiredep:client',
+   // 'injector',
+   // 'wiredep:client',
     'useminPrepare',
     // 'postcss',
     'ngtemplates',
     'concat',
     'ngAnnotate',
     'copy:dist',
-    // 'babel:server',
+    'babel:server',
     // 'cdnify',
     'cssmin',
     'uglify',
-    'filerev',
+   // 'filerev',
     'usemin'
   ]);
 
   grunt.registerTask('default', [
     'newer:jshint',
-    'test',
+    //'test',
     'build'
   ]);
 };

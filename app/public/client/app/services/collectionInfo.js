@@ -1,7 +1,4 @@
-/**
- * Created by mspalti on 4/13/16.
- */
-
+'use strict';
 
 dspaceServices.factory('GetCollectionInfo', ['$resource',
   function ($resource) {

@@ -20,7 +20,7 @@
 
     ctrl.goToHome = function() {
       $window.location.href = AppConfig.HOME_LINK;
-    }
+    };
 
   }
 

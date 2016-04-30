@@ -6,12 +6,12 @@
  * to the Express server via an Angular request service.
  */
 dspaceContext.service('QueryManager', [
-  
+
   'QueryTypes',
   'QueryActions',
   'QuerySort',
   'QueryFields',
-  
+
   function (QueryTypes,
             QueryActions,
             QuerySort,
@@ -131,7 +131,7 @@ dspaceContext.service('QueryManager', [
       },
 
       isDiscoveryListRequest: function () {
-        return (this.context.query.query.qType == QueryTypes.DISCOVER);
+        return (this.context.query.query.qType === QueryTypes.DISCOVER);
       },
 
       setAssetType: function (type) {

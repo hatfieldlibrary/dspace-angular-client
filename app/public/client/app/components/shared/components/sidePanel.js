@@ -2,6 +2,7 @@
  * Created by mspalti on 2/23/16.
  */
 
+'use strict';
 
 function SideNavCtrl($scope,
                      $window,
@@ -13,8 +14,19 @@ function SideNavCtrl($scope,
 
   ctrl.allCommunitiesLink = Messages.VIEW_ALL_COMMUNITIES;
 
+  /**
+   * Build handler to open/close a SideNav.
+   */
+  function buildToggler(navID) {
+    $mdSidenav(navID)
+      .toggle()
+      .then(function () {
+
+      });
+  }
+
   $scope.$watch(function () {
-      return AppContext.getMenuState()
+      return AppContext.getMenuState();
     },
     function updateMenu(newValue, oldValue) {
       if (newValue !== oldValue) {
@@ -34,18 +46,6 @@ function SideNavCtrl($scope,
       });
 
   };
-
-
-  /**
-   * Build handler to open/close a SideNav.
-   */
-  function buildToggler(navID) {
-    $mdSidenav(navID)
-      .toggle()
-      .then(function () {
-
-      });
-  }
 
 }
 

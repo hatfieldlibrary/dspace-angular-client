@@ -37,13 +37,72 @@
 
     disc.pageHeader = Messages.DISCOVERY_PAGE_HEADER;
 
-    disc.communityLabel  = Messages.ADVANCED_SEARCH_COMMUNITY_LABEL;
+    disc.communityLabel = Messages.ADVANCED_SEARCH_COMMUNITY_LABEL;
 
     disc.collectionLabel = Messages.ADVANCED_SEARCH_COLLECTION_LABEL;
 
     disc.textLabel = Messages.ADVANCED_SEARCH_TEXT_LABEL;
 
     disc.submitLabel = Messages.ADVANCED_SEARCH_SUBMIT_LABEL;
+
+
+
+    /**
+     * Gets list of collections for a community.  Adds collection
+     * list to the component scope.
+     * @param id  the community id
+     */
+    function getCollectionsForCommunity(id) {
+
+      if (id !== 0 && id !== '0' && id !== undefined) {
+        var collections = GetCollectionsForCommunity.query({id: id});
+        collections.$promise.then(function (data) {
+          data.unshift({id: 0, name: 'All Collections'});
+          disc.collections = data;
+
+        });
+      }
+
+    }
+
+    /**
+     * Retrieves parent community information for collection
+     * and updates component scope.
+     * @param id  the community id
+     */
+    function getCommunityParentInfo(id) {
+      if (id !== 0) {
+        var info = GetCollectionInfo.query({item: id});
+        info.$promise.then(function (data) {
+          disc.communityId = data.parentCommunity.id;
+          getCollectionsForCommunity(data.parentCommunity.id);
+        });
+      }
+    }
+
+    /**
+     * Retrieves list of communities if not already available
+     * in the application context. Adds community list to the
+     * component scope.
+     */
+    function getCommunities() {
+
+      if (AppContext.getDiscoverCommunities().length === 0) {
+
+        var items = GetCommunitiesForDiscover.query();
+        items.$promise.then(function (data) {
+          data.unshift({id: '0', name: 'All Departments'});
+          AppContext.setDiscoverCommunities(data);
+          disc.searchItems = data;
+
+        });
+
+      }
+      else {
+        disc.searchItems = AppContext.getDiscoverCommunities();
+      }
+
+    }
 
 
     /**
@@ -228,64 +287,6 @@
     }
 
     init();
-
-
-    /**
-     * Retrieves parent community information for collection
-     * and updates component scope.
-     * @param id  the community id
-     */
-    function getCommunityParentInfo(id) {
-      if (id !== 0) {
-        var info = GetCollectionInfo.query({item: id});
-        info.$promise.then(function (data) {
-          disc.communityId = data.parentCommunity.id;
-          getCollectionsForCommunity(data.parentCommunity.id);
-        });
-      }
-    }
-
-    /**
-     * Retrieves list of communities if not already available
-     * in the application context. Adds community list to the
-     * component scope.
-     */
-    function getCommunities() {
-
-      if (AppContext.getDiscoverCommunities().length === 0) {
-
-        var items = GetCommunitiesForDiscover.query();
-        items.$promise.then(function (data) {
-          data.unshift({id: "0", name: "All Departments"});
-          AppContext.setDiscoverCommunities(data);
-          disc.searchItems = data;
-
-        });
-
-      }
-      else {
-        disc.searchItems = AppContext.getDiscoverCommunities();
-      }
-
-    }
-
-    /**
-     * Gets list of collections for a community.  Adds collection
-     * list to the component scope.
-     * @param id  the community id
-     */
-    function getCollectionsForCommunity(id) {
-
-      if (id !== 0 && id !== '0' && id !== undefined) {
-        var collections = GetCollectionsForCommunity.query({id: id});
-        collections.$promise.then(function (data) {
-          data.unshift({id: 0, name: 'All Collections'});
-          disc.collections = data;
-
-        });
-      }
-
-    }
 
   }
 

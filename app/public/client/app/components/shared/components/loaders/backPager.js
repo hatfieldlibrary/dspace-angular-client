@@ -29,7 +29,7 @@
      * @returns {boolean}
      */
     ctrl.more = function () {
-      console.log(AppContext.getCount() > QueryManager.getOffset() - setSize)
+      console.log(AppContext.getCount() > QueryManager.getOffset() - setSize);
       return AppContext.getCount() > QueryManager.getOffset() - setSize;
     };
     /**
@@ -50,18 +50,24 @@
      */
     var displayListType = '';
 
-    // /**
-    //  * Receives broadcast from the discovery-search-box component.
-    //  */
-    // $scope.$on("discoverySubmit", function () {
-    //   QueryManager.setOffset(0);
-    //   updateList(0);
-    // });
-    //
-    $scope.$on("nextPage", function () {
-      updateList(QueryManager.getOffset());
-    });
+    /**
+     * Update the parent component with new items.
+     * @param data the next set if items.
+     */
+    function updateParent(data) {
 
+      AppContext.setCount(data.count);
+
+      QueryStack.replaceWith(QueryManager.context.query);
+
+      ctrl.onUpdate({
+
+        results: data.results,
+        index: ctrl.start
+
+      });
+
+    }
 
     /**
      * This update function executes solr query.
@@ -132,6 +138,7 @@
       else {
 
         var data = [];
+        var end;
 
         /**
          * For authors or subjects, get next results from the facets
@@ -141,44 +148,20 @@
          */
         if (QueryManager.isAuthorListRequest()) {
           data.count = AppContext.getAuthorsCount();
-          var end = Utils.getPageListCount(data.count, setSize);
+          end = Utils.getPageListCount(data.count, setSize);
           data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
 
         } else if (QueryManager.isSubjectListRequest()) {
           data.count = AppContext.getSubjectsCount();
-          // In JavaScript, variables live at the function level, not the block level.
-          // Declaring the 'end' variable here would be a duplicate declaration.
-          // JavaScript 1.7 has a let declaration for block level scope.  Not currently supported.
           end = Utils.getPageListCount(data.count, setSize);
           data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
 
         }
-
         updateParent(data);
-
       }
 
-
     }
 
-    /**
-     * Update the parent component with new items.
-     * @param data the next set if items.
-     */
-    function updateParent(data) {
-
-      AppContext.setCount(data.count);
-
-      QueryStack.replaceWith(QueryManager.context.query);
-
-      ctrl.onUpdate({
-
-        results: data.results,
-        index: ctrl.start
-
-      });
-
-    }
 
     /**
      * View model method for retrieving the previous result set.
@@ -190,11 +173,15 @@
       if (start >= setSize) {
         ctrl.start -= setSize;
         ctrl.end = ctrl.start;
-        console.log(ctrl.start)
         QueryManager.setOffset(ctrl.start);
         updateList(ctrl.start);
       }
     };
+
+
+    $scope.$on('nextPage', function () {
+      updateList(QueryManager.getOffset());
+    });
 
   }
 

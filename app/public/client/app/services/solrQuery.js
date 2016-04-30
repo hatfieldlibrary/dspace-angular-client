@@ -1,6 +1,4 @@
-/**
- * Created by mspalti on 3/1/16.
- */
+'use strict';
 
 /**
  * Retrieve first 10 items for the collection or community.

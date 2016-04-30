@@ -54,48 +54,38 @@
      */
     var displayListType = '';
 
-
     /**
-     * This watch will show/hide the pager button
-     * based on the app context.  This allows sort
-     * options components to hide the pager button
-     * so that it doesn't flash into view when changing
-     * the option. Since both pager and sort options
-     * are children of item list, this might be done
-     * more efficiently via callbacks.
+     * Update the parent component with new items.
+     * @param data the next set if items.
      */
-    $scope.$watch(function () {
-        return AppContext.getPager()
-      },
-      function (newValue, oldValue) {
-        if (newValue !== oldValue) {
-          ctrl.showPager = newValue;
-        }
+    function updateParent(data) {
+
+
+      AppContext.setCount(data.count);
+
+      ctrl.onUpdate({
+
+        results: data.results,
+        count: data.count,
+        field: displayListType
+
       });
 
 
-    /**
-     * Initialize data for the first set of items.
-     *
-     * The initial QueryManager state for the query context is
-     * set outside of pager in the appropriate parent
-     * component, e.g.: collection, discover...
-     */
-    function init() {
-
-
-      /**
-       * Update the query stack. Subsequent paging
-       * requests to not update the stack.
-       */
-
-      updateList(QueryManager.getOffset());
+      $timeout(function () {
+        /**
+         * Show the pager.
+         * @type {boolean}
+         */
+        ctrl.showPager = true;
+        /**
+         * Set pager in context.
+         */
+        AppContext.setPager(true);
+      }, 300);
 
 
     }
-
-    init();
-
 
     /**
      * Execute node REST API call for solr query results.
@@ -182,6 +172,8 @@
 
         var data = [];
 
+        var end;
+
         /**
          * For authors or subjects, get next results from the facets
          * array rather than executing a new solr query.  This is always
@@ -190,58 +182,64 @@
          */
         if (QueryManager.isAuthorListRequest()) {
           data.count = AppContext.getAuthorsCount();
-          var end = Utils.getPageListCount(data.count, setSize);
+          end = Utils.getPageListCount(data.count, setSize);
           data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
 
         } else if (QueryManager.isSubjectListRequest()) {
           data.count = AppContext.getSubjectsCount();
-          // In JavaScript, variables live at the function level, not the block level.
-          // Declaring the 'end' variable here would be a duplicate declaration.
-          // JavaScript 1.7 has a let declaration for block level scope.  Not currently supported.
           end = Utils.getPageListCount(data.count, setSize);
           data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
 
         }
-
         updateParent(data);
 
       }
 
-
     }
 
+
     /**
-     * Update the parent component with new items.
-     * @param data the next set if items.
+     * This watch will show/hide the pager button
+     * based on the app context.  This allows sort
+     * options components to hide the pager button
+     * so that it doesn't flash into view when changing
+     * the option. Since both pager and sort options
+     * are children of item list, this might be done
+     * more efficiently via callbacks.
      */
-    function updateParent(data) {
-
-
-      AppContext.setCount(data.count);
-
-      ctrl.onUpdate({
-
-        results: data.results,
-        count: data.count,
-        field: displayListType
-
+    $scope.$watch(function () {
+        return AppContext.getPager();
+      },
+      function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+          ctrl.showPager = newValue;
+        }
       });
 
 
-      $timeout(function () {
-        /**
-         * Show the pager.
-         * @type {boolean}
-         */
-        ctrl.showPager = true;
-        /**
-         * Set pager in context.
-         */
-        AppContext.setPager(true);
-      }, 300);
+    /**
+     * Initialize data for the first set of items.
+     *
+     * The initial QueryManager state for the query context is
+     * set outside of pager in the appropriate parent
+     * component, e.g.: collection, discover...
+     */
+    function init() {
+
+
+      /**
+       * Update the query stack. Subsequent paging
+       * requests to not update the stack.
+       */
+
+      updateList(QueryManager.getOffset());
 
 
     }
+
+    init();
+
+
 
     /**
      * View model method for retrieving the previous result set.
@@ -284,10 +282,8 @@
   dspaceComponents.component('pagerComponent', {
 
     template: '<div layout="row" layout-align="center center" ng-if="$ctrl.showPager"><md-button class="md-raised md-accent md-fab md-mini" ng-click="$ctrl.next()" ng-if="$ctrl.more()"><md-icon md-font-library="material-icons" class="md-light" aria-label="More Results">expand_more</md-icon></md-button></div>',
-
     bindings: {
       onUpdate: '&'
-
     },
     controller: PagerCtrl
 

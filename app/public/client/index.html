@@ -1,23 +1,20 @@
 <!doctype html>
-<html class="lt-ie10" lang="en"> <![endif]-->
-<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
   <title ng-bind="title">DSpace</title>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   <base href="/">
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description"
-        content="Dspace test."/>
-  <!-- build:css(client) app/vendor.css -->
-  <!-- bower:css -->
-  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+        content="DSpace API Client"/>
+
+  <!-- build:css css/app.css -->
   <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
-  <!-- endbower -->
-  <!-- endbuild -->
-  <!-- build:css({.tmp,client}) app/app.css -->
-  <link rel="stylesheet" href="/css/style.css"/>
-  <!-- injector:css -->
-  <!-- endinjector -->
+  <link rel="stylesheet" href="css/style.css"/>
   <!-- endbuild -->
 
 
@@ -29,7 +26,7 @@
   <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">-->
 
   <!-- Here we are using an Adobe typekit account (to assure Helvetica Neue is available).
-      This is specific to our site. -->
+      This is specific to our university domain. -->
   <script src="//use.typekit.net/ata4lfd.js"></script>
   <script>try{Typekit.load();}catch(e){}</script>
 
@@ -60,18 +57,12 @@
 
 </head>
 
-
 <body layout-fill style="height: 100%" class="{{ bodyClass }}" ng-cloak>
 
 <!-- Angularjs view container -->
-
 <div class="main" ng-view layout-fill layout="column"></div>
 
-
-
-
-<!-- build:js({client,node_modules}) app/vendor.js -->
-<!-- bower:js -->
+<!-- build:js app/app.js -->
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
 <script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
@@ -88,10 +79,7 @@
 <script src="bower_components/SHA-1/sha1.js"></script>
 <script src="bower_components/angulartics/src/angulartics.js"></script>
 <script src="bower_components/angulartics-google-analytics/lib/angulartics-google-analytics.js"></script>
-<!-- endbower -->
-<!-- endbuild -->
 
-<!-- build:js(.tmp) app/app.js -->
 <script src="app/core/modules/services.js"></script>
 <script src="app/core/modules/constants.js"></script>
 <script src="app/core/modules/components.js"></script>
@@ -114,8 +102,6 @@
 <script src="app/services/login.js"></script>
 <script src="app/services/solrRecentSubs.js"></script>
 <script src="app/services/solrQuery.js"></script>
-<script src="app/services/getLogo.js"></script>
-
 
 <script src="app/components/shared/components/loaders/pager.js"></script>
 <script src="app/components/shared/components/loaders/backPager.js"></script>
@@ -150,10 +136,7 @@
 <script src="app/components/communities/components/communities.js"></script>
 <script src="app/components/browse/components/browse.js"></script>
 <script src="app/app.js"></script>
-<!-- injector:js -->
-<!-- endinjector -->
 <!-- endbuild -->
-
 
 </body>
 </html>
