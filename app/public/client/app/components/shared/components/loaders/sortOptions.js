@@ -310,8 +310,8 @@
         data.count = AppContext.getAuthorsCount();
 
 
-        QueryStack.replaceWith(QueryManager.context.query);
-        QueryStack.print();
+        // QueryStack.replaceWith(QueryManager.context.query);
+        // QueryStack.print();
 
         /**
          * Update parent component.
@@ -337,8 +337,8 @@
         data.count = AppContext.getSubjectsCount();
 
 
-        QueryStack.replaceWith(QueryManager.context.query);
-        QueryStack.print();
+        // QueryStack.replaceWith(QueryManager.context.query);
+        // QueryStack.print();
 
         /**
          * Update parent component.
@@ -352,8 +352,8 @@
       }
       else {
 
-        QueryStack.replaceWith(QueryManager.context.query);
-        QueryStack.print();
+        // QueryStack.replaceWith(QueryManager.context.query);
+        // QueryStack.print();
 
         /**
          * Changing the sort order for other query types requires a
@@ -498,8 +498,8 @@
       }, 100);
 
 
-      QueryStack.replaceWith(QueryManager.context.query);
-      QueryStack.print();
+      // QueryStack.replaceWith(QueryManager.context.query);
+      // QueryStack.print();
     };
 
     /**
@@ -538,8 +538,8 @@
       ctrl.selectedOrder = QuerySort.ASCENDING;
 
 
-      QueryStack.replaceWith(QueryManager.context.query);
-      QueryStack.print();
+      // QueryStack.replaceWith(QueryManager.context.query);
+      // QueryStack.print();
 
       /**
        * Do a new search.

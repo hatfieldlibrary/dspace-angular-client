@@ -23,6 +23,7 @@
     "jQuery": false,
     "$": false,
     "angular": false,
-    "services": false
+    "services": false,
+    "dspaceContext": false
   }
 }

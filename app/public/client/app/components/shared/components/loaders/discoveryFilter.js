@@ -34,9 +34,12 @@
     ctrl.textLabel = Messages.FILTER_BY_LETTER;
 
     ctrl.addButtonLabel = Messages.FILTER_ADD_BUTTON_LABEL;
-    
+
     ctrl.removeButtonLabel = Messages.FILTER_REMOVE_BUTTON_LABEL;
 
+    /**
+     * Adds new filter to the filter container.
+     */
     ctrl.addFilter = function () {
 
       ctrl.onAddFilter(
@@ -50,6 +53,9 @@
 
     };
 
+    /**
+     * Removes filter from the filter container.
+     */
     ctrl.removeFilter = function () {
 
       ctrl.onRemoveFilter(
@@ -77,7 +83,7 @@
      * @type {Array}
      */
     ctrl.modes = QueryModeMap.modes;
-    
+
 
     ctrl.filterTerms = QueryManager.getFilter();
 

@@ -8,7 +8,7 @@ module.exports = function (grunt) {
   var localConfig;
   try {
     localConfig = require('./server/config/local.env');
-  } catch(e) {
+  } catch (e) {
     localConfig = {};
   }
 
@@ -18,11 +18,9 @@ module.exports = function (grunt) {
     express: 'grunt-express-server',
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
-    // cdnify: 'grunt-google-cdn',
     // protractor: 'grunt-protractor-runner',
     buildcontrol: 'grunt-build-control',
-    //istanbul_check_coverage: 'grunt-mocha-istanbul',
-    //ngconstant: 'grunt-ng-constant'
+    //istanbul_check_coverage: 'grunt-mocha-istanbul'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -78,10 +76,6 @@ module.exports = function (grunt) {
         files: ['<%= client %>/**/!(*.spec|*.mock|*.html).js'],
         tasks: ['newer:babel:client']
       },
-      //ngconstant: {
-      //  files: ['<%= yeoman.server %>/config/environment/shared.js'],
-      //  tasks: ['ngconstant']
-      //},
       injectJS: {
         files: [
           '<%= client %>/**/!(*.spec|*.mock).js',
@@ -196,35 +190,7 @@ module.exports = function (grunt) {
           src: ['<%= dist %>/*']
         }]
       }
-      //dist: {
-      //  files: [{
-      //    dot: true,
-      //    src: [
-      //      '.tmp',
-      //      '<%= yeoman.dist %>/!(.git*|.openshift|Procfile)**'
-      //    ]
-      //  }]
-      //},
-      //server: '.tmp'
     },
-
-    // Add vendor prefixed styles
-    //postcss: {
-    //  options: {
-    //    map: true,
-    //    processors: [
-    //      require('autoprefixer')({browsers: ['last 2 version']})
-    //    ]
-    //  },
-    //  dist: {
-    //    files: [{
-    //      expand: true,
-    //      cwd: '.tmp/',
-    //      src: '{,*/}*.css',
-    //      dest: '.tmp/'
-    //    }]
-    //  }
-    //},
 
     // Debugging with node inspector
     'node-inspector': {
@@ -259,36 +225,30 @@ module.exports = function (grunt) {
         }
       }
     },
-
-    // Automatically inject Bower components into the app and karma.conf.js
-    //wiredep: {
-    //  directory: '<%= public %>/bower_components',
-    //  options: {
-    //    exclude: [
-    //      '/jasmine-core/'
-    //    ]
-    //  },
-    //  client: {
-    //    src: '<%= public %>/index.html',
-    //    ignorePath: '<%= public %>/',
-    //  },
-    //  test: {
-    //    src: './karma.conf.js',
-    //    devDependencies: true
-    //  }
-    //},
-
-    // Renames files for browser caching purposes
-    filerev: {
+    // Allow the use of non-minsafe AngularJS files. Automatically makes it
+    // minsafe compatible so Uglify does not destroy the ng references
+    ngAnnotate: {
       dist: {
-        src: [
-          '<%= dist %>/<%= public %>/!(bower_components){,*/}*.css}',
-          '<%= dist %>/<%= public %>/!(bower_components){,*/}*.html',
-          '<%= dist %>/<%= client %>/!(bower_components){,*/}*.js}',
-          '<%= dist %>/<%= public %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
-        ]
+        files: [{
+          expand: true,
+          cwd: '.tmp/concat',
+          src: '**/*.js',
+          dest: '.tmp/concat'
+        }]
       }
     },
+
+    // Renames files for browser caching purposes
+    // filerev: {
+    //   dist: {
+    //     src: [
+    //       '<%= dist %>/<%= public %>/!(bower_components){,*/}*.css}',
+    //       '<%= dist %>/<%= public %>/!(bower_components){,*/}*.html',
+    //       '<%= dist %>/<%= client %>/!(bower_components){,*/}*.js}',
+    //       '<%= dist %>/<%= public %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+    //     ]
+    //   }
+    // },
 
     // Reads HTML for usemin blocks to enable smart builds that automatically
     // concat, minify and revision files. Creates configurations in memory so
@@ -338,76 +298,18 @@ module.exports = function (grunt) {
 
     // Allow the use of non-minsafe AngularJS files. Automatically makes it
     // minsafe compatible so Uglify does not destroy the ng references
-    ngAnnotate: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '.tmp/concat',
-          src: '**/*.js',
-          dest: '.tmp/concat'
-        }]
-      }
-    },
+    // ngAnnotate: {
+    //   dist: {
+    //     files: [{
+    //       expand: true,
+    //       cwd: '.tmp/concat',
+    //       src: '**/*.js',
+    //       dest: '.tmp/concat'
+    //     }]
+    //   }
+    // },
 
-    // Dynamically generate angular constant `appConfig` from
-    // `server/config/environment/shared.js`
-    // THIS LOOKS HANDY...
-    //ngconstant: {
-    //  options: {
-    //    name: 'testAppApp.constants',
-    //    dest: '<%= yeoman.client %>/app/app.constant.js',
-    //    deps: [],
-    //    wrap: true,
-    //    configPath: '<%= yeoman.server %>/config/environment/shared'
-    //  },
-    //  app: {
-    //    constants: function() {
-    //      return {
-    //        appConfig: require('./' + grunt.config.get('ngconstant.options.configPath'))
-    //      };
-    //    }
-    //  }
-    //},
 
-    // Package all the html partials into a single javascript payload
-    ngtemplates: {
-      options: {
-        // This should be the name of your apps angular module
-        module: 'dspaceApp',
-        htmlmin: {
-          collapseBooleanAttributes: true,
-          collapseWhitespace: true,
-          removeAttributeQuotes: true,
-          removeEmptyAttributes: true,
-          removeRedundantAttributes: true,
-          removeScriptTypeAttributes: true,
-          removeStyleLinkTypeAttributes: true
-        },
-        usemin: 'app/app.js'
-      },
-      main: {
-        cwd: '<%= public %>',
-        src: ['{partials}/**/*.html'],
-        dest: '.tmp/templates.js'
-      },
-      //shared: {
-      //  cwd: '<%= public %>/client/app/components',
-      //  src: ['{partials}/**/*.html'],
-      //  dest: '.tmp/tmp-templates.js'
-      //},
-      tmp: {
-        cwd: '.tmp',
-        src: ['{partials}/**/*.html'],
-        dest: '.tmp/tmp-templates.js'
-      }
-    },
-
-    // Replace Google CDN references
-    //cdnify: {
-    //  dist: {
-    //    html: ['<%= yeoman.dist %>/<%= yeoman.client %>/*.html']
-    //  }
-    //},
 
     // Copies remaining files to places other tasks can use
     copy: {
@@ -420,7 +322,7 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
-           // 'bower_components/**/*',
+            // 'bower_components/**/*',
             'images/{,*/}*.{webp}',
             'fonts/**/*',
             'index.html'
@@ -440,42 +342,11 @@ module.exports = function (grunt) {
           ]
         }]
       }
-      //},
-      //styles: {
-      //  expand: true,
-      //  cwd: '<%= public %>',
-      //  dest: '.tmp/',
-      //  src: ['css/**/*.css']
-      //}
-    },
 
-    //buildcontrol: {
-    //  options: {
-    //    dir: '<%= yeoman.dist %>',
-    //    commit: true,
-    //    push: true,
-    //    connectCommits: false,
-    //    message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
-    //  },
-    //  heroku: {
-    //    options: {
-    //      remote: 'heroku',
-    //      branch: 'master'
-    //    }
-    //  },
-    //  openshift: {
-    //    options: {
-    //      remote: 'openshift',
-    //      branch: 'master'
-    //    }
-    //  }
-    //},
+    },
 
     // Run some tasks in parallel to speed up the build process
     concurrent: {
-      //pre: [
-      //  'ngconstant'
-      //],
       //server: [
       //  'newer:babel:client',
       //],
@@ -619,13 +490,13 @@ module.exports = function (grunt) {
       // Inject application script files into index.html (doesn't include bower)
       scripts: {
         options: {
-          transform: function(filePath) {
+          transform: function (filePath) {
             var yoClient = grunt.config.get('client');
-            filePath = filePath.replace('/' + yoClient , '');
+            filePath = filePath.replace('/' + yoClient, '');
             filePath = filePath.replace('/.tmp/', '');
             return '<script src="' + filePath + '"></script>';
           },
-          sort: function(a, b) {
+          sort: function (a, b) {
             var module = /\.module\.(js|ts)$/;
             var aMod = module.test(a);
             var bMod = module.test(b);
@@ -643,26 +514,8 @@ module.exports = function (grunt) {
             ]
           ]
         }
-      },
+      }
 
-      // Inject component css into index.html
-      //css: {
-      //  options: {
-      //    transform: function(filePath) {
-      //      var yoClient = grunt.config.get('client');
-      //      filePath = filePath.replace('/' + yoClient, '');
-      //      filePath = filePath.replace('/.tmp/', '');
-      //      return '<link rel="stylesheet" href="' + filePath + '">';
-      //    },
-      //    starttag: '<!-- injector:css -->',
-      //    endtag: '<!-- endinjector -->'
-      //  },
-      //  files: {
-      //    '<%= public %>/index.html': [
-      //      '<%= public %>/**/*.css'
-      //    ]
-      //  }
-      //}
     }
   });
 
@@ -678,7 +531,7 @@ module.exports = function (grunt) {
     }, 1500);
   });
 
-  grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
+  grunt.registerTask('express-keepalive', 'Keep grunt running', function () {
     this.async();
   });
 
@@ -693,8 +546,8 @@ module.exports = function (grunt) {
         'env:all',
         // 'concurrent:pre',
         'concurrent:server',
-        'injector',
-      //  'wiredep:client',
+        //  'injector',
+        //  'wiredep:client',
         // 'postcss',
         'concurrent:debug'
       ]);
@@ -705,7 +558,7 @@ module.exports = function (grunt) {
       'env:all',
       //  'concurrent:pre',
       // 'concurrent:server',
-    //  'injector',
+      //  'injector',
       //'wiredep:client',
       //  'postcss',
       'express:dev',
@@ -720,7 +573,7 @@ module.exports = function (grunt) {
     grunt.task.run(['serve']);
   });
 
-  grunt.registerTask('test', function(target, option) {
+  grunt.registerTask('test', function (target, option) {
     if (target === 'server') {
       return grunt.task.run([
         'env:all',
@@ -736,9 +589,9 @@ module.exports = function (grunt) {
         'env:all',
         //  'concurrent:pre',
         //  'concurrent:test',
-       // 'injector',
+        // 'injector',
         'postcss',
-      //  'wiredep:test',
+        //  'wiredep:test',
         'karma'
       ]);
     }
@@ -762,8 +615,8 @@ module.exports = function (grunt) {
           'env:test',
           //   'concurrent:pre',
           //   'concurrent:test',
-          'injector',
-        //  'wiredep:client',
+          // 'injector',
+          //  'wiredep:client',
           'postcss',
           'express:dev',
           'protractor'
@@ -818,19 +671,19 @@ module.exports = function (grunt) {
     'clean:dist',
     //  'concurrent:pre',
     'concurrent:dist',
-   // 'injector',
-   // 'wiredep:client',
+    // 'injector',
+    // 'wiredep:client',
     'useminPrepare',
     // 'postcss',
-    'ngtemplates',
+   // 'ngtemplates',
     'concat',
-    'ngAnnotate',
+   // 'ngAnnotate',
     'copy:dist',
     'babel:server',
     // 'cdnify',
     'cssmin',
     'uglify',
-   // 'filerev',
+    // 'filerev',
     'usemin'
   ]);
 

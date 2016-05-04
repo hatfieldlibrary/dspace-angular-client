@@ -12,6 +12,7 @@
                                    QueryManager,
                                    QueryTypes,
                                    AppContext,
+                                   QueryStack,
                                    InlineBrowseRequest) {
 
 
@@ -67,6 +68,10 @@
      * Retrieves items for this subject using the request service.
      */
     ctrl.getItems = function () {
+
+      // Before executing browse query, add the current
+      // query to the stack.
+      QueryStack.replace(QueryManager.getQuery());
 
       var result = InlineBrowseRequest.query(
         {

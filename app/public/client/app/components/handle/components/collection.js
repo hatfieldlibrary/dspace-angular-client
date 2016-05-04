@@ -22,11 +22,8 @@
        * Set query type to title list.
        */
       QueryManager.setQueryType(QueryTypes.TITLES_LIST);
-
-
-      QueryStack.push(QueryManager.getQuery());
-
-      QueryStack.print();
+      
+      
 
     }
 
