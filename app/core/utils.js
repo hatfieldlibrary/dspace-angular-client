@@ -73,6 +73,14 @@
   };
 
   /**
+   * Returns the dspace application context.
+   * @returns {*}
+   */
+  exports.getDspaceAppContext = function() {
+    return config.dspace.context;
+  };
+
+  /**
    * Returns the host port from configuration.
    * @returns {number|*}
    */

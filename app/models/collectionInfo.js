@@ -11,11 +11,12 @@ var utils = require('../core/utils');
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
-
+    var dspaceContext = utils.getDspaceAppContext();
+    
     var collectionRequest =
       rp(
         {
-          url:host + '/rest/collections/' + id + '?expand=parentCommunity',
+          url: host + '/' + dspaceContext +  '/collections/' + id + '?expand=parentCommunity',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',

@@ -12,6 +12,7 @@ var utils = require('../core/utils');
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
+    var dspaceContext = utils.getDspaceAppContext();
 
     /** DSpace collection request-promise */
     var collectionRequest =
@@ -19,7 +20,7 @@ var utils = require('../core/utils');
         {
           /** From API documentation: limit and offset params can be used for
            * paging (current default 100 */
-          url: host + '/rest/collections/' + id + '?expand=logo,parentCommunity',
+          url: host + '/' + dspaceContext +  '/collections/' + id + '?expand=logo,parentCommunity,permission',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
@@ -54,6 +55,11 @@ var utils = require('../core/utils');
     ret.handle = json.handle;
     ret.type = json.type;
     var logo = {};
+    if (json.permission !== null) {
+      ret.canSubmit = json.permission.canSubmit;
+      ret.canAdminister = json.permission.canAdminister;
+      ret.canWrite = json.permission.canWrite;
+    }
     if (json.logo !== null) {
       logo.id = json.logo.id;
       logo.retrieveLink = json.logo.retrieveLink;

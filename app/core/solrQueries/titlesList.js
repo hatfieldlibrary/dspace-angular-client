@@ -13,7 +13,7 @@ var filters = require('./sharedFilters');
      * URL TEMPLATE: Browse all titles within a given scope.
      * Tokens: order, fields, offset, location, anonymousFilter, rows
      */
-    var allTitlesBrowse = 'http://localhost:1234/solr/search/select?%s&%s&%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2%s&version=2%s&%s';
+    var allTitlesBrowse = 'http://localhost:8080/solr/search/select?%s&%s&%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2%s&version=2%s&%s';
 
     var sortOrderFilter =  'sort=bi_sort_1_sort+' + query.params.sort.order;
 

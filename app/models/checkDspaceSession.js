@@ -1,6 +1,7 @@
 'use strict';
 
 var rp = require('request-promise');
+var utils = require('../core/utils');
 
 
 (function () {
@@ -9,11 +10,15 @@ var rp = require('request-promise');
 
     console.log('check dspace session with token ' + dspaceTokenHeader);
 
+    var host = utils.getURL();
+    var dspaceContext = utils.getDspaceAppContext();
+    
+
     /** DSpace session status request-promise */
-    var logoutRequest =
+    var sessionStatus =
       rp(
         {
-          url: 'http://dspace.willamette.edu:8080/rest/status',
+          url: host + '/' + dspaceContext + '/status',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
@@ -23,7 +28,7 @@ var rp = require('request-promise');
         }
       );
 
-    return logoutRequest;
+    return sessionStatus;
 
   };
 

@@ -26,7 +26,10 @@
 
     /**
      * Sets the solr filter for anonymous queries when the Express
-     * session cannot provide us with a valid dspaceToken.
+     * session cannot provide us with a valid dspaceToken.  Group 0
+     * is anonymous.  Groups 401 and 287 are specific collection read
+     * permissions that slipped in because they are members of group
+     * anonymous.
      * @param dspaceToken
      * @returns {*}
      */

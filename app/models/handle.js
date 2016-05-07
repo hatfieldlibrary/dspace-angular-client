@@ -14,12 +14,13 @@ var utils = require('../core/utils');
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
+    var dspaceContext = utils.getDspaceAppContext();
 
     /** DSpace handle request-promise */
     var handleRequest =
       rp(
         {
-          url: host + '/rest/handle/' + site + '/' + item,
+          url: host + '/' + dspaceContext +  '/handle/' + site + '/' + item,
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',

@@ -14,11 +14,12 @@ var http = require('http');
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getHost();
     var port = utils.getPort();
+    var dspaceContext = utils.getDspaceAppContext();
 
      var options = {
        host: host,
          port: port,
-         path: '/rest/bitstreams/' + id + '/retrieve',
+         path: dspaceContext +  '/bitstreams/' + id + '/retrieve',
          method: 'GET',
          headers: {
            'rest-dspace-token': dspaceTokenHeader

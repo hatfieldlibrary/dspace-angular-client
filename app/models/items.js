@@ -11,11 +11,12 @@ var utils = require('../core/utils');
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
+    var dspaceContext = utils.getDspaceAppContext();
 
     var itemRequest =
       rp(
         {
-          url: host + '/rest/items/' + id + '?expand=bitstreams,logo,metadata,parentCollection',
+          url: host + '/' + dspaceContext + '/items/' + id + '?expand=bitstreams,logo,metadata,parentCollection,permission',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
@@ -49,26 +50,30 @@ var utils = require('../core/utils');
     ret.archived = json.archived;
     ret.withdrawn = json.withdrawn;
     ret.metadata = json.metadata;
+    if (json.permission !== null) {
+      ret.canAdminister = json.permission.canAdminister;
+      ret.canWrite = json.permission.canWrite;
+    }
     ret.author = '';
     var authCount = 0;
     for (var i = 0; i < ret.metadata.length; i++) {
       if (ret.metadata[i].key === 'dc.contributor.author') {
-        
+
         if (authCount > 0) {
           ret.author += '; '
         }
-        ret.author +=  ret.metadata[i].value;
+        ret.author += ret.metadata[i].value;
         authCount++;
-        
+
       }
       if (ret.metadata[i].key === 'dc.identifier.uri') {
-        ret.url =  ret.metadata[i].value;
+        ret.url = ret.metadata[i].value;
       }
       if (ret.metadata[i].key === 'dc.date.issued') {
-        ret.date =  ret.metadata[i].value;
+        ret.date = ret.metadata[i].value;
       }
       if (ret.metadata[i].key === 'dc.description.abstract') {
-        ret.description =  ret.metadata[i].value;
+        ret.description = ret.metadata[i].value;
       }
     }
     var bits = [];

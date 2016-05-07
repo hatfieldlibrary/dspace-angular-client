@@ -12,6 +12,7 @@ var utils = require('../core/utils');
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
+    var dspaceContext = utils.getDspaceAppContext();
 
     console.log('/rest/communities/' + utils.getId(id) + '?expand=collections');
 
@@ -19,7 +20,7 @@ var utils = require('../core/utils');
     var collections =
       rp(
         {
-          url: host + '/rest/communities/' + utils.getId(id) + '?expand=collections',
+          url: host + '/' + dspaceContext +  '/communities/' + utils.getId(id) + '?expand=collections',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',

@@ -12,11 +12,12 @@ var utils = require('../core/utils');
   module.exports = function (netid, config, req) {
 
     var host = utils.getURL();
+    var dspaceContext = utils.getDspaceAppContext();
 
     var loginRequest = rp(
 
       {
-        url: host + '/rest/login',
+        url: host + '/' + dspaceContext +  '/login',
         method: 'POST',
         headers: {'User-Agent': 'Request-Promise'},
         json: {
@@ -54,6 +55,7 @@ var utils = require('../core/utils');
             // longer exists in DSpace, possibly because of server
             // restart. Remove the stale token if one is present.
             utils.removeDspaceSession(req.session);
+            
           }
           else {
             console.log('Unknown DSpace login status.'); // unknown status

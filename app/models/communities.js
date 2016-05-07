@@ -12,12 +12,13 @@ var utils = require('../core/utils');
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
+    var dspaceContext = utils.getDspaceAppContext();
 
     /** DSpace communities request-promise */
     var communityRequest =
       rp(
         {
-          url: host + '/rest/communities/' + utils.getId(id) + '?expand=collections,logo',
+          url: host + '/' + dspaceContext +  '/communities/' + utils.getId(id) + '?expand=collections,logo,permission',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
@@ -48,6 +49,9 @@ var utils = require('../core/utils');
     ret.copyrightText = json.copyrightText;
     ret.introductoryText = json.introductoryText;
     ret.shortDescription = json.shortDescription;
+    if (json.permission !== null) {
+      ret.canAdminister = json.permission.canAdminister;
+    }
     ret.countItems = json.countItems;
     var logo = {};
     if (json.logo !== null) {

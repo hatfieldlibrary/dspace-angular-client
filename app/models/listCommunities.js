@@ -14,11 +14,12 @@ var utils = require('../core/utils');
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
+    var dspaceContext = utils.getDspaceAppContext();
 
     var list =
       rp(
         {
-          url: host + '/rest/communities',
+          url: host + '/' + dspaceContext +  '/communities',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',

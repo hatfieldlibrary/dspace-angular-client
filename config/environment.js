@@ -19,7 +19,8 @@ var config = {
     dspace: {
       host: credentials.dspaceDev.host,
       protocol: credentials.dspaceDev.protocol,
-      port: credentials.dspaceDev.port
+      port: credentials.dspaceDev.port,
+      context: 'dspace5-rest'
     },
     oauth: {
       clientId: credentials.oauth.clientId,
@@ -102,7 +103,8 @@ var config = {
     dspace: {
       host: credentials.dspaceProd.host,
       protocol: credentials.dspaceProd.protocol,
-      port: credentials.dspaceProd.port
+      port: credentials.dspaceProd.port,
+      context: 'rest'
     },
     oauth: {
       clientId: credentials.oauth.clientId,

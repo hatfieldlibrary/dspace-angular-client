@@ -18,6 +18,7 @@ var utils = require('../core/utils');
     var dspaceTokenHeader = utils.getDspaceToken(session);
 
     var host = utils.getURL();
+    var dspaceContext = utils.getDspaceAppContext();
 
     /** Generate a new Express session */
     session.regenerate(function (err) {
@@ -28,7 +29,7 @@ var utils = require('../core/utils');
     var logoutRequest =
       rp(
         {
-          url: host + '/rest/logout',
+          url: host + '/' + dspaceContext +  '/logout',
           method: 'POST',
           headers: {
             'User-Agent': 'Request-Promise',
