@@ -29,8 +29,7 @@ var config = {
       emailDomain: credentials.oauth.emailDomain
     },
     cas: {
-      casServer: credentials.cas.casServer,
-      baseUrl: credentials.cas.develHost
+      casServer: credentials.cas.casServer
     },
     nodeEnv: env
   },
@@ -56,8 +55,7 @@ var config = {
       emailDomain: credentials.oauth.emailDomain
     },
     cas: {
-      casServer: credentials.cas.casServer,
-      baseUrl: credentials.cas.develHost
+      casServer: credentials.cas.casServer
     },
     nodeEnv: env
   },
@@ -83,8 +81,7 @@ var config = {
       emailDomain: credentials.oauth.emailDomain
     },
     cas: {
-      casServer: credentials.cas.casServer,
-      baseUrl: credentials.cas.develHost
+      casServer: credentials.cas.casServer
     },
     nodeEnv: env
   },
@@ -113,8 +110,7 @@ var config = {
       emailDomain: credentials.oauth.emailDomain
     },
     cas: {
-      casServer: credentials.cas.casServer,
-      baseUrl: credentials.cas.prodHost
+      casServer: credentials.cas.casServer
     },
     nodeEnv: env
   }

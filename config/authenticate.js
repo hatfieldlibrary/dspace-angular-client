@@ -1,14 +1,11 @@
 /**
- * Authentication module. Sets up the authentication method and
- * session store.  Uses Google OAUTH2 for development and CAS
+ * Authentication module. Sets up the authentication methods and
+ * session store. Google OAUTH2 is initialized for development and CAS
  * plus a redis session store for production.
  *
- * Created by mspalti on 12/4/14.
- * Modified by mspalti on 11/10/2015
  */
 
 'use strict';
-
 
 /**
  * Express session store
@@ -23,19 +20,17 @@ module.exports = function (app, config, passport) {
   app.use(passport.session());
 
 
-  // define serializer and deserializer
+  // Define serializer and deserializer
   passport.serializeUser(function (user, done) {
     done(null, user);
   });
   passport.deserializeUser(function (user, done) {
     done(null, user);
   });
+  
 
-
-  console.log('environment ' + app.get('env'));
-
-  // For development purposes, use Google OAUTH2 and express-session
-  // in lieu of Redisstore.
+  // DEVELOPMENT
+  // Use Google OAUTH2 and express-session.
   if (app.get('env') === 'development') {
 
     var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -83,30 +78,11 @@ module.exports = function (app, config, passport) {
         });
       }
     ));
-
-    /**
-     * Set the application's authentication method to be
-     * the configured Google OAuth2 strategy.
-     */
-   // app.passportStrategy = oauth(passport);
-
-
+    
+    // PRODUCTION
+    // Use CAS and Redis as session store.
   } else if (app.get('env') === 'production') {
-
-
-    console.log('Using CAS.');
-
-    /**
-     * Express session store (use for development only).
-     */
-    // app.use(session({
-    //     secret: 'rice paddy',
-    //     saveUninitialized: true,
-    //     resave: true
-    //   })
-    // );
-
-
+    
     /**
      * Redis client (use for production).
      * @type {exports|module.exports}
@@ -131,8 +107,6 @@ module.exports = function (app, config, passport) {
         resave: false // don't save session if unmodified
       }
     ));
-
-    // Configure CAS authentication for this application
 
     /**
      * Validates CAS user.  Not much to do at this point. Just
@@ -164,16 +138,7 @@ module.exports = function (app, config, passport) {
           done(err, user);
         });
       }));
-
-
-    /* jshint unused: false */
-    // app.isAuthenticated = function (req, res, next) {
-    //
-    //   if (req.isAthenticated()) {
-    //     return true;
-    //   }
-    //   return false;
-    // };
+    
 
   }
 

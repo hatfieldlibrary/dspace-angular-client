@@ -51,7 +51,9 @@ module.exports = function (app, config, passport) {
      * Authentication route for CAS.
      */
     // app.get('/auth/login', app.passportStrategy.authenticate);
-    app.get('/auth/login', passport.authenticate('cas', {failureRedirect: '/login'}),
+    app.get('/auth/login', passport.authenticate('cas',
+      {failureRedirect: '/login'}
+      ),
       function (req, res) {
         // Successful authentication, redirect to login/netid to obtain DSpace token.
         res.redirect('/login/' + req.user);
