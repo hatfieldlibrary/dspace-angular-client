@@ -677,7 +677,7 @@ module.exports = function (grunt) {
     // 'postcss',
    // 'ngtemplates',
     'concat',
-   // 'ngAnnotate',
+    'ngAnnotate',
     'copy:dist',
     'babel:server',
     // 'cdnify',

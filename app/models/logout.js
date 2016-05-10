@@ -12,17 +12,19 @@ var utils = require('../core/utils');
    * @param session
    * @returns {*}
      */
-  module.exports = function (session) {
+  module.exports = function (req) {
 
     /** Get the dspace token for this Express session. */
-    var dspaceTokenHeader = utils.getDspaceToken(session);
+    var dspaceTokenHeader = utils.getDspaceToken(req.session);
 
     var host = utils.getURL();
     var dspaceContext = utils.getDspaceAppContext();
 
     /** Generate a new Express session */
-    session.regenerate(function (err) {
-      console.log('generated new session');
+    req.session.regenerate(function (err) {
+      if (err === null) {
+        console.log('generated new session');
+      }
     });
 
     /** DSpace logout request-promise */

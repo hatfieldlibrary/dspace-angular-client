@@ -11,75 +11,65 @@ module.exports = function (app, config, passport) {
     solr = require('../app/controllers/solr');
 
 
-  // AUTHENTICATION
-
   /**
    * Pass app configuration to the login controller.
    */
   login.setConfig(config);
 
+
+  // AUTHENTICATION
   /**
    * Use OAUTH2 for development.
    */
-
   if (app.get('env') === 'development') {
 
-    // The first step in Google authentication redirects the user to google.com.
-    // After authorization, Google will redirect the user back to the callback
-    // URL /auth/google/callback
-    app.get('/auth/google',
-      passport.authenticate('google', {
-          scope: ['https://www.googleapis.com/auth/userinfo.profile',
-            'https://www.googleapis.com/auth/userinfo.email']
-        }
-      ),
-      /* jslint unused: false */
-      function (req, res) {
-        // The request will be redirected to Google for authentication, so this
-        // function will not be called.
-      }
-    );
-
-    // If authentication failed, redirect back to the item page.
-    // If it succeeded redirect to login/netid
+    /**
+     * Authentication route for Google OAuth .
+     */
+    app.get('/auth/login', passport.authenticate('google', {
+      scope: ['https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/userinfo.email']
+    }));
+    /**
+     * Google OAuth callback route.
+     */
+    // If authentication failed, redirect back to the communities page for now.
     app.get('/oauth2callback',
 
       passport.authenticate('google',
-        {failureRedirect: '/item'}
+        {failureRedirect: '/communities'}
       ),
-
+      // If authentication succeeded, redirect to login/netid to obtain DSpace token.
       function (req, res) {
-        console.log('in callback ' + req.user);
         res.redirect('/login/' + req.user);
       }
     );
-
   }
-
-  /**
-   * Use CAS in production.
-   */
 
   else if (app.get('env') === 'production') {
     /**
-     * Triggers CAS authentication.
-     * @type {function(object, object, object)}
+     * Authentication route for CAS.
      */
-    var ensureCASAuthenticated = app.ensureAuthenticated;
-
-    // CAS authentication route
-    app.get('/auth/cas', ensureCASAuthenticated);
-
+    // app.get('/auth/login', app.passportStrategy.authenticate);
+    app.get('/auth/login', passport.authenticate('cas', {failureRedirect: '/login'}),
+      function (req, res) {
+        // Successful authentication, redirect to login/netid to obtain DSpace token.
+        res.redirect('/login/' + req.user);
+      })
   }
-
-
-  // App authentication routes
-
+  /**
+   * Get DSpace token for authenticated user.
+   */
   /*jshint unused:false*/
   app.get('/login/:netid', login.dspace);
 
+  /**
+   * Logout
+   */
   app.get('/logout', login.logout);
-
+  /**
+   * Check for existing DSpace session.
+   */
   app.get('/check-session', login.checkSession);
 
 

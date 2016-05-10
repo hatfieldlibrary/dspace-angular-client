@@ -34,8 +34,13 @@ var utils = require('../core/utils');
         config,
         req)
         .then(function () {
+          // If successful, redirect to session.url or to home page.
+          console.log('session url ' + session.url)
           if(session.url !== 'undefined') {
             res.redirect(session.url);
+          }  else {
+            console.log('redirect to home page')
+            res.redirect('/communities');
           }
 
         })
@@ -68,7 +73,7 @@ var utils = require('../core/utils');
    * @param res
    */
   exports.checkSession = function (req, res) {
-    
+
 
     /** @type {Object} the current session object */
     var session = req.session;
@@ -122,7 +127,7 @@ var utils = require('../core/utils');
    */
   exports.logout = function (req, res) {
 
-    models.logout(req.session)
+    models.logout(req)
       .then(function () {
         res.redirect('http://libmedia.willamette.edu/commons');
       })

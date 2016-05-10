@@ -15,7 +15,7 @@ var config = require('./config/environment');
 var app = express();
 
 //CORS middleware
-var allowCrossDomain = function(req, res, next) {
+var allowCrossDomain = function (req, res, next) {
   res.header('Access-Control-Allow-Origin', 'example.com');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -32,7 +32,6 @@ require('./config/express')(app, config);
 require('./config/authenticate')(app, config, passport);
 // configure routes
 require('./config/routes')(app, config, passport);
-
 
 
 function startServer() {

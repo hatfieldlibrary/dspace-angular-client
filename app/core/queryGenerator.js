@@ -115,8 +115,6 @@
     }
     
     console.log(query);
-    console.log(query.params.query.action + ' ' + constants.QueryActions.SEARCH);
-    console.log(query.params.query.qType + ' ' + constants.QueryType.DISCOVER);
 
     console.log('solr url is....');
     console.log(solrUrl);

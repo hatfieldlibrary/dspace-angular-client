@@ -9,15 +9,30 @@
 
 'use strict';
 
-var
-  /**
-   * Express session store
-   * @type {session|exports|module.exports}
-   */
-  session = require('express-session');
 
+/**
+ * Express session store
+ * @type {session|exports|module.exports}
+ */
+var session = require('express-session');
 
 module.exports = function (app, config, passport) {
+
+  // Set up authentication and session.
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+
+  // define serializer and deserializer
+  passport.serializeUser(function (user, done) {
+    done(null, user);
+  });
+  passport.deserializeUser(function (user, done) {
+    done(null, user);
+  });
+
+
+  console.log('environment ' + app.get('env'));
 
   // For development purposes, use Google OAUTH2 and express-session
   // in lieu of Redisstore.
@@ -39,6 +54,8 @@ module.exports = function (app, config, passport) {
     // Hardcoded callback url!
     var GOOGLE_CALLBACK = config.oauth.callback;
 
+    console.log('configuring passport');
+
     // Configure Google authentication for this application
     passport.use(new GoogleStrategy({
 
@@ -55,7 +72,6 @@ module.exports = function (app, config, passport) {
         process.nextTick(function () {
 
           var emailDomain = config.oauth.emailDomain;
-
           var email = profile.emails[0].value;
           var netid = email.split('@');
           if (email.length > 1 && email.indexOf(emailDomain) > 0) {
@@ -68,20 +84,31 @@ module.exports = function (app, config, passport) {
       }
     ));
 
+    /**
+     * Set the application's authentication method to be
+     * the configured Google OAuth2 strategy.
+     */
+   // app.passportStrategy = oauth(passport);
 
-    // Use CAS authentication and redis as the session store.
-    // http://redis.io/
+
   } else if (app.get('env') === 'production') {
+
 
     console.log('Using CAS.');
 
     /**
-     * CAS authentication strategy
+     * Express session store (use for development only).
      */
-    var cas = require('passport-cas');
+    // app.use(session({
+    //     secret: 'rice paddy',
+    //     saveUninitialized: true,
+    //     resave: true
+    //   })
+    // );
+
 
     /**
-     * Redis client
+     * Redis client (use for production).
      * @type {exports|module.exports}
      */
     var redis = require('redis');
@@ -89,16 +116,15 @@ module.exports = function (app, config, passport) {
      * Redis session store
      */
     var RedisStore = require('connect-redis')(session);
-
+    
     var client = redis.createClient(
       config.redisPort,
       '127.0.0.1',
       {}
     );
-
+    
     app.use(session(
       {
-
         secret: 'insideoutorup',
         store: new RedisStore({host: '127.0.0.1', port: config.redisPort, client: client}),
         saveUninitialized: false, // don't create session until something stored,
@@ -108,82 +134,48 @@ module.exports = function (app, config, passport) {
 
     // Configure CAS authentication for this application
 
-    passport.use(new cas.Strategy({
+    /**
+     * Validates CAS user.  Not much to do at this point. Just
+     * make sure we have a user and return.
+     */
+    var User = {
 
-      version: 'CAS3.0',
-      ssoBaseURL: config.cas.casServer,
-      serverBaseURL: config.cas.baseUrl
+      validate: function (user, callback) {
+        
+         if (user === 'undefined') {
+           return callback(new Error("User is undefined"), '')
+         }
+        return callback(null, user.username)
+        
+      }
+    };
 
-    }, function (profile, done) {
+    /**
+     * CAS authentication strategy
+     */
+    var CasStrategy = require('passport-cas2').Strategy;
 
-      // Put additional user authorization code here.
-      var user = profile.user;
-      return done(null, user);
-    }));
+    passport.use(new CasStrategy({
+        casURL: config.cas.casServer
+      },
+      // This is the `verify` callback
+      function (username, profile, done) {
+        User.validate({username: username}, function (err, user) {
+          done(err, user);
+        });
+      }));
+
 
     /* jshint unused: false */
-    app.isAuthenticated = function (req, res, next) {
-      if (req.isAthenticated()) {
-        return true;
-      }
-      return false;
-    };
+    // app.isAuthenticated = function (req, res, next) {
+    //
+    //   if (req.isAthenticated()) {
+    //     return true;
+    //   }
+    //   return false;
+    // };
 
   }
 
-
-  // Set up authentication and session.
-  app.use(passport.initialize());
-  app.use(passport.session());
-
-
-  // define serializer and deserializer
-  passport.serializeUser(function (user, done) {
-    done(null, user);
-  });
-  passport.deserializeUser(function (user, done) {
-    done(null, user);
-  });
-
-
-// CAS Authentication check.
-  app.ensureAuthenticated = function (req, res, next) {
-
-
-    //var path = req._parsedOriginalUrl.pathname;
-    var path = '/item';
-
-    if (req.isAuthenticated()) {
-
-      return res.redirect(path);
-    }
-
-    passport.authenticate('cas', function (err, user, info) {
-
-      console.log('CAS login');
-      if (err) {
-        console.log('in ensure auth : error');
-        return next(err);
-      }
-
-      if (!user) {
-        req.session.messages = info.message;
-        return res.redirect(path);
-      }
-
-      req.logIn(user, function (err) {
-        console.log('attempting login');
-        if (err) {
-          return next(err);
-        }
-
-        req.session.messages = '';
-        console.log('login succeeded');
-        var loginPath = '/login/' + user;
-        return res.redirect(loginPath);
-
-      });
-    })(req, res, next);
-  };
 
 };
