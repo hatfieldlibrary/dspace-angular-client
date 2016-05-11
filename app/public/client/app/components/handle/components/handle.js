@@ -8,8 +8,10 @@
 
   function HandleCtrl(
                       $routeParams,
+                      $window,
                       ItemByHandle,
                       QueryManager,
+                      AppContext,
                       Utils) {
 
 
@@ -96,11 +98,19 @@
          */
         .finally(function () {
 
-          if (!ctrl.ready) {
-            ctrl.loginRequired = true;
-            ctrl.ready = true;
-          }
+          console.log(AppContext.useRedirect());
+          alert(AppContext.useRedirect())
 
+          if (!ctrl.ready) {
+
+            if (AppContext.useRedirect()) {
+              $window.location = '/auth/login';
+            }
+            else {
+              ctrl.loginRequired = true;
+              ctrl.ready = true;
+            }
+          }
 
         });
 

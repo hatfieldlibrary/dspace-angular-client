@@ -75,7 +75,7 @@ module.exports = function (app, config, passport) {
 
   // REST API for dspace requests
 
-  app.get('/getCommunities', app.isAuthenticated, community.getCommunities);
+  app.get('/getCommunities', community.getCommunities);
 
   app.get('/communitiesForDiscover', community.getCommunitiesForDiscover);
 

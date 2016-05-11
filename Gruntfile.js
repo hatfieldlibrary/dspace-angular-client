@@ -68,7 +68,7 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        url: 'http://localhost:<%= express.options.port %>/communities'
+        url: 'http://158.104.3.30:<%= express.options.port %>/communities'
       }
     },
     watch: {

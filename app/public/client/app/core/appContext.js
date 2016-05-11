@@ -12,6 +12,9 @@
     return {
 
       context: {
+
+        useRedirect: true,
+
         /**
          * The array of authors returned by browse/sort by author query. This is
          * cached so that the array (which can be large) isn't returned with every
@@ -50,6 +53,10 @@
 
       getContext: function () {
         return this.context;
+      },
+
+      useRedirect: function() {
+        return this.context.useRedirect;
       },
 
       setCurrentIndex: function (index) {

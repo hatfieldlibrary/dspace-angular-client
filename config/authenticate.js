@@ -146,6 +146,7 @@ module.exports = function (app, config, passport) {
     var User = {
 
       validate: function (user, callback) {
+        console.log('validate');
 
         if (user === 'undefined') {
           return callback(new Error('User is undefined'), '');
@@ -165,13 +166,19 @@ module.exports = function (app, config, passport) {
       },
       // This is the `verify` callback
       function (username, profile, done) {
+        console.log('cas strategy');
         User.validate({username: username}, function (err, user) {
           done(err, user);
         });
       }));
 
     /**
-     * If user is authenticated, redirect to obtain a DSpace token.
+     * Use this custom callback to restrict access to client routes.
+     *
+     * This is not working as of today.  Since we don't need this callback
+     * for in current implementation of the DSpace client, postponing further
+     * work.  Tracking issue: AC-697
+     *
      * @param req
      * @param res
      * @param next
@@ -179,25 +186,35 @@ module.exports = function (app, config, passport) {
     /* jshint unused: false */
     app.isAuthenticated = function (req, res, next) {
 
-      console.log('CHECKING AUTH ');
+      var path = req._parsedOriginalUrl.pathname;
 
-      passport.authenticate('cas',
-        
-        function(err, user, info) {
-          console.log(err);
-          if (err) { return next(err); }
-          if (!user) {  }
-          req.logIn(user, function(err) {
-            if (err) { return next(err); }
-            return res.redirect('/login/' + user.username);
-          })
-          
-        })(req, res, next);
+      if (req.isAuthenticated()) {
+        return res.redirect(path);
+      }
 
-    }
+      passport.authenticate('cas', function (err, user, info) {
 
+        if (err) {
+          return next(err);
+        }
+
+        if (!user) {
+          req.session.messages = info.message;
+          return res.redirect(path);
+        }
+
+        req.logIn(user, function (err) {
+          if (err) {
+            return next(err);
+          }
+
+          req.session.messages = '';
+          return res.redirect('/login/' + user.username);
+
+        });
+      })(req, res, next);
+    };
 
   }
-
 
 };
