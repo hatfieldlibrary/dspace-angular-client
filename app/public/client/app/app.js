@@ -17,7 +17,6 @@ var dspaceApp = angular.module('dspaceApp', [
   'angulartics',
   'angulartics.google.analytics'
 
-
 ]);
 
 (function () {

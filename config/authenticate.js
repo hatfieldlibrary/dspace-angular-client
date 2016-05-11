@@ -27,11 +27,11 @@ module.exports = function (app, config, passport) {
   passport.deserializeUser(function (user, done) {
     done(null, user);
   });
-  
+
 
   // DEVELOPMENT
   // Use Google OAUTH2 and express-session.
-  if (app.get('env') === 'development') {
+  if (app.get('env') === 'production') {
 
     var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
@@ -78,35 +78,66 @@ module.exports = function (app, config, passport) {
         });
       }
     ));
-    
+
+    /**
+     * If user is authenticated, redirect to obtain a DSpace token.
+     * @param req
+     * @param res
+     * @param next
+     */
+    /* jshint unused: false */
+    app.isAuthenticated = function (req, res, next) {
+
+      console.log('CHECKIN AUTH')
+
+      passport.authenticate('google'), function (err, user) {
+        console.log(user);
+        if (user) {
+
+          res.redirect('/login/' + req.user);
+        }
+
+      }
+
+
+    };
+
     // PRODUCTION
     // Use CAS and Redis as session store.
-  } else if (app.get('env') === 'production') {
-    
+  } else if (app.get('env') === 'development') {
+
+    app.use(session({
+        secret: 'rice paddy',
+        saveUninitialized: true,
+        resave: true
+      })
+    );
+
+
     /**
      * Redis client (use for production).
      * @type {exports|module.exports}
      */
-    var redis = require('redis');
-    /**
-     * Redis session store
-     */
-    var RedisStore = require('connect-redis')(session);
-    
-    var client = redis.createClient(
-      config.redisPort,
-      '127.0.0.1',
-      {}
-    );
-    
-    app.use(session(
-      {
-        secret: 'insideoutorup',
-        store: new RedisStore({host: '127.0.0.1', port: config.redisPort, client: client}),
-        saveUninitialized: false, // don't create session until something stored,
-        resave: false // don't save session if unmodified
-      }
-    ));
+    // var redis = require('redis');
+    // /**
+    //  * Redis session store
+    //  */
+    // var RedisStore = require('connect-redis')(session);
+    //
+    // var client = redis.createClient(
+    //   config.redisPort,
+    //   '127.0.0.1',
+    //   {}
+    // );
+    //
+    // app.use(session(
+    //   {
+    //     secret: 'insideoutorup',
+    //     store: new RedisStore({host: '127.0.0.1', port: config.redisPort, client: client}),
+    //     saveUninitialized: false, // don't create session until something stored,
+    //     resave: false // don't save session if unmodified
+    //   }
+    // ));
 
     /**
      * Validates CAS user.  Not much to do at this point. Just
@@ -115,12 +146,12 @@ module.exports = function (app, config, passport) {
     var User = {
 
       validate: function (user, callback) {
-        
-         if (user === 'undefined') {
-           return callback(new Error("User is undefined"), '')
-         }
-        return callback(null, user.username)
-        
+
+        if (user === 'undefined') {
+          return callback(new Error('User is undefined'), '');
+        }
+        return callback(null, user.username);
+
       }
     };
 
@@ -138,7 +169,33 @@ module.exports = function (app, config, passport) {
           done(err, user);
         });
       }));
-    
+
+    /**
+     * If user is authenticated, redirect to obtain a DSpace token.
+     * @param req
+     * @param res
+     * @param next
+     */
+    /* jshint unused: false */
+    app.isAuthenticated = function (req, res, next) {
+
+      console.log('CHECKING AUTH ');
+
+      passport.authenticate('cas',
+        
+        function(err, user, info) {
+          console.log(err);
+          if (err) { return next(err); }
+          if (!user) {  }
+          req.logIn(user, function(err) {
+            if (err) { return next(err); }
+            return res.redirect('/login/' + user.username);
+          })
+          
+        })(req, res, next);
+
+    }
+
 
   }
 

@@ -35,11 +35,9 @@ var utils = require('../core/utils');
         req)
         .then(function () {
           // If successful, redirect to session.url or to home page.
-          console.log('session url ' + session.url)
           if(session.url !== 'undefined') {
             res.redirect(session.url);
           }  else {
-            console.log('redirect to home page')
             res.redirect('/communities');
           }
 
@@ -64,6 +62,8 @@ var utils = require('../core/utils');
     config = configuration;
 
   };
+  
+  
 
 
   /**

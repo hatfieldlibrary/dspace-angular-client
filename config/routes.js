@@ -16,12 +16,11 @@ module.exports = function (app, config, passport) {
    */
   login.setConfig(config);
 
-
   // AUTHENTICATION
   /**
    * Use OAUTH2 for development.
    */
-  if (app.get('env') === 'development') {
+  if (app.get('env') === 'production') {
 
     /**
      * Authentication route for Google OAuth .
@@ -35,29 +34,29 @@ module.exports = function (app, config, passport) {
      */
     // If authentication failed, redirect back to the communities page for now.
     app.get('/oauth2callback',
-
       passport.authenticate('google',
         {failureRedirect: '/communities'}
       ),
       // If authentication succeeded, redirect to login/netid to obtain DSpace token.
       function (req, res) {
+        console.log('redirecting after oauth');
         res.redirect('/login/' + req.user);
       }
     );
   }
 
-  else if (app.get('env') === 'production') {
+  else if (app.get('env') === 'development') {
     /**
      * Authentication route for CAS.
      */
     // app.get('/auth/login', app.passportStrategy.authenticate);
     app.get('/auth/login', passport.authenticate('cas',
-      {failureRedirect: '/login'}
+      {failureRedirect: '/communities'}
       ),
       function (req, res) {
         // Successful authentication, redirect to login/netid to obtain DSpace token.
         res.redirect('/login/' + req.user);
-      })
+      });
   }
   /**
    * Get DSpace token for authenticated user.
@@ -74,10 +73,9 @@ module.exports = function (app, config, passport) {
    */
   app.get('/check-session', login.checkSession);
 
-
   // REST API for dspace requests
 
-  app.get('/getCommunities', community.getCommunities);
+  app.get('/getCommunities', app.isAuthenticated, community.getCommunities);
 
   app.get('/communitiesForDiscover', community.getCommunitiesForDiscover);
 
@@ -236,12 +234,12 @@ module.exports = function (app, config, passport) {
    */
   app.get('/*', function (req, res) {
 
-    res.sendFile(
-      app.get('appPath') +
-      '/index.html'
-    );
-  });
-
+      res.sendFile(
+        app.get('appPath') +
+        '/index.html'
+      );
+    }
+  );
 
 };
 
