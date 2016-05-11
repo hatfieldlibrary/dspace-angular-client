@@ -93,20 +93,38 @@
         })
         /**
          * If data was not returned the cause is likely
-         * to be an expired session. Give the user an opportunity
-         * to log in again.
+         * to be an expired session or the user following an
+         * external link to the resource. We need more information
+         * from the DSpace REST API to know with certainty that
+         * the user needs to be authenticated.
          */
         .finally(function () {
 
-          console.log(AppContext.useRedirect());
-          alert(AppContext.useRedirect())
-
           if (!ctrl.ready) {
-
+            /**
+             * If configured to allow redirects, this checks for authenticated
+             * user and give the user an opportunity to log in if no
+             * authenticated session exists.
+             */
             if (AppContext.useRedirect()) {
-              $window.location = '/auth/login';
+              /**
+               * Redirect only if no DSpace session exists.
+               * Avoids infinite loop.
+               */
+              var hasSession = Utils.checkSession();
+              hasSession.then(function(status) {
+                  if (status === false) {
+                    $window.location = '/auth/login';
+                  }
+              });
+
             }
             else {
+              /**
+               * If not offering auto redirection, this shows the login required
+               * component.
+               * @type {boolean}
+                 */
               ctrl.loginRequired = true;
               ctrl.ready = true;
             }
