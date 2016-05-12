@@ -76,17 +76,17 @@ module.exports = function (grunt) {
         files: ['<%= client %>/**/!(*.spec|*.mock|*.html).js'],
         tasks: ['newer:babel:client']
       },
-      injectJS: {
-        files: [
-          '<%= client %>/**/!(*.spec|*.mock).js',
-          '!<%= client %>/app.js'
-        ],
-        tasks: ['injector:scripts']
-      },
-      injectCss: {
-        files: ['<%= public %>/**/*.css'],
-        tasks: ['injector:css']
-      },
+      // injectJS: {
+      //   files: [
+      //     '<%= client %>/**/!(*.spec|*.mock).js',
+      //     '!<%= client %>/app.js'
+      //   ],
+      //   tasks: ['injector:scripts']
+      // },
+      // injectCss: {
+      //   files: ['<%= public %>/**/*.css'],
+      //   tasks: ['injector:css']
+      // },
       //mochaTest: {
       //  files: ['<%= yeoman.server %>/**/*.{spec,integration}.js'],
       //  tasks: ['env:test', 'mochaTest']
@@ -485,38 +485,38 @@ module.exports = function (grunt) {
       }
     },
 
-    injector: {
-      options: {},
-      // Inject application script files into index.html (doesn't include bower)
-      scripts: {
-        options: {
-          transform: function (filePath) {
-            var yoClient = grunt.config.get('client');
-            filePath = filePath.replace('/' + yoClient, '');
-            filePath = filePath.replace('/.tmp/', '');
-            return '<script src="' + filePath + '"></script>';
-          },
-          sort: function (a, b) {
-            var module = /\.module\.(js|ts)$/;
-            var aMod = module.test(a);
-            var bMod = module.test(b);
-            // inject *.module.js first
-            return (aMod === bMod) ? 0 : (aMod ? -1 : 1);
-          },
-          starttag: '<!-- injector:js -->',
-          endtag: '<!-- endinjector -->'
-        },
-        files: {
-          '<%= public %>/index.html': [
-            [
-              '<%= public %>/**/!(*.spec|*.mock).js',
-              '!{.tmp,<%= client %>}/app.{js,ts}'
-            ]
-          ]
-        }
-      }
-
-    }
+    // injector: {
+    //   options: {},
+    //   // Inject application script files into index.html (doesn't include bower)
+    //   scripts: {
+    //     options: {
+    //       transform: function (filePath) {
+    //         var yoClient = grunt.config.get('client');
+    //         filePath = filePath.replace('/' + yoClient, '');
+    //         filePath = filePath.replace('/.tmp/', '');
+    //         return '<script src="' + filePath + '"></script>';
+    //       },
+    //       sort: function (a, b) {
+    //         var module = /\.module\.(js|ts)$/;
+    //         var aMod = module.test(a);
+    //         var bMod = module.test(b);
+    //         // inject *.module.js first
+    //         return (aMod === bMod) ? 0 : (aMod ? -1 : 1);
+    //       },
+    //       starttag: '<!-- injector:js -->',
+    //       endtag: '<!-- endinjector -->'
+    //     },
+    //     files: {
+    //       '<%= public %>/index.html': [
+    //         [
+    //           '<%= public %>/**/!(*.spec|*.mock).js',
+    //           '!{.tmp,<%= client %>}/app.{js,ts}'
+    //         ]
+    //       ]
+    //     }
+    //   }
+    //
+    // }
   });
 
   // Used for delaying livereload until after server has restarted

@@ -72,6 +72,8 @@ module.exports = function (app, config, passport) {
    * Check for existing DSpace session.
    */
   app.get('/check-session', login.checkSession);
+  
+  app.get('/adminStatus', login.checkSysAdminStatus);
 
   // REST API for dspace requests
 

@@ -6,8 +6,7 @@
 
 (function () {
 
-  function HandleCtrl(
-                      $routeParams,
+  function HandleCtrl($routeParams,
                       $window,
                       ItemByHandle,
                       QueryManager,
@@ -20,14 +19,27 @@
     var site = $routeParams.site;
     var item = $routeParams.item;
 
+    /**
+     * This will be set to true when data is returned successfully.
+     * @type {boolean}
+       */
     ctrl.ready = false;
 
     /**
-     * Infinite scroll event.
+     * Indicates whether user can access this item. The presumed
+     * reason is that they do not have permission. At the moment, its
+     * not possible to determine the precise reason from the DSpace
+     * API response.
+     * @type {boolean}
      */
-    // ctrl.fireUpdateEvent = function () {
-    //   $rootScope.$broadcast('nextPage', {});
-    // };
+    ctrl.accessNotAllowed = false;
+    /**
+     * Indicates whether login is required to access this item. If redirection
+     * has been enabled in AppContext, this will not be used. Instead, the
+     * user will be redirected immediately to the authentication service.
+     * @type {boolean}
+       */
+    ctrl.loginRequired = false;
 
     /**
      * Initialize the page.
@@ -40,16 +52,30 @@
       var query = ItemByHandle.query({site: site, item: item});
 
       query.$promise.then(
-
         function (data) {
 
+          /** A simple check for whether data was returned */
           if (data.type !== undefined) {
-
 
             ctrl.ready = true;
 
             /** Add query result to view model. */
             ctrl.data = data;
+
+            /**
+             * Set user permissions.
+             */
+            if (typeof data.canSubmit !== 'undefined') {
+              AppContext.setSubmitPermission(data.canSubmit)
+            }
+
+            if (typeof data.canAdminister !== 'undefined') {
+              AppContext.setAdministerPermission(data.canAdminister)
+            }
+
+            if (typeof data.canWrite !== 'undefined') {
+              AppContext.setWritePermission(data.canWrite)
+            }
 
             /** The normalized type should correspond to one of
              * the values defined in AssetTypes.  The type is used
@@ -88,7 +114,7 @@
           }
         })
         .catch(function (err) {
-          console.log(err.message);
+          console.log('Handle Request: ' + err.message);
 
         })
         /**
@@ -99,7 +125,10 @@
          * the user needs to be authenticated.
          */
         .finally(function () {
-
+          
+          /**
+           * If data was not returned, check the user's authentication.
+           */
           if (!ctrl.ready) {
             /**
              * If configured to allow redirects, this checks for authenticated
@@ -111,20 +140,22 @@
                * Redirect only if no DSpace session exists.
                * Avoids infinite loop.
                */
-              var hasSession = Utils.checkSession();
-              hasSession.then(function(status) {
-                  if (status === false) {
-                    $window.location = '/auth/login';
-                  }
-              });
-
+              if (!AppContext.hasDspaceSession) {
+                $window.location = '/auth/login';
+              } else {
+                /**
+                 * User cannot access thie resource;
+                 * @type {boolean}
+                 */
+                ctrl.accessNotAllowed = true;
+                ctrl.ready = true;
+              }
             }
             else {
               /**
                * If not offering auto redirection, this shows the login required
                * component.
-               * @type {boolean}
-                 */
+               */
               ctrl.loginRequired = true;
               ctrl.ready = true;
             }

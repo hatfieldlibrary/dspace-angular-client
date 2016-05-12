@@ -254,10 +254,10 @@ dspaceServices.factory('Utils', [
 
         if (sessionStatus.status === 'ok') {
           AppContext.hasDspaceSession = true;
-
+          return true;
         } else {
-
           AppContext.hasDspaceSession = false;
+          return false;
         }
 
       });

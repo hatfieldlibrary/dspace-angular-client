@@ -29,6 +29,12 @@
     </div>
 
 
+    <div layout="column" layout-padding layout-align="center left">
+      <div ng-show="$ctrl.canSubmit">Submit</div>
+      <div ng-show="$ctrl.canAdminister">Administer</div>
+      <div ng-show="$ctrl.isSystemAdmin">Sys Administer</div>
+    </div>
+
   </div>
 </md-sidenav>
 

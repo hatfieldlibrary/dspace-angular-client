@@ -11,6 +11,10 @@
    */
   function CommunitiesCtrl(GetCommunities,
                            QueryStack,
+                           QueryManager,
+                           AssetTypes,
+                           CheckSysAdmin,
+                           AppContext,
                            Messages) {
 
     var ctrl = this;
@@ -23,13 +27,21 @@
 
     QueryStack.clear();
 
+    QueryManager.setAssetType(AssetTypes.COMMUNITY_LIST);
 
+    var admin = CheckSysAdmin.query();
+    admin.$promise.then(function(data) {
+      console.log(data)
+      AppContext.setSystemAdminPermission(data.isSysAdmin);
+    });
 
     var fetch = GetCommunities.query();
     fetch.$promise.then(function (data) {
       ctrl.ready = true;
       ctrl.communities = data;
     });
+
+
 
   }
 

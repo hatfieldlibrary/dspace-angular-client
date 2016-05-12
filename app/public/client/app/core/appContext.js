@@ -47,7 +47,15 @@
 
         pager: false,
 
-        discoveryCommunities: []
+        discoveryCommunities: [],
+
+        canSubmit: false,
+
+        canAdminister: false,
+
+        canSysAdmin: false,
+
+        canWrite: false
 
       },
 
@@ -55,8 +63,42 @@
         return this.context;
       },
 
-      useRedirect: function() {
+      useRedirect: function () {
         return this.context.useRedirect;
+      },
+
+      setSystemAdminPermission: function (permission) {
+        console.log('set sys ' + permission)
+        this.context.canSysAdmin = permission;
+      },
+
+      getSystemAdminPermission: function () {
+        console.log('get sys ' + this.context.canSysAdmin);
+        return this.context.canSysAdmin;
+      },
+
+      setWritePermission: function (permission) {
+        this.context.canWrite = permission;
+      },
+
+      getWritePermission: function () {
+        return this.context.canWrite;
+      },
+
+      setAdministerPermission: function (permission) {
+        this.context.canAdminister = permission;
+      },
+
+      getAdministerPermission: function () {
+        return this.context.canAdminister;
+      },
+
+      setSubmitPermission: function (permission) {
+        this.context.canSubmit = permission;
+      },
+
+      getSubmitPermission: function () {
+        return this.context.canSubmit;
       },
 
       setCurrentIndex: function (index) {
@@ -117,11 +159,11 @@
         return this.context.pager;
       },
 
-      setDiscoverCommunities: function(arr) {
+      setDiscoverCommunities: function (arr) {
         this.context.discoveryCommunities = arr;
       },
 
-      getDiscoverCommunities: function() {
+      getDiscoverCommunities: function () {
         return this.context.discoveryCommunities;
       }
 

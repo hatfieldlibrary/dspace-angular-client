@@ -29,6 +29,7 @@
   var filterNotContains = 'notContains';
 
   appConstants.constant('AssetTypes', {
+    COMMUNITY_LIST: 'communityList',
     COLLECTION: 'coll',
     COMMUNITY: 'comm',
     ITEM: 'item'
