@@ -28,7 +28,9 @@ function SideNavCtrl($scope,
     var admin = CheckSysAdmin.query();
     admin.$promise.then(function (data) {
       AppContext.setSystemAdminPermission(data.isSysAdmin);
-      ctrl.isSystemAdmin = data.isSysAdmin;
+      if (QueryManager.getAssetType() === AssetTypes.COMMUNITY_LIST) {
+        ctrl.isSystemAdmin = data.isSysAdmin;
+      }
     });
 
     ctrl.canWrite = false;
@@ -36,6 +38,20 @@ function SideNavCtrl($scope,
     ctrl.canSubmit = false;
 
     ctrl.canAdminister = false;
+
+    ctrl.isSystemAdmin = false;
+
+    ctrl.dspaceHost = AppContext.getDspaceHost();
+
+    ctrl.dspaceRoot = AppContext.getDspaceRoot();
+
+    ctrl.showSubmitInstuctions = false;
+    
+    ctrl.submitButtonLabel = Messages.SUBMIT_BUTTON_LABEL;
+    
+    ctrl.submitInstructions = Messages.SUBMIT_INSTRUCTIONS_LABEL;
+    
+    ctrl.submitInstructionsLink = Messages.SUBMIT_INSTRUCTIONS_LINK;
 
   }
 
@@ -85,12 +101,18 @@ function SideNavCtrl($scope,
       if (newValue !== oldValue) {
 
         if (newValue === AssetTypes.COLLECTION) {
+          ctrl.actionType = 'Collection';
+          ctrl.itemHandle = QueryManager.getHandle();
+          ctrl.itemId = QueryManager.getAssetId();
           ctrl.canSubmit = AppContext.getWritePermission();
           ctrl.isSystemAdmin = false; // not needed
           ctrl.canAdminister = AppContext.getAdministerPermission();
+          ctrl.showSubmitInstuctions = true;
 
         }
         else if (newValue === AssetTypes.COMMUNITY) {
+          ctrl.actionType = 'Community';
+          ctrl.itemId = QueryManager.getAssetId();
           ctrl.canSubmit = false;
           ctrl.isSystemAdmin = false; // not needed
           ctrl.canAdminister = AppContext.getAdministerPermission();
@@ -101,7 +123,7 @@ function SideNavCtrl($scope,
           ctrl.canWrite = AppContext.getWritePermission();
 
         } else if (newValue === AssetTypes.COMMUNITY_LIST) {
-          console.log('community lsit')
+          ctrl.actionType = 'DSpace';
           ctrl.canAdminister = false; // not needed
           ctrl.canWrite = false; // not needed
           ctrl.isSystemAdmin = AppContext.getSystemAdminPermission();
@@ -110,6 +132,18 @@ function SideNavCtrl($scope,
       }
     }
   );
+
+  // $scope.$watch(function() {return QueryManager.getAssetId()},
+  // function(newValue, oldValue) {
+  //   if (newValue !== oldValue) {
+  //     console.log(newValue)
+  //     if (QueryManager.getAssetType() === AssetTypes.COLLECTION) {
+  //       ctrl.itemHandle = QueryManager.getHandle();
+  //     }
+  //     ctrl.itemId = QueryManager.getAssetId();
+  //
+  //   }
+  // });
 
   /**
    * Since we cannot use AssetType with Discovery queries, we need

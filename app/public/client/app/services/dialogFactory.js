@@ -13,11 +13,13 @@
     '$mdDialog',
     '$mdMedia',
     'ItemById',
+    'AppContext',
 
     function ($mdDialog,
               $mdMedia,
               /*jshint unused:false */
-              ItemById) {
+              ItemById,
+              AppContext) {
 
       /**
        * Dialog controller.
@@ -34,6 +36,8 @@
                                 Messages,
                                 $anchorScroll,
                                 $mdMedia,
+                                QueryManager,
+                                AppContext,
                                 $timeout) {
 
         var ctrl = this;
@@ -52,6 +56,10 @@
         ctrl.abstractLabel = Messages.ITEM_ABSTRACT_LABEL;
 
         ctrl.metadataLabel = Messages.ITEM_METADATA_LABEL;
+        
+        ctrl.dspaceHost = AppContext.getDspaceHost();
+        
+        ctrl.dspaceRoot = AppContext.getDspaceRoot();
 
         /**
          * Set screen size boolean.
@@ -73,8 +81,11 @@
         /**
          * Get the number of bitstreams for this item.
          */
-        ctrl.data.$promise.then(function () {
+        ctrl.data.$promise.then(function (data) {
           ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
+          ctrl.canWrite = AppContext.getWritePermission();
+          ctrl.itemId = QueryManager.getAssetId();
+
         });
 
 

@@ -152,8 +152,13 @@ collection-component md-content {
   width: 200px;
 }
 
-.search-form md-input-container.md-has-icon {
+.search-form md-input-container.md-has-icon,
+.userOptions md-input-container {
   padding-left: 0px;
+}
+
+.userOptions md-input-container {
+  margin: 0 0;
 }
 
 .sort-options {

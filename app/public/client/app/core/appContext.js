@@ -13,6 +13,12 @@
 
       context: {
 
+        handlePrefix: '10177',
+
+        dspaceHost: 'http://158.104.3.30:8080',
+
+        dspaceRoot: '/dspace5',
+
         useRedirect: true,
 
         /**
@@ -61,6 +67,18 @@
 
       getContext: function () {
         return this.context;
+      },
+
+      getDspaceHost: function() {
+        return this.context.dspaceHost;
+      },
+
+      getDspaceRoot: function() {
+        return this.context.dspaceRoot;
+      },
+
+      getHandlePrefix: function() {
+        return this.context.handlePrefix;
       },
 
       useRedirect: function () {

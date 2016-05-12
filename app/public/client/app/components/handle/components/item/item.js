@@ -10,7 +10,7 @@
    * Item component controller.
    */
 
-  function ItemCtrl(GetCollectionInfo, Utils, Messages) {
+  function ItemCtrl(GetCollectionInfo, Utils, Messages, AppContext, QueryManager) {
 
     var ctrl = this;
 
@@ -26,11 +26,20 @@
 
     ctrl.metadataLabel = Messages.ITEM_METADATA_LABEL;
 
+    ctrl.editItemLabel = Messages.ITEM_EDIT_LABEL;
+
+    ctrl.dspaceHost = AppContext.getDspaceHost();
+
+    ctrl.dspaceRoot = AppContext.getDspaceRoot();
+
+
     /**
      * Get the number of bitstreams for this item.
      */
     ctrl.data.$promise.then(function () {
       ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
+      ctrl.canWrite = AppContext.getWritePermission();
+      ctrl.itemId = QueryManager.getAssetId();
     });
 
 

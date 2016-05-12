@@ -4,9 +4,13 @@
     <div class="md-toolbar-tools">
       <h2>{{$ctrl.pageHeader}}</h2>
       <span flex></span>
+      <md-button ng-show="$ctrl.canWrite" class="md-icon-button" href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/item?itemID={{$ctrl.itemId}}" target="_blank" aria-label="Edit">
+        <i class="material-icons" aria-label="edit">mode_edit</i>
+      </md-button>
       <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
         <md-icon aria-label="Close dialog" md-font-library="material-icons">cancel</md-icon>
       </md-button>
+
     </div>
   </md-toolbar>
 
@@ -47,7 +51,7 @@
 
 
         <div layout="column" flex="100"  flex-gt-sm="80" style="max-width:100%;box-sizing:border-box">
-
+               <div ng-show="$ctrl.canWrite"><a href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/item?itemID={{$ctrl.itemId}}" target="_blank">SUBMIT</a></div>
             <!-- Byline and citation -->
               <div layout="column" layout-align="start start" style="max-width:100%;box-sizing:border-box;">
                 <div class="md-title byline dialog-record-width" style="max-width: 100%;">{{$ctrl.data.author}}</div>

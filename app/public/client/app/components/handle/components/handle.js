@@ -51,6 +51,8 @@
       /** Retrieve data for the handle. */
       var query = ItemByHandle.query({site: site, item: item});
 
+      QueryManager.setHandle(site + '/' + item);
+
       query.$promise.then(
         function (data) {
 
@@ -58,7 +60,7 @@
           if (data.type !== undefined) {
 
             ctrl.ready = true;
-
+            
             /** Add query result to view model. */
             ctrl.data = data;
 
@@ -125,7 +127,7 @@
          * the user needs to be authenticated.
          */
         .finally(function () {
-          
+
           /**
            * If data was not returned, check the user's authentication.
            */

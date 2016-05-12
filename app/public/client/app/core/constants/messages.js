@@ -80,7 +80,15 @@
 
     ITEM_METADATA_LABEL: 'Metadata',
 
-    FILE_DOWNLOAD: 'Download File'
+    FILE_DOWNLOAD: 'Download File',
+    
+    SUBMIT_INSTRUCTIONS_LABEL: 'How to submit',
+    
+    SUBMIT_BUTTON_LABEL: 'Submit Item',
+    
+    SUBMIT_INSTRUCTIONS_LINK: 'http://libmedia.willamette.edu/commons/info/thesis',
+    
+    ITEM_EDIT_LABEL: 'Edit Item'
 
   });
 

@@ -11,6 +11,7 @@ dspaceContext.service('QueryManager', [
   'QueryActions',
   'QuerySort',
   'QueryFields',
+  'AppContext',
 
   function (QueryTypes,
             QueryActions,
@@ -26,7 +27,9 @@ dspaceContext.service('QueryManager', [
             /** Community, collection or item (comm, coll, item). */
             type: '',
             /** DSpace internal id. */
-            id: ''
+            id: '',
+            
+            handle: ''
           },
           sort: {
             /** Solr sort field. */
@@ -82,6 +85,14 @@ dspaceContext.service('QueryManager', [
 
       getQuery: function () {
         return this.context.query;
+      },
+
+      getHandle: function () {
+        return  this.context.query.asset.handle;
+      },
+      
+      setHandle: function(handle) {
+        this.context.query.asset.handle = handle;
       },
 
       setQuery: function (queryObject) {

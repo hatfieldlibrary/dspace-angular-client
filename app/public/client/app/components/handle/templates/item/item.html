@@ -52,6 +52,8 @@
               <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.url}}</div>
             </div>
 
+            <div ng-show="$ctrl.canWrite"><a href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/item?itemID={{$ctrl.itemId}}" target="_blank">{{$ctrl.editItemLabel}}</a></div>
+
             <md-divider hide-gt-md style="margin: 18px 0;"></md-divider>
 
             <!-- Files, lt-lg -->

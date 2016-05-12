@@ -29,10 +29,19 @@
     </div>
 
 
-    <div layout="column" layout-padding layout-align="center left">
-      <div ng-show="$ctrl.canSubmit">Submit</div>
-      <div ng-show="$ctrl.canAdminister">Administer</div>
-      <div ng-show="$ctrl.isSystemAdmin">Sys Administer</div>
+    <div class="userOptions" layout="column" layout-padding layout-align="center left">
+
+      <md-input-container ng-show="$ctrl.canSubmit">
+      <md-button class="md-accent md-raised" href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/handle/{{$ctrl.itemHandle}}/submit" target="_blank" >{{$ctrl.submitButtonLabel}}</md-button>
+        </md-input-container>
+      <div ng-show="$ctrl.showSubmitInstuctions">
+        <a href="{{$ctrl.submitInstructionsLink}}" target="_blank">{{$ctrl.submitInstructions}}</a></div>
+
+      <div ng-show="$ctrl.canAdminister">
+        <a href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/collection?collectionID={{$ctrl.itemId}}" target="_blank">Administer {{$ctrl.actionType}}</a></div>
+
+      <div ng-show="$ctrl.isSystemAdmin">
+        <a href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/panel" target="_blank">Administer {{$ctrl.actionType}}</a></div>
     </div>
 
   </div>
