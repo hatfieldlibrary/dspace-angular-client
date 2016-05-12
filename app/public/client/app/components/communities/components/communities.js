@@ -29,11 +29,11 @@
 
     QueryManager.setAssetType(AssetTypes.COMMUNITY_LIST);
 
-    var admin = CheckSysAdmin.query();
-    admin.$promise.then(function(data) {
-      console.log(data)
-      AppContext.setSystemAdminPermission(data.isSysAdmin);
-    });
+    // var admin = CheckSysAdmin.query();
+    // admin.$promise.then(function(data) {
+    //   console.log(data)
+    //   AppContext.setSystemAdminPermission(data.isSysAdmin);
+    // });
 
     var fetch = GetCommunities.query();
     fetch.$promise.then(function (data) {

@@ -9,7 +9,9 @@ function SideNavCtrl($scope,
                      $mdSidenav,
                      Messages,
                      AssetTypes,
+                     QueryTypes,
                      QueryManager,
+                     CheckSysAdmin,
                      AppContext) {
 
   var ctrl = this;
@@ -18,17 +20,22 @@ function SideNavCtrl($scope,
   ctrl.allCommunitiesLink = Messages.VIEW_ALL_COMMUNITIES;
 
 
-
-
   function init() {
+
+    /**
+     * Check system administrator status.
+     */
+    var admin = CheckSysAdmin.query();
+    admin.$promise.then(function (data) {
+      AppContext.setSystemAdminPermission(data.isSysAdmin);
+      ctrl.isSystemAdmin = data.isSysAdmin;
+    });
 
     ctrl.canWrite = false;
 
     ctrl.canSubmit = false;
 
     ctrl.canAdminister = false;
-
-    ctrl.isSystemAdmin = false;
 
   }
 
@@ -83,7 +90,7 @@ function SideNavCtrl($scope,
           ctrl.canAdminister = AppContext.getAdministerPermission();
 
         }
-          else if (newValue === AssetTypes.COMMUNITY) {
+        else if (newValue === AssetTypes.COMMUNITY) {
           ctrl.canSubmit = false;
           ctrl.isSystemAdmin = false; // not needed
           ctrl.canAdminister = AppContext.getAdministerPermission();
@@ -94,30 +101,33 @@ function SideNavCtrl($scope,
           ctrl.canWrite = AppContext.getWritePermission();
 
         } else if (newValue === AssetTypes.COMMUNITY_LIST) {
+          console.log('community lsit')
           ctrl.canAdminister = false; // not needed
           ctrl.canWrite = false; // not needed
           ctrl.isSystemAdmin = AppContext.getSystemAdminPermission();
 
         }
-
       }
     }
   );
 
   /**
-   * This watch is necessary because system administrator
-   * status is retrieved via a separate REST endpoint and is
-   * not part of the expanded query request. Need to watch
-   * for the new status on initial load of the community list.
+   * Since we cannot use AssetType with Discovery queries, we need
+   * to add another watch.  It would be nice to eliminate this one,
+   * but that will require modifying to queryManager.  Could be done.
    */
   $scope.$watch(function () {
-      return AppContext.getSystemAdminPermission();
+      return QueryManager.getQueryType();
     },
-    function (newValue, oldValue) {
+    function(newValue, oldValue) {
       if (newValue !== oldValue) {
-        console.log('new sys admin permission');
-        ctrl.isSystemAdmin = newValue;
+        if (newValue === QueryTypes.DISCOVER) {
+          ctrl.canAdminister = false; // not needed
+          ctrl.canWrite = false; // not needed
+          ctrl.isSystemAdmin = AppContext.getSystemAdminPermission();
+        }
       }
+
     });
 
   ctrl.greaterThanMd = function () {
