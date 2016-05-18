@@ -7,6 +7,7 @@
 function SideNavCtrl($scope,
                      $window,
                      $mdSidenav,
+                     $mdMedia,
                      Messages,
                      AssetTypes,
                      QueryTypes,
@@ -21,6 +22,8 @@ function SideNavCtrl($scope,
 
 
   function init() {
+
+    ctrl.isSmallScreen = $mdMedia('sm') || $mdMedia('xs');
 
     /**
      * Check system administrator status.
@@ -46,12 +49,16 @@ function SideNavCtrl($scope,
     ctrl.dspaceRoot = AppContext.getDspaceRoot();
 
     ctrl.showSubmitInstuctions = false;
-    
+
     ctrl.submitButtonLabel = Messages.SUBMIT_BUTTON_LABEL;
-    
-    ctrl.submitInstructions = Messages.SUBMIT_INSTRUCTIONS_LABEL;
-    
-    ctrl.submitInstructionsLink = Messages.SUBMIT_INSTRUCTIONS_LINK;
+
+    ctrl.submitInformationLabel = Messages.SUBMIT_INFORMATION_LABEL;
+
+    ctrl.submitInstructionsLabel = Messages.SUBMIT_INSTRUCTIONS_LABEL;
+
+    ctrl.submitInformationLink = Messages.SUBMIT_INFORMATION_LINK;
+
+    ctrl.submitInstructionsLink = Messages.SUBMIT_INSTRUCTIONS_LINK
 
   }
 
@@ -116,6 +123,7 @@ function SideNavCtrl($scope,
           ctrl.canSubmit = false;
           ctrl.isSystemAdmin = false; // not needed
           ctrl.canAdminister = AppContext.getAdministerPermission();
+          ctrl.showSubmitInstuctions = true;
 
         }
         else if (newValue === AssetTypes.ITEM) {

@@ -14,6 +14,7 @@
                         QueryActions,
                         QueryStack,
                         QuerySort,
+                        DiscoveryContext,
                         AppContext,
                         Utils,
                         Messages,
@@ -219,6 +220,8 @@
       QueryManager.setSort(QuerySort.ASCENDING);
 
       QueryManager.setSearchTerms(disc.terms);
+
+      AppContext.setDiscoveryContext(DiscoveryContext.BASIC_SEARCH);
 
       QueryStack.clear();
 

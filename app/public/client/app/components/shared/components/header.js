@@ -6,11 +6,13 @@
 
 (function () {
 
-  function HeaderCtrl(AppContext, AppConfig, $window) {
+  function HeaderCtrl(AppContext, AppConfig, $window, $mdMedia) {
 
     var ctrl = this;
 
     var open = false;
+
+    ctrl.isSmallScreen = $mdMedia('sm') || $mdMedia('xs');
 
     ctrl.openMenu = function () {
 

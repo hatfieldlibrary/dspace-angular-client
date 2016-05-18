@@ -30,6 +30,10 @@
 
     sb.searchTextLabel = Messages.SEARCHBOX_SEARCH_TEXT_LABEL;
 
+    sb.searchButtonLabel = Messages.SEARCHBOX_BUTTON_LABEL;
+
+    sb.searchHeaderLabel = Messages.SEARCHBOX_BASIC_HEADER_LABEL;
+
     sb.submit = function (terms) {
 
       QueryManager.setAssetId(sb.id);

@@ -15,7 +15,7 @@ var filters = require('./sharedFilters');
      *
      * input query filter, reverse query filter, location, anonymousFilter
      */
-    var startLetterLocation = 'http://localhost:1234/solr/search/select?fl=handle,search.resourcetype,search.resourceid&start=0&%s&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2%s&version=2&rows=0%s&%s';
+    var startLetterLocation = 'http://localhost:8080/solr/search/select?fl=handle,search.resourcetype,search.resourceid&start=0&%s&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2%s&version=2&rows=0%s&%s';
 
     return util.format(
       startLetterLocation,

@@ -9,9 +9,15 @@
 
   appConstants.constant('Messages', {
 
-    COMMUNITIES_LIST_INTRO: 'View collection belonging to these departments by selecting the department name. Note that many collections are only visible after logging in with your Willamette University credentials.',
+    COMMUNITIES_LIST_INTRO: 'Academic Commons departmental collections are listed below. Each department contains one or more collections.  Note that many collections, including senior thesis collections, are only visible after <a href="auth/login" target="_top">logging in</a> with your Willamette University credentials.',
 
-    VIEW_ALL_COMMUNITIES: 'View all Departments',
+    VIEW_ALL_COMMUNITIES: 'View Departments',
+
+    COMMUNITY_HOME_LINK_LABEL: 'All Departments',
+
+    SEARCHBOX_OPTIONS_HEADER_LABEL: 'Search Collections',
+
+    SEARCHBOX_BASIC_HEADER_LABEL: 'Search',
 
     SEARCHBOX_ADVANCED_LINK: 'Advanced Search',
 
@@ -21,9 +27,11 @@
 
     SEARCHBOX_ALL: 'All Collections',
 
-    SEARCHBOX_SEARCH_TEXT_LABEL: 'Enter Search Terms',
+    SEARCHBOX_SEARCH_TEXT_LABEL: 'Search Terms',
 
-    SEARCHBOX_BUTTON_LABEL: 'Search',
+    SEARCHBOX_BUTTON_LABEL: 'Find',
+
+    ADVANCED_SEARCH_PAGE_HEADER: 'Advanced Search',
 
     ADVANCED_SEARCH_COMMUNITY_LABEL: 'Choose Department or Collection Area',
 
@@ -35,7 +43,9 @@
 
     ADVANCED_SEARCH_SUBMIT_LABEL: 'Submit',
 
-    COMMUNITIES_LIST_HEADING: 'Departments',
+    ADVANCED_SEARCH_FILTER_LABEL: 'Optional Filters',
+
+    COMMUNITIES_LIST_HEADING: 'University Departments',
 
     DISCOVERY_PAGE_HEADER: 'Search Departmental Collections',
 
@@ -81,13 +91,17 @@
     ITEM_METADATA_LABEL: 'Metadata',
 
     FILE_DOWNLOAD: 'Download File',
-    
-    SUBMIT_INSTRUCTIONS_LABEL: 'How to submit',
-    
-    SUBMIT_BUTTON_LABEL: 'Submit Item',
-    
-    SUBMIT_INSTRUCTIONS_LINK: 'http://libmedia.willamette.edu/commons/info/thesis',
-    
+
+    SUBMIT_INFORMATION_LABEL: 'Submission Guidelines',
+
+    SUBMIT_INSTRUCTIONS_LABEL: 'Submission Tutorial',
+
+    SUBMIT_BUTTON_LABEL: 'Submit an Item',
+
+    SUBMIT_INFORMATION_LINK: 'http://libmedia.willamette.edu/commons/info/thesis',
+
+    SUBMIT_INSTRUCTIONS_LINK: 'http://library.willamette.edu/guide_on_the_side/tutorial/academic-commons-submission',
+
     ITEM_EDIT_LABEL: 'Edit Item'
 
   });

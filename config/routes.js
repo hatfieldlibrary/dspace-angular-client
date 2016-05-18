@@ -72,7 +72,7 @@ module.exports = function (app, config, passport) {
    * Check for existing DSpace session.
    */
   app.get('/check-session', login.checkSession);
-  
+
   app.get('/adminStatus', login.checkSysAdminStatus);
 
   // REST API for dspace requests
@@ -227,6 +227,40 @@ module.exports = function (app, config, passport) {
     res.sendFile(
       app.get('appPath') +
       '/app/components/discover/templates/' +
+      name
+    );
+  });
+
+  app.get('/advanced/templates/:name', function (req, res) {
+
+    var name = req.params.name;
+
+    res.sendFile(
+      app.get('appPath') +
+      '/app/components/advanced/templates/' +
+      name
+    );
+  });
+
+  app.get('/advanced/templates/lists/:name', function (req, res) {
+
+    var name = req.params.name;
+
+    res.sendFile(
+      app.get('appPath') +
+      '/app/components/advanced/templates/lists/' +
+      name
+    );
+  });
+
+
+  app.get('/advanced/templates/filters/:name', function (req, res) {
+
+    var name = req.params.name;
+
+    res.sendFile(
+      app.get('appPath') +
+      '/app/components/advanced/templates/filters/' +
       name
     );
   });

@@ -3,7 +3,7 @@
  */
 'use strict';
 
-(function() {
+(function () {
 
   /**
    * Component controller.
@@ -11,15 +11,28 @@
    * @param $mdMedia
    * @param ItemDialogFactory
    * @constructor
-     */
+   */
 
-  function DiscoverDetailCtrl($scope, $mdMedia, ItemDialogFactory) {
+  function DiscoverDetailCtrl($scope,
+                              $mdMedia,
+                              $location,
+                              ItemDialogFactory) {
 
     var ctrl = this;
 
     if (ctrl.description !== undefined) {
       ctrl.description[0] += ' ... ';
     }
+
+    ctrl.itemLabel = '';
+
+    if (ctrl.resourceType === '3') {
+      ctrl.itemLabel = '(Collection Link)';
+    } else if (ctrl.resourceType === '4') {
+      ctrl.itemLabel = '(Department Link)';
+    }
+
+
 
     /**
      * Sets fullscreen view via media query.
@@ -31,16 +44,22 @@
     });
 
 
-
     /**
      * Shows the dialog.
      * @param ev the event
      * @param id the DSpace id of the item
      */
-    ctrl.showItem = function (ev, id) {
+    ctrl.showItem = function (ev, id, type) {
 
-      ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
+      // item
+      if (type === '2') {
+        ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
+      }
+      // community or collection
+      else {
+        $location.path('/handle/' + ctrl.handle);
 
+      }
 
     };
 
@@ -54,6 +73,8 @@
       id: '@',
       description: '<',
       count: '@',
+      resourceType: '@',
+      handle: '@',
       last: '<'
     },
     templateUrl: '/shared/templates/lists/discoverDetail.html',

@@ -48,6 +48,8 @@
          * The current item count.
          */
         count: 0,
+        
+        discoveryContext: '',
 
         openMenu: false,
 
@@ -183,6 +185,14 @@
 
       getDiscoverCommunities: function () {
         return this.context.discoveryCommunities;
+      },
+      
+      setDiscoveryContext: function(context) {
+        this.context.discoveryContext = context;
+      },
+      
+      getDiscoveryContext: function() {
+        return this.context.discoveryContext;
       }
 
     };

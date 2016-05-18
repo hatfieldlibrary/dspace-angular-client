@@ -36,7 +36,7 @@
     getAnonymousQueryFilter: function (dspaceToken) {
 
       if (dspaceToken.length === 0) {
-        return '&fq=read:(g0+OR+g0+OR+g401+OR+g287)';
+        return '&fq=read:(g0+OR+g0)';
       }
       return '';
 

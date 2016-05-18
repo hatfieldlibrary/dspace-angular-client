@@ -12,7 +12,7 @@ var filters = require('./sharedFilters');
      * URL TEMPLATE: Browse for all items on a subject.
      * Tokens: order, fields, offset, location, query, rows, anonymousFilter
      */
-    var subjectBrowse = 'http://localhost:1234/solr/search/select?%s&%s&%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&%s&fq=search.resourcetype:2&%s&version=2&%s%s';
+    var subjectBrowse = 'http://localhost:8080/solr/search/select?%s&%s&%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&%s&fq=search.resourcetype:2&%s&version=2&%s%s';
 
     var fieldsFilter = 'fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid';
 

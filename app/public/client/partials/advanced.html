@@ -1,0 +1,30 @@
+<header-component></header-component>
+
+
+<!-- Without explicit height, Firefox (44.0.1) does not calculate the height of the flex container. -->
+<div style="height: 100%;max-width: 100%;">
+
+  <md-content class="main-content" style="max-width: 100%;">
+
+    <div layout="row" layout-fill class="top-highlight" flex="100" layout-align="center center">
+
+      <div layout="row" flex="100" style="max-width:950px" layout-align="left center">
+
+        <div layout="row" flex="100" layout-align="start start">
+
+          <advanced-search-component flex="100" flex-gt-md="90" style="max-width:100%;"
+                              class="app-primary-content-container"></advanced-search-component>
+
+          <side-nav-component type="discover" flex></side-nav-component>
+
+        </div>
+      </div>
+    </div>
+
+
+    <ng-include src="'/partials/footer.html'">
+    </ng-include>
+
+  </md-content>
+
+</div>

@@ -31,6 +31,8 @@
     sb.currentCollectionId = QueryManager.getAssetId();
 
     sb.searchButtonLabel = Messages.SEARCHBOX_BUTTON_LABEL;
+    
+    sb.searchHeaderLabel = Messages.SEARCHBOX_OPTIONS_HEADER_LABEL;
 
     sb.showOptionsForCollection = function() {
       return QueryManager.getAssetType() === AssetTypes.COLLECTION;

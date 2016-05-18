@@ -1,0 +1,13 @@
+<div hide show-gt-sm>
+
+  <div layout-padding class="md-subhead">{{$ctrl.filterLabel}}</div>
+
+  <discover-filter-component
+    ng-repeat="filter in $ctrl.filters"
+    position="{{$index}}"
+    on-add-filter="$ctrl.onAddFilter(field, mode, terms)"
+    on-remove-filter="$ctrl.onRemoveFilter(position)"
+  >
+
+  </discover-filter-component>
+</div>

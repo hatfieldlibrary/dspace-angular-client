@@ -10,11 +10,15 @@
    * Community view controller.
    */
 
-  function CommunityCtrl() {
+  function CommunityCtrl(Messages) {
 
     var ctrl = this;
 
+    ctrl.homeLinkLabel = Messages.COMMUNITY_HOME_LINK_LABEL;
+    
+    
 
+    
     if (ctrl.data.countItems === ctrl.data.itemTotal) {
       ctrl.hideLoginMessage = true;
     }

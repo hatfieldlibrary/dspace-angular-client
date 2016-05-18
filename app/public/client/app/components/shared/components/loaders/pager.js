@@ -12,6 +12,7 @@
                      SolrBrowseQuery,
                      Utils,
                      QueryManager,
+                     DiscoveryContext,
                      AppContext,
                      QueryActions) {
 
@@ -22,7 +23,7 @@
      * Number of items to return in pager.
      * @type {number}
      */
-    var setSize = 20;
+    var setSize = 10;
     /**
      * Count must be initialized to 0.
      * @type {number}
@@ -93,11 +94,14 @@
      */
     function updateList(newOffset) {
 
+      console.log(newOffset);
+
       QueryManager.setOffset(newOffset);
 
       var action = QueryManager.getAction();
 
       displayListType = Utils.getFieldForQueryType();
+
 
       /**
        * For items, we need to make a new solr query for the next
@@ -124,9 +128,11 @@
         }
 
         /**
-         * Discovery query: POST.
+         * Discovery or advanced search query: POST.
          */
-        else if (action === QueryActions.SEARCH && QueryManager.getSearchTerms() !== undefined) {
+
+        else if ((action === QueryActions.SEARCH )
+          && QueryManager.getSearchTerms() !== undefined) {
 
           items = SolrQuery.save({
             params: context
@@ -226,19 +232,13 @@
      */
     function init() {
 
-
-      /**
-       * Update the query stack. Subsequent paging
-       * requests to not update the stack.
-       */
-
-      updateList(QueryManager.getOffset());
-
+      if (AppContext.getDiscoveryContext() !== DiscoveryContext.ADVANCED_SEARCH) {
+        updateList(QueryManager.getOffset());
+      }
 
     }
 
     init();
-
 
 
     /**

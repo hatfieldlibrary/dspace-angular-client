@@ -1,7 +1,7 @@
-<md-list-item class="discover-item" ng-click="$ctrl.showItem($event, $ctrl.id)">
+<md-list-item class="discover-item" ng-click="$ctrl.showItem($event, $ctrl.id, $ctrl.resourceType)">
 
   <div class="md-list-item-text" layout-fill layout-padding>
-
+     <span class="md-caption">{{$ctrl.itemLabel}}</span>
     <div class="list-highlight" ng-if="$ctrl.title.length > 0" ng-bind-html="$ctrl.title"></div>
     <div class="list-highlight" ng-if="$ctrl.title.length == 0" ng-bind-html="$ctrl.defaultTitle"></div>
     <div>

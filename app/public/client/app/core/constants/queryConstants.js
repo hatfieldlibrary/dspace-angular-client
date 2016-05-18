@@ -40,6 +40,11 @@
     BROWSE: 'browse',
     SEARCH: 'search'
   });
+  
+  appConstants.constant('DiscoveryContext', {
+    ADVANCED_SEARCH: 'advSearch',
+    BASIC_SEARCH: 'search'
+  });
 
   appConstants.constant('QueryModes', {
     AND: 'and',
