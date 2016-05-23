@@ -1,3 +1,3 @@
 ## Handle Components
 
-Components for handle requests.
+Components for handle requests for communities, collections and items.

@@ -1,14 +1,15 @@
 /**
- * The values defined in this module are used in the construction
- * of queries.  There is no need to edit these values in normal circumstances.
- * Since many of the constants defined here are mirrored on the server,
- * changes to this file will have an immediate impact on queries.  In short,
- * the values here are meant to stay unchanged!
+ * The values defined here are used to construct the query object
+ * There is normally no need to edit these values.
  * 
- * The one exception are the 'label' elements in the various mapping constants.
- * These labels appear in the user interface select inputs and can be
- * modified without affecting functionality. When editing the map objects, do not
- * change the 'value' elements.
+ * The constants defined here are mirrored on the server-side and cannot 
+ * be altered without affecting the API between client and server.
+ * 
+ * One exception is the 'label' elements used in the *MAP arrays.
+ * These labels appear in the user interface form inputs and can be
+ * modified without affecting server-side functionality. When editing the 
+ * *MAP objects, do not change the 'value' elements since these ARE
+ * used in server-side logic and must remain in sync.
  */
 
 'use strict';

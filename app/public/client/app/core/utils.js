@@ -28,8 +28,7 @@ dspaceServices.factory('Utils', [
 
     var utils = {};
 
-    var setSize = 10;
-
+    var setSize = AppContext.getSetSize();
 
     /**
      * Returns a truncated copy of the type.
@@ -325,6 +324,11 @@ dspaceServices.factory('Utils', [
 
     };
 
+    /**
+     * Constructs path to DSpace bitstream service.
+     * @param logoId
+     * @returns {string}
+       */
     utils.getLogoPath = function (logoId) {
       var path = '/bitstream/' + logoId + '/logo';
       return path;

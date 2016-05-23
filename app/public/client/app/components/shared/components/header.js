@@ -13,9 +13,10 @@
     var open = false;
 
     ctrl.isSmallScreen = $mdMedia('sm') || $mdMedia('xs');
+    
+    ctrl.homeLogo = AppConfig.HOME_LOGO;
 
     ctrl.openMenu = function () {
-
       open = !open;
       AppContext.setMenu(open);
     };

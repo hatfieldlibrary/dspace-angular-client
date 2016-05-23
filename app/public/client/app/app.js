@@ -21,12 +21,12 @@ var dspaceApp = angular.module('dspaceApp', [
 
 (function () {
 
-
   /**
    * Configure $routeProvider with all routes to the
    * Express middleware endpoints .
    */
-  dspaceApp.config(['$routeProvider', '$locationProvider',
+  dspaceApp.config(['$routeProvider', '$locationProvider', 
+    
     function ($routeProvider, $locationProvider) {
 
       $routeProvider
@@ -160,7 +160,7 @@ var dspaceApp = angular.module('dspaceApp', [
   ).config(function ($mdIconProvider) {
     $mdIconProvider.fontSet('fa', 'fontawesome');
   });
-
+  
 
   /**
    * Bootstrap Angular.

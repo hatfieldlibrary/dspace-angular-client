@@ -222,6 +222,12 @@ collection-component md-content {
   margin-bottom: 12px;
 }
 
+.filter-container {
+  background: #eee;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
 .advanced-search .sort-options {
   padding: 0;
 }

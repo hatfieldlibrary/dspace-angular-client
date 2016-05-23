@@ -1,3 +1,3 @@
 ## Core Modules
 
-Various shared modules used throughout the application.
+Various core modules used throughout the application.

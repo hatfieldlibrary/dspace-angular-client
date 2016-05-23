@@ -7,7 +7,6 @@
 (function () {
 
   function AdvancedCtrl($routeParams,
-                        $location,
                         SolrQuery,
                         QueryManager,
                         AssetTypes,
@@ -19,11 +18,11 @@
                         AppContext,
                         Utils,
                         Messages,
-                        GetCommunitiesForDiscover,
-                        GetCollectionInfo,
-                        GetCollectionsForCommunity) {
+                        DiscoveryFormUtils) {
 
     var adv = this;
+
+    var formUtils = DiscoveryFormUtils.utils(adv);
 
     /**
      * Array containing list of communities.
@@ -50,66 +49,6 @@
     adv.items = [];
 
     adv.count = '';
-
-
-
-    /**
-     * Gets list of collections for a community.  Adds collection
-     * list to the component scope.
-     * @param id  the community id
-     */
-    function getCollectionsForCommunity(id) {
-
-      if (id !== 0 && id !== '0' && id !== undefined) {
-        var collections = GetCollectionsForCommunity.query({id: id});
-        collections.$promise.then(function (data) {
-          data.unshift({id: 0, name: 'All Collections'});
-          adv.collections = data;
-
-        });
-      }
-
-    }
-
-    /**
-     * Retrieves parent community information for collection
-     * and updates component scope.
-     * @param id  the community id
-     */
-    function getCommunityParentInfo(id) {
-      if (id !== 0) {
-        var info = GetCollectionInfo.query({item: id});
-        info.$promise.then(function (data) {
-          adv.communityId = data.parentCommunity.id;
-          getCollectionsForCommunity(data.parentCommunity.id);
-        });
-      }
-    }
-
-    /**
-     * Retrieves list of communities if not already available
-     * in the application context. Adds community list to the
-     * component scope.
-     */
-    function getCommunities() {
-
-      if (AppContext.getDiscoverCommunities().length === 0) {
-
-        var items = GetCommunitiesForDiscover.query();
-        items.$promise.then(function (data) {
-          data.unshift({id: '0', name: 'All Departments'});
-          AppContext.setDiscoverCommunities(data);
-          adv.searchItems = data;
-
-        });
-
-      }
-      else {
-        adv.searchItems = AppContext.getDiscoverCommunities();
-      }
-
-    }
-
 
     /**
      * Handles selection of a collection.
@@ -148,10 +87,9 @@
       /**
        * Get new collections list for this community.
        */
-      getCollectionsForCommunity(adv.communityId);
+      formUtils.getCollectionsForCommunity(adv.communityId);
 
     };
-
 
 
     /**
@@ -159,8 +97,6 @@
      * @param terms  the query terms
      */
     adv.submit = function (terms) {
-
-      console.log(terms);
 
       var type = 'all';
 
@@ -174,7 +110,6 @@
         type = AssetTypes.COLLECTION;
         QueryManager.setAssetType(type);
         QueryManager.setAssetId(adv.collectionId);
-
 
       }
       /**
@@ -192,14 +127,18 @@
        * If search terms are provided, execute the search.
        */
       if (terms.length > 0) {
+
         QueryManager.setSearchTerms(terms);
-        //$location.path('/advanced/' + type + '/' + id + '/' + terms);
+
+        /**
+         * Show list components.
+         */
         if (adv.hideComponents) {
           adv.hideComponents = false;
-          doSearch();
-        }  else {
-          doSearch();
+
         }
+
+        doSearch();
 
       }
 
@@ -209,13 +148,12 @@
      * Executes query to retrieve a fresh result set.
      */
     function doSearch() {
-     
+
 
       /**
        * Hide the pager button.
        */
       AppContext.setPager(false);
-
 
       /**
        * Get promise.
@@ -232,13 +170,12 @@
 
         QueryManager.setOffset(data.offset);
 
-
-
         adv.items = data.results;
         adv.count = data.count;
-        
+
 
       });
+
     }
 
     function init() {
@@ -304,11 +241,11 @@
          * Initialize communities list if not already
          * available in app context.
          */
-        getCommunities();
+        formUtils.getCommunities();
         /**
          * Get the parent community info.
          */
-        getCommunityParentInfo(id);
+        formUtils.getCommunityParentInfo(id);
       }
       else {
         /**
@@ -328,12 +265,12 @@
          * Initialize communities list if not already
          * available in app context.
          */
-        getCommunities();
+        formUtils.getCommunities();
         /**
          * Get list of collections for this community.
          */
         if (adv.communityId !== 0) {
-          getCollectionsForCommunity(adv.communityId);
+          formUtils.getCollectionsForCommunity(adv.communityId);
         }
       }
 

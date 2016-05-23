@@ -49,7 +49,7 @@
 
     DISCOVERY_PAGE_HEADER: 'Search Departmental Collections',
 
-    FILTER_LABEL: 'Filter Results:',
+    FILTER_LABEL: 'Add Filters:',
 
     FILTER_FIELD_LABEL: 'Field',
 

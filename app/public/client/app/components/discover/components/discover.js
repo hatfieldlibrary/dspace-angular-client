@@ -18,11 +18,11 @@
                         AppContext,
                         Utils,
                         Messages,
-                        GetCommunitiesForDiscover,
-                        GetCollectionInfo,
-                        GetCollectionsForCommunity) {
+                        DiscoveryFormUtils) {
 
     var disc = this;
+
+    var formUtils = DiscoveryFormUtils.utils(disc);
 
     /**
      * Array containing list of communities.
@@ -45,65 +45,6 @@
     disc.textLabel = Messages.ADVANCED_SEARCH_TEXT_LABEL;
 
     disc.submitLabel = Messages.ADVANCED_SEARCH_SUBMIT_LABEL;
-
-
-
-    /**
-     * Gets list of collections for a community.  Adds collection
-     * list to the component scope.
-     * @param id  the community id
-     */
-    function getCollectionsForCommunity(id) {
-
-      if (id !== 0 && id !== '0' && id !== undefined) {
-        var collections = GetCollectionsForCommunity.query({id: id});
-        collections.$promise.then(function (data) {
-          data.unshift({id: 0, name: 'All Collections'});
-          disc.collections = data;
-
-        });
-      }
-
-    }
-
-    /**
-     * Retrieves parent community information for collection
-     * and updates component scope.
-     * @param id  the community id
-     */
-    function getCommunityParentInfo(id) {
-      if (id !== 0) {
-        var info = GetCollectionInfo.query({item: id});
-        info.$promise.then(function (data) {
-          disc.communityId = data.parentCommunity.id;
-          getCollectionsForCommunity(data.parentCommunity.id);
-        });
-      }
-    }
-
-    /**
-     * Retrieves list of communities if not already available
-     * in the application context. Adds community list to the
-     * component scope.
-     */
-    function getCommunities() {
-
-      if (AppContext.getDiscoverCommunities().length === 0) {
-
-        var items = GetCommunitiesForDiscover.query();
-        items.$promise.then(function (data) {
-          data.unshift({id: '0', name: 'All Departments'});
-          AppContext.setDiscoverCommunities(data);
-          disc.searchItems = data;
-
-        });
-
-      }
-      else {
-        disc.searchItems = AppContext.getDiscoverCommunities();
-      }
-
-    }
 
 
     /**
@@ -143,7 +84,7 @@
       /**
        * Get new collections list for this community.
        */
-      getCollectionsForCommunity(disc.communityId);
+      formUtils.getCollectionsForCommunity(disc.communityId);
 
     };
 
@@ -253,11 +194,11 @@
          * Initialize communities list if not already
          * available in app context.
          */
-        getCommunities();
+        formUtils.getCommunities();
         /**
          * Get the parent community info.
          */
-        getCommunityParentInfo(id);
+        formUtils.getCommunityParentInfo(id);
       }
       else {
         /**
@@ -277,12 +218,12 @@
          * Initialize communities list if not already
          * available in app context.
          */
-        getCommunities();
+        formUtils.getCommunities();
         /**
          * Get list of collections for this community.
          */
         if (disc.communityId !== 0) {
-          getCollectionsForCommunity(disc.communityId);
+          formUtils.getCollectionsForCommunity(disc.communityId);
         }
       }
 
