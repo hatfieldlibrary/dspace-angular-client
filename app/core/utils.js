@@ -62,6 +62,10 @@
   exports.getURL = function () {
     return config.dspace.protocol + '://' + config.dspace.host + ':' + config.dspace.port;
   };
+  
+ exports.getSolrUrl = function() {
+   return config.dspace.protocol + '://' + config.dspace.solrHost + ':' + config.dspace.solrPort;
+ };
 
 
   /**

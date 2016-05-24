@@ -79,7 +79,7 @@ var constants = require('../core/constants');
         }
       }
     };
-
+     console.log('browse query')
     console.log(query);
     models.solrQuery(query, res, session);
 

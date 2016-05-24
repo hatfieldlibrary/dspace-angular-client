@@ -20,7 +20,9 @@ var config = {
       host: credentials.dspaceDev.host,
       protocol: credentials.dspaceDev.protocol,
       port: credentials.dspaceDev.port,
-      context: 'dspace5-rest'
+      context: 'rest',
+      solrHost: 'localhost',
+      solrPort: '1234'
     },
     oauth: {
       clientId: credentials.oauth.clientId,
@@ -46,7 +48,9 @@ var config = {
     dspace: {
       host: credentials.dspaceDev.host,
       protocol: credentials.dspaceDev.protocol,
-      port: credentials.dspaceDev.port
+      port: credentials.dspaceDev.port,
+      solrHost: 'localhost',
+      solrPort: '1234'
     },
     oauth: {
       clientId: credentials.oauth.clientId,
@@ -75,7 +79,9 @@ var config = {
       host: credentials.dspaceProd.host,
       protocol: credentials.dspaceProd.protocol,
       port: credentials.dspaceProd.port,
-      context: 'rest'
+      context: 'rest',
+      solrHost: '',
+      solrPort: ''
     },
     oauth: {
       clientId: credentials.oauth.clientId,
