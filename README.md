@@ -22,7 +22,7 @@ This prototype supports login, logout, handle-based browsing of communities, col
 
 The primary configuration file for application middleware is `config/environment.js`.  Sensitive credentials like authentication secrets are placed in a separate file called `config/credentials.js`.  A sample credentials file is provided.
 
-Express, route, and authetication configuration files are also located in `config` and can be modified if needed.
+Express, route, and authentication configuration files are also located in `config` and can be modified if needed.
 
 
 #### Client Configuration
@@ -98,7 +98,7 @@ module.exports = credentials;
 See `config/environment.js` for development and production settings.
 
 
-## Start development server
+### Start development server
 
 To start the development server, type:
  
