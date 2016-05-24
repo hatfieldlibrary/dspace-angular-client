@@ -36,7 +36,7 @@ Color theme customizations require changing the Material Design palettes defined
 
 Authentication is handled by the NodeJs Passport middleware, using CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
 
-First, the NodeJs Express application authenticates via CAS or OAUTH2. Next a DSpace REST authentication token is retrieved by passing a secret application key to the DSpace REST API authenticate service. The key is checked by a `RestAuthentication` DSpace plugin that at the beginning of our plugin sequence.  If the keys shared by the Nodejs application and DSpace match, authentication succeeds.  The REST API generates a token and returns for use in subsequent API requests.
+First, the NodeJs Express application authenticates via CAS or OAUTH2. Next a DSpace REST authentication token is retrieved by passing a secret application key to the DSpace REST API authenticate service. The key is checked by a `RestAuthentication` DSpace plugin at the beginning of our plugin sequence.  If the keys shared by the Nodejs application and DSpace match, authentication succeeds.  The REST API generates a token and returns it for use in subsequent API requests.
 
 Our local DSpace implementation uses special groups and automatically registers new users. 
 
