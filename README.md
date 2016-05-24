@@ -27,7 +27,7 @@ Express, route, and authetication configuration files are also located in `confi
 
 #### Client Configuration
 
-Local customization of the AngularJs UI is accomplished via that AngularJs applications' `core/messages.js` and `core/appConfig.js` files.  
+Local customization of the AngularJs UI is accomplished via that AngularJs applications' `core/configuration/messages.js` and `core/configuration/appConfig.js` files.  
 
 Color theme customizations require changing the Material Design palettes defined in the AngularJs `app.js` file.  Here's an example of [a handy Material Design palette generator](http://mcg.mbitson.com/#/).
 
