@@ -325,8 +325,8 @@ md-input-container.halfer {
 }
 
 md-list-item.selected-index {
-  padding: 8px 8px;
-  background: #c6b48d;
+  padding: 4px 0;
+  background: #DAC8A2;
   margin: 8px 3px 10px;
   width: 99%;
 }
