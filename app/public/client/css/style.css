@@ -169,6 +169,8 @@ discover-filter-component .sort-options {
   margin-top: -15px;
 }
 
+
+
 collection-component md-content {
   background: transparent;
 }
@@ -215,6 +217,10 @@ collection-component md-content {
 
 .sort-options {
   padding: 0px 16px;
+  background: #ECEAE4;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 15px 0;
 }
 
 .advanced-filters {
