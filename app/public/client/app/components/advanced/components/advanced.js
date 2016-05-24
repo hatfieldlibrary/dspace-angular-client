@@ -22,7 +22,10 @@
 
     var adv = this;
 
-    var formUtils = DiscoveryFormUtils.utils(adv);
+    /**
+     * Set this to be the controller updated by the discovery util methods.
+     */
+    DiscoveryFormUtils.setController(this);
 
     /**
      * Array containing list of communities.
@@ -87,7 +90,7 @@
       /**
        * Get new collections list for this community.
        */
-      formUtils.getCollectionsForCommunity(adv.communityId);
+      DiscoveryFormUtils.getCollectionsForCommunity(adv.communityId);
 
     };
 
@@ -241,11 +244,11 @@
          * Initialize communities list if not already
          * available in app context.
          */
-        formUtils.getCommunities();
+        DiscoveryFormUtils.getCommunities();
         /**
          * Get the parent community info.
          */
-        formUtils.getCommunityParentInfo(id);
+        DiscoveryFormUtils.getCommunityParentInfo(id);
       }
       else {
         /**
@@ -265,12 +268,12 @@
          * Initialize communities list if not already
          * available in app context.
          */
-        formUtils.getCommunities();
+        DiscoveryFormUtils.getCommunities();
         /**
          * Get list of collections for this community.
          */
         if (adv.communityId !== 0) {
-          formUtils.getCollectionsForCommunity(adv.communityId);
+          DiscoveryFormUtils.getCollectionsForCommunity(adv.communityId);
         }
       }
 

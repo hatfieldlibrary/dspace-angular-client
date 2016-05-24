@@ -22,7 +22,10 @@
 
     var disc = this;
 
-    var formUtils = DiscoveryFormUtils.utils(disc);
+    /**
+     * Set this to be the controller updated by the discovery util methods.
+     */
+    DiscoveryFormUtils.setController(this);
 
     /**
      * Array containing list of communities.
@@ -84,7 +87,7 @@
       /**
        * Get new collections list for this community.
        */
-      formUtils.getCollectionsForCommunity(disc.communityId);
+      DiscoveryFormUtils.getCollectionsForCommunity(disc.communityId);
 
     };
 
@@ -194,11 +197,11 @@
          * Initialize communities list if not already
          * available in app context.
          */
-        formUtils.getCommunities();
+        DiscoveryFormUtils.getCommunities();
         /**
          * Get the parent community info.
          */
-        formUtils.getCommunityParentInfo(id);
+        DiscoveryFormUtils.getCommunityParentInfo(id);
       }
       else {
         /**
@@ -218,12 +221,12 @@
          * Initialize communities list if not already
          * available in app context.
          */
-        formUtils.getCommunities();
+        DiscoveryFormUtils.getCommunities();
         /**
          * Get list of collections for this community.
          */
         if (disc.communityId !== 0) {
-          formUtils.getCollectionsForCommunity(disc.communityId);
+          DiscoveryFormUtils.getCollectionsForCommunity(disc.communityId);
         }
       }
 
