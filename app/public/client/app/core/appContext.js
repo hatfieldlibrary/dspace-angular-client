@@ -99,7 +99,6 @@
         },
 
         getSystemAdminPermission: function () {
-          console.log('get sys ' + this.context.canSysAdmin);
           return this.context.canSysAdmin;
         },
 

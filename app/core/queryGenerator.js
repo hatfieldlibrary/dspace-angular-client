@@ -96,7 +96,6 @@
       }
       else if (query.params.query.field === constants.QueryFields.SUBJECT) {
         solrUrl = subjectBrowse(query, dspaceToken);  // search for items by subject
-        console.log(solrUrl)
 
       }
 
@@ -113,8 +112,6 @@
 
       }
     }
-    
-    console.log(query);
 
     console.log('solr url is....');
     console.log(solrUrl);

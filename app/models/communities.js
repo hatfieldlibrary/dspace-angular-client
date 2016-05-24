@@ -39,7 +39,6 @@ var utils = require('../core/utils');
    * @param json  the DSpace API response
    */
   function processResult(json) {
-    console.log(json)
 
     var ret = {};
     ret.id = json.id;

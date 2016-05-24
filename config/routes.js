@@ -39,7 +39,6 @@ module.exports = function (app, config, passport) {
       ),
       // If authentication succeeded, redirect to login/netid to obtain DSpace token.
       function (req, res) {
-        console.log('redirecting after oauth');
         res.redirect('/login/' + req.user);
       }
     );

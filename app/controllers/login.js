@@ -66,20 +66,17 @@ var utils = require('../core/utils');
   };
 
   exports.checkSysAdminStatus = function (req, res) {
-
-    console.log('Checking sys admin status');
+    
     /** @type {Object} the current session object */
     var session = req.session;
 
     /** @type {string} the current dspace token or an empty string */
     var dspaceTokenHeader = utils.getDspaceToken(session);
-    console.log('using dpaceToeken ' + dspaceTokenHeader);
     if (dspaceTokenHeader.length > 0) {
       models
         .checkSysAdminStatus(dspaceTokenHeader)
         .then(
           function (response) {
-            console.log(response);
             utils.jsonResponse(res, {isSysAdmin: response.systemAdmin})
           })
         .catch(function (err) {

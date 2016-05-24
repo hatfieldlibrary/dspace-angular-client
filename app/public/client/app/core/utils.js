@@ -312,8 +312,6 @@ dspaceServices.factory('Utils', [
      */
     utils.getFileCount = function (streams) {
 
-      console.log(streams);
-
       var count = 0;
       for (var i = 0; i < streams.length; i++) {
         if (streams[i].bundleName === 'ORIGINAL') {

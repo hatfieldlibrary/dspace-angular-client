@@ -22,8 +22,7 @@ var constants = require('../core/constants');
     }
 
     var session = req.session;
-
-    console.log(req.body);
+    
     models.solrQuery(req.body, res, session);
 
   };

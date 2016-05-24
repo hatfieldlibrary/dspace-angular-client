@@ -11,12 +11,9 @@ var utils = require('../core/utils');
 
   module.exports = function (dspaceTokenHeader) {
 
-    console.log('check dspace session with token ' + dspaceTokenHeader);
-
     var host = utils.getURL();
     var dspaceContext = utils.getDspaceAppContext();
-
-          console.log(host + '/' + dspaceContext + '/adminStatus')
+    
     /** DSpace session status request-promise */
     var sessionStatus =
       rp(

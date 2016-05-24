@@ -94,8 +94,6 @@
      */
     function updateList(newOffset) {
 
-      console.log(newOffset);
-
       QueryManager.setOffset(newOffset);
 
       var action = QueryManager.getAction();

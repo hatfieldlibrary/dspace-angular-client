@@ -10,8 +10,6 @@ var utils = require('../core/utils');
    */
   module.exports = function (site, item, session) {
 
-    console.log(session);
-
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
     var dspaceContext = utils.getDspaceAppContext();
