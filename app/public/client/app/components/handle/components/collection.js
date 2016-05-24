@@ -29,8 +29,6 @@
 
     function init() {
 
-      console.log(QueryStack);
-
       if (QueryStack.isEmpty()) {
         doInitialization();
 

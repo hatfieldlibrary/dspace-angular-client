@@ -23,7 +23,6 @@ var utils = require('../core/utils');
     /** Generate a new Express session */
     req.session.regenerate(function (err) {
       if (err === null) {
-        console.log('generated new session');
       }
     });
 

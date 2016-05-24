@@ -14,8 +14,6 @@ var utils = require('../core/utils');
     var host = utils.getURL();
     var dspaceContext = utils.getDspaceAppContext();
 
-    console.log('/rest/communities/' + utils.getId(id) + '?expand=collections');
-
     /** DSpace communities request-promise */
     var collections =
       rp(

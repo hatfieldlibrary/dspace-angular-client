@@ -14,6 +14,13 @@
 
       <div layout="column" class="discoveryMessages" layout-padding>
         <form name="discoveryForm" ng-submit="disc.submit(disc.terms)">
+
+          <md-input-container class="md-block" flex-gt-sm="70">
+            <label>{{disc.textLabel}}</label>
+            <input ng-model="disc.terms" required name="terms">
+            <div class="hint">Search term is required.</div>
+          </md-input-container>
+
           <div>
             <md-input-container class="halfer">
               <label class="md-no-sticky">{{disc.communityLabel}}</label>
@@ -42,28 +49,15 @@
               </md-select>
             </md-input-container>
           </div>
-          <div layout="column" layout-gt-sm="row" layout="left top">
-            <md-input-container class="md-block" flex-gt-sm="70">
-              <label>{{disc.textLabel}}</label>
-              <input ng-model="disc.terms" required name="terms">
-              <div class="hint">Search term is required.</div>
-              <!--<div ng-messages="discoveryForm.terms.$error">-->
-                <!--<div ng-message="required">Search term is required.</div>-->
-              <!--</div>-->
-            </md-input-container>
-            <div flex></div>
+
+
             <md-input-container flex-gt-sm="20">
               <md-button class="md-raised md-accent" ng-click="disc.submit(disc.terms)">{{disc.submitLabel}}</md-button>
             </md-input-container>
-          </div>
+
 
         </form>
 
-      </div>
-
-      <div layout-padding ng-hide="!disc.hideComponents" layout="column" layout-align="center center" style="margin-top: 50px;">
-        <div class="md-subhead">Login above with your WU ID to access all collections!</div>
-        <div class="md-subhead">Search across all departments or within a selected department. </div>
       </div>
 
       <item-list-component ng-hide="disc.hideComponents" context="discover"></item-list-component>
