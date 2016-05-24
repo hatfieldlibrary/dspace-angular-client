@@ -16,8 +16,8 @@
 
       <div layout="column" layout-align="center left">
 
-        <md-content class="md-hue-2" style="margin-bottom: 10px;" layout-padding layout="row" layout-align="left center" ng-hide="$ctrl.hideLoginMessage">
-          <div class="md-subhead" layout-fill>Login to see additional collections.</div>
+        <md-content class="md-hue-2" style="margin-bottom: 10px;border: 1px solid #eee; border-radius: 4px;" layout-padding layout="row" layout-align="left center" ng-hide="$ctrl.hideLoginMessage">
+          <div class="md-subhead" layout-fill>{{$ctrl.loginMessage}}</div>
           <login-component></login-component>
         </md-content>
 
