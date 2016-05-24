@@ -5,6 +5,7 @@
 var util = require('util');
 var filters = require('./sharedFilters');
 var constants = require('../constants');
+var utils = require('../utils');
 
 
 (function () {
@@ -15,7 +16,7 @@ var constants = require('../constants');
      * URL TEMPLATE: Browse for all items by an author.
      * Tokens: order, fields, offset, location, query, rows, anonymousFilter
      */
-    var authorBrowse = 'http://localhost:8080/solr/search/select?%s&%s&%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&%s&fq=search.resourcetype:2&%s&version=2&%s%s';
+    var authorBrowse = utils.getSolrUrl() + '/solr/search/select?%s&%s&%s&q=*:*&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&%s&fq=search.resourcetype:2&%s&version=2&%s%s';
 
     var fieldsFilter = 'fl=dc.title,author,dc.publisher,dateIssued.year,dc.description.abstract_hl,handle,search.resourcetype,search.resourceid';
 

@@ -5,6 +5,7 @@
 var util = require('util');
 var constants = require('../constants');
 var filters = require('./sharedFilters');
+var utils = require('../utils');
 
 (function () {
 
@@ -15,7 +16,7 @@ var filters = require('./sharedFilters');
      *
      * input query filter, reverse query fitler, location, anonymousFilter
      */
-    var startDateLocation = 'http://localhost:8080/solr/search/select?fl=handle,search.resourcetype,search.resourceid&start=0&%s%s&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=0%s%s&%s';
+    var startDateLocation = utils.getSolrUrl() + '/solr/search/select?fl=handle,search.resourcetype,search.resourceid&start=0&%s%s&wt=json&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&fq=search.resourcetype:2&version=2&rows=0%s%s&%s';
 
     return util.format(
 

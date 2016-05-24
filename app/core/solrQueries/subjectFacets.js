@@ -4,6 +4,7 @@
 
 var util = require('util');
 var filters = require('./sharedFilters');
+var utils = require('../utils');
 
 (function () {
 
@@ -15,7 +16,7 @@ var filters = require('./sharedFilters');
      *
      * Tokens: location, anonymousQueryFilter
      */
-    var subjectFacets = 'http://localhost:8080/solr/search/select?facet=true&facet.mincount=1&facet.offset=0&version=2&rows=0&f.bi_4_dis_filter.facet.sort=index&f.bi_4_dis_filter.facet.limit=-1&fl=handle,search.resourcetype,search.resourceid&start=0&q=*:*&facet.field=bi_4_dis_filter&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&wt=json%s';
+    var subjectFacets = utils.getSolrUrl() + '/solr/search/select?facet=true&facet.mincount=1&facet.offset=0&version=2&rows=0&f.bi_4_dis_filter.facet.sort=index&f.bi_4_dis_filter.facet.limit=-1&fl=handle,search.resourcetype,search.resourceid&start=0&q=*:*&facet.field=bi_4_dis_filter&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)&wt=json%s';
     
     return util.format(
       subjectFacets,

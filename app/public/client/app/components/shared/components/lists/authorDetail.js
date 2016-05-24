@@ -66,7 +66,7 @@
 
       // Before executing browse query, add the current
       // query to the stack.
-      QueryStack.replace(QueryManager.getQuery());
+      QueryStack.replaceWith(QueryManager.getQuery());
 
       var result = InlineBrowseRequest.query(
         {

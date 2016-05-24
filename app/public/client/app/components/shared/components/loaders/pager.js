@@ -23,7 +23,7 @@
      * Number of items to return in pager.
      * @type {number}
      */
-    var setSize = 10;
+    var setSize = AppContext.getSetSize();
     /**
      * Count must be initialized to 0.
      * @type {number}
