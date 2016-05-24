@@ -1,6 +1,22 @@
 #  DSpace Node/Angular Client
 
-### Configuration
+
+## General Overview
+
+This DSpace UI prototype uses NodeJs and AngularJs. Much of the work here is based on an approach we are exploring in ernest with other projects. 
+
+The client uses solr and the [DSpace using the REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace using the REST API").  We currently use an updated version of the DSpace 5.5 REST API.
+
+The NodeJs middleware used in this project includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store. In general, we are betting that a robust middleware layer will be helpful and plan to channel all interactions through this layer.  
+
+The AngularJs frontend uses the [Angular Material](https://material.angularjs.org/latest/) design framework.
+
+The AngularJs application is written using version 1.5 and components. The goal has been to write an application that is ready to port to Angular 2.0.
+
+This prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Solr searches are used throughout the application to provide search and browse functionality that is similar to that provided by the current DSpace XMLUI and JSPUI. 
+
+
+## Configuration
 
 #### Server Configuration
 
@@ -16,22 +32,7 @@ Local customization of the AngularJs UI is accomplished via that AngularJs appli
 Color theme customizations require changing the Material Design palettes defined in the AngularJs `app.js` file.  Here's an example of [a handy Material Design palette generator](http://mcg.mbitson.com/#/).
 
 
-# General Overview
-
-This DSpace UI prototype uses NodeJs and AngularJs. Much of the work here is based on an approach we are exploring in ernest with other projects. 
-
-The client uses solr and the [DSpace using the REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace using the REST API").  We currently use an updated version of the DSpace 5.5 REST API.
-
-The NodeJs middleware used in this project includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store. In general, we are betting that a robust middleware layer will be helpful and plan to channel all interactions through this layer.  
-
-The AngularJs frontend uses the [Angular Material](https://material.angularjs.org/latest/) design framework.
-
-The AngularJs application is written using version 1.5 and components. The goal has been to write an application that is ready to port to Angular 2.0.
-
-This prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Solr searches are used throughout the application to provide search and browse functionality that is similar to that provided by the current DSpace XMLUI and JSPUI. 
-
-
-### Authentication
+## Authentication
 
 Authentication is handled by the NodeJs Passport middleware, using CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
 
@@ -42,7 +43,7 @@ Our local DSpace implementation uses special groups and will automatically regis
 In addition, the AngularJs client needs to know the user's authorization level so that administrative options can be offered.  The DSpace REST API was extended with a new `permissions` expand option to support this.
 
 
-### Setting up the development environment
+## Setting up the development environment
 
 To get started with development, clone the project into your working directory.
 
@@ -97,7 +98,7 @@ module.exports = credentials;
 See `config/environment.js` for development and production settings.
 
 
-### Start development server
+## Start development server
 
 To start the development server, type:
  
@@ -106,12 +107,12 @@ To start the development server, type:
 You can work with either a DSpace instance running on your local machine or with a remote host. Remember that configuring the environment is accomplished using `config/environment.js` and the `config/credentials.js` file that you created.  
 
 
-### Testing
+## Testing
 
 Currently have only middleware integration tests.  To run tests, execute `mocha` from the root project directory.
 
 
-### Deploy
+## Deploy
 
 First, the prerequisites. Make sure nodejs is installed on the server. It's wise to use the identical nodejs version that you are using in your development environment.
 
@@ -124,7 +125,7 @@ Create a `node` user on the system. Next, verify that your init.d startup script
 
 Example: `NODE_ENV=production $DAEMON $DAEMONOPTS start $NODEAPP`.
 
-#### Build
+### Build
 
 To build the application, you will need the Strongloop command line tool.  You can install this via `npm install -g strongloop`
 
