@@ -50,7 +50,7 @@ var utils = require('../core/utils');
     ret.archived = json.archived;
     ret.withdrawn = json.withdrawn;
     ret.metadata = json.metadata;
-    if (json.permission !== null) {
+    if (typeof json.permission !== 'undefined') {
       ret.canAdminister = json.permission.canAdminister;
       ret.canWrite = json.permission.canWrite;
     }

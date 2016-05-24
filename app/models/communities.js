@@ -48,7 +48,7 @@ var utils = require('../core/utils');
     ret.copyrightText = json.copyrightText;
     ret.introductoryText = json.introductoryText;
     ret.shortDescription = json.shortDescription;
-    if (json.permission !== null) {
+    if (typeof json.permission !== 'undefined') {
       ret.canAdminister = json.permission.canAdminister;
     }
     ret.countItems = json.countItems;
