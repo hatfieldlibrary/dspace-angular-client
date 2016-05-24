@@ -36,11 +36,11 @@ Color theme customizations require changing the Material Design palettes defined
 
 Authentication is handled by the NodeJs Passport middleware, using CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
 
-Once the server application successfully authenticates via CAS or OAUTH2, a DSpace REST authentication token is retrieved.  A secret application key is passed to the DSpace server and is checked by a `RestAuthentication` plugin that we add to the beginning of our plugin sequence.  If the keys shared by the nodejs application and DSpace match, authentication succeeds.  The REST API generates a token and returns it to the nodejs middleware for use in subsequent requests.
+First, the NodeJs Express application authenticates via CAS or OAUTH2. Next a DSpace REST authentication token is retrieved by passing a secret application key to the DSpace REST API authenticate service. The key is checked by a `RestAuthentication` DSpace plugin that at the beginning of our plugin sequence.  If the keys shared by the Nodejs application and DSpace match, authentication succeeds.  The REST API generates a token and returns for use in subsequent API requests.
 
-Our local DSpace implementation uses special groups and will automatically register new users. The DSpace 5.5 REST API does not support special groups and needed to be modified.  
-  
-In addition, the AngularJs client needs to know the user's authorization level so that administrative options can be offered.  The DSpace REST API was extended with a new `permissions` expand option to support this.
+Our local DSpace implementation uses special groups and automatically registers new users. 
+
+Because the DSpace 5.5 REST API does not support special groups, we updated the REST API to capture special groups on login and to retain this information, along with the `EPerson`, in the REST API `TokenHolder`. The AngularJs client also needs to know the user's authorization level so that administrative options can be offered.  The DSpace REST API was extended with a new `permissions` expand option to support this.
 
 
 ## Setting up the development environment
