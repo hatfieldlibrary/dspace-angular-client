@@ -102,7 +102,9 @@
 
     SUBMIT_INSTRUCTIONS_LINK: 'http://library.willamette.edu/guide_on_the_side/tutorial/academic-commons-submission',
 
-    ITEM_EDIT_LABEL: 'Edit Item'
+    ITEM_EDIT_LABEL: 'Edit Item',
+
+    LOGIN_TO_SEE_MORE_LABEL: 'Login to see more collections.'
 
   });
 
