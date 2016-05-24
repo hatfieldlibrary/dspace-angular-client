@@ -31,7 +31,7 @@ module.exports = function (app, config, passport) {
 
   // DEVELOPMENT
   // Use Google OAUTH2 and express-session.
-  if (app.get('env') === 'production') {
+  if (app.get('env') === 'development') {
 
     var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
@@ -48,8 +48,6 @@ module.exports = function (app, config, passport) {
 
     // Hardcoded callback url!
     var GOOGLE_CALLBACK = config.oauth.callback;
-
-    console.log('configuring passport');
 
     // Configure Google authentication for this application
     passport.use(new GoogleStrategy({
@@ -98,7 +96,7 @@ module.exports = function (app, config, passport) {
 
     // PRODUCTION
     // Use CAS and Redis as session store.
-  } else if (app.get('env') === 'development') {
+  } else if (app.get('env') === 'production') {
 
     app.use(session({
         secret: 'rice paddy',
@@ -112,26 +110,26 @@ module.exports = function (app, config, passport) {
      * Redis client (use for production).
      * @type {exports|module.exports}
      */
-    // var redis = require('redis');
-    // /**
-    //  * Redis session store
-    //  */
-    // var RedisStore = require('connect-redis')(session);
-    //
-    // var client = redis.createClient(
-    //   config.redisPort,
-    //   '127.0.0.1',
-    //   {}
-    // );
-    //
-    // app.use(session(
-    //   {
-    //     secret: 'insideoutorup',
-    //     store: new RedisStore({host: '127.0.0.1', port: config.redisPort, client: client}),
-    //     saveUninitialized: false, // don't create session until something stored,
-    //     resave: false // don't save session if unmodified
-    //   }
-    // ));
+    var redis = require('redis');
+    /**
+     * Redis session store
+     */
+    var RedisStore = require('connect-redis')(session);
+    
+    var client = redis.createClient(
+      config.redisPort,
+      '127.0.0.1',
+      {}
+    );
+    
+    app.use(session(
+      {
+        secret: 'insideoutorup',
+        store: new RedisStore({host: '127.0.0.1', port: config.redisPort, client: client}),
+        saveUninitialized: false, // don't create session until something stored,
+        resave: false // don't save session if unmodified
+      }
+    ));
 
     /**
      * Validates CAS user.  Not much to do at this point. Just
