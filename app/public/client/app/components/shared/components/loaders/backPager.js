@@ -29,7 +29,6 @@
      * @returns {boolean}
      */
     ctrl.more = function () {
-      console.log(AppContext.getCount() > QueryManager.getOffset() - setSize);
       return AppContext.getCount() > QueryManager.getOffset() - setSize;
     };
     /**

@@ -138,7 +138,6 @@ module.exports = function (app, config, passport) {
     var User = {
 
       validate: function (user, callback) {
-        console.log('validate');
 
         if (user === 'undefined') {
           return callback(new Error('User is undefined'), '');

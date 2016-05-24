@@ -11,6 +11,15 @@
     <md-card-content>
       <div layout="column" class="discoveryMessages" layout-padding>
         <form name="discoveryForm" ng-submit="adv.submit(adv.terms)">
+
+          <div layout="column" layout-gt-sm="row" layout="left top">
+            <md-input-container class="md-block" flex-gt-sm="70">
+              <label>{{adv.textLabel}}</label>
+              <input ng-model="adv.terms" required name="terms">
+              <div class="hint">Search term is required.</div>
+            </md-input-container>
+          </div>
+
           <div>
             <md-input-container class="halfer">
               <label class="md-no-sticky">{{adv.communityLabel}}</label>
@@ -37,14 +46,6 @@
                 </md-option>
                 </md-list>
               </md-select>
-            </md-input-container>
-          </div>
-
-          <div layout="column" layout-gt-sm="row" layout="left top">
-            <md-input-container class="md-block" flex-gt-sm="70">
-              <label>{{adv.textLabel}}</label>
-              <input ng-model="adv.terms" required name="terms">
-              <div class="hint">Search term is required.</div>
             </md-input-container>
           </div>
 
