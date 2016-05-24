@@ -17,7 +17,7 @@
 
     SEARCHBOX_OPTIONS_HEADER_LABEL: 'Search Collections',
 
-    SEARCHBOX_BASIC_HEADER_LABEL: 'Search',
+    SEARCHBOX_BASIC_HEADER_LABEL: 'Search Departments',
 
     SEARCHBOX_ADVANCED_LINK: 'Advanced Search',
 
