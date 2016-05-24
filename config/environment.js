@@ -34,32 +34,6 @@ var config = {
     nodeEnv: env
   },
 
-  runlocal: {
-    root: rootPath,
-    app: {
-      name: 'dspace'
-    },
-    uid: credentials.develuid,
-    gid: credentials.develgid,
-    port: 3000,
-    secret: credentials.restSecret,
-    dspace: {
-      host: credentials.dspaceDev.host,
-      protocol: credentials.dspaceDev.protocol,
-      port: credentials.dspaceDev.port
-    },
-    oauth: {
-      clientId: credentials.oauth.clientId,
-      clientSecret: credentials.oauth.clientSecret,
-      callback: credentials.oauth.develCallback,
-      emailDomain: credentials.oauth.emailDomain
-    },
-    cas: {
-      casServer: credentials.cas.casServer
-    },
-    nodeEnv: env
-  },
-
   test: {
     root: rootPath,
     app: {

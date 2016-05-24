@@ -51,44 +51,20 @@
 
 
     /**
-     * Handles selection of a collection.
+     * Handles collection selection.
+     * @param id
      */
-    disc.selectCollection = function (id) {
-
-      /**
-       * If the collection id is zero, the asset type
-       * becomes COMMUNITY. Otherwise, the asset type
-       * is COLLECTION.
-       */
-      if (id === 0) {
-
-
-        QueryManager.setAssetType(AssetTypes.COMMUNITY);
-        QueryManager.setAssetId(disc.communityId);
-
-      } else {
-
-        QueryManager.setAssetType(AssetTypes.COLLECTION);
-        /**
-         * Set the asset id to the id of the collection.
-         */
-        QueryManager.setAssetId(disc.collectionId);
-      }
-
+    disc.selectCollection = function(id) {
+      DiscoveryFormUtils.selectCollection(id);
     };
+
 
     /**
      * Handles selection of community.
      */
-    disc.selectCommunity = function () {
 
-      QueryManager.setAssetId(disc.communityId);
-      QueryManager.setAssetType(AssetTypes.COMMUNITY);
-      /**
-       * Get new collections list for this community.
-       */
-      DiscoveryFormUtils.getCollectionsForCommunity(disc.communityId);
-
+    disc.selectCommunity = function() {
+      DiscoveryFormUtils.selectCommunity();
     };
 
     /**

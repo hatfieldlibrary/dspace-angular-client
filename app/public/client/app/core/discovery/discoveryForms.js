@@ -15,11 +15,15 @@ dspaceServices.service('DiscoveryFormUtils', [
   'GetCollectionInfo',
   'GetCommunitiesForDiscover',
   'AppContext',
+  'QueryManager',
+  'AssetTypes',
 
   function (GetCollectionsForCommunity,
             GetCollectionInfo,
             GetCommunitiesForDiscover,
-            AppContext) {
+            AppContext,
+            QueryManager,
+            AssetTypes) {
 
 
     var _ctrl;
@@ -85,6 +89,44 @@ dspaceServices.service('DiscoveryFormUtils', [
       else {
         _ctrl.searchItems = AppContext.getDiscoverCommunities();
       }
+    };
+
+    /**
+     * Handles selection of a collection.
+     */
+    this.selectCollection = function (id) {
+
+      /**
+       * If the collection id is zero, the asset type
+       * becomes COMMUNITY. Otherwise, the asset type
+       * is COLLECTION.
+       */
+      if (id === 0) {
+
+
+        QueryManager.setAssetType(AssetTypes.COMMUNITY);
+        QueryManager.setAssetId(_ctrl.communityId);
+
+      } else {
+
+        QueryManager.setAssetType(AssetTypes.COLLECTION);
+        /**
+         * Set the asset id to the id of the collection.
+         */
+        QueryManager.setAssetId(_ctrl.collectionId);
+      }
+
+    };
+
+    this.selectCommunity = function () {
+
+      QueryManager.setAssetId(_ctrl.communityId);
+      QueryManager.setAssetType(AssetTypes.COMMUNITY);
+      /**
+       * Get new collections list for this community.
+       */
+      this.getCollectionsForCommunity(_ctrl.communityId);
+
     };
 
 

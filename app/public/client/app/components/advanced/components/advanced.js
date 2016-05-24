@@ -54,46 +54,22 @@
     adv.count = '';
 
     /**
-     * Handles selection of a collection.
-     */
-    adv.selectCollection = function (id) {
-
-      /**
-       * If the collection id is zero, the asset type
-       * becomes COMMUNITY. Otherwise, the asset type
-       * is COLLECTION.
+     * Handles collection selection.
+     * @param id
        */
-      if (id === 0) {
-
-
-        QueryManager.setAssetType(AssetTypes.COMMUNITY);
-        QueryManager.setAssetId(adv.communityId);
-
-      } else {
-
-        QueryManager.setAssetType(AssetTypes.COLLECTION);
-        /**
-         * Set the asset id to the id of the collection.
-         */
-        QueryManager.setAssetId(adv.collectionId);
-      }
-
+    adv.selectCollection = function(id) {
+      DiscoveryFormUtils.selectCollection(id);
     };
+    
 
     /**
      * Handles selection of community.
      */
-    adv.selectCommunity = function () {
 
-      QueryManager.setAssetId(adv.communityId);
-      QueryManager.setAssetType(AssetTypes.COMMUNITY);
-      /**
-       * Get new collections list for this community.
-       */
-      DiscoveryFormUtils.getCollectionsForCommunity(adv.communityId);
-
+    adv.selectCommunity = function() {
+      DiscoveryFormUtils.selectCommunity();
     };
-
+   
 
     /**
      * Handles search form submission.
