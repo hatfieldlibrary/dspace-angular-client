@@ -5,7 +5,7 @@
 
 This DSpace UI prototype uses NodeJs and AngularJs. Much of the work here is based on an approach we are exploring in ernest with other projects. 
 
-The client uses solr and the [DSpace using the REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace using the REST API").  We currently use a version of the DSpace 5.5 REST API that has been updated to support additional authentication methods, special groups and access to user authorization levels.
+The client access DSpace data and services via solr and the [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace using the REST API").  Currently, we use a copy of the DSpace 5.5 REST API that has been updated to support additional authentication methods, special groups and access to user authorization levels.
 
 The NodeJs middleware used in this project includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store. In general, we are betting that a robust middleware layer will be helpful and plan to channel all interactions through this layer.  
 
