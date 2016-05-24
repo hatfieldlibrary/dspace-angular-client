@@ -133,7 +133,7 @@ Next:
 
 1. Build the AngularJs application using `grunt build`
 2. Verify the details of the NodeJs production environment in config/credentials.js and config/environment.js.
-3. Build the tar file using the `slc` commmand line tool: `slc build --pack`
+3. Build the tar file using the `slc` command line tool: `slc build --pack`
 4. Copy the tar file to the production host.
 5. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service dspace stop).
 6. Unpack the tar file into the application directory.
