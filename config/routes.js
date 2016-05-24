@@ -20,7 +20,7 @@ module.exports = function (app, config, passport) {
   /**
    * Use OAUTH2 for development.
    */
-  if (app.get('env') === 'production') {
+  if (app.get('env') === 'development') {
 
     /**
      * Authentication route for Google OAuth .
@@ -45,7 +45,7 @@ module.exports = function (app, config, passport) {
     );
   }
 
-  else if (app.get('env') === 'development') {
+  else if (app.get('env') === 'production') {
     /**
      * Authentication route for CAS.
      */
