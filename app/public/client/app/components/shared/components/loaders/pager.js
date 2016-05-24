@@ -131,8 +131,7 @@
          * Discovery or advanced search query: POST.
          */
 
-        else if ((action === QueryActions.SEARCH )
-          && QueryManager.getSearchTerms() !== undefined) {
+        else if ((action === QueryActions.SEARCH ) && QueryManager.getSearchTerms() !== undefined) {
 
           items = SolrQuery.save({
             params: context

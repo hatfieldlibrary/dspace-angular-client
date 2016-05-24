@@ -69,7 +69,40 @@
     adv.selectCommunity = function() {
       DiscoveryFormUtils.selectCommunity();
     };
-   
+
+    /**
+     * Executes query to retrieve a fresh result set.
+     */
+    function doSearch() {
+
+
+      /**
+       * Hide the pager button.
+       */
+      AppContext.setPager(false);
+
+      /**
+       * Get promise.
+       * @type {*|{method}|Session}
+       */
+      var items = SolrQuery.save({
+        params: QueryManager.context.query
+
+      });
+      /**
+       * Handle the response.
+       */
+      items.$promise.then(function (data) {
+
+        QueryManager.setOffset(data.offset);
+
+        adv.items = data.results;
+        adv.count = data.count;
+
+
+      });
+
+    }
 
     /**
      * Handles search form submission.
@@ -122,40 +155,6 @@
       }
 
     };
-
-    /**
-     * Executes query to retrieve a fresh result set.
-     */
-    function doSearch() {
-
-
-      /**
-       * Hide the pager button.
-       */
-      AppContext.setPager(false);
-
-      /**
-       * Get promise.
-       * @type {*|{method}|Session}
-       */
-      var items = SolrQuery.save({
-        params: QueryManager.context.query
-
-      });
-      /**
-       * Handle the response.
-       */
-      items.$promise.then(function (data) {
-
-        QueryManager.setOffset(data.offset);
-
-        adv.items = data.results;
-        adv.count = data.count;
-
-
-      });
-
-    }
 
     function init() {
 
