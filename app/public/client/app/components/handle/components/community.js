@@ -16,7 +16,7 @@
 
     ctrl.homeLinkLabel = Messages.COMMUNITY_HOME_LINK_LABEL;
     
-    
+    ctrl.loginMessage = Messages.LOGIN_TO_SEE_MORE_LABEL;
 
     
     if (ctrl.data.countItems === ctrl.data.itemTotal) {
