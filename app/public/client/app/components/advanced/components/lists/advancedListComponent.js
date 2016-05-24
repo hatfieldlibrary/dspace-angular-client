@@ -62,21 +62,6 @@
 
     };
 
-    /**
-     * Non-pager updates.
-     * @param results  items in result
-     * @param count  total number of items
-     * @param field   the field queried
-     */
-    // ctrl.onUpdate = function (results, count, field) {
-    //
-    //   ctrl.showPager = false;
-    //   ctrl.ready = true;
-    //   ctrl.items = results;
-    //   ctrl.count = count;
-    //   ctrl.field = field;
-    //
-    // };
 
     /**
      * Pager updates, including the initial page load.
@@ -84,12 +69,12 @@
      * @param count  total number of items.
      * @param field  the field queried.
      */
+    /* jshint unused:false */
     ctrl.onPagerUpdate = function (results, count, field) {
 
       ctrl.ready = true;
       addResults(results);
       ctrl.count = count;
-      // ctrl.field = field;
 
     };
 

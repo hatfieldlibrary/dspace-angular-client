@@ -68,15 +68,15 @@
              * Set user permissions.
              */
             if (typeof data.canSubmit !== 'undefined') {
-              AppContext.setSubmitPermission(data.canSubmit)
+              AppContext.setSubmitPermission(data.canSubmit);
             }
 
             if (typeof data.canAdminister !== 'undefined') {
-              AppContext.setAdministerPermission(data.canAdminister)
+              AppContext.setAdministerPermission(data.canAdminister);
             }
 
             if (typeof data.canWrite !== 'undefined') {
-              AppContext.setWritePermission(data.canWrite)
+              AppContext.setWritePermission(data.canWrite);
             }
 
             /** The normalized type should correspond to one of

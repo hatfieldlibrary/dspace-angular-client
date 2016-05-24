@@ -9,9 +9,7 @@
 
   function FilterContainerController(Utils,
                                      QueryManager,
-                                     AppContext,
-                                     Messages,
-                                     SolrQuery) {
+                                     Messages) {
 
     var ctrl = this;
 
@@ -52,8 +50,6 @@
 
       addFilter();
 
-     //doSearch();
-
 
     };
 
@@ -62,8 +58,7 @@
       QueryManager.removeDiscoveryFilter(position);
 
       removeFilter(position);
-
-     // doSearch();
+      
 
     };
 

@@ -58,7 +58,7 @@ function SideNavCtrl($scope,
 
     ctrl.submitInformationLink = Messages.SUBMIT_INFORMATION_LINK;
 
-    ctrl.submitInstructionsLink = Messages.SUBMIT_INSTRUCTIONS_LINK
+    ctrl.submitInstructionsLink = Messages.SUBMIT_INSTRUCTIONS_LINK;
 
   }
 

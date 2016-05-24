@@ -88,18 +88,12 @@ module.exports = function (app, config, passport) {
     /* jshint unused: false */
     app.isAuthenticated = function (req, res, next) {
 
-      console.log('CHECKIN AUTH')
-
-      passport.authenticate('google'), function (err, user) {
-        console.log(user);
+      passport.authenticate('google', function (err, user) {
         if (user) {
-
           res.redirect('/login/' + req.user);
         }
-
-      }
-
-
+      });
+      
     };
 
     // PRODUCTION
