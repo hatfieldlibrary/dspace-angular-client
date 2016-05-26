@@ -2,11 +2,13 @@
 
   <h2 class="md-title" ng-if="$ctrl.isBrowseContext()">Browsing: {{$ctrl.browseTerms}}</h2>
 
+  <div class="filter-container intro">
   <sort-options-component ng-if="$ctrl.context!='discover' && $ctrl.count > 10"
                           context="{{$ctrl.context}}"
                           on-update="$ctrl.onUpdate(results, count, field)"
                           reset-list-view ="$ctrl.resetListView()">
   </sort-options-component>
+  </div>
 
   <discover-filter-container ng-if="$ctrl.context=='discover'"
                           on-update="$ctrl.onUpdate(results, count, field)" >

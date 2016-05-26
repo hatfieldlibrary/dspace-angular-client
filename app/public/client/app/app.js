@@ -25,8 +25,8 @@ var dspaceApp = angular.module('dspaceApp', [
    * Configure $routeProvider with all routes to the
    * Express middleware endpoints .
    */
-  dspaceApp.config(['$routeProvider', '$locationProvider', 
-    
+  dspaceApp.config(['$routeProvider', '$locationProvider',
+
     function ($routeProvider, $locationProvider) {
 
       $routeProvider
@@ -61,8 +61,8 @@ var dspaceApp = angular.module('dspaceApp', [
       $mdThemingProvider
         .definePalette('Custom Background', {
           '50': '#ffffff',
-          '100': '#ffffff',
-          '200': '#fcfbf9',
+          '100': '#D2CFC7',
+          '200': '#F7F5F0',
           '300': '#e4dcca',
           '400': '#daceb5',
           '500': '#d0c1a1',
@@ -143,7 +143,7 @@ var dspaceApp = angular.module('dspaceApp', [
           'default': '500', // by default use shade 400 from the pink palette for primary intentions
           'hue-1': '300', // use shade 100 for the <code>md-hue-1</code> class
           'hue-2': '600', // use shade 600 for the <code>md-hue-2</code> class
-          'hue-3': '700' // use shade 900 for the <code>md-hue-3</code> class
+          'hue-3': '700' // use shade 700 for the <code>md-hue-3</code> class
         })
         .accentPalette('Accent Palette', {
           'default': '500',
@@ -160,7 +160,7 @@ var dspaceApp = angular.module('dspaceApp', [
   ).config(function ($mdIconProvider) {
     $mdIconProvider.fontSet('fa', 'fontawesome');
   });
-  
+
 
   /**
    * Bootstrap Angular.

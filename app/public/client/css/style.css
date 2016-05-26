@@ -175,6 +175,10 @@ collection-component md-content {
   background: transparent;
 }
 
+collection-item-component md-list-item > .md-button {
+  padding: 0 0;
+}
+
 .discover-item .md-button {
   line-height: 21px;
 }
@@ -215,11 +219,15 @@ collection-component md-content {
   margin: 0 0;
 }
 
+.intro {
+  margin-bottom: 30px;
+}
+
 .sort-options {
   padding: 0px 16px;
-  background: #ECEAE4;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  /*background: #FFFFFF;*/
+  /*border: 1px solid #ddd;*/
+  /*border-radius: 4px;*/
   margin: 15px 0;
 }
 
@@ -229,7 +237,7 @@ collection-component md-content {
 }
 
 .filter-container {
-  background: #eee;
+  background: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -326,7 +334,7 @@ md-input-container.halfer {
 
 md-list-item.selected-index {
   padding: 4px 0;
-  background: #DAC8A2;
+  background: #e3d8bd;
   margin: 8px 3px 10px;
   width: 99%;
 }

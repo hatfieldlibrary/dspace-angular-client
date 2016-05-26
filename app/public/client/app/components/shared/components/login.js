@@ -13,6 +13,12 @@
 
     var ctrl = this;
 
+    /**
+     * Used to indicate button type.
+     * @type {boolean}
+     */
+    ctrl.raised = false;
+
     ctrl.loginLabel = Messages.LOGIN_LABEL;
 
     ctrl.logoutLabel = Messages.LOGOUT_LABEL;
@@ -48,12 +54,13 @@
 
   dspaceComponents.component('loginComponent', {
 
+    bindings: {
+      raised: '<'
+    },
     templateUrl: '/shared/templates/login.html',
     controller: LoginCtrl
 
   });
-
-
 
 
 })();
