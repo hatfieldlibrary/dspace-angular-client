@@ -211,6 +211,7 @@ module.exports = function (grunt) {
             PORT: process.env.PORT || 9000
           },
           callback: function (nodemon) {
+            /* jshint unused: false */
             nodemon.on('log', function (event) {
             });
 

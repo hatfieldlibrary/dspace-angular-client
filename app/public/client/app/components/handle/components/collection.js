@@ -9,7 +9,7 @@
   /**
    * Component controller.
    */
-  function CollectionCtrl(QueryManager, QueryActions, QueryTypes, QueryStack) {
+  function CollectionCtrl(QueryManager, QueryActions, QueryTypes, QueryStack, Utils) {
 
     var ctrl = this;
 
@@ -22,10 +22,16 @@
        * Set query type to title list.
        */
       QueryManager.setQueryType(QueryTypes.TITLES_LIST);
-      
-      
 
     }
+
+    ctrl.hasLogo = function() {
+      if (typeof ctrl.data.logo.retrieveLink !== 'undefined') {
+        return true;
+      }
+      return false;
+    };
+
 
     function init() {
 
@@ -51,9 +57,11 @@
      * @returns {string}
      */
     ctrl.getLogo = function () {
-      //  if (Data.root.logo.retrieveLink) {
-      //     Utils.getLogoPath(Data.root.logo.id);
-      //  }
+
+      if (ctrl.data.logo.retrieveLink) {
+        return Utils.getLogoPath(ctrl.data.logo.id);
+      }
+      return '';
     };
 
   }
