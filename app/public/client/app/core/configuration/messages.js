@@ -9,7 +9,7 @@
 
   appConstants.constant('Messages', {
 
-    COMMUNITIES_LIST_INTRO: 'Academic Commons departmental collections are listed below. Each department contains one or more collections.  Note that many collections, including senior thesis collections, are only visible after <a href="auth/login" target="_top">logging in</a> with your Willamette University credentials.',
+    COMMUNITIES_LIST_INTRO: 'Willamette University departmental collections are listed below. Each department has one or more collections.  Many collections, including senior thesis collections, will be visible only after you <a href="auth/login" target="_top">log in</a> with your Willamette University credentials.',
 
     VIEW_ALL_COMMUNITIES: 'View Departments',
 
