@@ -16,32 +16,43 @@ var http = require('http');
     var port = utils.getPort();
     var dspaceContext = utils.getDspaceAppContext();
 
-     var options = {
-       host: host,
-         port: port,
-         path: dspaceContext +  '/bitstreams/' + id + '/retrieve',
-         method: 'GET',
-         headers: {
-           'rest-dspace-token': dspaceTokenHeader
-         }
-     };
+    var options = {
+      host: host,
+      port: port,
+      path: '/' + dspaceContext + '/bitstreams/' + id + '/retrieve',
+      method: 'GET',
+      headers: {
+        'rest-dspace-token': dspaceTokenHeader
+      }
+    };
 
-     http.get(options, function(response) {
+    http.get(options, function (response) {
 
-       // get the content type and set res header.
-       res.type(response.headers['content-type']);
+      try {
+        /**
+         *  Get the content type of the stream return by DSpace
+         *  and set Express response header.
+         */
+        res.type(response.headers['content-type']);
 
-       // write data chunk to res.
-       response.on('data', function(chunk) {
-         // Set to encode base64.
-         res.write( chunk, 'base64');
-     });
-       response.on('end', function() {
-         // finished, ending res.
-         res.end();
-       });
+      } catch (err) {
+        console.log(err);
 
-     });
+      }
+
+      // write data chunk to res.
+      response.on('data', function (chunk) {
+        // Set to encode base64.
+        res.write(chunk, 'base64');
+
+      });
+
+      response.on('end', function () {
+        // finished, ending res.
+        res.end();
+      });
+
+    });
 
   }
 })();
