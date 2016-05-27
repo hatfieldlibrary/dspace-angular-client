@@ -27,6 +27,8 @@
     ctrl.metadataLabel = Messages.ITEM_METADATA_LABEL;
 
     ctrl.editItemLabel = Messages.ITEM_EDIT_LABEL;
+    
+    ctrl.fileAccessLabel = Messages.FILE_ACCESS_RESTRICTED_LABEL;
 
     ctrl.dspaceHost = AppContext.getDspaceHost();
 

@@ -231,15 +231,11 @@ collection-item-component md-list-item > .md-button {
   margin: 15px 0;
 }
 
-.advanced-filters {
-  margin-top: 6px;
-  margin-bottom: 12px;
-}
-
 .filter-container {
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
+  padding: 6px;
 }
 
 .advanced-search .sort-options {

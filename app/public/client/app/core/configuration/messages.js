@@ -43,13 +43,13 @@
 
     ADVANCED_SEARCH_SUBMIT_LABEL: 'Submit',
 
-    ADVANCED_SEARCH_FILTER_LABEL: 'Optional Filters',
+    ADVANCED_SEARCH_FILTER_LABEL: 'Add Optional Filters',
 
     COMMUNITIES_LIST_HEADING: 'University Departments',
 
     DISCOVERY_PAGE_HEADER: 'Search Departmental Collections',
 
-    FILTER_LABEL: 'Add Filters:',
+    FILTER_LABEL: 'Filter Results By:',
 
     FILTER_FIELD_LABEL: 'Field',
 
@@ -104,7 +104,9 @@
 
     ITEM_EDIT_LABEL: 'Edit Item',
 
-    LOGIN_TO_SEE_MORE_LABEL: 'Login to see more collections.'
+    LOGIN_TO_SEE_MORE_LABEL: 'Login to see more collections.',
+
+    FILE_ACCESS_RESTRICTED_LABEL: 'File access requires login.'
 
   });
 

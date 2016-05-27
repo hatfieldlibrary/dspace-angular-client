@@ -50,7 +50,7 @@
               <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
             </div>
             <div ng-if="$ctrl.data.bitstreams.length == 0">
-              <i class="material-icons">lock_outline</i> File access requires login.
+              <i class="material-icons">lock_outline</i> {{$ctrl.fileAccessLabel}}
             </div>
           </div>
 

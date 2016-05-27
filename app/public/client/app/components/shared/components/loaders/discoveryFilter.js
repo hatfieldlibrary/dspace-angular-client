@@ -50,6 +50,8 @@
         });
 
       ctrl.status = 'remove';
+      
+      ctrl.disabled = true;
 
     };
 
