@@ -328,7 +328,7 @@ dspaceServices.factory('Utils', [
      * @returns {string}
        */
     utils.getLogoPath = function (logoId) {
-      var path = '/bitstream/' + logoId + '/logo';
+      var path = '/ds/bitstream/' + logoId + '/logo';
       return path;
     };
 

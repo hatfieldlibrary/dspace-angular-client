@@ -55,7 +55,7 @@
 
   dspaceComponents.component('globalSearchBoxComponent', {
 
-    templateUrl: '/shared/templates/search/globalSearchBox.html',
+    templateUrl: '/ds/shared/templates/search/globalSearchBox.html',
     controller: GlobalSearchBoxCtrl,
     controllerAs: 'sb'
 

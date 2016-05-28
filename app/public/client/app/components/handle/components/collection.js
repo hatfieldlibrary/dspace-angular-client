@@ -72,7 +72,7 @@
       // API handle query response
       data: '<'
     },
-    templateUrl: '/handle/templates/collection.html',
+    templateUrl: '/ds/handle/templates/collection.html',
     controller: CollectionCtrl
 
   });

@@ -57,7 +57,7 @@
     bindings: {
       raised: '<'
     },
-    templateUrl: '/shared/templates/login.html',
+    templateUrl: '/ds/shared/templates/login.html',
     controller: LoginCtrl
 
   });

@@ -11,7 +11,7 @@
 
     ctrl.openCommunityHandle = function(handle) {
 
-      $location.path('/handle/' + handle);
+      $location.path('/ds/handle/' + handle);
 
     };
 
@@ -24,7 +24,7 @@
       handle: '@',
       last: '='
     },
-    templateUrl: '/shared/templates/lists/community.html',
+    templateUrl: '/ds/shared/templates/lists/community.html',
 
     controller: CommunityItemCtrl
 

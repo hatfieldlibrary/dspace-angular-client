@@ -59,7 +59,7 @@
     bindings: {
       data: '<'
     },
-    templateUrl: '/handle/templates/community.html',
+    templateUrl: '/ds/handle/templates/community.html',
     controller: CommunityCtrl
 
   });

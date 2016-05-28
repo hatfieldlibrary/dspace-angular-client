@@ -53,7 +53,7 @@
 
     },
     controller: ItemDetailController,
-    templateUrl: '/shared/templates/lists/itemDetail.html'
+    templateUrl: '/ds/shared/templates/lists/itemDetail.html'
 
   });
 

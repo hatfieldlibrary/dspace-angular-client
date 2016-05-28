@@ -5,7 +5,7 @@
  */
 dspaceServices.factory('ItemById', ['$resource',
   function ($resource) {
-    return $resource('getItem/:item', {}, {
+    return $resource('/ds/getItem/:item', {}, {
       query: {method: 'GET', isArray: false}
     });
   }

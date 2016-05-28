@@ -70,7 +70,7 @@
     bindings: {
       onUpdate: '&'
     },
-    templateUrl: '/advanced/templates/filters/advancedFilterContainer.html',
+    templateUrl: '/ds/advanced/templates/filters/advancedFilterContainer.html',
     controller: FilterContainerController
   });
 

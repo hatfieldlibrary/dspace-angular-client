@@ -13,7 +13,7 @@
 
   dspaceComponents.component('loginRequiredComponent', {
 
-    templateUrl: '/handle/templates/loginRequired.html',
+    templateUrl: '/ds/handle/templates/loginRequired.html',
     controller: LoginRequiredCtrl
 
   });

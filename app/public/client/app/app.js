@@ -30,22 +30,22 @@ var dspaceApp = angular.module('dspaceApp', [
     function ($routeProvider, $locationProvider) {
 
       $routeProvider
-        .when('/handle/:site/:item', {
+        .when('/ds/handle/:site/:item', {
           templateUrl: '/partials/handle.html',
         })
-        .when('/communities', {
+        .when('/ds/communities', {
           templateUrl: '/partials/communities.html'
         })
-        .when('/browse/:type/:id/:field/:sort/:terms/:offset/:rows', {
+        .when('/ds/browse/:type/:id/:field/:sort/:terms/:offset/:rows', {
           templateUrl: '/partials/browse.html'
         })
-        .when('/discover/:type/:id/:terms', {
+        .when('/ds/discover/:type/:id/:terms', {
           templateUrl: '/partials/discover.html'
         })
-        .when('/advanced', {
+        .when('/ds/advanced', {
           templateUrl: '/partials/advanced.html'
         })
-        .when('/discover', {
+        .when('/ds/discover', {
           templateUrl: '/partials/discover.html'
         });
 

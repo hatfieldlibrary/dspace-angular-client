@@ -129,7 +129,7 @@
     },
 
     controller: SubjectDetailController,
-    templateUrl: '/shared/templates/lists/subjectDetail.html'
+    templateUrl: '/ds/shared/templates/lists/subjectDetail.html'
   });
 
 })();

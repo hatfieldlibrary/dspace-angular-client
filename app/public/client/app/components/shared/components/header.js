@@ -36,7 +36,7 @@
       type: '@',
       id: '@'
     },
-    templateUrl: '/shared/templates/header.html',
+    templateUrl: '/ds/shared/templates/header.html',
     controller: HeaderCtrl
 
   });

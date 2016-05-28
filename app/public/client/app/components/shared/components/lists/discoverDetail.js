@@ -77,7 +77,7 @@
       handle: '@',
       last: '<'
     },
-    templateUrl: '/shared/templates/lists/discoverDetail.html',
+    templateUrl: '/ds/shared/templates/lists/discoverDetail.html',
     controller: DiscoverDetailCtrl
 
   });

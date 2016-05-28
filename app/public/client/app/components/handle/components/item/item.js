@@ -67,7 +67,7 @@
     bindings: {
       data: '<'
     },
-    templateUrl: '/handle/templates/item/item.html',
+    templateUrl: '/ds/handle/templates/item/item.html',
     controller: ItemCtrl
 
   });
