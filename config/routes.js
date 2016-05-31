@@ -35,11 +35,11 @@ module.exports = function (app, config, passport) {
     // If authentication failed, redirect back to the communities page for now.
     app.get('/ds/oauth2callback',
       passport.authenticate('google',
-        {failureRedirect: '/communities'}
+        {failureRedirect: '/ds/communities'}
       ),
       // If authentication succeeded, redirect to login/netid to obtain DSpace token.
       function (req, res) {
-        res.redirect('/login/' + req.user);
+        res.redirect('/ds/login/' + req.user);
       }
     );
   }

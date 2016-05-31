@@ -31,22 +31,22 @@ var dspaceApp = angular.module('dspaceApp', [
 
       $routeProvider
         .when('/ds/handle/:site/:item', {
-          templateUrl: '/partials/handle.html',
+          templateUrl: '/ds/partials/handle',
         })
         .when('/ds/communities', {
-          templateUrl: '/partials/communities.html'
+          templateUrl: '/ds/partials/communities'
         })
         .when('/ds/browse/:type/:id/:field/:sort/:terms/:offset/:rows', {
-          templateUrl: '/partials/browse.html'
+          templateUrl: '/ds/partials/browse'
         })
         .when('/ds/discover/:type/:id/:terms', {
-          templateUrl: '/partials/discover.html'
+          templateUrl: '/ds/partials/discover'
         })
         .when('/ds/advanced', {
-          templateUrl: '/partials/advanced.html'
+          templateUrl: '/ds/partials/advanced'
         })
         .when('/ds/discover', {
-          templateUrl: '/partials/discover.html'
+          templateUrl: '/ds/ds/partials/discover'
         });
 
       $locationProvider.html5Mode(true).hashPrefix('!');

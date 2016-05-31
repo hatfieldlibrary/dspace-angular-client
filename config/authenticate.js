@@ -88,7 +88,7 @@ module.exports = function (app, config, passport) {
 
       passport.authenticate('google', function (err, user) {
         if (user) {
-          res.redirect('/login/' + req.user);
+          res.redirect('/ds/login/' + req.user);
         }
       });
       
@@ -200,7 +200,7 @@ module.exports = function (app, config, passport) {
           }
 
           req.session.messages = '';
-          return res.redirect('/login/' + user.username);
+          return res.redirect('/dslogin/' + user.username);
 
         });
       })(req, res, next);
