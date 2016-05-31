@@ -40,7 +40,7 @@ var utils = require('../core/utils');
             console.log('redirecting to ' + session.url);
             res.redirect(session.url);
           } else {
-            res.redirect('/communities');
+            res.redirect('/ds/communities');
           }
 
         })
@@ -66,7 +66,7 @@ var utils = require('../core/utils');
   };
 
   exports.checkSysAdminStatus = function (req, res) {
-    
+
     /** @type {Object} the current session object */
     var session = req.session;
 

@@ -14,7 +14,7 @@
    */
   exports.getCommunities = function (req, res) {
 
-    req.session.url = '/communities';
+    req.session.url = '/ds/communities';
     var session = req.session;
 
     models.listCommunities(res, session);
