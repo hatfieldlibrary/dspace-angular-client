@@ -141,7 +141,7 @@ md-dialog.item-details {
 }
 
 .top-highlight {
-  background-image: url('/images/masthead-bottom-img.jpg'), url('/images/background-grain.jpg');
+  background-image: url('/ds/images/masthead-bottom-img.jpg'), url('/ds/images/background-grain.jpg');
   background-repeat: no-repeat, repeat-x;
   background-position: top center, top center;
 
@@ -538,7 +538,7 @@ discover-detail-component {
 }
 
 .footer > .footer-background {
-  background-image: url(/images/footer-watermark.png);
+  background-image: url(/ds/images/footer-watermark.png);
   background-position: 100% 0;
   background-repeat: no-repeat;
   padding: 2.1875em;

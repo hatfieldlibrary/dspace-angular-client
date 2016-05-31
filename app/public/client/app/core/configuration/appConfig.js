@@ -8,12 +8,12 @@
 (function () {
 
   appConstants.constant('AppConfig', {
-    
+
     /**
      * DSpace handle prefix
      */
     HANDLE_PREFIX: '10177',
-    
+
     /**
      * Your Dspace host (can be an empty string).  This link
      * is used to open administration and submission options
@@ -22,10 +22,10 @@
     DSPACE_HOST: 'http://158.104.3.30:8080',
 
     /**
-     * DSpace path (e.g. xmlui).  Also used to open administration 
+     * DSpace path (e.g. xmlui).  Also used to open administration
      * and submission options
      */
-    DSPACE_ROOT: '/dspace5',
+    DSPACE_ROOT: '/xmlui',
 
     /**
      * The maximum number if items returned by queries
@@ -33,7 +33,7 @@
     RESPONSE_SET_SIZE: 20,
 
     /**
-     * Check for authenticated user and gives the user an 
+     * Check for authenticated user and gives the user an
      * opportunity to log in if no authenticated session exists.
      */
     USE_REDIRECT: true,
@@ -46,7 +46,7 @@
     /**
      * The header logo image.
      */
-    HOME_LOGO: 'images/acom_header.png'
+    HOME_LOGO: '/ds/images/acom_header.png'
 
   });
 

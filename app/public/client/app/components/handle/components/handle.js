@@ -60,7 +60,7 @@
           if (data.type !== undefined) {
 
             ctrl.ready = true;
-            
+
             /** Add query result to view model. */
             ctrl.data = data;
 
@@ -143,7 +143,7 @@
                * Avoids infinite loop.
                */
               if (!AppContext.hasDspaceSession) {
-                $window.location = '/auth/login';
+                $window.location = '/ds/auth/login';
               } else {
                 /**
                  * User cannot access thie resource;

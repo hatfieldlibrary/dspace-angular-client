@@ -122,7 +122,7 @@
           {
             controller: DialogController,
             controllerAs: '$ctrl',
-            templateUrl: '/handle/templates/item/dialogItem.html',
+            templateUrl: '/ds/handle/templates/item/dialogItem.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose: true,

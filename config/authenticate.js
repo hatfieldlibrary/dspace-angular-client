@@ -91,20 +91,12 @@ module.exports = function (app, config, passport) {
           res.redirect('/ds/login/' + req.user);
         }
       });
-      
+
     };
 
     // PRODUCTION
     // Use CAS and Redis as session store.
   } else if (app.get('env') === 'production') {
-
-    app.use(session({
-        secret: 'rice paddy',
-        saveUninitialized: true,
-        resave: true
-      })
-    );
-
 
     /**
      * Redis client (use for production).
@@ -115,16 +107,16 @@ module.exports = function (app, config, passport) {
      * Redis session store
      */
     var RedisStore = require('connect-redis')(session);
-    
+
     var client = redis.createClient(
       config.redisPort,
       '127.0.0.1',
       {}
     );
-    
+
     app.use(session(
       {
-        secret: 'insideoutorup',
+        secret: 'ricsorieterazp',
         store: new RedisStore({host: '127.0.0.1', port: config.redisPort, client: client}),
         saveUninitialized: false, // don't create session until something stored,
         resave: false // don't save session if unmodified
@@ -157,7 +149,6 @@ module.exports = function (app, config, passport) {
       },
       // This is the `verify` callback
       function (username, profile, done) {
-        console.log('cas strategy');
         User.validate({username: username}, function (err, user) {
           done(err, user);
         });
@@ -200,7 +191,7 @@ module.exports = function (app, config, passport) {
           }
 
           req.session.messages = '';
-          return res.redirect('/dslogin/' + user.username);
+          return res.redirect('/ds/login/' + user.username);
 
         });
       })(req, res, next);

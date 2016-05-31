@@ -36,6 +36,7 @@ module.exports = function (grunt) {
     client: 'app/public/client/app',
     public: 'app/public/client',
     dist: 'dist',
+    proxy_path: 'ds',
 
     express: {
       options: {
@@ -323,8 +324,8 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             // 'bower_components/**/*',
-            'images/{,*/}*.{webp}',
-            'fonts/**/*',
+            // 'images/{,*/}*.{webp}',
+            // 'fonts/**/*',
             'index.html'
           ]
         }, {
@@ -340,6 +341,14 @@ module.exports = function (grunt) {
             '<%= app %>/**/*',
             '!<%= app %>/config/local.env.sample.js'
           ]
+        }, { expand: true,
+          cwd: '<%= public %>',
+          dest: '<%= dist %>/<%= public %>/<%= proxy_path %>',
+          src: [
+            'images/**/*',
+            'fonts/**/*'
+          ]
+
         }]
       }
 
