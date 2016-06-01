@@ -15,11 +15,7 @@
 
     var id = req.params.item;
 
-    var session = req.session;
-
-    console.log(session);
-
-    models.collectionInfo(id, session)
+    models.collectionInfo(id, req.session)
       .then(function (result) {
         res.send(result);
         res.end();

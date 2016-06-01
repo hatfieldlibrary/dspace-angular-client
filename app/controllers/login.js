@@ -25,8 +25,6 @@ var utils = require('../core/utils');
 
     var session = req.session;
 
-    console.log(session);
-
     // If session does not already have DSpace token, login
     // to the DSpace REST API.
     if (!session.getDspaceToken) {
@@ -37,15 +35,7 @@ var utils = require('../core/utils');
         .then(function () {
           // If successful, redirect to session.url or to home page.
           if (session.url !== 'undefined') {
-            console.log(session);
-            console.log('redirecting to ' + session.url);
-            
-            session.save(function (err) {
-              if (err === null) {
-                console.log('DSpace API token: ' + session.getDspaceToken);
-                res.redirect(session.url);
-              }
-            });
+            res.redirect(session.url);
             
           } else {
             res.redirect('/ds/communities');

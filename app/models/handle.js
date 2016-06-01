@@ -10,9 +10,6 @@ var utils = require('../core/utils');
    */
   module.exports = function (site, item, session) {
     
-    console.log('handle model');
-    
-    console.log(session);
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();

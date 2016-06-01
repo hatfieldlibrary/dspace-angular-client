@@ -41,14 +41,14 @@ var utils = require('../core/utils');
             // Add DSpace token to session.
             session.getDspaceToken = body;
 
-            console.log('added dspace token to session, attempting to save: ' + session.getDspaceToken);
-
-            // session.save(function (err) {
-            //   if (err === null) {
-            //     console.log('DSpace API token: ' + session.getDspaceToken);
-            //
-            //   }
-            // });
+            session.save(function (err) {
+              if (err === null) {
+                console.log('DSpace API token: ' + session.getDspaceToken);
+            
+              } else {
+                console.log('Error retrieving DSpace token.')
+              }
+            });
 
           } else if (response.statusCode === 403) {   // forbidden
             console.log('DSpace access forbidden.');
