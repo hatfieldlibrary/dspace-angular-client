@@ -10,6 +10,8 @@
 
     var session = req.session;
 
+    console.log(session);
+
     models.items(id, session)
       .then(function (result) {
         res.send(result);

@@ -19,7 +19,13 @@ module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(methodOverride());
 
-  //app.use(express.static(path.join(config.root, 'constants')));
+  /**
+   * Enable trust proxy if the Express server is not directly
+   * facing the Internet.  If true, the client’s IP address is 
+   * understood as the left-most entry in the X-Forwarded-* header.
+   */
+  app.set('trust proxy', true);
+  
 
   if ('production' === env) {
     app.use(morgan('dev'));

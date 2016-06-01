@@ -15,6 +15,7 @@ var session = require('express-session');
 
 module.exports = function (app, config, passport) {
 
+
   // Set up authentication and session.
   app.use(passport.initialize());
   app.use(passport.session());
@@ -102,26 +103,32 @@ module.exports = function (app, config, passport) {
      * Redis client (use for production).
      * @type {exports|module.exports}
      */
-    var redis = require('redis');
+    //var redis = require('redis');
+
+    //var redisClient = redis.createClient();
+
     /**
      * Redis session store
      */
     var RedisStore = require('connect-redis')(session);
 
-    var client = redis.createClient(
-      config.redisPort,
-      '127.0.0.1',
-      {}
-    );
-
     app.use(session(
       {
+        store: new RedisStore({host: '127.0.0.1', port: config.redisPort}),
         secret: 'ricsorieterazp',
-        store: new RedisStore({host: '127.0.0.1', port: config.redisPort, client: client}),
+        proxy: true,
         saveUninitialized: false, // don't create session until something stored,
         resave: false // don't save session if unmodified
       }
     ));
+    
+    app.use(function (req, res, next) {
+      if (!req.session) {
+        return next(new Error('oh no')); // handle error 
+      }
+      next(); // otherwise continue 
+    });
+    
 
     /**
      * Validates CAS user.  Not much to do at this point. Just
@@ -134,6 +141,9 @@ module.exports = function (app, config, passport) {
         if (user === 'undefined') {
           return callback(new Error('User is undefined'), '');
         }
+
+        console.log(user.username);
+
         return callback(null, user.username);
 
       }
@@ -149,6 +159,7 @@ module.exports = function (app, config, passport) {
       },
       // This is the `verify` callback
       function (username, profile, done) {
+        console.log('validating ' + username);
         User.validate({username: username}, function (err, user) {
           done(err, user);
         });

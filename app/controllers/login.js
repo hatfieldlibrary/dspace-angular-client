@@ -37,8 +37,16 @@ var utils = require('../core/utils');
         .then(function () {
           // If successful, redirect to session.url or to home page.
           if (session.url !== 'undefined') {
+            console.log(session);
             console.log('redirecting to ' + session.url);
-            res.redirect(session.url);
+            
+            session.save(function (err) {
+              if (err === null) {
+                console.log('DSpace API token: ' + session.getDspaceToken);
+                res.redirect(session.url);
+              }
+            });
+            
           } else {
             res.redirect('/ds/communities');
           }
@@ -107,6 +115,9 @@ var utils = require('../core/utils');
 
     /** @type {Object} the current session object */
     var session = req.session;
+
+    console.log('check session');
+    console.log(session);
 
     /** @type {string} the current dspace token or an empty string */
     var dspaceTokenHeader = utils.getDspaceToken(session);

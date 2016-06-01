@@ -169,9 +169,12 @@ var config = {
     port: 3000,
     /**
      * Production uses redis as the session store.  Set
-     * the redis port here.
+     * the redis port here. (The redis default port is 6379).
      */
     redisPort: 6379,
+    /**
+     * Secret used for DSpace authentication.
+     */
     secret: credentials.restSecret,
     dspace: {
       host: credentials.dspaceProd.host,

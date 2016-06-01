@@ -16,6 +16,8 @@
 
     req.session.url = '/ds/communities';
     var session = req.session;
+     console.log('communitiees list');
+    console.log(session);
 
     models.listCommunities(res, session);
 

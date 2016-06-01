@@ -40,12 +40,15 @@ var utils = require('../core/utils');
 
             // Add DSpace token to session.
             session.getDspaceToken = body;
-            session.save(function (err) {
-              if (err === null) {
-                console.log('DSpace API token: ' + session.getDspaceToken);
 
-              }
-            });
+            console.log('added dspace token to session, attempting to save: ' + session.getDspaceToken);
+
+            // session.save(function (err) {
+            //   if (err === null) {
+            //     console.log('DSpace API token: ' + session.getDspaceToken);
+            //
+            //   }
+            // });
 
           } else if (response.statusCode === 403) {   // forbidden
             console.log('DSpace access forbidden.');
@@ -55,12 +58,15 @@ var utils = require('../core/utils');
             // longer exists in DSpace, possibly because of server
             // restart. Remove the stale token if one is present.
             utils.removeDspaceSession(req.session);
-            
+
           }
           else {
             console.log('Unknown DSpace login status.'); // unknown status
           }
         }
+
+
+
       });
 
     return loginRequest;

@@ -53,7 +53,7 @@
       QueryManager.setAction(QueryActions.SEARCH);
 
 
-      $location.path('/discover/' + sb.type + '/' + sb.id + '/' + terms);
+      $location.path('/ds/discover/' + sb.type + '/' + sb.id + '/' + terms);
 
     };
 
