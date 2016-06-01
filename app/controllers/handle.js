@@ -112,6 +112,9 @@ var utils = require('../core/utils');
             // log in again.
             utils.removeDspaceSession(req.session)
           }
+          
+          res.statusCode = err.statusCode;
+          res.end();
 
         }
 

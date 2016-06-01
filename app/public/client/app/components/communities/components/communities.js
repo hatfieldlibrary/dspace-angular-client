@@ -13,8 +13,6 @@
                            QueryStack,
                            QueryManager,
                            AssetTypes,
-                           CheckSysAdmin,
-                           AppContext,
                            Messages) {
 
     var ctrl = this;
@@ -29,18 +27,13 @@
 
     QueryManager.setAssetType(AssetTypes.COMMUNITY_LIST);
 
-    // var admin = CheckSysAdmin.query();
-    // admin.$promise.then(function(data) {
-    //   console.log(data)
-    //   AppContext.setSystemAdminPermission(data.isSysAdmin);
-    // });
-
     var fetch = GetCommunities.query();
     fetch.$promise.then(function (data) {
       ctrl.ready = true;
       ctrl.communities = data;
+    }, function (err) {
+      console.log('Error status: ' + err.status + ' - ' + err.statusText);
     });
-
 
 
   }

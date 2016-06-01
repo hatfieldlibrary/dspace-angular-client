@@ -18,6 +18,8 @@ var utils = require('../core/utils');
     /** @type {string} the netid of the user */
     var netid = req.params.netid;
 
+    console.log('controller ' + netid);
+
     if (!config) {
       console.log('ERROR: Missing application configuration.  Cannot access application key.');
       return;
@@ -33,19 +35,20 @@ var utils = require('../core/utils');
         config,
         req)
         .then(function () {
+          console.log('session url in controller ' + session.url);
           // If successful, redirect to session.url or to home page.
           if (session.url !== 'undefined') {
             res.redirect(session.url);
-            
+
           } else {
             res.redirect('/ds/communities');
           }
 
         })
         .catch(function (err) {
-
           console.log(err);
-
+          res.statusCode = err.statusCode;
+          res.end();
         });
     }
 
@@ -138,7 +141,9 @@ var utils = require('../core/utils');
             // If status request returned an error, remove dspace token.
             utils.removeDspaceSession(session);
             console.log(err.message);
-            utils.jsonResponse(res, {status: 'denied'});
+            //utils.jsonResponse(res, {status: 'denied'});
+            res.statusCode = err.statusCode;
+            res.end();
           }
         );
     } else {

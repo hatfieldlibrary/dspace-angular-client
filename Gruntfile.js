@@ -36,7 +36,7 @@ module.exports = function (grunt) {
     client: 'app/public/client/app',
     public: 'app/public/client',
     dist: 'dist',
-    proxy_path: 'ds',
+    proxyPath: 'ds',
 
     express: {
       options: {
@@ -343,7 +343,7 @@ module.exports = function (grunt) {
           ]
         }, { expand: true,
           cwd: '<%= public %>',
-          dest: '<%= dist %>/<%= public %>/<%= proxy_path %>',
+          dest: '<%= dist %>/<%= public %>/<%= proxyPath %>',
           src: [
             'images/**/*',
             'fonts/**/*'

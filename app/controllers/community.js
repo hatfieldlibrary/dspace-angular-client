@@ -50,7 +50,8 @@
       })
       .catch(function (err) {
         console.log(err);
-
+        res.statusCode = err.statusCode;
+        res.end();
       });
 
   };

@@ -34,7 +34,7 @@
     disc.searchItems = [];
 
     /**
-     * Array containing list of collection within a community.
+     * Array containing list of collections within a community.
      * @type {Array}
      */
     disc.collections = [];
@@ -105,7 +105,7 @@
        * If search terms are provided, execute the search.
        */
       if (terms.length > 0) {
-        $location.path('/discover/' + type + '/' + id + '/' + terms);
+        $location.path('/ds/discover/' + type + '/' + id + '/' + terms);
       }
 
     };

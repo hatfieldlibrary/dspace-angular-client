@@ -2,6 +2,8 @@
  * Set up the Express error handlers.
  * Created by mspalti on 6/1/16.
  */
+ 
+'use strict';
 
 module.exports = function (app) {
 

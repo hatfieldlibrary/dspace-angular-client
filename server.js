@@ -1,27 +1,42 @@
+/**
+ * Initializes and starts the Express server.
+ */
+
 'use strict';
 
 var server;
 
 var express = require('express'),
   http = require('http'),
-  passport = require('passport');
+  passport = require('passport'),
+  config = require('./config/environment');
 
 global.models = require('./app/models');
 
-var config = require('./config/environment');
-
 var app = express();
 
-// configure express
+/**
+ * Basic Express setup for logging, parser, static routes...
+ */
 require('./config/express')(app, config);
-// configure passport and session
+/**
+ * Sets up passport authentication and Express sessions.
+ */
 require('./config/authenticate')(app, config, passport);
-// configure routes
+/**
+ * Configures Express routes.
+ */
 require('./config/routes')(app, config, passport);
-
-// configure routes
+/**
+ * Adds error handlers.
+ */
 require('./config/errorHandler')(app);
 
+/**
+ * Starts the HTTP server.  If in production environment, sets
+ * uid and gid after start (allows use of lower ports if that's 
+ * needed).
+ */
 function startServer() {
 
   // stop annoying error message when testing.
@@ -51,11 +66,9 @@ function startServer() {
 }
 
 
-
 // This is needed when running from IDE
 module.exports = app;
 
-// Doing integration tests. No need to sync.
 startServer();
 
 

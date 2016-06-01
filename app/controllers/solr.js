@@ -159,8 +159,11 @@ var constants = require('../core/constants');
             // log in again.
             utils.removeDspaceSession(req.session);
 
+            
 
           }
+          res.statusCode = err.statusCode;
+          res.end();
 
         }
 

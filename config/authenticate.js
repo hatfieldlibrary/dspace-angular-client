@@ -100,14 +100,6 @@ module.exports = function (app, config, passport) {
   } else if (app.get('env') === 'production') {
 
     /**
-     * Redis client (use for production).
-     * @type {exports|module.exports}
-     */
-    //var redis = require('redis');
-
-    //var redisClient = redis.createClient();
-
-    /**
      * Redis session store
      */
     var RedisStore = require('connect-redis')(session);
@@ -117,6 +109,8 @@ module.exports = function (app, config, passport) {
         store: new RedisStore({host: '127.0.0.1', port: config.redisPort}),
         secret: 'ricsorieterazp',
         proxy: true,
+        name: 'dsclient.sid',
+        cookie: { path: '/ds' },
         saveUninitialized: false, // don't create session until something stored,
         resave: false // don't save session if unmodified
       }
@@ -124,7 +118,7 @@ module.exports = function (app, config, passport) {
     
     app.use(function (req, res, next) {
       if (!req.session) {
-        return next(new Error('oh no')); // handle error 
+        return next(new Error('Missing session for CAS login.')); // handle error 
       }
       next(); // otherwise continue 
     });
@@ -138,7 +132,7 @@ module.exports = function (app, config, passport) {
 
       validate: function (user, callback) {
 
-        if (user === 'undefined') {
+        if (typeof user === 'undefined') {
           return callback(new Error('User is undefined'), '');
         }
 

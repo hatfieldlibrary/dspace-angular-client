@@ -4,16 +4,15 @@ var express = require('express');
 var favicon = require('serve-favicon');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
- //var methodOverride = require('method-override');
 var path = require('path');
-//var config = require('./environment');
+var helmet = require('helmet');
 
 module.exports = function (app, config) {
 
   var env = app.get('env');
 
-  //app.use('/ds/', app);
-  
+  app.use(helmet());
+
   /**
    * Enable the error message view.
    */
@@ -58,14 +57,7 @@ module.exports = function (app, config) {
      * Path to favicon.
      */
     app.use(favicon(path.join(config.root, 'public/client', 'favicon.ico')));
-    /**
-     * Flag xhr errors.
-     */
-    app.use(clientErrorHandler);
-    /**
-     * Set the production error handler.
-     */
-    app.use(productionErrorHandler);
+
 
   }
 
@@ -79,10 +71,7 @@ module.exports = function (app, config) {
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'public/client')));
     app.set('appPath', config.root + 'public/client');
-    /**
-     * Flag xhr errors.
-     */
-   
+
   }
 
 

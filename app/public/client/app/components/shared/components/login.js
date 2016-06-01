@@ -6,7 +6,7 @@
 (function () {
 
   function LoginCtrl($scope,
-                     Login,
+                   //  Login,
                      Utils,
                      Messages,
                      AppContext) {
@@ -26,10 +26,10 @@
     ctrl.sessionStatus = AppContext.hasDspaceSession;
 
     /** Login request */
-    ctrl.login = function () {
-      Login.query();
-
-    };
+    // ctrl.login = function () {
+    //   Login.query();
+    //
+    // };
 
     /** Check DSpace session status on init. */
     var init = function () {
