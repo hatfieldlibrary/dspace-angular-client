@@ -53,8 +53,6 @@ module.exports = function (app, config, passport) {
       {failureRedirect: '/ds/communities'}
       ),
       function (req, res) {
-        console.log('cas auth');
-        console.log(req.user);
         // Successful authentication, redirect to login/netid to obtain DSpace token.
         res.redirect('/ds/login/' + req.user);
       });

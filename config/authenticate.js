@@ -136,8 +136,6 @@ module.exports = function (app, config, passport) {
           return callback(new Error('User is undefined'), '');
         }
 
-        console.log(user.username);
-
         return callback(null, user.username);
 
       }
@@ -153,7 +151,6 @@ module.exports = function (app, config, passport) {
       },
       // This is the `verify` callback
       function (username, profile, done) {
-        console.log('validating ' + username);
         User.validate({username: username}, function (err, user) {
           done(err, user);
         });
