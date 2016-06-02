@@ -19,12 +19,10 @@ var utils = require('../core/utils');
     /** @type {string} the item id from the handle */
     var item = req.params.item;
 
-    req.session.url = '/handle/'+site+'/'+item;
+    req.session.url = '/ds/handle/'+site+'/'+item;
 
     /** @type {Object} Express session */
     var session = req.session;
-
-
 
     async.waterfall(
       [
@@ -112,6 +110,9 @@ var utils = require('../core/utils');
             // log in again.
             utils.removeDspaceSession(req.session)
           }
+          
+          res.statusCode = err.statusCode;
+          res.end();
 
         }
 

@@ -19,20 +19,25 @@ var utils = require('../core/utils');
     var list =
       rp(
         {
-          url: host + '/' + dspaceContext +  '/communities',
+          url: host + '/' + dspaceContext  +  '/communities',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
             'rest-dspace-token': dspaceTokenHeader
           },
           json: true
+
         }
       ).then(function (json) {
           res.send(json);
           res.end();
         })
         .catch(function (err) {
+          // log and return error code to client.
           console.log(err);
+          res.statusCode = err.statusCode;
+          res.end();
+
         });
 
     return list;

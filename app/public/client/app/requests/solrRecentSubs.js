@@ -10,7 +10,7 @@
  */
 dspaceServices.factory('SolrRecentSubmissions', ['$resource',
   function ($resource) {
-    return $resource('/solrRecentSubmissions/:type/:id', {}, {
+    return $resource('/ds/solrRecentSubmissions/:type/:id', {}, {
       query: {method: 'GET', isArray: false}
     });
   }

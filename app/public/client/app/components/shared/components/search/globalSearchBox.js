@@ -47,7 +47,7 @@
       QueryManager.setAction(QueryActions.SEARCH);
 
 
-      $location.path('/discover/' + sb.type + '/' + sb.id + '/' + terms);
+      $location.path('/ds/discover/' + sb.type + '/' + sb.id + '/' + terms);
 
     };
 
@@ -55,7 +55,7 @@
 
   dspaceComponents.component('globalSearchBoxComponent', {
 
-    templateUrl: '/shared/templates/search/globalSearchBox.html',
+    templateUrl: '/ds/shared/templates/search/globalSearchBox.html',
     controller: GlobalSearchBoxCtrl,
     controllerAs: 'sb'
 

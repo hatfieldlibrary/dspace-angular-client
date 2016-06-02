@@ -194,7 +194,7 @@ dspaceComponents.component('sideNavComponent', {
   bindings: {
     type: '@'
   },
-  templateUrl: '/shared/templates/sidePanel.html',
+  templateUrl: '/ds/shared/templates/sidePanel.html',
   controller: SideNavCtrl
 
 });

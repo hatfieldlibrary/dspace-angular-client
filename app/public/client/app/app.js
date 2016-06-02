@@ -25,28 +25,28 @@ var dspaceApp = angular.module('dspaceApp', [
    * Configure $routeProvider with all routes to the
    * Express middleware endpoints .
    */
-  dspaceApp.config(['$routeProvider', '$locationProvider', 
-    
+  dspaceApp.config(['$routeProvider', '$locationProvider',
+
     function ($routeProvider, $locationProvider) {
 
       $routeProvider
-        .when('/handle/:site/:item', {
-          templateUrl: '/partials/handle.html',
+        .when('/ds/handle/:site/:item', {
+          templateUrl: '/ds/partials/handle',
         })
-        .when('/communities', {
-          templateUrl: '/partials/communities.html'
+        .when('/ds/communities', {
+          templateUrl: '/ds/partials/communities'
         })
-        .when('/browse/:type/:id/:field/:sort/:terms/:offset/:rows', {
-          templateUrl: '/partials/browse.html'
+        .when('/ds/browse/:type/:id/:field/:sort/:terms/:offset/:rows', {
+          templateUrl: '/ds/partials/browse'
         })
-        .when('/discover/:type/:id/:terms', {
-          templateUrl: '/partials/discover.html'
+        .when('/ds/discover/:type/:id/:terms', {
+          templateUrl: '/ds/partials/discover'
         })
-        .when('/advanced', {
-          templateUrl: '/partials/advanced.html'
+        .when('/ds/advanced', {
+          templateUrl: '/ds/partials/advanced'
         })
-        .when('/discover', {
-          templateUrl: '/partials/discover.html'
+        .when('/ds/discover', {
+          templateUrl: '/ds/ds/partials/discover'
         });
 
       $locationProvider.html5Mode(true).hashPrefix('!');
@@ -61,8 +61,8 @@ var dspaceApp = angular.module('dspaceApp', [
       $mdThemingProvider
         .definePalette('Custom Background', {
           '50': '#ffffff',
-          '100': '#ffffff',
-          '200': '#fcfbf9',
+          '100': '#D2CFC7',
+          '200': '#F7F5F0',
           '300': '#e4dcca',
           '400': '#daceb5',
           '500': '#d0c1a1',
@@ -143,7 +143,7 @@ var dspaceApp = angular.module('dspaceApp', [
           'default': '500', // by default use shade 400 from the pink palette for primary intentions
           'hue-1': '300', // use shade 100 for the <code>md-hue-1</code> class
           'hue-2': '600', // use shade 600 for the <code>md-hue-2</code> class
-          'hue-3': '700' // use shade 900 for the <code>md-hue-3</code> class
+          'hue-3': '700' // use shade 700 for the <code>md-hue-3</code> class
         })
         .accentPalette('Accent Palette', {
           'default': '500',
@@ -160,7 +160,7 @@ var dspaceApp = angular.module('dspaceApp', [
   ).config(function ($mdIconProvider) {
     $mdIconProvider.fontSet('fa', 'fontawesome');
   });
-  
+
 
   /**
    * Bootstrap Angular.

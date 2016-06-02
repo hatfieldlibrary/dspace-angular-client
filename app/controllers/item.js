@@ -8,9 +8,7 @@
 
     var id = req.params.item;
 
-    var session = req.session;
-
-    models.items(id, session)
+    models.items(id, req.session)
       .then(function (result) {
         res.send(result);
         res.end();
@@ -18,7 +16,8 @@
       })
       .catch(function (err) {
         console.log(err);
-        
+        res.statusCode = err.statusCode;
+        res.end();
       });
 
   }

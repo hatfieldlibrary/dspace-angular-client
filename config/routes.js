@@ -25,7 +25,7 @@ module.exports = function (app, config, passport) {
     /**
      * Authentication route for Google OAuth .
      */
-    app.get('/auth/login', passport.authenticate('google', {
+    app.get('/ds/auth/login', passport.authenticate('google', {
       scope: ['https://www.googleapis.com/auth/userinfo.profile',
         'https://www.googleapis.com/auth/userinfo.email']
     }));
@@ -33,13 +33,13 @@ module.exports = function (app, config, passport) {
      * Google OAuth callback route.
      */
     // If authentication failed, redirect back to the communities page for now.
-    app.get('/oauth2callback',
+    app.get('/ds/oauth2callback',
       passport.authenticate('google',
-        {failureRedirect: '/communities'}
+        {failureRedirect: '/ds/communities'}
       ),
       // If authentication succeeded, redirect to login/netid to obtain DSpace token.
       function (req, res) {
-        res.redirect('/login/' + req.user);
+        res.redirect('/ds/login/' + req.user);
       }
     );
   }
@@ -49,61 +49,61 @@ module.exports = function (app, config, passport) {
      * Authentication route for CAS.
      */
     // app.get('/auth/login', app.passportStrategy.authenticate);
-    app.get('/auth/login', passport.authenticate('cas',
-      {failureRedirect: '/communities'}
+    app.get('/ds/auth/login', passport.authenticate('cas',
+      {failureRedirect: '/ds/communities'}
       ),
       function (req, res) {
         // Successful authentication, redirect to login/netid to obtain DSpace token.
-        res.redirect('/login/' + req.user);
+        res.redirect('/ds/login/' + req.user);
       });
   }
   /**
    * Get DSpace token for authenticated user.
    */
   /*jshint unused:false*/
-  app.get('/login/:netid', login.dspace);
+  app.get('/ds/login/:netid', login.dspace);
 
   /**
    * Logout
    */
-  app.get('/logout', login.logout);
+  app.get('/ds/logout', login.logout);
   /**
    * Check for existing DSpace session.
    */
-  app.get('/check-session', login.checkSession);
+  app.get('/ds/check-session', login.checkSession);
 
-  app.get('/adminStatus', login.checkSysAdminStatus);
+  app.get('/ds/adminStatus', login.checkSysAdminStatus);
 
   // REST API for dspace requests
 
-  app.get('/getCommunities', community.getCommunities);
+  app.get('/ds/getCommunities', community.getCommunities);
 
-  app.get('/communitiesForDiscover', community.getCommunitiesForDiscover);
+  app.get('/ds/communitiesForDiscover', community.getCommunitiesForDiscover);
 
-  app.get('/collectionInfo/:item', collection.getCollectionInfo);
+  app.get('/ds/collectionInfo/:item', collection.getCollectionInfo);
 
-  app.get('/collectionsForCommunity/:id', community.getCollections);
+  app.get('/ds/collectionsForCommunity/:id', community.getCollections);
 
-  app.get('/bitstream/:id/:file', bitstream.bitstream);
+  app.get('/ds/bitstream/:id/:file', bitstream.bitstream);
 
-  app.use('/handleRequest/:site/:item', handle.getItem);
+  app.use('/ds/handleRequest/:site/:item', handle.getItem);
 
-  app.use('/getItem/:item', item.getItem);
+  app.use('/ds/getItem/:item', item.getItem);
 
-  app.get('/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', solr.browse);
+  app.get('/ds/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', solr.browse);
 
-  app.post('/solrQuery', solr.query);
+  app.post('/ds/solrQuery', solr.query);
 
-  app.post('/solrJumpToQuery', solr.jumpTo);
+  app.post('/ds/solrJumpToQuery', solr.jumpTo);
 
   // currently unused.
-  app.use('/solrRecentSubmissions/:type/:id', solr.recentSubmissions);
+  app.use('/ds/solrRecentSubmissions/:type/:id', solr.recentSubmissions);
 
 
   /**
    * Route to page partials.
    */
-  app.get('/partials/:name', function (req, res) {
+  app.get('/ds/partials/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -120,7 +120,7 @@ module.exports = function (app, config, passport) {
    * Routes to component templates.
    */
 
-  app.get('/shared/templates/lists/:name', function (req, res) {
+  app.get('/ds/shared/templates/lists/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -131,7 +131,7 @@ module.exports = function (app, config, passport) {
     );
   });
 
-  app.get('/shared/templates/search/:name', function (req, res) {
+  app.get('/ds/shared/templates/search/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -142,7 +142,7 @@ module.exports = function (app, config, passport) {
     );
   });
 
-  app.get('/shared/templates/loaders/:name', function (req, res) {
+  app.get('/ds/shared/templates/loaders/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -153,7 +153,7 @@ module.exports = function (app, config, passport) {
     );
   });
 
-  app.get('/shared/templates/:name', function (req, res) {
+  app.get('/ds/shared/templates/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -164,7 +164,7 @@ module.exports = function (app, config, passport) {
     );
   });
 
-  app.get('/handle/templates/item/:name', function (req, res) {
+  app.get('/ds/handle/templates/item/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -175,7 +175,7 @@ module.exports = function (app, config, passport) {
     );
   });
 
-  app.get('/handle/templates/:name', function (req, res) {
+  app.get('/ds/handle/templates/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -186,7 +186,7 @@ module.exports = function (app, config, passport) {
     );
   });
 
-  app.get('/browse/templates/:name', function (req, res) {
+  app.get('/ds/browse/templates/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -197,7 +197,7 @@ module.exports = function (app, config, passport) {
     );
   });
 
-  app.get('/communities/templates/:name', function (req, res) {
+  app.get('/ds/communities/templates/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -208,7 +208,7 @@ module.exports = function (app, config, passport) {
     );
   });
 
-  app.get('/wrapper/templates/:name', function (req, res) {
+  app.get('/ds/wrapper/templates/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -219,7 +219,7 @@ module.exports = function (app, config, passport) {
     );
   });
 
-  app.get('/discover/templates/:name', function (req, res) {
+  app.get('/ds/discover/templates/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -230,7 +230,7 @@ module.exports = function (app, config, passport) {
     );
   });
 
-  app.get('/advanced/templates/:name', function (req, res) {
+  app.get('/ds/advanced/templates/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -241,7 +241,7 @@ module.exports = function (app, config, passport) {
     );
   });
 
-  app.get('/advanced/templates/lists/:name', function (req, res) {
+  app.get('/ds/advanced/templates/lists/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -253,7 +253,7 @@ module.exports = function (app, config, passport) {
   });
 
 
-  app.get('/advanced/templates/filters/:name', function (req, res) {
+  app.get('/ds/advanced/templates/filters/:name', function (req, res) {
 
     var name = req.params.name;
 
@@ -267,7 +267,7 @@ module.exports = function (app, config, passport) {
   /**
    * Catch-all required by html5 mode.
    */
-  app.get('/*', function (req, res) {
+  app.get('/ds/*', function (req, res) {
 
       res.sendFile(
         app.get('appPath') +

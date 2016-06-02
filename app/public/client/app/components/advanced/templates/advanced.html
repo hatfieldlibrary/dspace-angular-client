@@ -10,8 +10,8 @@
 
     <md-card-content>
       <div layout="column" class="discoveryMessages" layout-padding>
-        <form name="discoveryForm" ng-submit="adv.submit(adv.terms)">
 
+        <form name="discoveryForm" ng-submit="adv.submit(adv.terms)">
           <div layout="column" layout-gt-sm="row" layout="left top">
             <md-input-container class="md-block" flex-gt-sm="70">
               <label>{{adv.textLabel}}</label>
@@ -48,19 +48,22 @@
               </md-select>
             </md-input-container>
           </div>
-
-          <advanced-filter-container
-                                     on-update="adv.onUpdate(results, count, field)" >
-          </advanced-filter-container>
+          <div class="filter-container intro">
+            <advanced-filter-container
+              on-update="adv.onUpdate(results, count, field)">
+            </advanced-filter-container>
+          </div>
 
           <md-input-container flex-gt-sm="20">
             <md-button class="md-raised md-accent" ng-click="adv.submit(adv.terms)">{{adv.submitLabel}}</md-button>
           </md-input-container>
+
         </form>
 
       </div>
 
-      <advanced-list-component ng-if="!adv.hideComponents" items="adv.items" count="{{adv.count}}"></advanced-list-component>
+      <advanced-list-component ng-if="!adv.hideComponents" items="adv.items"
+                               count="{{adv.count}}"></advanced-list-component>
 
     </md-card-content>
   </md-card>

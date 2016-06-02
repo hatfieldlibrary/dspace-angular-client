@@ -6,12 +6,18 @@
 (function () {
 
   function LoginCtrl($scope,
-                     Login,
+                   //  Login,
                      Utils,
                      Messages,
                      AppContext) {
 
     var ctrl = this;
+
+    /**
+     * Used to indicate button type.
+     * @type {boolean}
+     */
+    ctrl.raised = false;
 
     ctrl.loginLabel = Messages.LOGIN_LABEL;
 
@@ -20,10 +26,10 @@
     ctrl.sessionStatus = AppContext.hasDspaceSession;
 
     /** Login request */
-    ctrl.login = function () {
-      Login.query();
-
-    };
+    // ctrl.login = function () {
+    //   Login.query();
+    //
+    // };
 
     /** Check DSpace session status on init. */
     var init = function () {
@@ -48,12 +54,13 @@
 
   dspaceComponents.component('loginComponent', {
 
-    templateUrl: '/shared/templates/login.html',
+    bindings: {
+      raised: '<'
+    },
+    templateUrl: '/ds/shared/templates/login.html',
     controller: LoginCtrl
 
   });
-
-
 
 
 })();

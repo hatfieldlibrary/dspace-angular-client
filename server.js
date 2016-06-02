@@ -1,3 +1,7 @@
+/**
+ * Initializes and starts the Express server.
+ */
+
 'use strict';
 
 var server;
@@ -5,42 +9,40 @@ var server;
 var express = require('express'),
   http = require('http'),
   passport = require('passport'),
-/* jshint unused:false */
-  multiparty = require('multiparty');
-
+  config = require('./config/environment');
 
 global.models = require('./app/models');
-var config = require('./config/environment');
 
 var app = express();
 
-//CORS middleware
-var allowCrossDomain = function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'example.com');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-
-  next();
-};
-
-//app.use(allowCrossDomain);
-
-
-// configure express
+/**
+ * Basic Express setup for logging, parser, static routes...
+ */
 require('./config/express')(app, config);
-// configure passport and session
+/**
+ * Sets up passport authentication and Express sessions.
+ */
 require('./config/authenticate')(app, config, passport);
-// configure routes
+/**
+ * Configures Express routes.
+ */
 require('./config/routes')(app, config, passport);
+/**
+ * Adds error handlers.
+ */
+require('./config/errorHandler')(app);
 
-
+/**
+ * Starts the HTTP server.  If in production environment, sets
+ * uid and gid after start (allows use of lower ports if that's 
+ * needed).
+ */
 function startServer() {
 
   // stop annoying error message when testing.
   if (server !== undefined) {
     server.close();
   }
-
   // start server
   server = http.createServer(app).listen(config.port, function () {
 
@@ -63,47 +65,10 @@ function startServer() {
 
 }
 
-// Catch 404 and forward to error handler. Any request
-// not handled by express or routes configuration will
-// invoke this middleware.
-app.use(function (req, res, next) {
-  var err = new Error('Not Found: ' + req.originalUrl);
-  err.status = 404;
-  err.request = req.originalUrl;
-  next(err);
-});
-
-/// error handlers
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development' || app.get('env') === 'runlocal') {
-  /* jshint unused:false   */
-  app.use(function (err, req, res, next) {
-    console.error(err.stack);
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function (err, req, res, next) {
-  console.error(err.stack);
-  res.status(err.status || 500).end();
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
-
 
 // This is needed when running from IDE
 module.exports = app;
 
-// Doing integration tests. No need to sync.
 startServer();
 
 

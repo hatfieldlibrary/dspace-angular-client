@@ -9,6 +9,7 @@ var utils = require('../core/utils');
    * Model for fetching via DSpace handle.  Uses REST API.
    */
   module.exports = function (site, item, session) {
+    
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();

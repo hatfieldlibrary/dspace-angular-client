@@ -60,7 +60,7 @@
     adv.selectCollection = function(id) {
       DiscoveryFormUtils.selectCollection(id);
     };
-    
+
 
     /**
      * Handles selection of community.
@@ -261,7 +261,7 @@
 
   dspaceComponents.component('advancedSearchComponent', {
 
-    templateUrl: '/advanced/templates/advanced.html',
+    templateUrl: '/ds/advanced/templates/advanced.html',
     controller: AdvancedCtrl,
     controllerAs: 'adv'
 

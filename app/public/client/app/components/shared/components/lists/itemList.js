@@ -141,7 +141,7 @@
       context: '@'
     },
 
-    templateUrl: '/shared/templates/lists/itemList.html',
+    templateUrl: '/ds/shared/templates/lists/itemList.html',
     controller: ItemListCtrl
 
   });

@@ -15,6 +15,7 @@ var session = require('express-session');
 
 module.exports = function (app, config, passport) {
 
+
   // Set up authentication and session.
   app.use(passport.initialize());
   app.use(passport.session());
@@ -88,48 +89,40 @@ module.exports = function (app, config, passport) {
 
       passport.authenticate('google', function (err, user) {
         if (user) {
-          res.redirect('/login/' + req.user);
+          res.redirect('/ds/login/' + req.user);
         }
       });
-      
+
     };
 
     // PRODUCTION
     // Use CAS and Redis as session store.
   } else if (app.get('env') === 'production') {
 
-    app.use(session({
-        secret: 'rice paddy',
-        saveUninitialized: true,
-        resave: true
-      })
-    );
-
-
-    /**
-     * Redis client (use for production).
-     * @type {exports|module.exports}
-     */
-    var redis = require('redis');
     /**
      * Redis session store
      */
     var RedisStore = require('connect-redis')(session);
-    
-    var client = redis.createClient(
-      config.redisPort,
-      '127.0.0.1',
-      {}
-    );
-    
+
     app.use(session(
       {
-        secret: 'insideoutorup',
-        store: new RedisStore({host: '127.0.0.1', port: config.redisPort, client: client}),
+        store: new RedisStore({host: '127.0.0.1', port: config.redisPort}),
+        secret: 'ricsorieterazp',
+        proxy: true,
+        name: 'dsclient.sid',
+        cookie: { path: '/ds' },
         saveUninitialized: false, // don't create session until something stored,
         resave: false // don't save session if unmodified
       }
     ));
+    
+    app.use(function (req, res, next) {
+      if (!req.session) {
+        return next(new Error('Missing session for CAS login.')); // handle error 
+      }
+      next(); // otherwise continue 
+    });
+    
 
     /**
      * Validates CAS user.  Not much to do at this point. Just
@@ -139,9 +132,10 @@ module.exports = function (app, config, passport) {
 
       validate: function (user, callback) {
 
-        if (user === 'undefined') {
+        if (typeof user === 'undefined') {
           return callback(new Error('User is undefined'), '');
         }
+
         return callback(null, user.username);
 
       }
@@ -157,7 +151,6 @@ module.exports = function (app, config, passport) {
       },
       // This is the `verify` callback
       function (username, profile, done) {
-        console.log('cas strategy');
         User.validate({username: username}, function (err, user) {
           done(err, user);
         });
@@ -200,7 +193,7 @@ module.exports = function (app, config, passport) {
           }
 
           req.session.messages = '';
-          return res.redirect('/login/' + user.username);
+          return res.redirect('/ds/login/' + user.username);
 
         });
       })(req, res, next);
