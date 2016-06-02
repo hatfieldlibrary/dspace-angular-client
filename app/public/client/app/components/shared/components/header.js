@@ -6,7 +6,7 @@
 
 (function () {
 
-  function HeaderCtrl(AppContext, AppConfig, $window, $mdMedia) {
+  function HeaderCtrl(AppContext, $window, $mdMedia) {
 
     var ctrl = this;
 
@@ -14,7 +14,7 @@
 
     ctrl.isSmallScreen = $mdMedia('sm') || $mdMedia('xs');
     
-    ctrl.homeLogo = AppConfig.HOME_LOGO;
+    ctrl.homeLogo = AppContext.getHomeLogo();
 
     ctrl.openMenu = function () {
       open = !open;
@@ -22,7 +22,7 @@
     };
 
     ctrl.goToHome = function() {
-      $window.location.href = AppConfig.HOME_LINK;
+      $window.location.href = AppContext.getHomeLink();
     };
 
   }

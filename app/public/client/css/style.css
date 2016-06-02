@@ -179,6 +179,10 @@ collection-item-component md-list-item > .md-button {
   padding: 0 0;
 }
 
+collection-item-component .hide-content {
+  display: none;
+}
+
 .discover-item .md-button {
   line-height: 21px;
 }
