@@ -11,7 +11,7 @@ The NodeJs middleware used in this project includes [Express](http://expressjs.c
 
 The AngularJs frontend uses the [Angular Material](https://material.angularjs.org/latest/) design framework, based on CSS3 Flexbox layout mode.
 
-The browser client application is written using version Angular 1.5 and components. The goal has been to make the application easy to port to Angular 2.0.
+The browser application is written using AngularJs 1.5 and components. The goal has been to make the application port easily to Angular 2.0.
 
 This prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Solr searches are used throughout the application to provide search and browse functionality that is similar to that provided by the current DSpace XMLUI and JSPUI. 
 
