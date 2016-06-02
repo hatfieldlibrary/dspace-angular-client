@@ -28,8 +28,6 @@ var utils = require('../core/utils');
         }
       );
 
-    console.log(sessionStatus);
-
     return sessionStatus;
 
   };

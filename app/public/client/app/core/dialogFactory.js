@@ -56,9 +56,9 @@
         ctrl.abstractLabel = Messages.ITEM_ABSTRACT_LABEL;
 
         ctrl.metadataLabel = Messages.ITEM_METADATA_LABEL;
-        
+
         ctrl.dspaceHost = AppContext.getDspaceHost();
-        
+
         ctrl.dspaceRoot = AppContext.getDspaceRoot();
 
         /**
@@ -84,7 +84,7 @@
         ctrl.data.$promise.then(function (data) {
           ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
           ctrl.canWrite = AppContext.getWritePermission();
-          ctrl.itemId = QueryManager.getAssetId();
+          ctrl.itemId = data.id;
 
         });
 

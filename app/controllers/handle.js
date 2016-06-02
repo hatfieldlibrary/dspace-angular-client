@@ -24,8 +24,6 @@ var utils = require('../core/utils');
     /** @type {Object} Express session */
     var session = req.session;
 
-     console.log(session);
-
     async.waterfall(
       [
         /**

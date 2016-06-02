@@ -17,8 +17,7 @@
     ctrl.homeLinkLabel = Messages.COMMUNITY_HOME_LINK_LABEL;
 
     ctrl.loginMessage = Messages.LOGIN_TO_SEE_MORE_LABEL;
-
-    console.log(ctrl.data.logo.retrieveLink);
+    
 
     /**
      * Shows login message if the count of returned collections

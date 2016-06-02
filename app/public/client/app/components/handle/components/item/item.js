@@ -27,7 +27,7 @@
     ctrl.metadataLabel = Messages.ITEM_METADATA_LABEL;
 
     ctrl.editItemLabel = Messages.ITEM_EDIT_LABEL;
-    
+
     ctrl.fileAccessLabel = Messages.FILE_ACCESS_RESTRICTED_LABEL;
 
     ctrl.dspaceHost = AppContext.getDspaceHost();
@@ -36,18 +36,22 @@
 
 
     /**
-     * Get the number of bitstreams for this item.
+     * Get information about the item.
      */
-    ctrl.data.$promise.then(function () {
+    ctrl.data.$promise.then(function (data) {
+
+      console.log(QueryManager.getAssetId());
+      console.log(data);
       ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
       ctrl.canWrite = AppContext.getWritePermission();
-      ctrl.itemId = QueryManager.getAssetId();
+      ctrl.itemId = data.id;
     });
-
+    
 
     ctrl.showMetadata = false;
 
     var parent = GetCollectionInfo.query({item: ctrl.data.parentCollection.id});
+
     parent.$promise.then(function (data) {
       ctrl.parentName = data.parentCommunity.name;
       ctrl.parentHandle = data.parentCommunity.handle;
