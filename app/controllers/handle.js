@@ -19,7 +19,7 @@ var utils = require('../core/utils');
     /** @type {string} the item id from the handle */
     var item = req.params.item;
 
-    req.session.url = '/ds/handle/'+site+'/'+item;
+    req.session.url = '/ds/handle/' + site + '/' + item;
 
     /** @type {Object} Express session */
     var session = req.session;
@@ -99,7 +99,7 @@ var utils = require('../core/utils');
         if (err) {
 
           console.log('WARNING: DSpace handle request returned error: ' + err.message);
-          console.log('This will occur when an unauthenticated user attempts to access a restricted item.');
+          console.log('A 500 error will occur when an unauthenticated user attempts to access a restricted item.');
 
           if (err.statusCode === 500 && err.error === 'undefined') {
             // The error condition probably indicates that the DSpace host
@@ -108,11 +108,20 @@ var utils = require('../core/utils');
             // dspace token one exists.  The client should have the ability
             // to detect a change in session status and direct the user to
             // log in again.
-            utils.removeDspaceSession(req.session)
+            utils.removeDspaceSession(req.session);
+
+            // Send 401 error to client.
+            res.status(401).send({
+              error: true,
+              message: err.message
+            });
           }
-          
-          res.statusCode = err.statusCode;
-          res.end();
+
+          res.status(err.statusCode).send({
+            error: true,
+            message: err.message
+          });
+
 
         }
 
