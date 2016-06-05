@@ -1,10 +1,10 @@
 <div class="layout-padding" flex>
 
   <div layout="column" class="page-title">
-    <div class="md-subhead parent-title"><a ng-href="/handle/{{$ctrl.parentHandle}}">{{$ctrl.parentName}}</a>
+    <div class="md-subhead parent-title"><a ng-href="/ds/handle/{{$ctrl.parentHandle}}">{{$ctrl.parentName}}</a>
     </div>
     <div>
-      <div class="md-display-1 item-title"><a ng-href="/handle/{{$ctrl.data.parentCollection.handle}}">{{$ctrl.data.parentCollection.name}}</a>
+      <div class="md-display-1 item-title"><a ng-href="/ds/handle/{{$ctrl.data.parentCollection.handle}}">{{$ctrl.data.parentCollection.name}}</a>
       </div>
     </div>
   </div>
@@ -34,9 +34,13 @@
           <!-- Files, gt-md -->
           <div hide show-gt-md flex="20" class="item-left-col-position">
 
-            <div class="md-caption" style="padding-left: 12px;">{{$ctrl.filesLabel}} ({{$ctrl.fileCount}})</div>
-
-            <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
+            <div ng-if="$ctrl.data.bitstreams.length > 0">
+              <div class="md-caption" style="padding-left: 12px;">{{$ctrl.filesLabel}} ({{$ctrl.fileCount}})</div>
+              <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
+            </div>
+            <div ng-if="$ctrl.data.bitstreams.length == 0">
+              <i class="material-icons">lock_outline</i> {{$ctrl.fileAccessLabel}}
+            </div>
 
           </div>
 

@@ -24,7 +24,7 @@
     bindings: {
       streams: '<'
     },
-    templateUrl: '/shared/templates/lists/filesList.html',
+    templateUrl: '/ds/shared/templates/lists/filesList.html',
     controller: FilesController
 
   });

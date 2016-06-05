@@ -19,7 +19,7 @@
       handle: '@',
       id: '@'
     },
-    templateUrl: '/app/shared/templates/lists/browseDetail.html',
+    templateUrl: '/ds/shared/templates/lists/browseDetail.html',
     controller: BrowseDetailCtrl
 
   });

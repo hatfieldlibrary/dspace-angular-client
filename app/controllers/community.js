@@ -14,11 +14,9 @@
    */
   exports.getCommunities = function (req, res) {
 
-    req.session.url = '/communities';
-    var session = req.session;
+    req.session.url = '/ds/communities';
 
-    models.listCommunities(res, session);
-
+    models.listCommunities(res, req.session);
 
   };
 
@@ -30,9 +28,7 @@
      */
   exports.getCommunitiesForDiscover = function (req, res) {
 
-    var session = req.session;
-
-    models.listCommunities(res, session);
+    models.listCommunities(res, req.session);
 
   };
 
@@ -45,9 +41,7 @@
 
     var id = req.params.id;
 
-    var session = req.session;
-
-    models.getCollectionsForCommunity(id, session)
+    models.getCollectionsForCommunity(id, req.session)
 
       .then(function (result) {
         res.send(result);
@@ -56,7 +50,8 @@
       })
       .catch(function (err) {
         console.log(err);
-
+        res.statusCode = err.statusCode;
+        res.end();
       });
 
   };

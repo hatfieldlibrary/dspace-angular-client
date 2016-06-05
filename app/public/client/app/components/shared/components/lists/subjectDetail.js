@@ -7,6 +7,7 @@
 (function () {
 
   function SubjectDetailController($scope,
+                                   $location,
                                    $mdMedia,
                                    Utils,
                                    QueryManager,
@@ -69,26 +70,32 @@
      */
     ctrl.getItems = function () {
 
-      // Before executing browse query, add the current
-      // query to the stack.
-      QueryStack.replaceWith(QueryManager.getQuery());
+      if (ctrl.count <= 10) {
+        // Before executing browse query, add the current
+        // query to the stack.
+        QueryStack.replaceWith(QueryManager.getQuery());
 
-      var result = InlineBrowseRequest.query(
-        {
-          type: ctrl.type,
-          id: ctrl.id,
-          qType: QueryTypes.SUBJECT_SEARCH,
-          field: ctrl.field,
-          sort: ctrl.sort,
-          terms: encodeURI(ctrl.subject),
-          offset: 0,
-          rows: 10
-        }
-      );
-      result.$promise.then(function (data) {
-        ctrl.ready = true;
-        ctrl.items = data;
-      });
+        var result = InlineBrowseRequest.query(
+          {
+            type: ctrl.type,
+            id: ctrl.id,
+            qType: QueryTypes.SUBJECT_SEARCH,
+            field: ctrl.field,
+            sort: ctrl.sort,
+            terms: encodeURI(ctrl.subject),
+            offset: 0,
+            rows: 10
+          }
+        );
+        result.$promise.then(function (data) {
+          ctrl.ready = true;
+          ctrl.items = data;
+        });
+
+      } else {
+        $location.path('/ds/browse/' + ctrl.type + '/' + ctrl.id + '/' + ctrl.field + '/' + ctrl.sort + '/' + ctrl.subject + '/0/' + AppContext.getSetSize());
+
+      }
 
     };
 
@@ -129,7 +136,7 @@
     },
 
     controller: SubjectDetailController,
-    templateUrl: '/shared/templates/lists/subjectDetail.html'
+    templateUrl: '/ds/shared/templates/lists/subjectDetail.html'
   });
 
 })();

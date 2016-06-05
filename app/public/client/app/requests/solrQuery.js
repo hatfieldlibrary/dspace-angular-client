@@ -7,20 +7,20 @@
  */
 dspaceServices.factory('SolrQuery', ['$resource',
   function ($resource) {
-    return $resource('/solrQuery');
+    return $resource('/ds/solrQuery');
   }
 ]);
 
 dspaceServices.factory('SolrBrowseQuery', ['$resource',
   function ($resource) {
-    return $resource('/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', {}, {
+    return $resource('/ds/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', {}, {
       query: {method: 'GET', isArray: false}
     });
   }]);
 
 dspaceServices.factory('SolrJumpToQuery', ['$resource',
   function ($resource) {
-    return $resource('/solrJumpToQuery');
+    return $resource('/ds/solrJumpToQuery');
   }]);
 
 

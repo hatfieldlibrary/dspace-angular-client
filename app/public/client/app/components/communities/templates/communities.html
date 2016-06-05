@@ -13,12 +13,12 @@
 
   <md-card class="main-card md-hue-1" style="max-width:100%;" ng-hide="!$ctrl.ready">
 
-      <md-card-content  style="max-width:100%;">
-        <div class="md-subhead" ng-bind-html="$ctrl.intro"></div>
-          <md-content style="max-width:100%;">
+      <md-card-content  class="md-hue-1" style="max-width:100%;">
+        <div class="md-subhead" style="margin-bottom: 30px;" ng-bind-html="$ctrl.intro"></div>
+
             <community-item-component ng-repeat="comm in $ctrl.communities" handle="{{comm.handle}}" name="{{comm.name}}" last="$last">
             </community-item-component>
-          </md-content>
+
 
       </md-card-content>
 

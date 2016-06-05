@@ -60,7 +60,7 @@
           if (data.type !== undefined) {
 
             ctrl.ready = true;
-            
+
             /** Add query result to view model. */
             ctrl.data = data;
 
@@ -139,17 +139,20 @@
              */
             if (AppContext.useRedirect()) {
               /**
-               * Redirect only if no DSpace session exists.
-               * Avoids infinite loop.
+               * Attempt to login. Redirect only if no DSpace session exists.
+               * This avoids infinite loop.
                */
               if (!AppContext.hasDspaceSession) {
-                $window.location = '/auth/login';
+                $window.location = '/ds/auth/login';
+                
               } else {
                 /**
-                 * User cannot access thie resource;
+                 * If the user has a Dspace session, we can assume that the user is 
+                 * not authorized to access the resource;
                  * @type {boolean}
                  */
                 ctrl.accessNotAllowed = true;
+                
                 ctrl.ready = true;
               }
             }

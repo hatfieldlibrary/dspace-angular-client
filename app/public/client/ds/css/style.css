@@ -141,7 +141,7 @@ md-dialog.item-details {
 }
 
 .top-highlight {
-  background-image: url('/images/masthead-bottom-img.jpg'), url('/images/background-grain.jpg');
+  background-image: url('/ds/images/masthead-bottom-img.jpg'), url('/ds/images/background-grain.jpg');
   background-repeat: no-repeat, repeat-x;
   background-position: top center, top center;
 
@@ -173,6 +173,14 @@ discover-filter-component .sort-options {
 
 collection-component md-content {
   background: transparent;
+}
+
+collection-item-component md-list-item > .md-button {
+  padding: 0 0;
+}
+
+collection-item-component .hide-content {
+  display: none;
 }
 
 .discover-item .md-button {
@@ -215,23 +223,23 @@ collection-component md-content {
   margin: 0 0;
 }
 
-.sort-options {
-  padding: 0px 16px;
-  background: #ECEAE4;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin: 15px 0;
+.intro {
+  margin-bottom: 30px;
 }
 
-.advanced-filters {
-  margin-top: 6px;
-  margin-bottom: 12px;
+.sort-options {
+  padding: 0px 16px;
+  /*background: #FFFFFF;*/
+  /*border: 1px solid #ddd;*/
+  /*border-radius: 4px;*/
+  margin: 0;
 }
 
 .filter-container {
-  background: #eee;
+  background: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
+  padding: 6px;
 }
 
 .advanced-search .sort-options {
@@ -326,7 +334,7 @@ md-input-container.halfer {
 
 md-list-item.selected-index {
   padding: 4px 0;
-  background: #DAC8A2;
+  background: #e3d8bd;
   margin: 8px 3px 10px;
   width: 99%;
 }
@@ -534,7 +542,7 @@ discover-detail-component {
 }
 
 .footer > .footer-background {
-  background-image: url(/images/footer-watermark.png);
+  background-image: url(/ds/images/footer-watermark.png);
   background-position: 100% 0;
   background-repeat: no-repeat;
   padding: 2.1875em;

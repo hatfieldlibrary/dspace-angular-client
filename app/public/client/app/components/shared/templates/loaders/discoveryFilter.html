@@ -3,7 +3,7 @@
 
   <md-input-container flex="{{$ctrl.fieldSelectorWidth}}">
     <label>{{$ctrl.fieldLabel}}</label>
-    <md-select ng-model="$ctrl.selectedField" placeholder="{{$ctrl.fieldLabel}}">
+    <md-select ng-disabled="$ctrl.disabled" ng-model="$ctrl.selectedField" placeholder="{{$ctrl.fieldLabel}}">
       <md-option ng-repeat="field in $ctrl.fields" value="{{field.value}}">{{field.label}}</md-option>
     </md-select>
   </md-input-container>
@@ -11,15 +11,16 @@
 
   <md-input-container hide-xs flex="33">
     <label>{{$ctrl.modeLabel}}</label>
-    <md-select ng-model="$ctrl.selectedMode" placeholder="{{$ctrl.modeLabel}}">
+    <md-select ng-disabled="$ctrl.disabled" ng-model="$ctrl.selectedMode" placeholder="{{$ctrl.modeLabel}}">
       <md-option ng-repeat="mode in $ctrl.modes"  value="{{mode.value}}">{{mode.label}}</md-option>
     </md-select>
   </md-input-container>
 
-  <md-input-container flex="{{$ctrl.filterWidth}}" flex-xs="34">
+  <md-input-container  flex="{{$ctrl.filterWidth}}" flex-xs="34">
     <label>{{$ctrl.textLabel}}</label>
-    <input type="text" ng-model="$ctrl.filterTerms" >
+    <input type="text" ng-disabled="$ctrl.disabled" ng-model="$ctrl.filterTerms" >
   </md-input-container>
+
   <md-input-container ng-if="$ctrl.status=='add'">
   <md-button class="md-accent" ng-click="$ctrl.addFilter();">{{$ctrl.addButtonLabel}}</md-button>
    </md-input-container>

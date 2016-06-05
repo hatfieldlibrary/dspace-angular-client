@@ -50,6 +50,8 @@
         });
 
       ctrl.status = 'remove';
+      
+      ctrl.disabled = true;
 
     };
 
@@ -107,7 +109,7 @@
       onRemoveFilter: '&',
       position: '@'
     },
-    templateUrl: '/shared/templates/loaders/discoveryFilter.html',
+    templateUrl: '/ds/shared/templates/loaders/discoveryFilter.html',
     controller: DiscoverFilterCtrl
 
   });

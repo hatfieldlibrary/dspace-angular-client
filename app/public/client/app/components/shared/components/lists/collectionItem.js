@@ -10,7 +10,7 @@
     var ctrl = this;
     
     ctrl.openCollectionHandle = function(handle) {
-      $location.path('/handle/' + handle);
+      $location.path('/ds/handle/' + handle);
     };
 
   }
@@ -24,7 +24,7 @@
       last: '=',
       id: '@'
     },
-    templateUrl: '/shared/templates/lists/collectionItem.html',
+    templateUrl: '/ds/shared/templates/lists/collectionItem.html',
     controller: CollectionItemCtrl
 
   });

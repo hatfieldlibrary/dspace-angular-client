@@ -87,7 +87,7 @@
     bindings: {
       onUpdate: '&'
     },
-    templateUrl: '/browse/templates/browse.html',
+    templateUrl: '/ds/browse/templates/browse.html',
     controller: BrowseCtrl
 
   });

@@ -5,12 +5,11 @@
 'use strict';
 
 /**
- * This service provides methods for the advanced search and discovery components.
- * These components dynamically retrieve community and collection information as
- * needed by the search forms.
+ * This service provides methods for the advanced search and discovery component controllers.
+ * We bind the controller to a private variable and update values on the controller itself
+ * rather than pass return values. 
  */
-dspaceServices.service('DiscoveryFormUtils', [
-
+dspaceServices.service('DiscoveryFormExtensions', [
   'GetCollectionsForCommunity',
   'GetCollectionInfo',
   'GetCommunitiesForDiscover',
@@ -28,6 +27,8 @@ dspaceServices.service('DiscoveryFormUtils', [
 
     var _ctrl;
 
+    var that = this;
+
     /**
      * Sets the controller that will be updated by service methods.
      * @param ctrl
@@ -37,17 +38,17 @@ dspaceServices.service('DiscoveryFormUtils', [
     };
 
     /**
-     * Gets list of collections for a community.  Adds collection
-     * list to the component scope.
+     * Gets list of collections for a community.
      * @param id  the community id
      */
-    this.getCollectionsForCommunity = function (id) {
-
-      if (id !== 0 && id !== '0' && id !== undefined) {
-        var collections = GetCollectionsForCommunity.query({id: id});
+    this.getCollectionsForCommunity = function (communityId, collectionId) {
+      if (communityId !== 0 && communityId !== '0' && communityId !== undefined) {
+        var collections = GetCollectionsForCommunity.query({id: communityId});
         collections.$promise.then(function (data) {
+
           data.unshift({id: 0, name: 'All Collections'});
           _ctrl.collections = data;
+          that.getSelectedCollection(data, collectionId);
 
         });
       }
@@ -55,44 +56,62 @@ dspaceServices.service('DiscoveryFormUtils', [
     };
 
     /**
-     * Retrieves parent community information for collection
-     * and updates component scope.
+     * Returns the selected collection by id lookup.
+     * @param collections
+     * @param id
+     * @returns {*}
+     */
+    this.getSelectedCollection = function (collections, id) {
+      if (typeof id === 'undefined') {
+        id = 0;
+      }
+      for (var i = 0, len = collections.length; i < len; i++) {
+        /* jshint eqeqeq: false */
+        if (collections[i].id == id) {
+          _ctrl.selectedCollection = collections[i];
+        }
+      }
+      return -1;
+    };
+
+    /**
+     * Retrieves parent community id and collections.
      * @param id  the community id
      */
-    this.getCommunityParentInfo = function (id) {
+    this.getParentCommunityInfo = function (id) {
       if (id !== 0) {
         var info = GetCollectionInfo.query({item: id});
         info.$promise.then(function (data) {
           _ctrl.communityId = data.parentCommunity.id;
-          this.getCollectionsForCommunity(data.parentCommunity.id);
+          that.getCollectionsForCommunity(data.parentCommunity.id, id);
+
+
         });
       }
     };
 
+
     /**
      * Retrieves list of communities if not already available
-     * in the application context. Adds community list to the
-     * component scope.
+     * in the application context.
      */
     this.getCommunities = function () {
 
       if (AppContext.getDiscoverCommunities().length === 0) {
-
         var items = GetCommunitiesForDiscover.query();
         items.$promise.then(function (data) {
           data.unshift({id: '0', name: 'All Departments'});
           AppContext.setDiscoverCommunities(data);
-          _ctrl.searchItems = data;
-
+          _ctrl.communityItems = data;
         });
       }
       else {
-        _ctrl.searchItems = AppContext.getDiscoverCommunities();
+        _ctrl.communityItems = AppContext.getDiscoverCommunities();
       }
     };
 
     /**
-     * Handles selection of a collection.
+     * Updates QueryManager on selection of a collection.
      */
     this.selectCollection = function (id) {
 
@@ -102,31 +121,28 @@ dspaceServices.service('DiscoveryFormUtils', [
        * is COLLECTION.
        */
       if (id === 0) {
-
-
         QueryManager.setAssetType(AssetTypes.COMMUNITY);
         QueryManager.setAssetId(_ctrl.communityId);
 
       } else {
-
         QueryManager.setAssetType(AssetTypes.COLLECTION);
         /**
          * Set the asset id to the id of the collection.
          */
-        QueryManager.setAssetId(_ctrl.collectionId);
+        QueryManager.setAssetId(id);
       }
 
     };
 
+    /**
+     * Updates QueryManager on selection of a community.
+     */
     this.selectCommunity = function () {
 
       QueryManager.setAssetId(_ctrl.communityId);
       QueryManager.setAssetType(AssetTypes.COMMUNITY);
-      /**
-       * Get new collections list for this community.
-       */
-      this.getCollectionsForCommunity(_ctrl.communityId);
-
+      _ctrl.collections = [];
+      
     };
 
 

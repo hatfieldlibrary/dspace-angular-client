@@ -9,7 +9,7 @@
 
   appConstants.constant('Messages', {
 
-    COMMUNITIES_LIST_INTRO: 'Academic Commons departmental collections are listed below. Each department contains one or more collections.  Note that many collections, including senior thesis collections, are only visible after <a href="auth/login" target="_top">logging in</a> with your Willamette University credentials.',
+    COMMUNITIES_LIST_INTRO: 'Willamette University departmental collections are listed below. Each department has one or more collections.  Many collections, including senior thesis collections, will be visible only after you <a href="/ds/auth/login" target="_top">log in</a> with your Willamette University credentials.',
 
     VIEW_ALL_COMMUNITIES: 'View Departments',
 
@@ -43,13 +43,13 @@
 
     ADVANCED_SEARCH_SUBMIT_LABEL: 'Submit',
 
-    ADVANCED_SEARCH_FILTER_LABEL: 'Optional Filters',
+    ADVANCED_SEARCH_FILTER_LABEL: 'Add Optional Filters',
 
     COMMUNITIES_LIST_HEADING: 'University Departments',
 
     DISCOVERY_PAGE_HEADER: 'Search Departmental Collections',
 
-    FILTER_LABEL: 'Add Filters:',
+    FILTER_LABEL: 'Filter Results By:',
 
     FILTER_FIELD_LABEL: 'Field',
 
@@ -104,7 +104,9 @@
 
     ITEM_EDIT_LABEL: 'Edit Item',
 
-    LOGIN_TO_SEE_MORE_LABEL: 'Login to see more collections.'
+    LOGIN_TO_SEE_MORE_LABEL: 'Login to see more collections.',
+
+    FILE_ACCESS_RESTRICTED_LABEL: 'File access requires login.'
 
   });
 

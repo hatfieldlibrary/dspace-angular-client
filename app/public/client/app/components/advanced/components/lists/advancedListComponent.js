@@ -118,7 +118,7 @@
       count: '@'
     },
 
-    templateUrl: '/advanced/templates/lists/advancedList.html',
+    templateUrl: '/ds/advanced/templates/lists/advancedList.html',
     controller: ItemListCtrl
 
   });

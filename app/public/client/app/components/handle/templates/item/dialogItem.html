@@ -45,10 +45,13 @@
 
           <!-- Files, gt-md -->
           <div hide show-gt-md flex="20" class="item-left-col-dimens">
-            <div class="md-caption" style="padding-left: 12px;">{{$ctrl.filesLabel}} ({{$ctrl.fileCount}})</div>
-
-            <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
-
+            <div ng-if="$ctrl.data.bitstreams.length > 0">
+              <div class="md-caption" style="padding-left: 12px;">{{$ctrl.filesLabel}} ({{$ctrl.fileCount}})</div>
+              <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
+            </div>
+            <div ng-if="$ctrl.data.bitstreams.length == 0">
+              <i class="material-icons">lock_outline</i> {{$ctrl.fileAccessLabel}}
+            </div>
           </div>
 
 

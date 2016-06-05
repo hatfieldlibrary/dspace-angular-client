@@ -111,7 +111,7 @@
     bindings: {
       onUpdate: '&'
     },
-    templateUrl: '/shared/templates/loaders/discoverFilterContainer.html',
+    templateUrl: '/ds/shared/templates/loaders/discoverFilterContainer.html',
     controller: FilterContainerController
   });
 

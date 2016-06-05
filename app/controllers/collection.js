@@ -15,9 +15,7 @@
 
     var id = req.params.item;
 
-    var session = req.session;
-
-    models.collectionInfo(id, session)
+    models.collectionInfo(id, req.session)
       .then(function (result) {
         res.send(result);
         res.end();
@@ -25,7 +23,8 @@
       })
       .catch(function (err) {
         console.log(err);
-
+        res.statusCode = err.statusCode;
+        res.end();
       });
   };
 

@@ -36,6 +36,7 @@ module.exports = function (grunt) {
     client: 'app/public/client/app',
     public: 'app/public/client',
     dist: 'dist',
+    proxyPath: 'ds',
 
     express: {
       options: {
@@ -68,7 +69,7 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        url: 'http://localhost:<%= express.options.port %>/communities'
+        url: 'http://localhost:<%= express.options.port %>/ds/communities'
       }
     },
     watch: {
@@ -211,6 +212,7 @@ module.exports = function (grunt) {
             PORT: process.env.PORT || 9000
           },
           callback: function (nodemon) {
+            /* jshint unused: false */
             nodemon.on('log', function (event) {
             });
 
@@ -322,8 +324,8 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             // 'bower_components/**/*',
-            'images/{,*/}*.{webp}',
-            'fonts/**/*',
+            // 'images/{,*/}*.{webp}',
+            // 'fonts/**/*',
             'index.html'
           ]
         }, {
@@ -339,6 +341,14 @@ module.exports = function (grunt) {
             '<%= app %>/**/*',
             '!<%= app %>/config/local.env.sample.js'
           ]
+        }, { expand: true,
+          cwd: '<%= public %>',
+          dest: '<%= dist %>/<%= public %>/',
+          src: [
+            'images/**/*',
+            'fonts/**/*'
+          ]
+
         }]
       }
 

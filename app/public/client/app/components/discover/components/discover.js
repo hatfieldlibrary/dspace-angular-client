@@ -1,4 +1,7 @@
 /**
+ * Component for discovery searches.  This component binds to the
+ * DiscoveryFormExtensions service to get necessary functions that are
+ * shared with the advanced search component.
  * Created by mspalti on 3/4/16.
  */
 
@@ -18,101 +21,96 @@
                         AppContext,
                         Utils,
                         Messages,
-                        DiscoveryFormUtils) {
+                        DiscoveryFormExtensions) {
 
     var disc = this;
 
     /**
-     * Set this to be the controller updated by the discovery util methods.
+     * Pass the controller to discovery extensions.
      */
-    DiscoveryFormUtils.setController(this);
+    DiscoveryFormExtensions.setController(this);
 
     /**
      * Array containing list of communities.
      * @type {Array}
      */
-    disc.searchItems = [];
+    disc.communityItems = [];
 
     /**
-     * Array containing list of collection within a community.
+     * Array containing list of collections within a community. This is updated
+     * by the DiscoveryFormExtensions service.
      * @type {Array}
      */
     disc.collections = [];
 
+    /**
+     * Label for page header text.
+     * @type {string}
+     */
     disc.pageHeader = Messages.DISCOVERY_PAGE_HEADER;
 
+    /**
+     * Label for the community select input.
+     * @type {string}
+     */
     disc.communityLabel = Messages.ADVANCED_SEARCH_COMMUNITY_LABEL;
 
+    /**
+     * Label for the collection select input.
+     * @type {string}
+     */
     disc.collectionLabel = Messages.ADVANCED_SEARCH_COLLECTION_LABEL;
 
+    /**
+     * Label for the text input field.
+     * @type {string}
+     */
     disc.textLabel = Messages.ADVANCED_SEARCH_TEXT_LABEL;
 
+    /**
+     * Label for the submit button.
+     * @type {string}
+     */
     disc.submitLabel = Messages.ADVANCED_SEARCH_SUBMIT_LABEL;
-
 
     /**
      * Handles collection selection.
      * @param id
      */
-    disc.selectCollection = function(id) {
-      DiscoveryFormUtils.selectCollection(id);
+    disc.selectCollection = function (id) {
+      disc.collectionId = id;
+      DiscoveryFormExtensions.selectCollection(id);
     };
 
-
     /**
-     * Handles selection of community.
+     * Handles community selection.
      */
+    disc.selectCommunity = function () {
+      DiscoveryFormExtensions.selectCommunity();
+      DiscoveryFormExtensions.getCollectionsForCommunity(disc.communityId);
+      disc.collectionId = 0;
 
-    disc.selectCommunity = function() {
-      DiscoveryFormUtils.selectCommunity();
     };
 
     /**
      * Handles search form submission.
      * @param terms  the query terms
      */
-    disc.submit = function (terms) {
-
-      var type = 'all';
-      var id = 0;
-
-      disc.showHints = false;
-
-      /**
-       * Community search.
-       */
-      if (QueryManager.getAssetType() === AssetTypes.COLLECTION) {
-
-        type = AssetTypes.COLLECTION;
-        QueryManager.setAssetType(type);
-        QueryManager.setAssetId(disc.collectionId);
-        id = disc.collectionId;
-
-      }
-      /**
-       * Collection search.
-       */
-      else {
-
-        type = AssetTypes.COMMUNITY;
-        QueryManager.setAssetType(type);
-        QueryManager.setAssetId(disc.communityId);
-        id = disc.communityId;
-
-      }
-
+    disc.submit = function () {
       /**
        * If search terms are provided, execute the search.
        */
-      if (terms.length > 0) {
-        $location.path('/discover/' + type + '/' + id + '/' + terms);
+      if (disc.terms.length > 0) {
+        $location.path('/ds/discover/' + QueryManager.getAssetType() + '/' + QueryManager.getAssetId() + '/' + disc.terms);
       }
 
     };
 
+    /**
+     * Initialization.
+     */
     function init() {
 
-      disc.showHints = true;
 
       Utils.resetQuerySettings();
 
@@ -129,7 +127,7 @@
       QueryManager.clearDiscoveryFilters();
 
       /**
-       * Normal initialization.
+       * Routine initialization.
        */
       QueryManager.setAssetType(disc.type);
 
@@ -145,6 +143,11 @@
 
       QueryStack.clear();
 
+
+      /**
+       * Boolean used to hide result list component when not in use.
+       * @type {boolean}
+       */
       disc.hideComponents = false;
 
       /**
@@ -157,56 +160,46 @@
       }
 
       /**
-       * Initialize the search component with collection
-       * and community information.
+       * Get the community list.
+       */
+      DiscoveryFormExtensions.getCommunities();
+
+      /**
+       * The asset id is the id of the collection.
+       */
+      QueryManager.setAssetId(id);
+
+      /**
+       * If this is a collection query, set the collection id
+       * and fetch the parent community.
        */
       if (disc.type === AssetTypes.COLLECTION) {
-        /**
-         * Set collection id on the component scope.
-         */
+
         disc.collectionId = id;
         /**
-         * The asset id is the id of the collection.
+         * Get parent community info, including collections belonging the community.
+         * Provide callback that locates the currently selected collection object.
          */
-        QueryManager.setAssetId(id);
-        /**
-         * Initialize communities list if not already
-         * available in app context.
-         */
-        DiscoveryFormUtils.getCommunities();
-        /**
-         * Get the parent community info.
-         */
-        DiscoveryFormUtils.getCommunityParentInfo(id);
+        DiscoveryFormExtensions.getParentCommunityInfo(id);
+
       }
       else {
+
         /**
-         * If community query, set the collection id to zero.
+         * If this is a community query, then set the collection id to zero.
          * @type {number}
          */
         disc.collectionId = 0;
         /**
-         * Set the community id on the component scope.
+         * Set the provided community.
          */
         disc.communityId = id;
         /**
-         * The asset id is the id of the community.
-         */
-        QueryManager.setAssetId(id);
-        /**
-         * Initialize communities list if not already
-         * available in app context.
-         */
-        DiscoveryFormUtils.getCommunities();
-        /**
          * Get list of collections for this community.
          */
-        if (disc.communityId !== 0) {
-          DiscoveryFormUtils.getCollectionsForCommunity(disc.communityId);
-        }
+        DiscoveryFormExtensions.getCollectionsForCommunity(disc.communityId);
+
       }
-
-
     }
 
     init();
@@ -215,7 +208,7 @@
 
   dspaceComponents.component('discoverComponent', {
 
-    templateUrl: '/discover/templates/discover.html',
+    templateUrl: '/ds/discover/templates/discover.html',
     controller: DiscoverCtrl,
     controllerAs: 'disc'
 

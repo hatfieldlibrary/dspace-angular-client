@@ -202,6 +202,14 @@
         
         getSetSize: function() {
             return AppConfig.RESPONSE_SET_SIZE;
+        },
+        
+        getHomeLogo: function() {
+          return AppConfig.HOME_LOGO;
+        },
+        
+        getHomeLink: function() {
+          return AppConfig.HOME_LINK;
         }
 
       };

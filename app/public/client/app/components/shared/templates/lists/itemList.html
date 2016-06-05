@@ -1,20 +1,28 @@
-<div >
+<div>
 
   <h2 class="md-title" ng-if="$ctrl.isBrowseContext()">Browsing: {{$ctrl.browseTerms}}</h2>
 
-  <sort-options-component ng-if="$ctrl.context!='discover' && $ctrl.count > 10"
-                          context="{{$ctrl.context}}"
-                          on-update="$ctrl.onUpdate(results, count, field)"
-                          reset-list-view ="$ctrl.resetListView()">
-  </sort-options-component>
+  <div class="filter-container intro" ng-if="$ctrl.context=='discover' || $ctrl.count > 10">
 
-  <discover-filter-container ng-if="$ctrl.context=='discover'"
-                          on-update="$ctrl.onUpdate(results, count, field)" >
-  </discover-filter-container>
+    <sort-options-component  ng-if="$ctrl.context!='discover'"
+                            context="{{$ctrl.context}}"
+                            on-update="$ctrl.onUpdate(results, count, field)"
+                            reset-list-view="$ctrl.resetListView()">
+    </sort-options-component>
 
-  <div ng-if="$ctrl.count <= 10" class="md-body-1 md-accent layout-padding" style="padding-top: 30px;">{{$ctrl.resultCountLabel}} {{$ctrl.count}}</div>
 
-  <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent layout-padding">{{$ctrl.resultCountLabel}} {{$ctrl.count}}</div>
+    <discover-filter-container ng-if="$ctrl.context=='discover'"
+                               on-update="$ctrl.onUpdate(results, count, field)">
+    </discover-filter-container>
+
+  </div>
+
+  <div ng-if="$ctrl.count <= 10" class="md-body-1 md-accent layout-padding" style="padding-top: 30px;">
+    {{$ctrl.resultCountLabel}} {{$ctrl.count}}
+  </div>
+
+  <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent layout-padding">{{$ctrl.resultCountLabel}} {{$ctrl.count}}
+  </div>
 
   <md-divider></md-divider>
 
@@ -23,13 +31,13 @@
 
     <pager-back-component ng-if="$ctrl.showPager"
 
-      on-update="$ctrl.onPreviousUpdate(results, index)">
+                          on-update="$ctrl.onPreviousUpdate(results, index)">
 
     </pager-back-component>
 
     <small-spinner ng-hide="$ctrl.ready"></small-spinner>
 
-    <md-list  ng-if="$ctrl.ready">
+    <md-list ng-if="$ctrl.ready">
 
       <item-detail-component
 

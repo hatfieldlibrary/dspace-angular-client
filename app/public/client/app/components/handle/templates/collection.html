@@ -2,7 +2,7 @@
      layout-padding>
 
   <div class="page-title">
-    <div class="md-subhead parent-title"><a ng-href="/handle/{{$ctrl.data.parentCommunity.handle}}">{{$ctrl.data.parentCommunity.name}}</a>
+    <div class="md-subhead parent-title"><a ng-href="/ds/handle/{{$ctrl.data.parentCommunity.handle}}">{{$ctrl.data.parentCommunity.name}}</a>
     </div>
     <div class="md-display-1 item-title">{{$ctrl.data.name}}</div>
 
@@ -10,13 +10,13 @@
 
   <md-card class="main-card md-hue-1" style="max-width:100%;">
 
-    <img ng-src="images/art-history.jpg" class="md-card-image opaque-img" alt="image caption">
+    <img ng-if="$ctrl.hasLogo()" ng-src="{{$ctrl.getLogo()}}" class="md-card-image opaque-img" alt="image caption">
 
     <md-card-content  style="max-width:100%;">
 
       <div layout="column" layout-align="center left">
 
-        <div class="md-subhead" ng-bind-html="$ctrl.data.introductoryText"></div>
+        <div class="md-subhead intro" ng-bind-html="$ctrl.data.introductoryText"></div>
 
         <md-content>
           <item-list-component flex="100" layout-fill class="list-width" context="collection"></item-list-component>

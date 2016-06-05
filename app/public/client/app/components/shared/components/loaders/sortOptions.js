@@ -558,7 +558,7 @@
       resetListView: '&',
       context: '@'
     },
-    templateUrl: '/shared/templates/loaders/sortOptions.html',
+    templateUrl: '/ds/shared/templates/loaders/sortOptions.html',
     controller: SortOptionsCtrl
 
   });
