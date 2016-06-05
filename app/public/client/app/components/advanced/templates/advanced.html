@@ -24,27 +24,26 @@
             <md-input-container class="halfer">
               <label class="md-no-sticky">{{adv.communityLabel}}</label>
               <md-select ng-model="adv.communityId" ng-change="adv.selectCommunity()">
-                <md-option class="md-2-line" ng-repeat="item in adv.searchItems" value="{{item.id}}"
-                ">
+                <md-option class="md-2-line" ng-repeat="item in adv.communityItems" value="{{item.id}}">
                 <div class="md-list-item-text" layout="column">
                   <div class="md-subhead">{{ item.name }}</div>
                 </div>
                 </md-option>
-                </md-list>
+
               </md-select>
             </md-input-container>
           </div>
           <div ng-if="adv.communityId > 0">
             <md-input-container class="halfer">
               <label class="md-no-sticky">{{adv.collectionLabel}}</label>
-              <md-select ng-model="adv.collectionId">
-                <md-option class="md-2-line" ng-repeat="item in adv.collections" value="{{item.id}}"
-                           ng-click="disc.selectCollection(item.id)">
+              <!-- Using the model trackBy option so that select will refresh when new community is selected.
+                   https://material.angularjs.org/latest/api/directive/mdSelect -->
+              <md-select ng-model="adv.selectedCollection" ng-model-options="{trackBy: '$value.id'}" >
+                <md-option ng-value="item" class="md-2-line" ng-repeat="item in adv.collections" ng-click="adv.selectCollection(item.id)">
                   <div class="md-list-item-text" layout="column">
                     <div class="md-subhead">{{ item.name }}</div>
                   </div>
                 </md-option>
-                </md-list>
               </md-select>
             </md-input-container>
           </div>
