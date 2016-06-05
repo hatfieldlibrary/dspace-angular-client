@@ -343,7 +343,7 @@ module.exports = function (grunt) {
           ]
         }, { expand: true,
           cwd: '<%= public %>',
-          dest: '<%= dist %>/<%= public %>/<%= proxyPath %>',
+          dest: '<%= dist %>/<%= public %>/',
           src: [
             'images/**/*',
             'fonts/**/*'

@@ -33,7 +33,8 @@
     COMMUNITY_LIST: 'communityList',
     COLLECTION: 'coll',
     COMMUNITY: 'comm',
-    ITEM: 'item'
+    ITEM: 'item',
+    GLOBAL: 'all'
   });
 
   appConstants.constant('QueryActions', {
