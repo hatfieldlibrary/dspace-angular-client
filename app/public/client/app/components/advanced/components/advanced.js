@@ -189,6 +189,11 @@
       QueryStack.clear();
 
       /**
+       * Initialize the advanced search asset id to 0 (global search)
+       */
+      QueryManager.setAssetId(0);
+
+      /**
        * Hide the result components on init.
        * @type {boolean}
        */
