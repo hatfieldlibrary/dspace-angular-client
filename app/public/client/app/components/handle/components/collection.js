@@ -9,7 +9,7 @@
   /**
    * Component controller.
    */
-  function CollectionCtrl(QueryManager, QueryActions, QueryTypes, QueryStack, Utils) {
+  function CollectionCtrl(QueryManager, QueryActions, QueryTypes, QuerySort, QueryStack, Utils) {
 
     var ctrl = this;
 
@@ -21,7 +21,10 @@
       /**
        * Set query type to title list.
        */
-      QueryManager.setQueryType(QueryTypes.TITLES_LIST);
+      QueryManager.setQueryType(QueryTypes.DATES_LIST);
+      
+      
+      QueryManager.setSort(QuerySort.DESCENDING)
 
     }
 
