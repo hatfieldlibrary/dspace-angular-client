@@ -91,12 +91,10 @@
       ctrl.ready = false;
 
     };
-
-
+    
     function init() {
 
       ctrl.ready = true;
-
       /**
        * The array containing the items to present in the view.
        * @type {Array}

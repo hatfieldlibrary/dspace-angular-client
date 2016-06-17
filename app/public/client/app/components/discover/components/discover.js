@@ -26,6 +26,13 @@
     var disc = this;
 
     /**
+     * Input route parameters.
+     */
+    disc.type = $routeParams.type;
+    var id = $routeParams.id;
+    disc.terms = $routeParams.terms;
+
+    /**
      * Pass the controller to discovery extensions.
      */
     DiscoveryFormExtensions.setController(this);
@@ -72,6 +79,11 @@
      * @type {string}
      */
     disc.submitLabel = Messages.ADVANCED_SEARCH_SUBMIT_LABEL;
+    /**
+     * Boolean used to hide result list component when not in use.
+     * @type {boolean}
+     */
+    disc.hideComponents = false;
 
     /**
      * Handles collection selection.
@@ -110,16 +122,8 @@
      * Initialization.
      */
     function init() {
-
-
+      
       Utils.resetQuerySettings();
-
-      /**
-       * Input route parameters.
-       */
-      disc.type = $routeParams.type;
-      var id = $routeParams.id;
-      disc.terms = $routeParams.terms;
 
       /**
        * Remove any previous discovery filters.
@@ -142,13 +146,6 @@
       AppContext.setDiscoveryContext(DiscoveryContext.BASIC_SEARCH);
 
       QueryStack.clear();
-
-
-      /**
-       * Boolean used to hide result list component when not in use.
-       * @type {boolean}
-       */
-      disc.hideComponents = false;
 
       /**
        * If the DSpace ID parameter is undefined then hide unnecessary

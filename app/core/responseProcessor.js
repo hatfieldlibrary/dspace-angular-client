@@ -132,6 +132,7 @@
 
     var ret = {};
     var resultArr = [];
+    
     // Some returned values are arrays.  Would
     // we ever expect the array to contain more
     // than one element?  If so, we need to return
@@ -157,6 +158,7 @@
       resultArr[i] = tmp;
     }
 
+    console.log(resultArr);
     ret.offset = solrResponse.response.start;
     ret.results = resultArr;
     ret.count = solrResponse.response.numFound;

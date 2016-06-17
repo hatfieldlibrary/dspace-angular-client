@@ -9,9 +9,23 @@
   /**
    * Component controller.
    */
-  function CollectionCtrl(QueryManager, QueryActions, QueryTypes, QuerySort, QueryStack, Utils) {
+  function CollectionCtrl(QueryManager, 
+                          QueryActions, 
+                          QueryTypes, 
+                          QuerySort, 
+                          QueryStack, 
+                          Utils) {
 
     var ctrl = this;
+
+    /**
+     * Returns the url for a logo.  This method can be called
+     * for communities and collections.
+     * @returns {string}
+     */
+    ctrl.getLogo = getLogo;
+
+    ctrl.hasLogo = hasLogo;
 
     function doInitialization() {
       /**
@@ -28,14 +42,22 @@
 
     }
 
-    ctrl.hasLogo = function() {
+
+    function getLogo() {
+
+      if (ctrl.data.logo.retrieveLink) {
+        return Utils.getLogoPath(ctrl.data.logo.id);
+      }
+      return '';
+    }
+
+    function hasLogo() {
       if (typeof ctrl.data.logo.retrieveLink !== 'undefined') {
         return true;
       }
       return false;
-    };
-
-
+    }
+    
     function init() {
 
       if (QueryStack.isEmpty()) {
@@ -50,22 +72,8 @@
 
 
     }
-
     // Initialize component state.
     init();
-
-    /**
-     * Returns the url for a logo.  This method can be called
-     * for communities and collections.
-     * @returns {string}
-     */
-    ctrl.getLogo = function () {
-
-      if (ctrl.data.logo.retrieveLink) {
-        return Utils.getLogoPath(ctrl.data.logo.id);
-      }
-      return '';
-    };
 
   }
 

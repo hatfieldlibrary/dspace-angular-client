@@ -17,7 +17,16 @@
     ctrl.homeLinkLabel = Messages.COMMUNITY_HOME_LINK_LABEL;
 
     ctrl.loginMessage = Messages.LOGIN_TO_SEE_MORE_LABEL;
+
+    /**
+     * Returns the url for a logo.  This method can be called
+     * for communities and collections.
+     * @returns {string}
+     */
+    ctrl.getLogo = getLogo;
     
+    ctrl.hasLogo = hasLogo;
+
 
     /**
      * Shows login message if the count of returned collections
@@ -30,26 +39,20 @@
 
     }
 
-    ctrl.hasLogo = function() {
+    function hasLogo() {
       if (typeof ctrl.data.logo.retrieveLink !== 'undefined') {
         return true;
       }
       return false;
-    };
-
-
-    /**
-     * Returns the url for a logo.  This method can be called
-     * for communities and collections.
-     * @returns {string}
-     */
-    ctrl.getLogo = function () {
+    }
+    
+    function getLogo() {
 
       if (ctrl.data.logo.retrieveLink) {
         return Utils.getLogoPath(ctrl.data.logo.id);
       }
       return '';
-    };
+    }
 
   }
 

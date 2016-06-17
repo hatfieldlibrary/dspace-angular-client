@@ -1,4 +1,6 @@
 /**
+ * The component for handle queries. Chooses the sub-component type (community,
+ * collection, or item) based on the data type returned by the query.
  * Created by mspalti on 2/26/16.
  */
 
@@ -16,13 +18,27 @@
 
     var ctrl = this;
 
+    /**
+     * Request parameters.
+     */
     var site = $routeParams.site;
     var item = $routeParams.item;
+
+    /** The normalized type should correspond to one of
+     * the values defined in AssetTypes.  The type is used
+     * to switch between view components. */
+    ctrl.nType = '';
+
+    /**
+     * Data returned by the handle query.
+     * @type {{}}
+     */
+    ctrl.data = {};
 
     /**
      * This will be set to true when data is returned successfully.
      * @type {boolean}
-       */
+     */
     ctrl.ready = false;
 
     /**
@@ -38,11 +54,11 @@
      * has been enabled in AppContext, this will not be used. Instead, the
      * user will be redirected immediately to the authentication service.
      * @type {boolean}
-       */
+     */
     ctrl.loginRequired = false;
-
+    
     /**
-     * Initialize the page.
+     * Initialize the component.
      */
     var init = function () {
 
@@ -79,11 +95,7 @@
               AppContext.setWritePermission(data.canWrite);
             }
 
-            /** The normalized type should correspond to one of
-             * the values defined in AssetTypes.  The type is used
-             * to switch between view components. */
             ctrl.nType = Utils.getNormalizedType(data.type);
-
 
             /**
              * Set result type and dspace ID on the view model. These
@@ -144,15 +156,15 @@
                */
               if (!AppContext.hasDspaceSession) {
                 $window.location = '/ds/auth/login';
-                
+
               } else {
                 /**
-                 * If the user has a Dspace session, we can assume that the user is 
+                 * If the user has a Dspace session, we can assume that the user is
                  * not authorized to access the resource;
                  * @type {boolean}
                  */
                 ctrl.accessNotAllowed = true;
-                
+
                 ctrl.ready = true;
               }
             }

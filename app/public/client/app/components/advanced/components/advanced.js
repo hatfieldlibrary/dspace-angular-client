@@ -82,6 +82,26 @@
      * @type {string}
      */
     adv.count = 0;
+    /**
+     * Set the collection id to zero.
+     * @type {number}
+     */
+    adv.collectionId = 0;
+    /**
+     * Set the community id to zero (global search).
+     */
+    adv.communityId = 0;
+    /**
+     * Hide the result components on init.
+     * @type {boolean}
+     */
+    adv.hideComponents = true;
+    
+    /**
+     * Handles search form submission.
+     * @param terms  the query terms
+     */
+    adv.submit = submit;
 
     /**
      * Handles collection selection.
@@ -91,8 +111,7 @@
       adv.collectionId = id;
       DiscoveryFormExtensions.selectCollection(id);
     };
-
-
+    
     /**
      * Handles selection of community.
      */
@@ -133,12 +152,8 @@
       });
 
     }
-
-    /**
-     * Handles search form submission.
-     * @param terms  the query terms
-     */
-    adv.submit = function (terms) {
+    
+    function submit(terms) {
 
       /**
        * If search terms are provided, execute the search.
@@ -159,7 +174,7 @@
 
       }
 
-    };
+    }
 
     /**
      * Initializes the advanced search component to global search.
@@ -194,25 +209,10 @@
       QueryManager.setAssetId(0);
 
       /**
-       * Hide the result components on init.
-       * @type {boolean}
-       */
-      adv.hideComponents = true;
-
-      /**
        * Get the community list.
        */
       DiscoveryFormExtensions.getCommunities();
-
-      /**
-       * Set the collection id to zero.
-       * @type {number}
-       */
-      adv.collectionId = 0;
-      /**
-       * Set the community id to zero (global search).
-       */
-      adv.communityId = 0;
+      
 
     }
 
