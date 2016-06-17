@@ -155,6 +155,7 @@
       }
       tmp.id = json[i]['search.resourceid'];
       tmp.handle = json[i].handle;
+      tmp.abstract = json[i]['dc.description.abstract_hl'];
       resultArr[i] = tmp;
     }
 
