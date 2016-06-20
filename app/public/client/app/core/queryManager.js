@@ -1,12 +1,10 @@
 'use strict';
 
 /**
- * The query manager service is used to configure both REST and solr
- * queries.  The query object is typically passed in the body of a POST
- * to the Express server via an Angular request service.
+ * The query manager service is used to configure REST and solr
+ * queries. 
  */
 dspaceContext.service('QueryManager', [
-
   'QueryTypes',
   'QueryActions',
   'QuerySort',
@@ -27,7 +25,7 @@ dspaceContext.service('QueryManager', [
           type: '',
           /** DSpace internal id. */
           id: '',
-
+          /** DSpace handle */
           handle: ''
         },
         sort: {

@@ -83,7 +83,7 @@ var config = {
       /**
        * DSpace REST servlet context ('rest' or alternate development servlet context).
        */
-      context: 'dspace5-rest',
+      context: 'rest',
       /**
        * The DSpace solr host (for development either localhost or ip address).
        * If connecting to a remote instance of DSpace during development, use
@@ -93,7 +93,7 @@ var config = {
       /**
        * Solr port.
        */
-      solrPort: '8080'
+      solrPort: '1234'
     },
     oauth: {
       /**

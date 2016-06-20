@@ -1,6 +1,6 @@
 /**
  * The application context service is a place for storing and updating
- * objects that the application needs to maintain state.
+ * application state.
  */
 
 'use strict';
@@ -10,209 +10,244 @@
   dspaceContext.service('AppContext', [
     'AppConfig',
     function (AppConfig) {
-                  
-      return {
 
-        context: {
+      var _context = {
 
-          /**
-           * The array of authors returned by browse/sort by author query. This is
-           * cached so that the array (which can be large) isn't returned with every
-           * paging request.
-           */
-          authorArray: [],
-          /**
-           * The array of subjects returned by browse/sort by subject query. This is
-           * cached so that the array (which can be large) isn't returned with every
-           * paging request.
-           */
-          subjectArray: [],
-          /**
-           * The index of the currently list item.  This is currently used by author
-           * and subject facets to activate a card that contains item information.
-           */
-          currentListIndex: -1,
+        /**
+         * The array of authors returned by browse/sort by author query. This is
+         * cached so that the array (which can be large) isn't returned with every
+         * paging request.
+         */
+        authorArray: [],
+        /**
+         * The array of subjects returned by browse/sort by subject query. This is
+         * cached so that the array (which can be large) isn't returned with every
+         * paging request.
+         */
+        subjectArray: [],
+        /**
+         * The index of the currently list item.  This is currently used by author
+         * and subject facets to activate a card that contains item information.
+         */
+        currentListIndex: -1,
 
-          /**
-           * Tracks whether or not a current DSpace session exists.
-           */
-          hasDspaceSession: false,
+        /**
+         * Tracks whether or not a current DSpace session exists.
+         */
+        hasDspaceSession: false,
 
-          /**
-           * The current item count.
-           */
-          count: 0,
+        /**
+         * The current item count.
+         */
+        count: 0,
 
-          /**
-           * The context can be either DiscoveryContext.ADVANCED_SEARCH or
-           * DiscoveryContext.BASIC_SEARCH.
-           */
-          discoveryContext: '',
+        /**
+         * The context can be either DiscoveryContext.ADVANCED_SEARCH or
+         * DiscoveryContext.BASIC_SEARCH.
+         */
+        discoveryContext: '',
 
-          /**
-           * Menu status.
-           */
-          openMenu: false,
+        /**
+         * Menu status.
+         */
+        openMenu: false,
 
-          /** Show the pager */
-          pager: false,
+        /** Show the pager */
+        pager: false,
 
-          /** List of communities used in advanced search and discovery search forms */
-          discoveryCommunities: [],
+        /** List of communities used in advanced search and discovery search forms */
+        discoveryCommunities: [],
 
-          /** Permission to submit */
-          canSubmit: false,
+        /** Permission to submit */
+        canSubmit: false,
 
-          /** Permission to administer current object. */
-          canAdminister: false,
+        /** Permission to administer current object. */
+        canAdminister: false,
 
-          /** Permission to administer DSpace */
-          canSysAdmin: false,
+        /** Permission to administer DSpace */
+        canSysAdmin: false,
 
-          /** Permission to write */
-          canWrite: false
-
-        },
-
-        getContext: function () {
-          return this.context;
-        },
-
-        getDspaceHost: function () {
-          return AppConfig.DSPACE_HOST;
-        },
-
-        getDspaceRoot: function () {
-          return AppConfig.DSPACE_ROOT;
-        },
-
-        getHandlePrefix: function () {
-          return AppConfig.HANDLE_PREFIX;
-        },
-
-        useRedirect: function () {
-          return AppConfig.USE_REDIRECT;
-        },
-
-        setSystemAdminPermission: function (permission) {
-          this.context.canSysAdmin = permission;
-        },
-
-        getSystemAdminPermission: function () {
-          return this.context.canSysAdmin;
-        },
-
-        setWritePermission: function (permission) {
-          this.context.canWrite = permission;
-        },
-
-        getWritePermission: function () {
-          return this.context.canWrite;
-        },
-
-        setAdministerPermission: function (permission) {
-          this.context.canAdminister = permission;
-        },
-
-        getAdministerPermission: function () {
-          return this.context.canAdminister;
-        },
-
-        setSubmitPermission: function (permission) {
-          this.context.canSubmit = permission;
-        },
-
-        getSubmitPermission: function () {
-          return this.context.canSubmit;
-        },
-
-        setCurrentIndex: function (index) {
-          this.context.currentListIndex = index;
-        },
-
-        setAuthorsList: function (list) {
-          this.context.authorArray = list;
-        },
-
-        setSubjectList: function (list) {
-          this.context.subjectArray = list;
-        },
-
-        getAuthors: function () {
-          return this.context.authorArray;
-        },
-
-        getSubjects: function () {
-          return this.context.subjectArray;
-        },
-
-        getAuthorsCount: function () {
-          if (this.context.authorArray !== undefined) {
-            return this.context.authorArray.length;
-          }
-          return 0;
-        },
-
-        getSubjectsCount: function () {
-          if (this.context.subjectArray !== undefined) {
-            return this.context.subjectArray.length;
-          }
-          return 0;
-        },
-
-        setCount: function (count) {
-          this.context.count = count;
-        },
-
-        getCount: function () {
-          return this.context.count;
-        },
-
-        setMenu: function (open) {
-          this.context.openMenu = open;
-        },
-
-        getMenuState: function () {
-          return this.context.openMenu;
-        },
-
-        setPager: function (showPager) {
-          this.context.pager = showPager;
-        },
-
-        getPager: function () {
-          return this.context.pager;
-        },
-
-        setDiscoverCommunities: function (arr) {
-          this.context.discoveryCommunities = arr;
-        },
-
-        getDiscoverCommunities: function () {
-          return this.context.discoveryCommunities;
-        },
-
-        setDiscoveryContext: function (context) {
-          this.context.discoveryContext = context;
-        },
-
-        getDiscoveryContext: function () {
-          return this.context.discoveryContext;
-        },
-        
-        getSetSize: function() {
-            return AppConfig.RESPONSE_SET_SIZE;
-        },
-        
-        getHomeLogo: function() {
-          return AppConfig.HOME_LOGO;
-        },
-        
-        getHomeLink: function() {
-          return AppConfig.HOME_LINK;
-        }
+        /** Permission to write */
+        canWrite: false
 
       };
+
+      function getContext() {
+        return _context;
+      }
+
+      function getDspaceHost() {
+        return AppConfig.DSPACE_HOST;
+      }
+
+      function getDspaceRoot() {
+        return AppConfig.DSPACE_ROOT;
+      }
+
+      function getHandlePrefix() {
+        return AppConfig.HANDLE_PREFIX;
+      }
+
+      function useRedirect() {
+        return AppConfig.USE_REDIRECT;
+      }
+
+      function setSystemAdminPermission(permission) {
+        _context.canSysAdmin = permission;
+      }
+
+      function getSystemAdminPermission() {
+        return _context.canSysAdmin;
+      }
+
+      function setWritePermission(permission) {
+        _context.canWrite = permission;
+      }
+
+      function getWritePermission () {
+        return _context.canWrite;
+      }
+
+      function setAdministerPermission(permission) {
+        _context.canAdminister = permission;
+      }
+
+      function getAdministerPermission() {
+        return _context.canAdminister;
+      }
+
+      function setSubmitPermission(permission) {
+        _context.canSubmit = permission;
+      }
+
+      function getSubmitPermission() {
+        return _context.canSubmit;
+      }
+
+      function setCurrentIndex(index) {
+        _context.currentListIndex = index;
+      }
+
+      function setAuthorsList(list) {
+        _context.authorArray = list;
+      }
+
+      function setSubjectList(list) {
+        _context.subjectArray = list;
+      }
+
+      function getAuthors () {
+        return _context.authorArray;
+      }
+
+      function getSubjects() {
+        return _context.subjectArray;
+      }
+
+      function getAuthorsCount() {
+        if (_context.authorArray !== undefined) {
+          return _context.authorArray.length;
+        }
+        return 0;
+      }
+
+      function getSubjectsCount() {
+        if (_context.subjectArray !== undefined) {
+          return _context.subjectArray.length;
+        }
+        return 0;
+      }
+
+      function setCount(count) {
+        _context.count = count;
+      }
+
+      function getCount() {
+        return _context.count;
+      }
+
+      function setMenu(open) {
+        _context.openMenu = open;
+      }
+
+      function getMenuState() {
+        return _context.openMenu;
+      }
+
+      function setPager(showPager) {
+        _context.pager = showPager;
+      }
+
+      function getPager() {
+        return _context.pager;
+      }
+
+      function setDiscoverCommunities(arr) {
+        _context.discoveryCommunities = arr;
+      }
+
+      function getDiscoverCommunities() {
+        return _context.discoveryCommunities;
+      }
+
+      function setDiscoveryContext(context) {
+        _context.discoveryContext = context;
+      }
+
+      function getDiscoveryContext() {
+        return _context.discoveryContext;
+      }
+
+      function getSetSize() {
+        return AppConfig.RESPONSE_SET_SIZE;
+      }
+
+      function getHomeLogo() {
+        return AppConfig.HOME_LOGO;
+      }
+
+      function getHomeLink() {
+        return AppConfig.HOME_LINK;
+      }
+
+      return {
+        
+        getContext: getContext,
+        getDspaceHost: getDspaceHost,
+        getDspaceRoot: getDspaceRoot,
+        getHandlePrefix: getHandlePrefix,
+        useRedirect: useRedirect,
+        setSystemAdminPermission: setSystemAdminPermission,
+        getSystemAdminPermission: getSystemAdminPermission,
+        setAdministerPermission: setAdministerPermission,
+        getAdministerPermission: getAdministerPermission,
+        setWritePermission: setWritePermission,
+        getWritePermission: getWritePermission,
+        setSubmitPermission: setSubmitPermission,
+        getSubmitPermission: getSubmitPermission,
+        setCurrentIndex: setCurrentIndex,
+        setAuthorsList: setAuthorsList,
+        setSubjectList: setSubjectList,
+        getAuthors: getAuthors,
+        getSubjects: getSubjects,
+        getAuthorsCount: getAuthorsCount,
+        getSubjectsCount: getSubjectsCount,
+        setCount: setCount,
+        getCount: getCount,
+        setMenu: setMenu,
+        getMenuState: getMenuState,
+        setPager: setPager,
+        getPager: getPager,
+        setDiscoverCommunities: setDiscoverCommunities,
+        getDiscoverCommunities: getDiscoverCommunities,
+        setDiscoveryContext: setDiscoveryContext,
+        getDiscoveryContext: getDiscoveryContext,
+        getSetSize: getSetSize,
+        getHomeLogo: getHomeLogo,
+        getHomeLink: getHomeLink
+
+      }
+
     }]);
 
 })();

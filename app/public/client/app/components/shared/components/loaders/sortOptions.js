@@ -28,7 +28,6 @@
                            QuerySort,
                            QueryFields,
                            QueryTypes,
-                           QueryStack,
                            AppContext,
                            QueryManager) {
 
