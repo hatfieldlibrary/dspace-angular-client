@@ -1,4 +1,5 @@
 /**
+ * Methods for processing DSpace solr responses.
  * Created by mspalti on 3/28/16.
  */
 
@@ -29,8 +30,7 @@
     for (var i = 0; i < authors.length; i++) {
 
       // The odd indicies in the response array contain count.
-      // Add the count to the author object and add the author
-      // object to the return array.
+      // Set the count to authorObj.
       if (i % 2 !== 0) {
         authorObj.count = authors[i];
         authorArr[count] = authorObj;
@@ -38,12 +38,12 @@
 
       }
       // The even indicies contain author information.  Add to
-      //   the author object.
+      // the authorObj.
       else {
 
         authorObj = {};
         var author = authors[i].split('|||');
-        /** remove carriage returns, etc. */
+        // remove carriage returns, etc. 
         authorObj.value = author[1].replace(/^[\n\r]+/, '');
 
       }
@@ -106,9 +106,7 @@
     for (var i = 0; i < solrResponse.response.docs.length; i++) {
       docsArr[i] = solrResponse.response.docs[i];
     }
-
     ret.offset = solrResponse.response.start;
-    ;
     ret.results = docsArr;
     ret.facets = subjectArr;
     ret.count = subjectArr.length;
@@ -126,25 +124,19 @@
    * @returns {{}}
    */
   exports.processItems = function (solrResponse) {
-
-
+    
     var json = solrResponse.response.docs;
 
     var ret = {};
     var resultArr = [];
     
-    // Some returned values are arrays.  Would
-    // we ever expect the array to contain more
-    // than one element?  If so, we need to return
-    // the array and process it in the view. For now,
-    // returning string from the first element in the
-    // array.
     for (var i = 0; i < json.length; i++) {
       var tmp = {};
       if (json[i]['dc.title'] !== undefined) {
         tmp.title = json[i]['dc.title'][0];
       }
       if (json[i].author !== undefined) {
+        // Return author as array!
         tmp.author = json[i].author;
       }
       if (json[i]["dc.publisher"] !== undefined) {
@@ -155,11 +147,13 @@
       }
       tmp.id = json[i]['search.resourceid'];
       tmp.handle = json[i].handle;
-      tmp.abstract = json[i]['dc.description.abstract_hl'];
+      tmp.abstract = '';
+       if (typeof json[i]['dc.description.abstract_hl'] !== 'undefined') {
+         tmp.abstract = json[i]['dc.description.abstract_hl'][0];
+      }
       resultArr[i] = tmp;
     }
-
-    console.log(resultArr);
+    
     ret.offset = solrResponse.response.start;
     ret.results = resultArr;
     ret.count = solrResponse.response.numFound;
@@ -201,7 +195,7 @@
     final.offset = json.response.start;
     final.results = resultArr;
     final.count = json.response.numFound;
-    
+
 
     return final;
   };

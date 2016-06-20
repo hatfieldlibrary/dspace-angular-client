@@ -1,10 +1,10 @@
-<md-list-item flex class="md-2-line" ng-click="$ctrl.showItem($event, $ctrl.id)">
-  <div class="md-list-item-text">
+<md-list-item flex  ng-click="$ctrl.showItem($event, $ctrl.id)">
+  <div class="md-list-item-text" style="padding: 10px 5px">
     <div layout="column" flex="100" style="max-width: 100%;" class="md-list-item-text" layout-fill>
 
-      <div class="md-subhead list-highlight">{{$ctrl.title}}</div>
-      <div class="md-caption">{{$ctrl.author}}; <span ng-if="$ctrl.publisher">{{$ctrl.publisher}}; </span> <span
-        ng-if="$ctrl.year">{{$ctrl.year}}</span></div>
+      <div class="md-subhead"><span class="list-highlight">{{$ctrl.title}}</span><br> <span class="md-caption">{{$ctrl.author}}; <span ng-if="$ctrl.publisher">{{$ctrl.publisher}}; </span> <span
+        ng-if="$ctrl.year">{{$ctrl.year}}</span></span></div>
+      <div class="md-body-1 item-block-ellipsis">{{$ctrl.abstract}}</div>
     </div>
   </div>
   <md-divider ng-if="!$ctrl.last"></md-divider>

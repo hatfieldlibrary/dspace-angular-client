@@ -14,6 +14,21 @@
 
     var ctrl = this;
 
+    function hasLogo() {
+      if (typeof ctrl.data.logo.retrieveLink !== 'undefined') {
+        return true;
+      }
+      return false;
+    }
+
+    function getLogo() {
+
+      if (ctrl.data.logo.retrieveLink) {
+        return Utils.getLogoPath(ctrl.data.logo.id);
+      }
+      return '';
+    }
+
     ctrl.homeLinkLabel = Messages.COMMUNITY_HOME_LINK_LABEL;
 
     ctrl.loginMessage = Messages.LOGIN_TO_SEE_MORE_LABEL;
@@ -38,22 +53,7 @@
       ctrl.hideLoginMessage = true;
 
     }
-
-    function hasLogo() {
-      if (typeof ctrl.data.logo.retrieveLink !== 'undefined') {
-        return true;
-      }
-      return false;
-    }
     
-    function getLogo() {
-
-      if (ctrl.data.logo.retrieveLink) {
-        return Utils.getLogoPath(ctrl.data.logo.id);
-      }
-      return '';
-    }
-
   }
 
   dspaceComponents.component('communityComponent', {

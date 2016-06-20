@@ -49,7 +49,8 @@
       year: '@',
       handle: '@',
       id: '@',
-      last: '<'
+      last: '<',
+      abstract: '@'
 
     },
     controller: ItemDetailController,

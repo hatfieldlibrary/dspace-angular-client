@@ -62,7 +62,7 @@
   exports.getURL = function () {
     return config.dspace.protocol + '://' + config.dspace.host + ':' + config.dspace.port;
   };
-  
+
  exports.getSolrUrl = function() {
    return config.dspace.protocol + '://' + config.dspace.solrHost + ':' + config.dspace.solrPort;
  };
@@ -94,7 +94,7 @@
 
   /**
    * Sets the DSpace ID to an empty string when
-   * the id is zero.  The zero value id for community 
+   * the id is zero.  The zero value id for community
    * is used by the middleware to request a global search.
    * This function assures that the zero value is not included
    * in the DSpace API request itself.
@@ -107,7 +107,11 @@
       return '';
     }
     return id;
-    
+
+  };
+
+  exports.truncateAbstract = function(text) {
+
   };
 
 

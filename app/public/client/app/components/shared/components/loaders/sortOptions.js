@@ -56,7 +56,7 @@
      * Set default display list type to TITLE.
      * @type {string}
      */
-    var displayListType = QueryFields.TITLE;
+    var displayListType = QueryFields.DATE;
 
     /**
      * The AssetType (collection)
@@ -105,7 +105,7 @@
      * The default placeholder message for the filter query.
      * @type {string}
      */
-    ctrl.placeholder = Messages.SORT_JUMP_TO_LETTER_LABEL;
+    ctrl.placeholder = Messages.SORT_JUMP_TO_YEAR_LABEL;
 
     ctrl.filterTerms = QueryManager.getFilter();
 
@@ -222,12 +222,14 @@
        * @type {*|{method}|Session}
        */
       var items = SolrJumpToQuery.save({
-        params: QueryManager.context.query
+        params: QueryManager.getQuery()
       });
       /**
        * Handle the response.
        */
       items.$promise.then(function (data) {
+
+        ctrl.resetListView();
         QueryManager.setOffset(data.offset);
         /**
          * Update parent component.
@@ -246,6 +248,7 @@
      */
     var doSearch = function () {
 
+
       /**
        * Set pager in context.  (The pager component will
        * hide the pager button.)
@@ -257,14 +260,14 @@
        * @type {*|{method}|Session}
        */
       var items = SolrQuery.save({
-        params: QueryManager.context.query
+        params: QueryManager.getQuery()
 
       });
       /**
        * Handle the response.
        */
       items.$promise.then(function (data) {
-
+        ctrl.resetListView();
         QueryManager.setOffset(data.offset);
         handleResult(data);
       });
@@ -370,8 +373,6 @@
      */
     ctrl.getFilter = function () {
 
-      ctrl.resetListView();
-
       /**
        * Reset the selected item.
        */
@@ -381,6 +382,7 @@
        * Get the current query type.
        */
       var queryType = QueryManager.getQueryType();
+
 
       /**
        * When filtering for titles and dates, we use distinct solr queries
@@ -506,9 +508,6 @@
      * Set search results to a new field (title, author, date, subject).
      */
     ctrl.resetField = function setField() {
-
-      ctrl.resetListView();
-
 
       /**
        * Reset the selected item.

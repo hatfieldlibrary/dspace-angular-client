@@ -18,6 +18,21 @@
 
     var ctrl = this;
 
+    function getLogo() {
+
+      if (ctrl.data.logo.retrieveLink) {
+        return Utils.getLogoPath(ctrl.data.logo.id);
+      }
+      return '';
+    }
+
+    function hasLogo() {
+      if (typeof ctrl.data.logo.retrieveLink !== 'undefined') {
+        return true;
+      }
+      return false;
+    }
+
     /**
      * Returns the url for a logo.  This method can be called
      * for communities and collections.
@@ -38,24 +53,8 @@
       QueryManager.setQueryType(QueryTypes.DATES_LIST);
       
       
-      QueryManager.setSort(QuerySort.DESCENDING)
+      QueryManager.setSort(QuerySort.DESCENDING);
 
-    }
-
-
-    function getLogo() {
-
-      if (ctrl.data.logo.retrieveLink) {
-        return Utils.getLogoPath(ctrl.data.logo.id);
-      }
-      return '';
-    }
-
-    function hasLogo() {
-      if (typeof ctrl.data.logo.retrieveLink !== 'undefined') {
-        return true;
-      }
-      return false;
     }
     
     function init() {

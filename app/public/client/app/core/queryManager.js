@@ -260,7 +260,7 @@ dspaceContext.service('QueryManager', [
       removeDiscoveryFilter: removeDiscoveryFilter,
       clearDiscoveryFilters: clearDiscoveryFilters
 
-    }
+    };
 
   }]);
 

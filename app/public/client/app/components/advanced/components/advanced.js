@@ -25,6 +25,60 @@
     var adv = this;
 
     /**
+     * Executes query to retrieve a fresh result set.
+     */
+    function doSearch() {
+      /**
+       * Hide the pager button.
+       */
+      AppContext.setPager(false);
+
+      /**
+       * Get promise.
+       * @type {*|{method}|Session}
+       */
+      var items = SolrQuery.save({
+        params: QueryManager.getQuery()
+
+      });
+
+      /**
+       * Handle the response.
+       */
+      items.$promise.then(function (data) {
+        QueryManager.setOffset(data.offset);
+        adv.items = data.results;
+        adv.count = data.count;
+
+
+      });
+
+    }
+
+    function submit(terms) {
+
+      /**
+       * If search terms are provided, execute the search.
+       */
+      if (terms.length > 0) {
+
+        QueryManager.setSearchTerms(terms);
+
+        /**
+         * Show list components.
+         */
+        if (adv.hideComponents) {
+          adv.hideComponents = false;
+
+        }
+
+        doSearch();
+
+      }
+
+    }
+
+    /**
      * Set this to be the controller updated by the discovery util methods.
      */
     DiscoveryFormExtensions.setController(this);
@@ -121,60 +175,6 @@
       DiscoveryFormExtensions.getCollectionsForCommunity(adv.communityId, adv.collectionId);
 
     };
-
-    /**
-     * Executes query to retrieve a fresh result set.
-     */
-    function doSearch() {
-      /**
-       * Hide the pager button.
-       */
-      AppContext.setPager(false);
-
-      /**
-       * Get promise.
-       * @type {*|{method}|Session}
-       */
-      var items = SolrQuery.save({
-        params: QueryManager.getQuery()
-
-      });
-
-      /**
-       * Handle the response.
-       */
-      items.$promise.then(function (data) {
-        QueryManager.setOffset(data.offset);
-        adv.items = data.results;
-        adv.count = data.count;
-
-
-      });
-
-    }
-    
-    function submit(terms) {
-
-      /**
-       * If search terms are provided, execute the search.
-       */
-      if (terms.length > 0) {
-
-        QueryManager.setSearchTerms(terms);
-
-        /**
-         * Show list components.
-         */
-        if (adv.hideComponents) {
-          adv.hideComponents = false;
-
-        }
-
-        doSearch();
-
-      }
-
-    }
 
     /**
      * Initializes the advanced search component to global search.
