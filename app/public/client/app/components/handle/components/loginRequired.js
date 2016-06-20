@@ -1,7 +1,7 @@
 /**
+ * Component for the login required message.  
  * Created by mspalti on 4/21/16.
  */
-
 
 'use strict';
 

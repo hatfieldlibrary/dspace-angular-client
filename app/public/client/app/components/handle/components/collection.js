@@ -9,9 +9,38 @@
   /**
    * Component controller.
    */
-  function CollectionCtrl(QueryManager, QueryActions, QueryTypes, QueryStack, Utils) {
+  function CollectionCtrl(QueryManager, 
+                          QueryActions, 
+                          QueryTypes, 
+                          QuerySort, 
+                          QueryStack, 
+                          Utils) {
 
     var ctrl = this;
+
+    function getLogo() {
+
+      if (ctrl.data.logo.retrieveLink) {
+        return Utils.getLogoPath(ctrl.data.logo.id);
+      }
+      return '';
+    }
+
+    function hasLogo() {
+      if (typeof ctrl.data.logo.retrieveLink !== 'undefined') {
+        return true;
+      }
+      return false;
+    }
+
+    /**
+     * Returns the url for a logo.  This method can be called
+     * for communities and collections.
+     * @returns {string}
+     */
+    ctrl.getLogo = getLogo;
+
+    ctrl.hasLogo = hasLogo;
 
     function doInitialization() {
       /**
@@ -21,18 +50,13 @@
       /**
        * Set query type to title list.
        */
-      QueryManager.setQueryType(QueryTypes.TITLES_LIST);
+      QueryManager.setQueryType(QueryTypes.DATES_LIST);
+      
+      
+      QueryManager.setSort(QuerySort.DESCENDING);
 
     }
-
-    ctrl.hasLogo = function() {
-      if (typeof ctrl.data.logo.retrieveLink !== 'undefined') {
-        return true;
-      }
-      return false;
-    };
-
-
+    
     function init() {
 
       if (QueryStack.isEmpty()) {
@@ -47,22 +71,8 @@
 
 
     }
-
     // Initialize component state.
     init();
-
-    /**
-     * Returns the url for a logo.  This method can be called
-     * for communities and collections.
-     * @returns {string}
-     */
-    ctrl.getLogo = function () {
-
-      if (ctrl.data.logo.retrieveLink) {
-        return Utils.getLogoPath(ctrl.data.logo.id);
-      }
-      return '';
-    };
 
   }
 

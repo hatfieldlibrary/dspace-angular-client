@@ -55,7 +55,7 @@
        * @type {*|{method}|Session}
        */
       var items = SolrQuery.save({
-        params: QueryManager.context.query
+        params: QueryManager.getQuery()
 
       });
       /**

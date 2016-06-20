@@ -83,17 +83,17 @@ var config = {
       /**
        * DSpace REST servlet context ('rest' or alternate development servlet context).
        */
-      context: 'rest',
+      context: credentials.dspaceDev.context,
       /**
        * The DSpace solr host (for development either localhost or ip address).
        * If connecting to a remote instance of DSpace during development, use
        * port forwarding: ssh -L 1234:127.0.0.1:8080 dspace.university.edu
        */
-      solrHost: 'localhost',
+      solrHost: credentials.dspaceDev.solrHost,
       /**
        * Solr port.
        */
-      solrPort: '1234'
+      solrPort: credentials.dspaceDev.solrPort
     },
     oauth: {
       /**
@@ -180,9 +180,9 @@ var config = {
       host: credentials.dspaceProd.host,
       protocol: credentials.dspaceProd.protocol,
       port: credentials.dspaceProd.port,
-      context: 'rest',
-      solrHost: 'localhost',
-      solrPort: '8080'
+      context: credentials.dspaceProd.context,
+      solrHost: credentials.dspaceProd.solrHost,
+      solrPort: credentials.dspaceProd.solrPort,
     },
     oauth: {
       clientId: credentials.oauth.clientId,

@@ -156,6 +156,18 @@ md-dialog.item-details {
   margin-top: 4px;
 }
 
+.item-block-ellipsis {
+  display: block;
+  display: -webkit-box;
+  max-width: 100%;
+  height: 83px;
+  margin: 0 0;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .parent-title {
   line-height: 21px;
 }
@@ -240,6 +252,7 @@ collection-item-component .hide-content {
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 6px;
+  min-height: 100px;
 }
 
 .advanced-search .sort-options {
@@ -279,7 +292,8 @@ md-input-container.halfer {
 }
 
 .file-info .md-button,
-.file-info .md-button md-icon {
+.file-info .md-button md-icon,
+.dialog-record a {
   color: #37949b;
 
 }

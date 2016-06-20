@@ -1,22 +1,16 @@
 /**
  * The values defined here are used to construct the query object
  * There is normally no need to edit these values.
- * 
- * The constants defined here are mirrored on the server-side and cannot 
- * be altered without affecting the API between client and server.
- * 
- * One exception is the 'label' elements used in the *MAP arrays.
- * These labels appear in the user interface form inputs and can be
- * modified without affecting server-side functionality. When editing the 
- * *MAP objects, do not change the 'value' elements since these ARE
- * used in server-side logic and must remain in sync.
+ *
+ * The constants defined here are mirrored on the server-side and cannot
+ * be altered without affecting client and server behavior.
  */
 
 'use strict';
 
 (function () {
 
-  var authorSearch = 'authorFacets';  
+  var authorSearch = 'authorFacets';
   var subjectSearch = 'subjectFacets';
   var titleList = 'allTitlesBrowse';
   var datesList = 'allDatesBrowse';
@@ -42,7 +36,7 @@
     BROWSE: 'browse',
     SEARCH: 'search'
   });
-  
+
   appConstants.constant('DiscoveryContext', {
     ADVANCED_SEARCH: 'advSearch',
     BASIC_SEARCH: 'search'
@@ -80,38 +74,6 @@
 
   });
 
-  appConstants.constant('CollectionQueryFieldMap', {
-    fields: [
-      {label: 'Title', value: titleList},
-      {label: 'Author', value: authorSearch},
-      {label: 'Date', value: datesList},
-      {label: 'Subject', value: subjectSearch}
-    ]
-  });
-
-  appConstants.constant('BrowseQueryFieldMap', {
-    fields: [
-      {label: 'Title', value: titleList},
-      {label: 'Date', value: datesList}
-    ]
-  });
-
-  appConstants.constant('ListSortOrderMap', {
-    order: [
-      {label: 'Ascending', value: sortAscending},
-      {label: 'Descending', value: sortDescending}
-    ]
-  });
-
-  appConstants.constant('DiscoveryFieldMap', {
-    fields: [
-      {label: 'Title', value: filterTitle},
-      {label: 'Author', value: filterAuthor},
-      {label: 'Date Issued', value: filterDate},
-      {label: 'Subject', value: filterSubject}
-    ]
-  });
-
   appConstants.constant('QueryFilterField', {
     AUTHOR: filterAuthor,
     TITLE: filterTitle,
@@ -130,5 +92,48 @@
       {label: 'Not Contains', value: filterNotContains}
     ]
   });
+
+  // Using factory modules for select options. This allows injecting
+  // Messages and avoids the need to edit this file when configuring
+  // the views.
+  appConstants.factory('CollectionQueryFieldMap', ['Messages', function (Messages) {
+    return {
+      fields: [
+        {label: Messages.SORT_OPTIONS_TITLE, value: titleList},
+        {label: Messages.SORT_OPTIONS_AUTHOR, value: authorSearch},
+        {label: Messages.SORT_OPTIONS_DATE, value: datesList},
+        {label: Messages.SORT_OPTIONS_SUBJECT, value: subjectSearch}
+      ]
+    }
+  }]);
+
+  appConstants.factory('BrowseQueryFieldMap', ['Messages', function (Messages) {
+    return {
+      fields: [
+        {label: Messages.SORT_OPTIONS_TITLE, value: titleList},
+        {label: Messages.SORT_OPTIONS_DATE, value: datesList}
+      ]
+    }
+  }]);
+
+  appConstants.factory('ListSortOrderMap', ['Messages', function (Messages) {
+    return {
+      order: [
+        {label: Messages.SORT_OPTIONS_ASCENDING, value: sortAscending},
+        {label: Messages.SORT_OPTIONS_DESCENDING, value: sortDescending}
+      ]
+    }
+  }]);
+
+  appConstants.factory('DiscoveryFieldMap', ['Messages', function (Messages) {
+    return {
+      fields: [
+        {label: Messages.SORT_OPTIONS_TITLE, value: filterTitle},
+        {label: Messages.SORT_OPTIONS_AUTHOR, value: filterAuthor},
+        {label: Messages.SORT_OPTIONS_DATE, value: filterDate},
+        {label: Messages.SORT_OPTIONS_SUBJECT, value: filterSubject}
+      ]
+    }
+  }]);
 
 })();

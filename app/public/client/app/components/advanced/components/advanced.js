@@ -25,6 +25,60 @@
     var adv = this;
 
     /**
+     * Executes query to retrieve a fresh result set.
+     */
+    function doSearch() {
+      /**
+       * Hide the pager button.
+       */
+      AppContext.setPager(false);
+
+      /**
+       * Get promise.
+       * @type {*|{method}|Session}
+       */
+      var items = SolrQuery.save({
+        params: QueryManager.getQuery()
+
+      });
+
+      /**
+       * Handle the response.
+       */
+      items.$promise.then(function (data) {
+        QueryManager.setOffset(data.offset);
+        adv.items = data.results;
+        adv.count = data.count;
+
+
+      });
+
+    }
+
+    function submit(terms) {
+
+      /**
+       * If search terms are provided, execute the search.
+       */
+      if (terms.length > 0) {
+
+        QueryManager.setSearchTerms(terms);
+
+        /**
+         * Show list components.
+         */
+        if (adv.hideComponents) {
+          adv.hideComponents = false;
+
+        }
+
+        doSearch();
+
+      }
+
+    }
+
+    /**
      * Set this to be the controller updated by the discovery util methods.
      */
     DiscoveryFormExtensions.setController(this);
@@ -82,6 +136,26 @@
      * @type {string}
      */
     adv.count = 0;
+    /**
+     * Set the collection id to zero.
+     * @type {number}
+     */
+    adv.collectionId = 0;
+    /**
+     * Set the community id to zero (global search).
+     */
+    adv.communityId = 0;
+    /**
+     * Hide the result components on init.
+     * @type {boolean}
+     */
+    adv.hideComponents = true;
+    
+    /**
+     * Handles search form submission.
+     * @param terms  the query terms
+     */
+    adv.submit = submit;
 
     /**
      * Handles collection selection.
@@ -91,8 +165,7 @@
       adv.collectionId = id;
       DiscoveryFormExtensions.selectCollection(id);
     };
-
-
+    
     /**
      * Handles selection of community.
      */
@@ -100,64 +173,6 @@
     adv.selectCommunity = function () {
       DiscoveryFormExtensions.selectCommunity();
       DiscoveryFormExtensions.getCollectionsForCommunity(adv.communityId, adv.collectionId);
-
-    };
-
-    /**
-     * Executes query to retrieve a fresh result set.
-     */
-    function doSearch() {
-      /**
-       * Hide the pager button.
-       */
-      AppContext.setPager(false);
-
-      /**
-       * Get promise.
-       * @type {*|{method}|Session}
-       */
-      var items = SolrQuery.save({
-        params: QueryManager.getQuery()
-
-      });
-
-      /**
-       * Handle the response.
-       */
-      items.$promise.then(function (data) {
-        QueryManager.setOffset(data.offset);
-        adv.items = data.results;
-        adv.count = data.count;
-
-
-      });
-
-    }
-
-    /**
-     * Handles search form submission.
-     * @param terms  the query terms
-     */
-    adv.submit = function (terms) {
-
-      /**
-       * If search terms are provided, execute the search.
-       */
-      if (terms.length > 0) {
-
-        QueryManager.setSearchTerms(terms);
-
-        /**
-         * Show list components.
-         */
-        if (adv.hideComponents) {
-          adv.hideComponents = false;
-
-        }
-
-        doSearch();
-
-      }
 
     };
 
@@ -194,25 +209,10 @@
       QueryManager.setAssetId(0);
 
       /**
-       * Hide the result components on init.
-       * @type {boolean}
-       */
-      adv.hideComponents = true;
-
-      /**
        * Get the community list.
        */
       DiscoveryFormExtensions.getCommunities();
-
-      /**
-       * Set the collection id to zero.
-       * @type {number}
-       */
-      adv.collectionId = 0;
-      /**
-       * Set the community id to zero (global search).
-       */
-      adv.communityId = 0;
+      
 
     }
 
