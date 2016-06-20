@@ -50,7 +50,7 @@
         });
 
       ctrl.status = 'remove';
-      
+
       ctrl.disabled = true;
 
     };
@@ -69,9 +69,9 @@
 
     ctrl.filterTerms = '';
 
-    ctrl.selectedField = '';
+    ctrl.selectedField = DiscoveryFieldMap.fields[0].value;
 
-    ctrl.selectedMode = '';
+    ctrl.selectedMode = QueryModeMap.modes[0].value;
 
     /**
      * Label/Value map for query fields (title, author, subject, date)

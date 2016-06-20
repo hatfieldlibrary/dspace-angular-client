@@ -1,4 +1,5 @@
 /**
+ * Item component controller.
  * Created by mspalti on 2/25/16.
  */
 
@@ -6,11 +7,11 @@
 
 (function () {
 
-  /**
-   * Item component controller.
-   */
 
-  function ItemCtrl(GetCollectionInfo, Utils, Messages, AppContext, QueryManager) {
+  function ItemCtrl(GetCollectionInfo,
+                    Utils,
+                    Messages,
+                    AppContext) {
 
     var ctrl = this;
 
@@ -34,35 +35,30 @@
 
     ctrl.dspaceRoot = AppContext.getDspaceRoot();
 
+    ctrl.showMetadata = false;
 
+    ctrl.toggleMeta = function () {
+      ctrl.showMetadata = !ctrl.showMetadata;
+
+    };
     /**
      * Get information about the item.
      */
     ctrl.data.$promise.then(function (data) {
-
-      console.log(QueryManager.getAssetId());
-      console.log(data);
       ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
       ctrl.canWrite = AppContext.getWritePermission();
       ctrl.itemId = data.id;
+
     });
-    
 
-    ctrl.showMetadata = false;
-
+    /**
+     * Retrieve parent collection name and handle.
+     */
     var parent = GetCollectionInfo.query({item: ctrl.data.parentCollection.id});
-
     parent.$promise.then(function (data) {
       ctrl.parentName = data.parentCommunity.name;
       ctrl.parentHandle = data.parentCommunity.handle;
     });
-
-    ctrl.toggleMeta = function () {
-
-      ctrl.showMetadata = !ctrl.showMetadata;
-
-    };
-
 
   }
 

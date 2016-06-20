@@ -1,4 +1,5 @@
 /**
+ * Communities list component.
  * Created by mspalti on 2/25/16.
  */
 
@@ -6,9 +7,7 @@
 
 (function () {
 
-  /**
-   * Collection view controller.
-   */
+
   function CommunitiesCtrl(GetCommunities,
                            QueryStack,
                            QueryManager,
@@ -21,7 +20,17 @@
 
     ctrl.heading = Messages.COMMUNITIES_LIST_HEADING;
 
+    /**
+     * Indicates when data has been returned.
+     * @type {boolean}
+     */
     ctrl.ready = false;
+
+    /**
+     * Communities data.
+     * @type {{}}
+     */
+    ctrl.communities = {};
 
     QueryStack.clear();
 
@@ -34,10 +43,8 @@
     }, function (err) {
       console.log('Error status: ' + err.status + ' - ' + err.statusText);
     });
-
-
+    
   }
-
 
   dspaceComponents.component('communitiesComponent', {
 

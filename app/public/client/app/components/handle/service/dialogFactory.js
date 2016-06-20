@@ -36,7 +36,6 @@
                                 Messages,
                                 $anchorScroll,
                                 $mdMedia,
-                                QueryManager,
                                 AppContext,
                                 $timeout) {
 
@@ -56,6 +55,8 @@
         ctrl.abstractLabel = Messages.ITEM_ABSTRACT_LABEL;
 
         ctrl.metadataLabel = Messages.ITEM_METADATA_LABEL;
+        
+        ctrl.parentCollectionLabel = Messages.PARENT_COLLECTION_LABEL;
 
         ctrl.dspaceHost = AppContext.getDspaceHost();
 

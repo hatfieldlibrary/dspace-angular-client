@@ -14,10 +14,34 @@
 
     var ctrl = this;
 
+    function hasLogo() {
+      if (typeof ctrl.data.logo.retrieveLink !== 'undefined') {
+        return true;
+      }
+      return false;
+    }
+
+    function getLogo() {
+
+      if (ctrl.data.logo.retrieveLink) {
+        return Utils.getLogoPath(ctrl.data.logo.id);
+      }
+      return '';
+    }
+
     ctrl.homeLinkLabel = Messages.COMMUNITY_HOME_LINK_LABEL;
 
     ctrl.loginMessage = Messages.LOGIN_TO_SEE_MORE_LABEL;
+
+    /**
+     * Returns the url for a logo.  This method can be called
+     * for communities and collections.
+     * @returns {string}
+     */
+    ctrl.getLogo = getLogo;
     
+    ctrl.hasLogo = hasLogo;
+
 
     /**
      * Shows login message if the count of returned collections
@@ -29,28 +53,7 @@
       ctrl.hideLoginMessage = true;
 
     }
-
-    ctrl.hasLogo = function() {
-      if (typeof ctrl.data.logo.retrieveLink !== 'undefined') {
-        return true;
-      }
-      return false;
-    };
-
-
-    /**
-     * Returns the url for a logo.  This method can be called
-     * for communities and collections.
-     * @returns {string}
-     */
-    ctrl.getLogo = function () {
-
-      if (ctrl.data.logo.retrieveLink) {
-        return Utils.getLogoPath(ctrl.data.logo.id);
-      }
-      return '';
-    };
-
+    
   }
 
   dspaceComponents.component('communityComponent', {

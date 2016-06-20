@@ -38,7 +38,7 @@
       <md-divider style="padding-bottom: 0px;"></md-divider>
 
       <!-- Main content area, layout row < lg, layout column > md -->
-      <div class="dialog-record-width">
+      <div class="dialog-record dialog-record-width">
 
         <div layout="row" layout-align="start start" flex="100" style="height:100%" layout-padding>
 
@@ -60,10 +60,12 @@
             <!-- Byline and citation -->
             <div layout="column" layout-align="start start" style="max-width:100%;box-sizing:border-box;">
               <div class="md-title byline dialog-record-width" style="max-width: 100%;">{{$ctrl.data.author}}</div>
-              <div class="md-body-1">{{$ctrl.publicationLabel}}</div>
+              <div class="md-body-2">{{$ctrl.publicationLabel}}</div>
               <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.date}}</div>
-              <div class="md-body-1 citation-margin">{{$ctrl.citationLabel}}</div>
+              <div class="md-body-2 citation-margin">{{$ctrl.citationLabel}}</div>
               <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.url}}</div>
+              <div class="md-body-2 citation-margin">{{$ctrl.parentCollectionLabel}}</div>
+              <div class="md-subhead" style="max-width:100%;box-sizing:border-box"><a ng-href="/ds/handle/{{$ctrl.data.parentCollection.handle}}" target="_top">{{$ctrl.data.parentCollection.name}}</a></div>
             </div>
 
             <md-divider hide-gt-md style="margin: 18px 0;"></md-divider>

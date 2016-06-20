@@ -27,7 +27,7 @@
 
     SEARCHBOX_ALL: 'All Collections',
 
-    SEARCHBOX_SEARCH_TEXT_LABEL: 'Search Terms',
+    SEARCHBOX_SEARCH_TEXT_LABEL: 'Enter Search Terms',
 
     SEARCHBOX_BUTTON_LABEL: 'Find',
 
@@ -60,14 +60,6 @@
     FILTER_ADD_BUTTON_LABEL: 'Add Filter',
 
     FILTER_REMOVE_BUTTON_LABEL: 'Remove Filter',
-
-    SORT_BY_FIELD_LABEL: 'Sort items by',
-
-    SORT_ORDER_LABEL: 'Sort order',
-
-    SORT_JUMP_TO_LETTER_LABEL: 'Jump to letter',
-
-    SORT_JUMP_TO_YEAR_LABEL: 'Enter Year',
 
     /**
      * Takes the form 'n label' where n is number of results and label is the string constant.
@@ -106,7 +98,29 @@
 
     LOGIN_TO_SEE_MORE_LABEL: 'Login to see more collections.',
 
-    FILE_ACCESS_RESTRICTED_LABEL: 'File access requires login.'
+    FILE_ACCESS_RESTRICTED_LABEL: 'File access requires login.',
+
+    PARENT_COLLECTION_LABEL: 'Parent Collection',
+
+    SORT_BY_FIELD_LABEL: 'Sort items by',
+
+    SORT_ORDER_LABEL: 'Sort order',
+
+    SORT_JUMP_TO_LETTER_LABEL: 'Jump to letter',
+
+    SORT_JUMP_TO_YEAR_LABEL: 'Enter Year',
+
+    SORT_OPTIONS_TITLE: 'Title',
+
+    SORT_OPTIONS_DATE: 'Date',
+
+    SORT_OPTIONS_AUTHOR: 'Author',
+
+    SORT_OPTIONS_SUBJECT: 'Subject',
+
+    SORT_OPTIONS_ASCENDING: 'Ascending',
+
+    SORT_OPTIONS_DESCENDING: 'Descending'
 
   });
 

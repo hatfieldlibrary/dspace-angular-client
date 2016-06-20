@@ -1,10 +1,14 @@
 /**
+ * Creates solr queries for various solr query types.
  * Created by mspalti on 3/28/16.
  */
 
 (function () {
 
   var constants = require('./constants');
+  /**
+   * Solr query functions.
+   */
   var authorFacets = require('./solrQueries/authorFacets');
   var subjectFacets = require('./solrQueries/subjectFacets');
   var titlesList = require('./solrQueries/titlesList');
