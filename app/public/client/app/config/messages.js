@@ -27,7 +27,7 @@
 
     SEARCHBOX_ALL: 'All Collections',
 
-    SEARCHBOX_SEARCH_TEXT_LABEL: 'Search Terms',
+    SEARCHBOX_SEARCH_TEXT_LABEL: 'Enter Search Terms',
 
     SEARCHBOX_BUTTON_LABEL: 'Find',
 
@@ -99,6 +99,8 @@
     LOGIN_TO_SEE_MORE_LABEL: 'Login to see more collections.',
 
     FILE_ACCESS_RESTRICTED_LABEL: 'File access requires login.',
+
+    PARENT_COLLECTION_LABEL: 'Parent Collection',
 
     SORT_BY_FIELD_LABEL: 'Sort items by',
 

@@ -292,7 +292,8 @@ md-input-container.halfer {
 }
 
 .file-info .md-button,
-.file-info .md-button md-icon {
+.file-info .md-button md-icon,
+.dialog-record a {
   color: #37949b;
 
 }
