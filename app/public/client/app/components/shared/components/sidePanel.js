@@ -106,7 +106,7 @@ function SideNavCtrl($scope,
     },
     function (newValue, oldValue) {
       if (newValue !== oldValue) {
-        
+
 
         if (newValue === AssetTypes.COLLECTION) {
           ctrl.actionType = 'Collection';

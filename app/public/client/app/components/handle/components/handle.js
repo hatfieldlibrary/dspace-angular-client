@@ -56,7 +56,7 @@
      * @type {boolean}
      */
     ctrl.loginRequired = false;
-    
+
     /**
      * Initialize the component.
      */
@@ -64,11 +64,10 @@
 
       Utils.resetQuerySettings();
 
-      /** Retrieve data for the handle. */
-      var query = ItemByHandle.query({site: site, item: item});
-
       QueryManager.setHandle(site + '/' + item);
 
+      /** Retrieve data for the handle. */
+      var query = ItemByHandle.query({site: site, item: item});
       query.$promise.then(
         function (data) {
 

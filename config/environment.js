@@ -1,7 +1,8 @@
 var path = require('path'),
   rootPath = path.normalize(__dirname + '/../app/'),
   distPath = path.normalize(__dirname + '/../dist/app/'),
-  credentials = require('./credentials');
+  credentials = require('./credentials'),
+  dspace = require('./dspace');
 
 /**
  * Get runtime environment from the node environment.
@@ -51,14 +52,6 @@ var config = {
       name: 'dspace'
     },
     /**
-     * Your development system user id.
-     */
-    uid: credentials.develuid,
-    /**
-     * Your development system group id.
-     */
-    gid: credentials.develgid,
-    /**
      * The nodejs port.
      */
     port: 3000,
@@ -71,29 +64,29 @@ var config = {
       /**
        * DSpace host.
        */
-      host: credentials.dspaceDev.host,
+      host: dspace.dspaceDev.host,
       /**
        * DSpace rest protocol (https/http)
        */
-      protocol: credentials.dspaceDev.protocol,
+      protocol: dspace.dspaceDev.protocol,
       /**
        * DSpace rest port (8008)
        */
-      port: credentials.dspaceDev.port,
+      port: dspace.dspaceDev.port,
       /**
        * DSpace REST servlet context ('rest' or alternate development servlet context).
        */
-      context: credentials.dspaceDev.context,
+      context: dspace.dspaceDev.context,
       /**
        * The DSpace solr host (for development either localhost or ip address).
        * If connecting to a remote instance of DSpace during development, use
        * port forwarding: ssh -L 1234:127.0.0.1:8080 dspace.university.edu
        */
-      solrHost: credentials.dspaceDev.solrHost,
+      solrHost: dspace.dspaceDev.solrHost,
       /**
        * Solr port.
        */
-      solrPort: credentials.dspaceDev.solrPort
+      solrPort: dspace.dspaceDev.solrPort
     },
     oauth: {
       /**
@@ -134,14 +127,12 @@ var config = {
     app: {
       name: 'dspace'
     },
-    uid: credentials.develuid,
-    gid: credentials.develgid,
     port: 3000,
     secret: credentials.restSecret,
     dspace: {
-      host: credentials.dspaceDev.host,
-      protocol: credentials.dspaceDev.protocol,
-      port: credentials.dspaceDev.port,
+      host: dspace.dspaceDev.host,
+      protocol: dspace.dspaceDev.protocol,
+      port: dspace.dspaceDev.port,
       solrHost: 'localhost',
       solrPort: '1234'
     },
@@ -164,8 +155,8 @@ var config = {
     app: {
       name: 'dspace'
     },
-    uid: credentials.uid,
-    gid: credentials.gid,
+    uid: 'node',
+    gid: 'node',
     port: 3000,
     /**
      * Production uses redis as the session store.  Set
@@ -177,12 +168,12 @@ var config = {
      */
     secret: credentials.restSecret,
     dspace: {
-      host: credentials.dspaceProd.host,
-      protocol: credentials.dspaceProd.protocol,
-      port: credentials.dspaceProd.port,
-      context: credentials.dspaceProd.context,
-      solrHost: credentials.dspaceProd.solrHost,
-      solrPort: credentials.dspaceProd.solrPort,
+      host: dspace.dspaceProd.host,
+      protocol: dspace.dspaceProd.protocol,
+      port: dspace.dspaceProd.port,
+      context: dspace.dspaceProd.context,
+      solrHost: dspace.dspaceProd.solrHost,
+      solrPort: dspace.dspaceProd.solrPort,
     },
     oauth: {
       clientId: credentials.oauth.clientId,
