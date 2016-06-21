@@ -112,7 +112,7 @@ function SideNavCtrl($scope,
           ctrl.actionType = 'Collection';
           ctrl.itemHandle = QueryManager.getHandle();
           ctrl.itemId = QueryManager.getAssetId();
-          ctrl.canSubmit = AppContext.getWritePermission();
+          ctrl.canSubmit = AppContext.getSubmitPermission();
           ctrl.isSystemAdmin = false; // not needed
           ctrl.canAdminister = AppContext.getAdministerPermission();
           ctrl.showSubmitInstuctions = true;
