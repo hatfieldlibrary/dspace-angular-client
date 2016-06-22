@@ -141,19 +141,7 @@ function SideNavCtrl($scope,
       }
     }
   );
-
-  // $scope.$watch(function() {return QueryManager.getAssetId()},
-  // function(newValue, oldValue) {
-  //   if (newValue !== oldValue) {
-  //     console.log(newValue)
-  //     if (QueryManager.getAssetType() === AssetTypes.COLLECTION) {
-  //       ctrl.itemHandle = QueryManager.getHandle();
-  //     }
-  //     ctrl.itemId = QueryManager.getAssetId();
-  //
-  //   }
-  // });
-
+  
   /**
    * Since we cannot use AssetType with Discovery queries, we need
    * to add another watch.  It would be nice to eliminate this one,
