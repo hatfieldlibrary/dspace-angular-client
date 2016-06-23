@@ -6,7 +6,7 @@
 This DSpace REST API/solr client project uses AngularJs 1.x (1.5) and NodeJs middleware. 
 
 
-The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store. In general, we are betting that a robust middleware layer will be helpful and plan to channel all interactions through this layer.   The Node application 
+The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the production session store. In general, we are betting that a robust middleware layer will be helpful and plan to channel all interactions through this layer.   The Node application 
 retrieves data from DSpace via solr and the [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace using the REST API").  We're currently using an updated version of the DSpace 5.5 REST API that supports additional authentication methods, special groups and access to user authorization levels.
 
 The Angular 1.5 frontend is written with components. The goal is to make the browser application port easily to Angular 2.0. The frontend layout uses [Angular Material](https://material.angularjs.org/latest/), based on CSS3 Flexbox layout mode.
@@ -38,7 +38,7 @@ First, the NodeJs Express application authenticates via CAS or OAUTH2. Next a DS
 
 Our local DSpace implementation uses special groups and automatically registers new users. 
 
-Because the DSpace 5.5 REST API does not support special groups, we updated the REST API to capture special groups on login and to retain this information, along with the `EPerson`, in the REST API `TokenHolder`. The AngularJs client also needs to know the user's authorization level so that administrative options can be offered.  The DSpace REST API was extended with a new `permissions` expand option to support this.
+The DSpace 5.5 REST API does not support special groups, so we updated the REST API to retrieve special groups at login and retain special group ID's in addition to the the `EPerson` ID in the REST API's `TokenHolder`. The Angular client needs to know the user's authorization level so the DSpace REST API was also extended with a new `permissions` expand option that provides information on READ, WRITE, ADD and ADMIN authorizations.
 
 
 ## Setting up the development environment
@@ -71,10 +71,21 @@ You can work with either a DSpace instance running on your local machine or with
 
 Currently have only middleware integration tests.  To run tests, execute `mocha` from the root project directory.
 
+## Build
+   
+To build the application, you will need the Strongloop command line tool.  You can install this via `npm install -g strongloop`
+   
+Next:
+   
+  1. Build the AngularJs application using `grunt build`
+  2. Verify the details of the NodeJs production environment in config/credentials.js and config/environment.js.
+  3. Build the tar file using the `slc` command line tool: `slc build --install --pack`
+  
+This will create a zipped tar file for your project.
 
 ## Deploy
 
-First, the prerequisites. Make sure nodejs is installed on the server. It's wise to use the identical nodejs version that you are using in your development environment.
+First, the prerequisites. Make sure nodejs is installed on the server. It's wise to use the same nodejs version as you are using in your development environment. Also, you need to install [redis](http://redis.io/ "redis") on your system.  It will be used as the production server's session store.
 
 You need to decide how to manage the application on your server. Currently, we use the [forever](https://github.com/foreverjs/forever "forever") CLI to launch the Express application and ensure that it runs continuously. Install forever globally as follows:
 `sudo npm install forever -g `
@@ -85,17 +96,9 @@ Create a `node` user on the system. Next, verify that your init.d startup script
 
 Example: `NODE_ENV=production $DAEMON $DAEMONOPTS start $NODEAPP`.
 
-### Build
 
-To build the application, you will need the Strongloop command line tool.  You can install this via `npm install -g strongloop`
-
-Next:
-
-1. Build the AngularJs application using `grunt build`
-2. Verify the details of the NodeJs production environment in config/credentials.js and config/environment.js.
-3. Build the tar file using the `slc` command line tool: `slc build --install --pack`
-4. Copy the tar file to the production host.
-5. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service dspace stop).
-6. Unpack the tar file into the application directory.
-5. Set the owner and group for project all files (including .* files) to `node`.
-6. Start forever via the init.d script (e.g. /sbin/service dspace start).
+1. Copy the tar file to the production host.
+2. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service dspace stop).
+3. Unpack the tar file into the application directory.
+4. Set the owner and group for project all files (including .* files) to `node`.
+5. Start forever via the init.d script (e.g. /sbin/service dspace_client start).
