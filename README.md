@@ -36,9 +36,7 @@ Authentication is handled by the NodeJs Passport middleware, using CAS or OAUTH2
 
 First, the NodeJs Express application authenticates via CAS or OAUTH2. Next a DSpace REST authentication token is retrieved by passing a secret application key to the DSpace REST API authenticate service. The key is checked by a `RestAuthentication` DSpace plugin at the beginning of our plugin sequence.  If the keys shared by the Nodejs application and DSpace match, authentication succeeds.  The REST API generates a token and returns it for use in subsequent API requests.
 
-Our local DSpace implementation uses special groups and automatically registers new users. 
-
-The DSpace 5.5 REST API does not support special groups, so we updated the REST API to retrieve special groups at login and retain special group ID's in addition to the the `EPerson` ID in the REST API's `TokenHolder`. The Angular client needs to know the user's authorization level so the DSpace REST API was also extended with a new `permissions` expand option that provides information on READ, WRITE, ADD and ADMIN authorizations.
+Our local DSpace implementation uses special groups and automatically registers new users. The DSpace 5.5 REST API does not support special groups, so we updated the REST API to retrieve special groups at login and retain special group ID's in addition to the the `EPerson` ID in the REST API's `TokenHolder`. The Angular client needs to know the user's authorization level so the DSpace REST API was also extended with a new `permissions` expand option that provides information on READ, WRITE, ADD and ADMIN authorizations.
 
 
 ## Setting up the development environment
@@ -87,16 +85,17 @@ This will create a zipped tar file for your project.
 
 First, the prerequisites. Make sure nodejs is installed on the server. It's wise to use the same nodejs version as you are using in your development environment. Also, you need to install [redis](http://redis.io/ "redis") on your system.  It will be used as the production server's session store.
 
-You need to decide how to manage the application on your server. Currently, we use the [forever](https://github.com/foreverjs/forever "forever") CLI to launch the Express application and ensure that it runs continuously. Install forever globally as follows:
+You need to decide how to start and manage the application on your server. Currently, we use the [forever](https://github.com/foreverjs/forever "forever") CLI to launch the Express application using an init.d script. `forever` ensures that the Express application runs continuously. 
+
+Install forever globally as follows:
 `sudo npm install forever -g `
 
 Create an `init.d` script that launches the application using `forever` as well as a second `init.d` script that starts the redis session store. Add these two startup tasks to your system runlevels.
 
-Create a `node` user on the system. Next, verify that your init.d startup script sets the NODE_ENV value to 'production.' 
+Create a `node` user on the system. Next, verify that your init.d startup script sets the NODE_ENV value to 'production.'  Example: `NODE_ENV=production $DAEMON $DAEMONOPTS start $NODEAPP`.
 
-Example: `NODE_ENV=production $DAEMON $DAEMONOPTS start $NODEAPP`.
-
-
+Next: 
+ 
 1. Copy the tar file to the production host.
 2. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service dspace stop).
 3. Unpack the tar file into the application directory.
