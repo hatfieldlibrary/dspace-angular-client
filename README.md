@@ -71,6 +71,17 @@ You can work with either a DSpace instance running on your local machine or with
 
 Currently have only middleware integration tests.  To run tests, execute `mocha` from the root project directory.
 
+### Build
+   
+To build the application, you will need the Strongloop command line tool.  You can install this via `npm install -g strongloop`
+   
+Next:
+   
+  1. Build the AngularJs application using `grunt build`
+  2. Verify the details of the NodeJs production environment in config/credentials.js and config/environment.js.
+  3. Build the tar file using the `slc` command line tool: `slc build --install --pack`
+  
+This will create a zipped tar file for your project.
 
 ## Deploy
 
@@ -85,17 +96,9 @@ Create a `node` user on the system. Next, verify that your init.d startup script
 
 Example: `NODE_ENV=production $DAEMON $DAEMONOPTS start $NODEAPP`.
 
-### Build
 
-To build the application, you will need the Strongloop command line tool.  You can install this via `npm install -g strongloop`
-
-Next:
-
-1. Build the AngularJs application using `grunt build`
-2. Verify the details of the NodeJs production environment in config/credentials.js and config/environment.js.
-3. Build the tar file using the `slc` command line tool: `slc build --install --pack`
-4. Copy the tar file to the production host.
-5. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service dspace stop).
-6. Unpack the tar file into the application directory.
-5. Set the owner and group for project all files (including .* files) to `node`.
-6. Start forever via the init.d script (e.g. /sbin/service dspace start).
+1. Copy the tar file to the production host.
+2. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service dspace stop).
+3. Unpack the tar file into the application directory.
+4. Set the owner and group for project all files (including .* files) to `node`.
+5. Start forever via the init.d script (e.g. /sbin/service dspace_client start).
