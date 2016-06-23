@@ -71,7 +71,7 @@ You can work with either a DSpace instance running on your local machine or with
 
 Currently have only middleware integration tests.  To run tests, execute `mocha` from the root project directory.
 
-### Build
+## Build
    
 To build the application, you will need the Strongloop command line tool.  You can install this via `npm install -g strongloop`
    
