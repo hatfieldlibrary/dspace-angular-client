@@ -45,55 +45,17 @@ Because the DSpace 5.5 REST API does not support special groups, we updated the 
 
 To get started with development, clone the project into your working directory.
 
+You will need to provide a `config/credentials.js` file. See the `credentials.SAMPLE.js` file for details.  
+ 
+You also need to update `config/dspace.js` to point to your production and/or development DSpace installation.
+  
+See `config/environment.js` for additional settings.
 
 Next, install the dependencies:
 
     npm install
 
     bower install
-
-You will need to provide a `config/credentials.js` file.  The `restSecret` show below must be mirrored the authentication plugin configuration (authentication-rest.cfg).
- 
- 
-```javascript
-'use strict';
-
-var credentials = {
-
-  develuid:        'your dev machine netid',
-  develgid:        'your dev machine user group',
-  uid: 'node',
-  gid: 'node',
-  cas: {
-    casServer:     'path to cas server',
-    develHost:     'path to local Express server',
-    prodHost:      'path to production Express server'
-  },
-  oauth: {
-    clientId:      'google oauth client id',
-    clientSecret:  'google oauth client secret',
-    callback:      'production server oauth callback',
-    develCallback: 'localhost callback',
-    emailDomain:   'somewhere.edu'
-  },
-  dspaceDev: {
-    host:          'dspace develoment host',
-    protocol:      'http',
-    port:          '8080'
-  },
-  dspaceProd: {
-    host:          'dspace production host',
-    protocol:      'http',
-    port:          '8080'
-  },
-  restSecret:      'csrqeare-el-9ernfe-lxrsswq-1' // Example. The key can be any length,and must match the value authentication-rest.cfg
-
-};
-
-module.exports = credentials;
-```
-  
-See `config/environment.js` for development and production settings.
 
 
 ### Start development server
