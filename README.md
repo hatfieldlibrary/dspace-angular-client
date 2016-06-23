@@ -64,7 +64,7 @@ To start the development server, type:
  
  `grunt serve`
  
-You can work with either a DSpace instance running on your local machine or with a remote host. Remember that configuring the environment is accomplished using `config/environment.js` and the `config/credentials.js` file that you created.  
+You can work with either a DSpace instance running on your local machine or with a remote host. 
 
 
 ## Testing
