@@ -6,7 +6,7 @@
 This DSpace REST API/solr client project uses AngularJs 1.x (1.5) and NodeJs middleware. 
 
 
-The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store. In general, we are betting that a robust middleware layer will be helpful and plan to channel all interactions through this layer.   The Node application 
+The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the production session store. In general, we are betting that a robust middleware layer will be helpful and plan to channel all interactions through this layer.   The Node application 
 retrieves data from DSpace via solr and the [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace using the REST API").  We're currently using an updated version of the DSpace 5.5 REST API that supports additional authentication methods, special groups and access to user authorization levels.
 
 The Angular 1.5 frontend is written with components. The goal is to make the browser application port easily to Angular 2.0. The frontend layout uses [Angular Material](https://material.angularjs.org/latest/), based on CSS3 Flexbox layout mode.
@@ -85,7 +85,7 @@ This will create a zipped tar file for your project.
 
 ## Deploy
 
-First, the prerequisites. Make sure nodejs is installed on the server. It's wise to use the identical nodejs version that you are using in your development environment.
+First, the prerequisites. Make sure nodejs is installed on the server. It's wise to use the same nodejs version as you are using in your development environment. Also, you need to install [redis](http://redis.io/ "redis") on your system.  It will be used as the production server's session store.
 
 You need to decide how to manage the application on your server. Currently, we use the [forever](https://github.com/foreverjs/forever "forever") CLI to launch the Express application and ensure that it runs continuously. Install forever globally as follows:
 `sudo npm install forever -g `
