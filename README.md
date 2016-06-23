@@ -38,7 +38,7 @@ First, the NodeJs Express application authenticates via CAS or OAUTH2. Next a DS
 
 Our local DSpace implementation uses special groups and automatically registers new users. 
 
-Because the DSpace 5.5 REST API does not support special groups, we updated the REST API to capture special groups on login and to retain this information, along with the `EPerson`, in the REST API `TokenHolder`. The AngularJs client also needs to know the user's authorization level so that administrative options can be offered.  The DSpace REST API was extended with a new `permissions` expand option to support this.
+The DSpace 5.5 REST API does not support special groups, so we updated the REST API to retrieve special groups at login and retain special group ID's in addition to the the `EPerson` ID in the REST API's `TokenHolder`. The Angular client needs to know the user's authorization level so the DSpace REST API was also extended with a new `permissions` expand option that provides information on READ, WRITE, ADD and ADMIN authorizations.
 
 
 ## Setting up the development environment
