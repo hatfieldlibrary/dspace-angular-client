@@ -10,7 +10,7 @@
    * Community view controller.
    */
 
-  function CommunityCtrl(Messages, Utils) {
+  function CommunityCtrl(Messages, Utils, AppContext, $scope) {
 
     var ctrl = this;
 
@@ -39,21 +39,33 @@
      * @returns {string}
      */
     ctrl.getLogo = getLogo;
-    
-    ctrl.hasLogo = hasLogo;
 
+    ctrl.hasLogo = hasLogo;
 
     /**
      * Shows login message if the count of returned collections
      * does not equal the total collections in the community.
-     * Assumes that some collections have access restrictions.
+     * Assumes that some of the collections are hidden behind DSpace
+     * access restrictions.
      */
     if (ctrl.data.countItems === ctrl.data.itemTotal) {
-
       ctrl.hideLoginMessage = true;
 
     }
-    
+
+    /**
+     * Watch for updates to the DSpace session status and show
+     * or hide the login message in response. We don't want to
+     * show the community's inline login component if the user
+     * is already logged in.  In this case, we can safely assume
+     * that the user does not have access to collections still
+     * hidden behind DSpace authorizations.
+     */
+    $scope.$watch(function() { return AppContext.hasDspaceSession()},
+      function(data) {
+        ctrl.hideLoginMessage = data;
+      });
+
   }
 
   dspaceComponents.component('communityComponent', {

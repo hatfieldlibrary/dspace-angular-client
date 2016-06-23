@@ -56,7 +56,7 @@
      * @type {boolean}
      */
     ctrl.loginRequired = false;
-    
+
     /**
      * Initialize the component.
      */
@@ -64,11 +64,10 @@
 
       Utils.resetQuerySettings();
 
-      /** Retrieve data for the handle. */
-      var query = ItemByHandle.query({site: site, item: item});
-
       QueryManager.setHandle(site + '/' + item);
 
+      /** Retrieve data for the handle. */
+      var query = ItemByHandle.query({site: site, item: item});
       query.$promise.then(
         function (data) {
 
@@ -154,13 +153,13 @@
                * Attempt to login. Redirect only if no DSpace session exists.
                * This avoids infinite loop.
                */
-              if (!AppContext.hasDspaceSession) {
+              if (!AppContext.hasDspaceSession()) {
                 $window.location = '/ds/auth/login';
 
               } else {
                 /**
-                 * If the user has a Dspace session, we can assume that the user is
-                 * not authorized to access the resource;
+                 * If the user has a Dspace session, assume that the user is
+                 * not authorized to access the resource.
                  * @type {boolean}
                  */
                 ctrl.accessNotAllowed = true;
@@ -189,7 +188,7 @@
   dspaceComponents.component('handleComponent', {
 
     template: '<!-- Switch components based on item type --> ' +
-    '<div ng-if="$ctrl.loginRequired">  ' +
+    '<div ng-if="$ctrl.loginRequired"> ' +
     '<login-required-component></login-required-component> ' +
     '</div> ' +
     '<div layout-fill class="spinner" ng-hide="$ctrl.ready" >' +

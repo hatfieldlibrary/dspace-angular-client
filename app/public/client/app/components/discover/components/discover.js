@@ -122,7 +122,7 @@
      * Initialization.
      */
     function init() {
-      
+
       Utils.resetQuerySettings();
 
       /**

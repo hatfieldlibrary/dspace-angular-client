@@ -3,36 +3,34 @@
 
 ## General Overview
 
-This DSpace prototype uses NodeJs and AngularJs. Much of the work here is based on an approach we are exploring in ernest with other projects. 
+This DSpace REST API/solr client project uses AngularJs 1.x (1.5) and NodeJs middleware. 
 
-The client uses DSpace solr and the [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace using the REST API").  Currently, we're using a version of the DSpace 5.5 REST API that has been updated to support additional authentication methods, special groups and access to user authorization levels.
 
-The NodeJs middleware used in this project includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store. In general, we are betting that a robust middleware layer will be helpful and plan to channel all interactions through this layer.  
+The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [redis](https://www.npmjs.com/package/redis "redis") with [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the session store. In general, we are betting that a robust middleware layer will be helpful and plan to channel all interactions through this layer.   The Node application 
+retrieves data from DSpace via solr and the [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace using the REST API").  We're currently using an updated version of the DSpace 5.5 REST API that supports additional authentication methods, special groups and access to user authorization levels.
 
-The AngularJs frontend uses the [Angular Material](https://material.angularjs.org/latest/) design framework, based on CSS3 Flexbox layout mode.
+The Angular 1.5 frontend is written with components. The goal is to make the browser application port easily to Angular 2.0. The frontend layout uses [Angular Material](https://material.angularjs.org/latest/), based on CSS3 Flexbox layout mode.
 
-The browser application is written using AngularJs 1.5 and components. The goal has been to make the application port easily to Angular 2.0.
-
-This prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  Solr searches are used throughout the application to provide search and browse functionality that is similar to that provided by the current DSpace XMLUI and JSPUI. 
+This prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  The application provides search and browse options similar to those provided by the current DSpace XMLUI and JSPUI. 
 
 
 ## Configuration
 
-#### Server Configuration
+#### Middleware App Configuration
 
-The primary configuration file for application middleware is `config/environment.js`.  Sensitive credentials like authentication secrets are placed in a separate file called `config/credentials.js`.  A sample credentials file is provided.
+The primary configuration file for middleware is `config/environment.js`. This file defines environment settings for both development and production. Sensitive credentials like authentication secrets are placed in a separate file called `config/credentials.js`.  (A sample credentials file is provided.) The `config/dspace.js` file defines your routes to DSpace for both production and development.
 
-Express, route, and authentication configuration files are also located in `config` and can be modified if needed.
+Additional configuration files for express, routes and authentication are also located in the `config` directory.  These can be modified if needed.
 
 
 #### Client Configuration
 
-Local customization of the AngularJs UI is accomplished via that AngularJs applications' `core/configuration/messages.js` and `core/configuration/appConfig.js` files.  
+You can customize the AngularJs UI via `app/config/messages.js` and `app/config/appConfig.js`.  
 
-Color theme customizations require changing the Material Design palettes defined in the AngularJs `app.js` file.  Here's an example of [a handy Material Design palette generator](http://mcg.mbitson.com/#/).
+You can modify color themes by changing the Material Design palettes defined in the AngularJs `app.js` file.  Here's an example of [a handy Material Design palette generator](http://mcg.mbitson.com/#/). The `public/client/app/ds/css/styles.css` file may also need to be modified to your specifications.
 
 
-## Authentication
+## DSpace Authentication
 
 Authentication is handled by the NodeJs Passport middleware, using CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
 
@@ -47,55 +45,17 @@ Because the DSpace 5.5 REST API does not support special groups, we updated the 
 
 To get started with development, clone the project into your working directory.
 
+You will need to provide a `config/credentials.js` file. See the `credentials.SAMPLE.js` file for details.  
+ 
+You also need to update `config/dspace.js` to point to your production and/or development DSpace installation.
+  
+See `config/environment.js` for additional settings.
 
 Next, install the dependencies:
 
     npm install
 
     bower install
-
-You will need to provide a `config/credentials.js` file.  The `restSecret` show below must be mirrored the authentication plugin configuration (authentication-rest.cfg).
- 
- 
-```javascript
-'use strict';
-
-var credentials = {
-
-  develuid:        'your dev machine netid',
-  develgid:        'your dev machine user group',
-  uid: 'node',
-  gid: 'node',
-  cas: {
-    casServer:     'path to cas server',
-    develHost:     'path to local Express server',
-    prodHost:      'path to production Express server'
-  },
-  oauth: {
-    clientId:      'google oauth client id',
-    clientSecret:  'google oauth client secret',
-    callback:      'production server oauth callback',
-    develCallback: 'localhost callback',
-    emailDomain:   'somewhere.edu'
-  },
-  dspaceDev: {
-    host:          'dspace develoment host',
-    protocol:      'http',
-    port:          '8080'
-  },
-  dspaceProd: {
-    host:          'dspace production host',
-    protocol:      'http',
-    port:          '8080'
-  },
-  restSecret:      'csrqeare-el-9ernfe-lxrsswq-1' // Example. The key can be any length,and must match the value authentication-rest.cfg
-
-};
-
-module.exports = credentials;
-```
-  
-See `config/environment.js` for development and production settings.
 
 
 ### Start development server
@@ -104,13 +64,24 @@ To start the development server, type:
  
  `grunt serve`
  
-You can work with either a DSpace instance running on your local machine or with a remote host. Remember that configuring the environment is accomplished using `config/environment.js` and the `config/credentials.js` file that you created.  
+You can work with either a DSpace instance running on your local machine or with a remote host.  See `config/dspace.js`.
 
 
 ## Testing
 
 Currently have only middleware integration tests.  To run tests, execute `mocha` from the root project directory.
 
+## Build
+   
+To build the application, you will need the Strongloop command line tool.  You can install this via `npm install -g strongloop`
+   
+Next:
+   
+  1. Build the AngularJs application using `grunt build`
+  2. Verify the details of the NodeJs production environment in config/credentials.js and config/environment.js.
+  3. Build the tar file using the `slc` command line tool: `slc build --install --pack`
+  
+This will create a zipped tar file for your project.
 
 ## Deploy
 
@@ -125,17 +96,9 @@ Create a `node` user on the system. Next, verify that your init.d startup script
 
 Example: `NODE_ENV=production $DAEMON $DAEMONOPTS start $NODEAPP`.
 
-### Build
 
-To build the application, you will need the Strongloop command line tool.  You can install this via `npm install -g strongloop`
-
-Next:
-
-1. Build the AngularJs application using `grunt build`
-2. Verify the details of the NodeJs production environment in config/credentials.js and config/environment.js.
-3. Build the tar file using the `slc` command line tool: `slc build --install --pack`
-4. Copy the tar file to the production host.
-5. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service dspace stop).
-6. Unpack the tar file into the application directory.
-5. Set the owner and group for project all files (including .* files) to `node`.
-6. Start forever via the init.d script (e.g. /sbin/service dspace start).
+1. Copy the tar file to the production host.
+2. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service dspace stop).
+3. Unpack the tar file into the application directory.
+4. Set the owner and group for project all files (including .* files) to `node`.
+5. Start forever via the init.d script (e.g. /sbin/service dspace_client start).

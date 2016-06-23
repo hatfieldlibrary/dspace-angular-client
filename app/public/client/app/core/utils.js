@@ -252,10 +252,10 @@ dspaceServices.factory('Utils', [
       sessionStatus.$promise.then(function () {
 
         if (sessionStatus.status === 'ok') {
-          AppContext.hasDspaceSession = true;
+          AppContext.updateDspaceSession(true);
           return true;
         } else {
-          AppContext.hasDspaceSession = false;
+          AppContext.updateDspaceSession(false);
           return false;
         }
 

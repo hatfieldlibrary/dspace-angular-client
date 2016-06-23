@@ -43,10 +43,10 @@ var utils = require('../core/utils');
 
             session.save(function (err) {
               if (err === null) {
-                console.log('DSpace API token: ' + session.getDspaceToken);
+                console.log('DSpace API token saved to session: ' + session.getDspaceToken);
             
               } else {
-                console.log('Error retrieving DSpace token.')
+                console.log('Error saving DSpace token to session.')
               }
             });
 
@@ -64,8 +64,6 @@ var utils = require('../core/utils');
             console.log('Unknown DSpace login status.'); // unknown status
           }
         }
-
-
 
       });
 
