@@ -104,25 +104,34 @@ module.exports = function (app, config, passport) {
      */
     var RedisStore = require('connect-redis')(session);
 
-    app.use(session(
-      {
-        store: new RedisStore({host: '127.0.0.1', port: config.redisPort}),
-        secret: 'ricsorieterazp',
-        proxy: true,
-        name: 'dsclient.sid',
-        cookie: { path: '/ds' },
-        saveUninitialized: false, // don't create session until something stored,
-        resave: false // don't save session if unmodified
-      }
-    ));
-    
+    app.use(session({
+        secret: 'rice paddy',
+        saveUninitialized: true,
+        resave: true
+      })
+    );
+
+    // Note that if you are testing CAS in development, you probably
+    // want to use basic Express sessions without redis.
+    // app.use(session(
+    //   {
+    //     store: new RedisStore({host: '127.0.0.1', port: config.redisPort}),
+    //     secret: 'ricsorieterazp',
+    //     proxy: true,
+    //     name: 'dsclient.sid',
+    //     cookie: { path: '/ds' },
+    //     saveUninitialized: false, // don't create session until something stored,
+    //     resave: false // don't save session if unmodified
+    //   }
+    // ));
+
     app.use(function (req, res, next) {
       if (!req.session) {
-        return next(new Error('Missing session for CAS login.')); // handle error 
+        return next(new Error('Missing session for CAS login.')); // handle error
       }
-      next(); // otherwise continue 
+      next(); // otherwise continue
     });
-    
+
 
     /**
      * Validates CAS user.  Not much to do at this point. Just

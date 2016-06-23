@@ -210,8 +210,16 @@
         return AppConfig.HOME_LINK;
       }
 
+      function hasDspaceSession() {
+        return _context.hasDspaceSession;
+      }
+      
+      function updateDspaceSession(hasSession) {
+        _context.hasDspaceSession = hasSession;
+      }
+
       return {
-        
+
         getContext: getContext,
         getDspaceHost: getDspaceHost,
         getDspaceRoot: getDspaceRoot,
@@ -244,7 +252,9 @@
         getDiscoveryContext: getDiscoveryContext,
         getSetSize: getSetSize,
         getHomeLogo: getHomeLogo,
-        getHomeLink: getHomeLink
+        getHomeLink: getHomeLink,
+        hasDspaceSession: hasDspaceSession,
+        updateDspaceSession: updateDspaceSession
 
       }
 

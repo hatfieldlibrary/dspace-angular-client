@@ -6,7 +6,6 @@
 (function () {
 
   function LoginCtrl($scope,
-                   //  Login,
                      Utils,
                      Messages,
                      AppContext) {
@@ -23,7 +22,7 @@
 
     ctrl.logoutLabel = Messages.LOGOUT_LABEL;
 
-    ctrl.sessionStatus = AppContext.hasDspaceSession;
+    ctrl.sessionStatus = AppContext.hasDspaceSession();
 
     /** Login request */
     // ctrl.login = function () {
@@ -39,7 +38,7 @@
     };
     /** Watch for change in DSpace session status. */
     $scope.$watch(function () {
-        return AppContext.hasDspaceSession;
+        return AppContext.hasDspaceSession();
       },
 
       function (newValue, oldValue) {
