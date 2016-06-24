@@ -31,6 +31,10 @@ var dspaceApp = angular.module('dspaceApp', [
 
       $routeProvider
         .when('/ds/handle/:site/:item', {
+          templateUrl: '/ds/partials/handle',
+          reloadOnSearch: false
+        })
+        .when('/ds/handle/:site/:id/:field/:sort', {
           templateUrl: '/ds/partials/handle'
         })
         .when('/ds/communities', {

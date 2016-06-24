@@ -23,6 +23,14 @@ dspaceServices.factory('SolrJumpToQuery', ['$resource',
     return $resource('/ds/solrJumpToQuery');
   }]);
 
+/**
+ * Sort options query
+ */
+dspaceServices.factory('SolrSortOptionsQuery', '$resource',
+  function($resource) {
+    return $resource('/ds/solrQuery/:field/:mode');
+  });
+
 
 // dspaceServices.factory('SolrDiscoveryQuery', ['$resource',
 //   function ($resource) {

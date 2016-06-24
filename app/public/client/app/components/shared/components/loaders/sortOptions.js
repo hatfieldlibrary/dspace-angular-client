@@ -16,7 +16,8 @@
    * @param QueryManager
    * @constructor
    */
-  function SortOptionsCtrl($timeout,
+  function SortOptionsCtrl($location,
+                           $timeout,
                            $mdMedia,
                            SolrQuery,
                            SolrJumpToQuery,
@@ -247,12 +248,20 @@
      */
     var doSearch = function () {
 
+      var qs = $location.search();
+
+      console.log(qs);
+
+      console.log(qs.hasOwnProperty('field'));
+
 
       /**
        * Set pager in context.  (The pager component will
        * hide the pager button.)
        */
       AppContext.setPager(false);
+
+
 
       /**
        * Get promise.
@@ -276,6 +285,10 @@
      * Toggle the sort order (ASCENDING, DESCENDING)
      */
     ctrl.resetOrder = function () {
+
+
+      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms});
+
 
       ctrl.resetListView();
 
@@ -371,6 +384,8 @@
      * Filter the search results.
      */
     ctrl.getFilter = function () {
+
+      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms});
 
       /**
        * Reset the selected item.
@@ -538,6 +553,8 @@
 
       // QueryStack.replaceWith(QueryManager.context.query);
       // QueryStack.print();
+
+      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms});
 
       /**
        * Do a new search.

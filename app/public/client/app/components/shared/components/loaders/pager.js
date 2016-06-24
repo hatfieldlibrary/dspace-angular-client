@@ -6,7 +6,8 @@
 
 (function () {
 
-  function PagerCtrl($scope,
+  function PagerCtrl($location,
+                     $scope,
                      $timeout,
                      SolrQuery,
                      SolrBrowseQuery,
@@ -55,6 +56,23 @@
      */
     var displayListType = '';
 
+
+
+    $scope.$on('$locationChangeSuccess', function() {
+      var qs = $location.search();
+
+      if ('field' in qs) {
+        console.log(qs);
+
+        console.log(qs.hasOwnProperty('field'));
+
+        QueryManager.setQueryType(qs.field);
+        updateList(QueryManager.getOffset());
+
+      }
+
+
+    });
     /**
      * Update the parent component with new items.
      * @param data the next set if items.
@@ -94,6 +112,8 @@
      */
     function updateList(newOffset) {
 
+      console.log('running update')
+
       QueryManager.setOffset(newOffset);
 
       var action = QueryManager.getAction();
@@ -111,6 +131,7 @@
       if (!QueryManager.isAuthorListRequest() && !QueryManager.isSubjectListRequest()) {
 
         var context = QueryManager.getQuery();
+        console.log(context)
 
         var items;
         /**
@@ -228,6 +249,12 @@
      * component, e.g.: collection, discover...
      */
     function init() {
+
+      var qs = $location.search();
+
+      console.log(qs);
+
+      console.log(qs.hasOwnProperty('field'));
 
       if (AppContext.getDiscoveryContext() !== DiscoveryContext.ADVANCED_SEARCH) {
         updateList(QueryManager.getOffset());
