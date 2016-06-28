@@ -213,9 +213,33 @@
       function hasDspaceSession() {
         return _context.hasDspaceSession;
       }
-      
+
       function updateDspaceSession(hasSession) {
         _context.hasDspaceSession = hasSession;
+      }
+
+      function reverseAuthorList() {
+        reverseArray(_context.authorArray);
+      }
+
+      function reverseSubjectList() {
+        reverseArray(_context.subjectArray);
+      }
+      /**
+       * Reverses the array values.  Used to sort subjects
+       * and authors by ascending and descending.
+       * @param arr
+       */
+      function reverseArray(arr) {
+          var i = 0;
+          var j = arr.length - 1;
+          while (i < j) {
+            var x = arr[i];
+            arr[i] = arr[j];
+            arr[j] = x;
+            i++;
+            j--;
+          }
       }
 
       return {
@@ -254,7 +278,9 @@
         getHomeLogo: getHomeLogo,
         getHomeLink: getHomeLink,
         hasDspaceSession: hasDspaceSession,
-        updateDspaceSession: updateDspaceSession
+        updateDspaceSession: updateDspaceSession,
+        reverseAuthorList: reverseAuthorList,
+        reverseSubjectList: reverseSubjectList
 
       }
 

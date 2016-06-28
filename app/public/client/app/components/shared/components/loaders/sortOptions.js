@@ -292,31 +292,31 @@
     /**
      * Executes query to retrieve a fresh result set.
      */
-    var doSearch = function () {
-
-      /**
-       * Set pager in context.  (The pager component will
-       * hide the pager button.)
-       */
-      AppContext.setPager(false);
-
-      /**
-       * Get promise.
-       * @type {*|{method}|Session}
-       */
-      var items = SolrQuery.save({
-        params: QueryManager.getQuery()
-
-      });
-      /**
-       * Handle the response.
-       */
-      items.$promise.then(function (data) {
-        ctrl.resetListView();
-        QueryManager.setOffset(data.offset);
-        handleResult(data);
-      });
-    };
+    // var doSearch = function () {
+    //
+    //   /**
+    //    * Set pager in context.  (The pager component will
+    //    * hide the pager button.)
+    //    */
+    //   AppContext.setPager(false);
+    //
+    //   /**
+    //    * Get promise.
+    //    * @type {*|{method}|Session}
+    //    */
+    //   var items = SolrQuery.save({
+    //     params: QueryManager.getQuery()
+    //
+    //   });
+    //   /**
+    //    * Handle the response.
+    //    */
+    //   items.$promise.then(function (data) {
+    //     ctrl.resetListView();
+    //     QueryManager.setOffset(data.offset);
+    //     handleResult(data);
+    //   });
+    // };
 
     /**
      * Toggle the sort order (ASCENDING, DESCENDING)
@@ -337,12 +337,12 @@
       /**
        * Set sort order to the new selected value.
        */
-      QueryManager.setSort(ctrl.selectedOrder);
+      //QueryManager.setSort(ctrl.selectedOrder);
 
       /**
        * Set the offset to zero.
        */
-      QueryManager.setOffset(0);
+      //QueryManager.setOffset(0);
 
       var arr = [];
 
@@ -351,60 +351,57 @@
       /**
        * Author sort.
        */
-      if (QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS) {
-
-        QueryManager.setOffset(0);
-        arr = AppContext.getAuthors();
-        // Reverse the author array.
-        Utils.reverseArray(arr);
-        AppContext.setAuthorsList(arr);
-        data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + setSize);
-        data.count = AppContext.getAuthorsCount();
-
-        /**
-         * Update parent component.
-         */
-        ctrl.onUpdate({
-          results: data.results,
-          count: data.count,
-          field: QueryFields.AUTHOR
-        });
-
-      }
+    //   if (QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS) {
+    //
+    //     QueryManager.setOffset(0);
+    // AppContext.reverseAuthorList();
+    //     data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + setSize);
+    //     data.count = AppContext.getAuthorsCount();
+    //
+    //     /**
+    //      * Update parent component.
+    //      */
+    //     ctrl.onUpdate({
+    //       results: data.results,
+    //       count: data.count,
+    //       field: QueryFields.AUTHOR
+    //     });
+    //
+    //   }
       /**
        * Subject sort.
        */
-      else if (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS) {
-
-        QueryManager.setOffset(0);
-        arr = AppContext.getSubjects();
-        // Reverse the subject array.
-        Utils.reverseArray(arr);
-        AppContext.setSubjectList(arr);
-        data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + setSize);
-        data.count = AppContext.getSubjectsCount();
-
-        /**
-         * Update parent component.
-         */
-        ctrl.onUpdate({
-          results: data.results,
-          count: data.count,
-          field: QueryFields.SUBJECT
-        });
-
-      }
-      else {
-
-        // QueryStack.replaceWith(QueryManager.context.query);
-        // QueryStack.print();
-
-        /**
-         * Changing the sort order for other query types requires a
-         * new solr query.
-         */
-        // doSearch();
-      }
+      // else if (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS) {
+      //
+      //   QueryManager.setOffset(0);
+      //   arr = AppContext.getSubjects();
+      //   // Reverse the subject array.
+      //   Utils.reverseArray(arr);
+      //   AppContext.setSubjectList(arr);
+      //   data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + setSize);
+      //   data.count = AppContext.getSubjectsCount();
+      //
+      //   /**
+      //    * Update parent component.
+      //    */
+      //   ctrl.onUpdate({
+      //     results: data.results,
+      //     count: data.count,
+      //     field: QueryFields.SUBJECT
+      //   });
+      //
+      // }
+      // else {
+      //
+      //   // QueryStack.replaceWith(QueryManager.context.query);
+      //   // QueryStack.print();
+      //
+      //   /**
+      //    * Changing the sort order for other query types requires a
+      //    * new solr query.
+      //    */
+      //   // doSearch();
+      // }
 
     };
 
@@ -573,7 +570,6 @@
        */
       ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
 
-
       /**
        * New offset should be 0.
        */
@@ -584,19 +580,15 @@
       QueryManager.setSort(QuerySort.ASCENDING);
       ctrl.selectedOrder = QuerySort.ASCENDING;
 
-
-      // QueryStack.replaceWith(QueryManager.context.query);
-      // QueryStack.print();
-
       $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms});
 
       /**
        * Do a new search.
        */
-      if (ctrl.selectedField === QueryTypes.AUTHOR_FACETS ||
-        ctrl.selectedField === QueryTypes.SUBJECT_FACETS) {
-        doSearch();
-      }
+      // if (ctrl.selectedField === QueryTypes.AUTHOR_FACETS ||
+      //   ctrl.selectedField === QueryTypes.SUBJECT_FACETS) {
+      //  // doSearch();
+      // }
 
     };
 

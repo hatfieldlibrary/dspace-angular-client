@@ -44,11 +44,7 @@
     ctrl.hasLogo = hasLogo;
 
     function doInitialization() {
-
-     
-
-
-
+      
         /**
          * Default field.
          */

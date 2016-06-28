@@ -22,6 +22,7 @@
 
     var defaultField;
     var defaultOrder;
+    var toggleOrder = false;
 
     /**
      * Number of items to return in pager.
@@ -65,22 +66,59 @@
       console.log('location change')
       var qs = $location.search();
 
-      if (Object.keys(qs).length !== 0) {
-        console.log(qs);
-        console.log(qs.hasOwnProperty('field'));
-
-        QueryManager.setQueryType(qs.field);
-        QueryManager.setSort(qs.sort);
-
-
-      } else {
+      if (Object.keys(qs).length === 0) {
         QueryManager.setSort(defaultOrder);
         QueryManager.setQueryType(defaultField);
+        updateList(QueryManager.getOffset(), true);
       }
+      else if (QueryManager.isAuthorListRequest() || QueryManager.isSubjectListRequest()) {
 
-      updateList(QueryManager.getOffset(), true);
+        QueryManager.setAction(QueryActions.LIST);
 
+        if (qs.sort !== QueryManager.getSort()) {
+          QueryManager.setOffset(0);
+          if (QueryManager.isAuthorListRequest()) {
+            AppContext.reverseAuthorList();
+            var data = {};
+            data.count = AppContext.getAuthorsCount();
+            var end = Utils.getPageListCount(data.count, setSize);
+            data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
+            updateParentNewSet(data);
+          }
+          if (QueryManager.isSubjectListRequest()) {
+            AppContext.reverseSubjectList();
+            var data = {};
+            data.count = AppContext.getSubjectsCount();
+            var end = Utils.getPageListCount(data.count, setSize);
+            data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
+            updateParentNewSet(data);
+          }
+
+        } else {
+
+          QueryManager.setQueryType(qs.field);
+          QueryManager.setSort(qs.sort);
+          // should this be called when the query is facets?
+          // sortOptions is execing the facet searches...
+          updateList(QueryManager.getOffset(), true);
+
+        }
+      } else {
+        QueryManager.setQueryType(qs.field);
+        QueryManager.setSort(qs.sort);
+        // should this be called when the query is facets?
+        // sortOptions is execing the facet searches...
+        updateList(QueryManager.getOffset(), true);
+      }
     });
+
+    function doSearch() {
+      var items = SolrQuery.save({
+        params: QueryManager.getQuery()
+
+      });
+      return items;
+    }
 
     /**
      * Update the parent component with new items.
@@ -144,6 +182,62 @@
       }, 300);
     }
 
+    function invokeQuery(newOffset) {
+
+      var action = QueryManager.getAction();
+      var context = QueryManager.getQuery();
+      console.log(context)
+
+      var items;
+      /**
+       * List query: POST.
+       */
+      if (action === QueryActions.LIST) {
+
+        items = SolrQuery.save({
+          params: context
+
+        });
+
+
+      }
+
+      /**
+       * Discovery or advanced search query: POST.
+       */
+
+      else if ((action === QueryActions.SEARCH ) && QueryManager.getSearchTerms() !== undefined) {
+
+        items = SolrQuery.save({
+          params: context
+
+        });
+      }
+
+      /**
+       * Browse query: GET.
+       */
+      else if (action === QueryActions.BROWSE) {
+
+
+        items = SolrBrowseQuery.query({
+          type: QueryManager.getAssetType(),
+          id: QueryManager.getAssetId(),
+          qType: QueryManager.getQueryType(),
+          field: context.query.field,
+          sort: QueryManager.getSort(),
+          terms: context.query.terms,
+          filter: QueryManager.getFilter(),
+          offset: newOffset,
+          rows: QueryManager.getRows()
+
+        });
+
+      }
+
+      return items;
+    }
+
     /**
      * Execute node REST API call for solr query results.
      * @param start the start position for query result.
@@ -154,10 +248,8 @@
 
       QueryManager.setOffset(newOffset);
 
-      var action = QueryManager.getAction();
 
       displayListType = Utils.getFieldForQueryType();
-
 
       /**
        * For items, we need to make a new solr query for the next
@@ -168,67 +260,15 @@
        */
       if (!QueryManager.isAuthorListRequest() && !QueryManager.isSubjectListRequest()) {
 
-        var context = QueryManager.getQuery();
-        console.log(context)
-
-        var items;
-        /**
-         * List query: POST.
-         */
-        if (action === QueryActions.LIST) {
-
-          items = SolrQuery.save({
-            params: context
-
-          });
-
-          console.log('executed query')
-
-        }
-
-        /**
-         * Discovery or advanced search query: POST.
-         */
-
-        else if ((action === QueryActions.SEARCH ) && QueryManager.getSearchTerms() !== undefined) {
-
-          items = SolrQuery.save({
-            params: context
-
-          });
-        }
-
-        /**
-         * Browse query: GET.
-         */
-        else if (action === QueryActions.BROWSE) {
-
-
-          items = SolrBrowseQuery.query({
-            type: QueryManager.getAssetType(),
-            id: QueryManager.getAssetId(),
-            qType: QueryManager.getQueryType(),
-            field: context.query.field,
-            sort: QueryManager.getSort(),
-            terms: context.query.terms,
-            filter: QueryManager.getFilter(),
-            offset: newOffset,
-            rows: QueryManager.getRows()
-
-          });
-
-        }
+        var items = invokeQuery(newOffset);
 
         if (items !== undefined) {
-
           items.$promise.then(function (data) {
-
             console.log('got query response');
             /** Handle result of the solr query. */
             if (isNewSet) {
               updateParentNewSet(data);
             } else {
-
               updateParent(data);
             }
 
@@ -245,6 +285,8 @@
 
         var end;
 
+        QueryManager.setAction(QueryActions.LIST);
+
         /**
          * For authors or subjects, get next results from the facets
          * array rather than executing a new solr query.  This is always
@@ -252,17 +294,63 @@
          * the sortOptions loader.
          */
         if (QueryManager.isAuthorListRequest()) {
-          data.count = AppContext.getAuthorsCount();
-          end = Utils.getPageListCount(data.count, setSize);
-          data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
+
+
+
+          if (isNewSet) {
+
+            var result = doSearch();
+
+            result.$promise.then(function (data) {
+              console.log('got tne facet set for au')
+
+              /**
+               * Add the author array to shared context.
+               * @type {string|Array|*}
+               */
+              AppContext.setAuthorsList(data.facets);
+
+              data.count = AppContext.getAuthorsCount();
+              end = Utils.getPageListCount(data.count, setSize);
+              data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
+
+              updateParentNewSet(data);
+            });
+          } else {
+
+
+            data.count = AppContext.getAuthorsCount();
+            end = Utils.getPageListCount(data.count, setSize);
+            data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
+            updateParent(data);
+            console.log(data)
+          }
 
         } else if (QueryManager.isSubjectListRequest()) {
-          data.count = AppContext.getSubjectsCount();
-          end = Utils.getPageListCount(data.count, setSize);
-          data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
+          if (isNewSet) {
+            var result = doSearch();
+            result.$promise.then(function (data) {
+              /**
+               * Add the author array to shared context.
+               * @type {string|Array|*}
+               */
+              AppContext.setSubjectList(data.facets);
 
+              data.count = AppContext.getSubjectsCount();
+              end = Utils.getPageListCount(data.count, setSize);
+              data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
+              updateParentNewSet(data);
+            });
+          } else {
+            console.log('using pager')
+            data.count = AppContext.getSubjectsCount();
+            end = Utils.getPageListCount(data.count, setSize);
+            data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
+            console.log(data)
+            updateParent(data);
+          }
         }
-        updateParent(data);
+
 
       }
 
