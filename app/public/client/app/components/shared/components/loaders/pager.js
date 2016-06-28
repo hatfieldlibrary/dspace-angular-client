@@ -20,6 +20,9 @@
 
     var ctrl = this;
 
+    var defaultField;
+    var defaultOrder;
+
     /**
      * Number of items to return in pager.
      * @type {number}
@@ -57,22 +60,28 @@
     var displayListType = '';
 
 
+    $scope.$on('$locationChangeSuccess', function () {
 
-    $scope.$on('$locationChangeSuccess', function() {
+      console.log('location change')
       var qs = $location.search();
 
-      if ('field' in qs) {
+      if (Object.keys(qs).length !== 0) {
         console.log(qs);
-
         console.log(qs.hasOwnProperty('field'));
 
         QueryManager.setQueryType(qs.field);
-        updateList(QueryManager.getOffset());
+        QueryManager.setSort(qs.sort);
 
+
+      } else {
+        QueryManager.setSort(defaultOrder);
+        QueryManager.setQueryType(defaultField);
       }
 
+      updateList(QueryManager.getOffset(), true);
 
     });
+
     /**
      * Update the parent component with new items.
      * @param data the next set if items.
@@ -81,6 +90,9 @@
 
 
       AppContext.setCount(data.count);
+
+      console.log('calling parent update method')
+
 
       ctrl.onUpdate({
 
@@ -91,6 +103,34 @@
       });
 
 
+      delayUpdate();
+
+
+    }
+
+    /**
+     * Update the parent component with new items.
+     * @param data the next set if items.
+     */
+    function updateParentNewSet(data) {
+
+
+      AppContext.setCount(data.count);
+
+
+      ctrl.onNewSet({
+
+        results: data.results,
+        count: data.count,
+        field: displayListType
+
+      });
+
+      delayUpdate();
+
+    }
+
+    function delayUpdate() {
       $timeout(function () {
         /**
          * Show the pager.
@@ -102,15 +142,13 @@
          */
         AppContext.setPager(true);
       }, 300);
-
-
     }
 
     /**
      * Execute node REST API call for solr query results.
      * @param start the start position for query result.
      */
-    function updateList(newOffset) {
+    function updateList(newOffset, isNewSet) {
 
       console.log('running update')
 
@@ -143,6 +181,8 @@
             params: context
 
           });
+
+          console.log('executed query')
 
         }
 
@@ -182,8 +222,15 @@
         if (items !== undefined) {
 
           items.$promise.then(function (data) {
+
+            console.log('got query response');
             /** Handle result of the solr query. */
-            updateParent(data);
+            if (isNewSet) {
+              updateParentNewSet(data);
+            } else {
+
+              updateParent(data);
+            }
 
           });
         }
@@ -252,12 +299,19 @@
 
       var qs = $location.search();
 
+      console.log('init pager')
       console.log(qs);
 
-      console.log(qs.hasOwnProperty('field'));
+      if (Object.keys(qs).length !== 0) {
+        QueryManager.setQueryType(qs.field);
+        QueryManager.setSort(qs.sort);
+      }
+
+      defaultField = QueryManager.getQueryType();
+      defaultOrder = QueryManager.getSort();
 
       if (AppContext.getDiscoveryContext() !== DiscoveryContext.ADVANCED_SEARCH) {
-        updateList(QueryManager.getOffset());
+        updateList(QueryManager.getOffset(), false);
       }
 
     }
@@ -277,7 +331,7 @@
         ctrl.end = ctrl.start + 9;
         start -= setSize;
         QueryManager.setOffset(start);
-        updateList(start);
+        updateList(start, false);
       }
     };
 
@@ -296,7 +350,7 @@
         ctrl.end = count;
       }
       QueryManager.setOffset(start);
-      updateList(start);
+      updateList(start, false);
 
     };
 
@@ -307,7 +361,8 @@
 
     template: '<div layout="row" layout-align="center center" ng-if="$ctrl.showPager"><md-button class="md-raised md-accent md-fab md-mini" ng-click="$ctrl.next()" ng-if="$ctrl.more()"><md-icon md-font-library="material-icons" class="md-light" aria-label="More Results">expand_more</md-icon></md-button></div>',
     bindings: {
-      onUpdate: '&'
+      onUpdate: '&',
+      onNewSet: '&'
     },
     controller: PagerCtrl
 

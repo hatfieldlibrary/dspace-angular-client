@@ -20,8 +20,9 @@
             <item-detail-component
               ng-repeat="col in $ctrl.items.results"
               title="{{col.title}}"
-              author="col.author[0]"
+
               publisher="{{col.publisher}}"
+              abstract="{{col.abstract}}"
               year="{{col.year}}"
               handle="{{col.handle}}"
               id="{{col.id}}"
@@ -31,11 +32,7 @@
 
         </div>
       </div>
-
-
-
     </div>
-
 
   </md-item-content>
 

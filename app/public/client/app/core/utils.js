@@ -196,6 +196,7 @@ dspaceServices.factory('Utils', [
      * @returns {*} placeholder string
      */
     utils.placeholderMessage = function (qType) {
+      console.log(qType)
       if (qType === QueryTypes.DATES_LIST) {
         return Messages.SORT_JUMP_TO_YEAR_LABEL;
       }

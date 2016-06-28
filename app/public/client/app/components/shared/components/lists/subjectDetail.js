@@ -71,9 +71,6 @@
     ctrl.getItems = function () {
 
       if (ctrl.count <= 10) {
-        // Before executing browse query, add the current
-        // query to the stack.
-        QueryStack.replaceWith(QueryManager.getQuery());
 
         var result = InlineBrowseRequest.query(
           {
@@ -93,7 +90,8 @@
         });
 
       } else {
-        $location.path('/ds/browse/' + ctrl.type + '/' + ctrl.id + '/' + ctrl.field + '/' + ctrl.sort + '/' + ctrl.subject + '/0/' + AppContext.getSetSize());
+        $location.search({});
+        $location.path('/ds/browse/' + ctrl.type + '/' + ctrl.id + '/' + QueryTypes.SUBJECT_SEARCH + '/' + ctrl.field + '/' + ctrl.sort + '/' + ctrl.subject + '/0/' + AppContext.getSetSize());
 
       }
 

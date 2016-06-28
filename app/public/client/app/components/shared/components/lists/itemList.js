@@ -6,7 +6,8 @@
 
 (function () {
 
-  function ItemListCtrl(QueryManager,
+  function ItemListCtrl(
+                        QueryManager,
                         AppContext,
                         Messages) {
 
@@ -70,6 +71,7 @@
       AppContext.setCurrentIndex(index);
 
     };
+
 
     /**
      * Non-pager updates.

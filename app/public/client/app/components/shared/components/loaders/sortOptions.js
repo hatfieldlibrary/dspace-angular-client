@@ -16,7 +16,8 @@
    * @param QueryManager
    * @constructor
    */
-  function SortOptionsCtrl($location,
+  function SortOptionsCtrl($scope,
+                           $location,
                            $timeout,
                            $mdMedia,
                            SolrQuery,
@@ -29,10 +30,15 @@
                            QuerySort,
                            QueryFields,
                            QueryTypes,
+                           QueryActions,
                            AppContext,
                            QueryManager) {
 
     var ctrl = this;
+
+    var defaultField;
+
+    var defaultOrder;
 
     ctrl.fieldLabel = Messages.SORT_BY_FIELD_LABEL;
 
@@ -100,13 +106,6 @@
      */
     ctrl.selectedOrder = QueryManager.getSort();
 
-
-    /**
-     * The default placeholder message for the filter query.
-     * @type {string}
-     */
-    ctrl.placeholder = Messages.SORT_JUMP_TO_YEAR_LABEL;
-
     ctrl.filterTerms = QueryManager.getFilter();
 
     if (($mdMedia('sm') || $mdMedia('xs'))) {
@@ -119,10 +118,34 @@
 
     }
 
+    function init() {
+
+      /**
+       * The search object will be empty on initial load.
+       */
+      if (Object.keys($location.search()).length === 0) {
+        /**
+         * The default placeholder message for the filter query.
+         * @type {string}
+         */
+        ctrl.placeholder = Messages.SORT_JUMP_TO_YEAR_LABEL;
+      }
+
+      /**
+       * Author and subject facets execute a new search
+       */
+      if (ctrl.selectedField === QueryTypes.SUBJECT_FACETS ||
+        ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
+        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField)
+      }
+    }
+
+    init();
+
 
     /**
      * Handle the result of field queries. This function exists
-     * to preprocess data from author and subject results before sending
+     * to pre-process data from author and subject results before sending
      * to the parent component.
      * @param data
      */
@@ -192,7 +215,6 @@
       }
 
       AppContext.setCount(data.count);
-
       /**
        * Update parent component.
        */
@@ -243,25 +265,40 @@
 
     };
 
+    $scope.$on('$locationChangeSuccess', function () {
+
+
+      var qs = $location.search();
+
+      if (Object.keys(qs).length !== 0) {
+        if (qs.field === QueryTypes.SUBJECT_FACETS ||
+          qs.field === QueryTypes.AUTHOR_FACETS) {
+
+          defaultField = qs.field;
+          defaultOrder = qs.sort;
+
+          QueryManager.setQueryType(qs.field);
+          QueryManager.setSort(qs.sort);
+
+          // Is this correct???
+          //doSearch();
+        }
+      }
+
+
+    });
+
+
     /**
      * Executes query to retrieve a fresh result set.
      */
     var doSearch = function () {
-
-      var qs = $location.search();
-
-      console.log(qs);
-
-      console.log(qs.hasOwnProperty('field'));
-
 
       /**
        * Set pager in context.  (The pager component will
        * hide the pager button.)
        */
       AppContext.setPager(false);
-
-
 
       /**
        * Get promise.
@@ -324,10 +361,6 @@
         data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + setSize);
         data.count = AppContext.getAuthorsCount();
 
-
-        // QueryStack.replaceWith(QueryManager.context.query);
-        // QueryStack.print();
-
         /**
          * Update parent component.
          */
@@ -351,10 +384,6 @@
         data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + setSize);
         data.count = AppContext.getSubjectsCount();
 
-
-        // QueryStack.replaceWith(QueryManager.context.query);
-        // QueryStack.print();
-
         /**
          * Update parent component.
          */
@@ -374,7 +403,7 @@
          * Changing the sort order for other query types requires a
          * new solr query.
          */
-        doSearch();
+        // doSearch();
       }
 
     };
@@ -523,6 +552,7 @@
      */
     ctrl.resetField = function setField() {
 
+
       /**
        * Reset the selected item.
        */
@@ -536,10 +566,14 @@
        * Set the QueryType (identifies the solr query to be used).
        */
       QueryManager.setQueryType(ctrl.selectedField);
+
+      console.log(ctrl.selectedField)
       /**
        * Set the placeholder message based on query type.
        */
       ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
+
+
       /**
        * New offset should be 0.
        */
@@ -559,7 +593,10 @@
       /**
        * Do a new search.
        */
-      doSearch();
+      if (ctrl.selectedField === QueryTypes.AUTHOR_FACETS ||
+        ctrl.selectedField === QueryTypes.SUBJECT_FACETS) {
+        doSearch();
+      }
 
     };
 
