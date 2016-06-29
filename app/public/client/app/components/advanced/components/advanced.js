@@ -14,7 +14,6 @@
                         AssetTypes,
                         QueryTypes,
                         QueryActions,
-                        QueryStack,
                         QuerySort,
                         DiscoveryContext,
                         AppContext,

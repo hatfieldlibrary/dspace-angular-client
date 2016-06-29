@@ -13,7 +13,6 @@
                                    QueryManager,
                                    QueryTypes,
                                    AppContext,
-                                   QueryStack,
                                    InlineBrowseRequest) {
 
 

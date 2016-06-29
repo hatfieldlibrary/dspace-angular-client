@@ -13,7 +13,6 @@
                      Utils,
                      QueryManager,
                      AppContext,
-                     QueryStack,
                      QueryActions) {
 
 
@@ -56,8 +55,6 @@
     function updateParent(data) {
 
       AppContext.setCount(data.count);
-
-      QueryStack.replaceWith(QueryManager.context.query);
 
       ctrl.onUpdate({
 

@@ -12,7 +12,6 @@
                                   QueryManager,
                                   AppContext,
                                   QueryTypes,
-                                  QueryStack,
                                   InlineBrowseRequest) {
 
     var ctrl = this;
@@ -63,10 +62,6 @@
      * Retrieves items for this author using the request service.
      */
     ctrl.getItems = function () {
-
-      // Before executing browse query, add the current
-      // query to the stack.
-      QueryStack.replaceWith(QueryManager.getQuery());
 
       var result = InlineBrowseRequest.query(
         {

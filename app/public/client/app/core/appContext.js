@@ -8,8 +8,8 @@
 (function () {
 
   dspaceContext.service('AppContext', [
-    'AppConfig',
-    function (AppConfig) {
+    'AppConfig', 'QuerySort',
+    function (AppConfig, QuerySort) {
 
       var _context = {
 
@@ -25,6 +25,24 @@
          * paging request.
          */
         subjectArray: [],
+
+        /**
+         * The pager component is shared by the collection and browse components.  When the
+         * user moves from list to browse view, the list offset value is tracked outside
+         * of the query object so that it can be restored on return to the list view.  Default
+         * to zero.
+         */
+        listOffset: 0,
+
+        /**
+         * These values are set by the sort options component, which is shared by collection
+         * and browse components.  We need to track the 'list' and 'browse' states separately
+         * so that the loader knows whether author and subject arrays need to be reversed.
+         * That is determined by comparing the query string's sort order with the one
+         * tracked here.  Default to ascending.
+         */
+        listOrder: QuerySort.ASCENDING,
+
         /**
          * The index of the currently list item.  This is currently used by author
          * and subject facets to activate a card that contains item information.
@@ -225,6 +243,23 @@
       function reverseSubjectList() {
         reverseArray(_context.subjectArray);
       }
+
+      function setListOffset(offset) {
+        _context.listOffset = offset;
+      }
+
+      function getListOffset() {
+        return _context.listOffset;
+      }
+
+      function setListOrder(order) {
+        _context.listOrder = order;
+      }
+
+      function getListOrder() {
+        return _context.listOrder;
+      }
+
       /**
        * Reverses the array values.  Used to sort subjects
        * and authors by ascending and descending.
@@ -280,7 +315,11 @@
         hasDspaceSession: hasDspaceSession,
         updateDspaceSession: updateDspaceSession,
         reverseAuthorList: reverseAuthorList,
-        reverseSubjectList: reverseSubjectList
+        reverseSubjectList: reverseSubjectList,
+        setListOffset: setListOffset,
+        getListOffset: getListOffset,
+        setListOrder: setListOrder,
+        getListOrder: getListOrder
 
       }
 

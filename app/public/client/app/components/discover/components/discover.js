@@ -15,7 +15,6 @@
                         AssetTypes,
                         QueryTypes,
                         QueryActions,
-                        QueryStack,
                         QuerySort,
                         DiscoveryContext,
                         AppContext,
@@ -144,8 +143,7 @@
       QueryManager.setSearchTerms(disc.terms);
 
       AppContext.setDiscoveryContext(DiscoveryContext.BASIC_SEARCH);
-
-      QueryStack.clear();
+      
 
       /**
        * If the DSpace ID parameter is undefined then hide unnecessary

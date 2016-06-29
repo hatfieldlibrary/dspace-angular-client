@@ -20,7 +20,6 @@
                            $location,
                            $timeout,
                            $mdMedia,
-                           SolrQuery,
                            SolrJumpToQuery,
                            CollectionQueryFieldMap,
                            BrowseQueryFieldMap,
@@ -30,7 +29,6 @@
                            QuerySort,
                            QueryFields,
                            QueryTypes,
-                           QueryActions,
                            AppContext,
                            QueryManager) {
 
@@ -44,11 +42,6 @@
 
     ctrl.orderLabel = Messages.SORT_ORDER_LABEL;
 
-    /**
-     * The start position for results returned by solr.
-     * @type {number}
-     */
-    var start = 0;
     /**
      * The end value is used to get a slice from the author array.
      * @type {number}
@@ -144,97 +137,6 @@
 
 
     /**
-     * Handle the result of field queries. This function exists
-     * to pre-process data from author and subject results before sending
-     * to the parent component.
-     * @param data
-     */
-    function handleResult(data) {
-
-      var end;
-
-      if (QueryManager.isAuthorListRequest()) {
-
-        displayListType = QueryFields.AUTHOR;
-
-        /**
-         * Add the author array to shared context.
-         * @type {string|Array|*}
-         */
-        AppContext.setAuthorsList(data.facets);
-
-        /**
-         * Total item is authors list.
-         */
-        data.count = AppContext.getAuthorsCount();
-        /**
-         * The count of items remaining in list.
-         * @type {*}
-         */
-        end = Utils.getPageListCount(data.count, setSize);
-
-
-        /** Add authors to the current result set. */
-        data.results = Utils.authorArraySlice(start, start + end);
-
-
-      }
-
-      else if (QueryManager.isSubjectListRequest()) {
-
-        displayListType = QueryFields.SUBJECT;
-
-        /**
-         * Add the author array to shared context.
-         * @type {string|Array|*}
-         */
-        AppContext.setSubjectList(data.facets);
-
-        /**
-         * Total items in subject list.
-         */
-        data.count = AppContext.getSubjectsCount();
-
-        /**
-         * The count of items remaining in list.
-         * @type {*}
-         */
-        end = Utils.getPageListCount(data.count, setSize);
-
-        /** Add subjects to the current result set. */
-        data.results = Utils.subjectArraySlice(start, start + end);
-
-      }
-      else {
-        /**
-         * Fields other than author and subject use the title list type
-         * @type {string}
-         */
-        displayListType = QueryFields.TITLE;
-
-      }
-
-      AppContext.setCount(data.count);
-      /**
-       * Update parent component.
-       */
-      ctrl.onUpdate({
-        results: data.results,
-        count: data.count,
-        field: displayListType
-      });
-
-      $timeout(function () {
-        /**
-         * Set pager in context.  (The pager component
-         * will show the pager button.)
-         */
-        AppContext.setPager(true);
-      }, 300);
-
-    }
-
-    /**
      * Executes filter query.
      */
     var doJump = function () {
@@ -267,7 +169,6 @@
 
     $scope.$on('$locationChangeSuccess', function () {
 
-
       var qs = $location.search();
 
       if (Object.keys(qs).length !== 0) {
@@ -280,128 +181,62 @@
           QueryManager.setQueryType(qs.field);
           QueryManager.setSort(qs.sort);
 
-          // Is this correct???
-          //doSearch();
         }
       }
 
-
     });
-
 
     /**
      * Executes query to retrieve a fresh result set.
      */
-    // var doSearch = function () {
-    //
-    //   /**
-    //    * Set pager in context.  (The pager component will
-    //    * hide the pager button.)
-    //    */
-    //   AppContext.setPager(false);
-    //
-    //   /**
-    //    * Get promise.
-    //    * @type {*|{method}|Session}
-    //    */
-    //   var items = SolrQuery.save({
-    //     params: QueryManager.getQuery()
-    //
-    //   });
-    //   /**
-    //    * Handle the response.
-    //    */
-    //   items.$promise.then(function (data) {
-    //     ctrl.resetListView();
-    //     QueryManager.setOffset(data.offset);
-    //     handleResult(data);
-    //   });
-    // };
+    var doSearch = function () {
+
+
+      /**
+       * Set pager in context.  (The pager component will
+       * hide the pager button.)
+       */
+      AppContext.setPager(false);
+
+      /**
+       * Get promise.
+       * @type {*|{method}|Session}
+       */
+      var items = SolrQuery.save({
+        params: QueryManager.getQuery()
+
+      });
+      /**
+       * Handle the response.
+       */
+      items.$promise.then(function (data) {
+        ctrl.resetListView();
+        QueryManager.setOffset(data.offset);
+        /**
+         * Update parent component.
+         */
+        ctrl.onUpdate({
+          results: data.results,
+          count: data.count,
+          field: displayListType
+        });
+      });
+    };
+
 
     /**
      * Toggle the sort order (ASCENDING, DESCENDING)
      */
     ctrl.resetOrder = function () {
 
-
-      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms});
-
-
       ctrl.resetListView();
-
       /**
        * Reset the selected item.
        */
       AppContext.setCurrentIndex(-1);
 
-      /**
-       * Set sort order to the new selected value.
-       */
-      //QueryManager.setSort(ctrl.selectedOrder);
+      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms});
 
-      /**
-       * Set the offset to zero.
-       */
-      //QueryManager.setOffset(0);
-
-      var arr = [];
-
-      var data = {};
-
-      /**
-       * Author sort.
-       */
-    //   if (QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS) {
-    //
-    //     QueryManager.setOffset(0);
-    // AppContext.reverseAuthorList();
-    //     data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + setSize);
-    //     data.count = AppContext.getAuthorsCount();
-    //
-    //     /**
-    //      * Update parent component.
-    //      */
-    //     ctrl.onUpdate({
-    //       results: data.results,
-    //       count: data.count,
-    //       field: QueryFields.AUTHOR
-    //     });
-    //
-    //   }
-      /**
-       * Subject sort.
-       */
-      // else if (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS) {
-      //
-      //   QueryManager.setOffset(0);
-      //   arr = AppContext.getSubjects();
-      //   // Reverse the subject array.
-      //   Utils.reverseArray(arr);
-      //   AppContext.setSubjectList(arr);
-      //   data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + setSize);
-      //   data.count = AppContext.getSubjectsCount();
-      //
-      //   /**
-      //    * Update parent component.
-      //    */
-      //   ctrl.onUpdate({
-      //     results: data.results,
-      //     count: data.count,
-      //     field: QueryFields.SUBJECT
-      //   });
-      //
-      // }
-      // else {
-      //
-      //   // QueryStack.replaceWith(QueryManager.context.query);
-      //   // QueryStack.print();
-      //
-      //   /**
-      //    * Changing the sort order for other query types requires a
-      //    * new solr query.
-      //    */
-      //   // doSearch();
-      // }
 
     };
 
@@ -540,8 +375,6 @@
       }, 100);
 
 
-      // QueryStack.replaceWith(QueryManager.context.query);
-      // QueryStack.print();
     };
 
     /**
@@ -582,13 +415,7 @@
 
       $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms});
 
-      /**
-       * Do a new search.
-       */
-      // if (ctrl.selectedField === QueryTypes.AUTHOR_FACETS ||
-      //   ctrl.selectedField === QueryTypes.SUBJECT_FACETS) {
-      //  // doSearch();
-      // }
+
 
     };
 

@@ -14,7 +14,6 @@
                           QueryActions,
                           QueryTypes,
                           QuerySort,
-                          QueryStack,
                           Utils) {
 
     var ctrl = this;
