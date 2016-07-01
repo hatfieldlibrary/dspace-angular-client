@@ -149,7 +149,7 @@
      * @type {boolean}
      */
     adv.hideComponents = true;
-    
+
     /**
      * Handles search form submission.
      * @param terms  the query terms
@@ -164,7 +164,7 @@
       adv.collectionId = id;
       DiscoveryFormExtensions.selectCollection(id);
     };
-    
+
     /**
      * Handles selection of community.
      */
@@ -200,8 +200,6 @@
 
       AppContext.setDiscoveryContext(DiscoveryContext.BASIC_SEARCH);
 
-      QueryStack.clear();
-
       /**
        * Initialize the advanced search asset id to 0 (global search)
        */
@@ -211,7 +209,7 @@
        * Get the community list.
        */
       DiscoveryFormExtensions.getCommunities();
-      
+
 
     }
 

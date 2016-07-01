@@ -14,9 +14,10 @@
 
       return {
         reverseAuthorList: function (order) {
-          if (order !== AppContext.getListOrder()) {
+          if (order !== AppContext.getAuthorsOrder()) {
             AppContext.reverseAuthorList();
           }
+          AppContext.setAuthorsOrder(order);
           var data = {};
           data.count = AppContext.getAuthorsCount();
           var end = Utils.getPageListCount(data.count, setSize);
@@ -25,9 +26,10 @@
         },
         reverseSubjectList: function (order) {
 
-          if (order !== AppContext.getListOrder()) {
+          if (order !== AppContext.getSubjectsOrder()) {
             AppContext.reverseSubjectList();
           }
+          AppContext.setSubjectsOrder(order);
           var data = {};
           data.count = AppContext.getSubjectsCount();
           var end = Utils.getPageListCount(data.count, setSize);

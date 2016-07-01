@@ -8,8 +8,8 @@
 (function () {
 
   dspaceContext.service('AppContext', [
-    'AppConfig', 'QuerySort',
-    function (AppConfig, QuerySort) {
+    'AppConfig', 'QuerySort', 'QueryManager', 'QueryTypes',
+    function (AppConfig, QuerySort, QueryManager, QueryTypes) {
 
       var _context = {
 
@@ -42,6 +42,12 @@
          * tracked here.  Default to ascending.
          */
         listOrder: QuerySort.ASCENDING,
+
+        authorOrder: QuerySort.ASCENDING,
+
+        subjectOrder: QuerySort.ASCENDING,
+
+        newSet: true,
 
         /**
          * The index of the currently list item.  This is currently used by author
@@ -260,6 +266,48 @@
         return _context.listOrder;
       }
 
+      function setAuthorsOrder(order) {
+        _context.authorOrder = order;
+      }
+
+      function getAuthorsOrder() {
+        return _context.authorOrder;
+      }
+
+      function setSubjectsOrder(order) {
+        _context.subjectOrder = order;
+      }
+
+      function getSubjectsOrder() {
+        return _context.subjectOrder;
+      }
+
+      function isNewSet(newSet) {
+        if (typeof newSet !== 'undefined') {
+          _context.newSet = newSet;
+        } else {
+          return _context.newSet;
+        }
+      }
+
+
+
+      function isAuthorListRequest() {
+        return (QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS);
+      }
+
+      function isSubjectListRequest() {
+        return (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS);
+      }
+
+      function isDiscoveryListRequest() {
+        return (QueryManager.getQueryType() === QueryTypes.DISCOVER);
+      }
+
+      function isNotFacetQueryType() {
+        return !isAuthorListRequest() && !isSubjectListRequest();
+      }
+
       /**
        * Reverses the array values.  Used to sort subjects
        * and authors by ascending and descending.
@@ -319,7 +367,16 @@
         setListOffset: setListOffset,
         getListOffset: getListOffset,
         setListOrder: setListOrder,
-        getListOrder: getListOrder
+        getListOrder: getListOrder,
+        setAuthorsOrder: setAuthorsOrder,
+        getAuthorsOrder: getAuthorsOrder,
+        setSubjectsOrder: setSubjectsOrder,
+        getSubjectsOrder: getSubjectsOrder,
+        isAuthorListRequest: isAuthorListRequest,
+        isSubjectListRequest: isSubjectListRequest,
+        isDiscoveryListRequest: isDiscoveryListRequest,
+        isNotFacetQueryType: isNotFacetQueryType,
+        isNewSet: isNewSet
 
       }
 

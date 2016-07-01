@@ -1,4 +1,5 @@
 /**
+ * The pager component is primary loader responsible for requesting solr data.
  * Created by mspalti on 2/23/16.
  */
 
@@ -9,8 +10,7 @@
   function PagerCtrl($location,
                      $scope,
                      $timeout,
-                     SolrQuery,
-                     SolrBrowseQuery,
+                     SolrDataLoader,
                      Utils,
                      QueryManager,
                      DiscoveryContext,
@@ -24,6 +24,7 @@
 
     var defaultField;
     var defaultOrder;
+    var notPaging = true;
 
     /**
      * Number of items to return in pager.
@@ -37,12 +38,15 @@
     var count = 0;
 
     /**
-     * Get the offset for the next result set.
+     * Check to see if more search results are available.
      * @returns {boolean}
      */
     ctrl.more = function () {
       return AppContext.getCount() > QueryManager.getOffset() + setSize;
     };
+
+    ctrl.showPager = true;
+
     /**
      * Current start position for view model.
      * @type {number}
@@ -61,10 +65,11 @@
      */
     var displayListType = '';
 
-    function getNewList(field, sort) {
+    function getNewList(field, sort, newRequest) {
       QueryManager.setQueryType(field);
       QueryManager.setSort(sort);
-      updateList(QueryManager.getOffset(), true);
+      updateList(QueryManager.getOffset(), newRequest);
+
     }
 
     /**
@@ -74,16 +79,20 @@
 
       var qs = $location.search();
 
-      // QueryManager.setOffset(0);
-
       /**
        * Empty query string.  Use default field and sort order.
        */
       if (Object.keys(qs).length === 0) {
-        getNewList(defaultField, defaultOrder);
+        QueryManager.setOffset(0);
+        getNewList(defaultField, defaultOrder, true);
       }
 
       else {
+
+        var newRequest = notPaging && AppContext.isNewSet();
+
+        QueryManager.setOffset(qs.offset);
+
         /**
          * Let facet handler check for LIST action.
          */
@@ -93,40 +102,40 @@
          * array is available, use it rather than making an
          * unneeded request for data.
          */
-        if (QueryManager.isAuthorListRequest()) {
+        if (AppContext.isAuthorListRequest()) {
           /**
            * Facet array exists.
            */
-          if (AppContext.getAuthors().length > 0) {
+          if (AppContext.isNewSet()) {
+            /**
+             * Request a new facet array.
+             */
+            getNewList(qs.field, qs.sort, newRequest);
+
+          } else {
             /**
              * Update parent using existing array.
              */
             updateParentNewSet(FacetHandler.reverseAuthorList(qs.sort));
 
-          } else {
-            /**
-             * Reqeust a new facet array.
-             */
-            getNewList(qs.field, qs.sort);
-
           }
         }
-        else if (QueryManager.isSubjectListRequest()) {
+        else if (AppContext.isSubjectListRequest()) {
           /**
            * Facet array exists.
            */
-          if (AppContext.getSubjects().length > 0) {
+          if (AppContext.isNewSet()) {
             /**
-             * Update parent using existing array.
+             * Request a new facet array.
              */
-            updateParentNewSet(FacetHandler.reverseSubjectList(qs.sort));
+            getNewList(qs.field, qs.sort, newRequest);
 
           }
           else {
             /**
-             * Reqeust a new facet array.
+             * Update parent using existing array.
              */
-            getNewList(qs.field, qs.sort);
+            updateParentNewSet(FacetHandler.reverseSubjectList(qs.sort));
 
           }
 
@@ -136,7 +145,7 @@
            * list using the field and sort order provided in
            * the query string.
            */
-          getNewList(qs.field, qs.sort);
+          getNewList(qs.field, qs.sort, newRequest);
 
         }
         /**
@@ -145,6 +154,7 @@
         if (ctrl.context === 'collection') {
           AppContext.setListOrder(qs.sort);
         }
+        delayPagerViewUpdate();
 
       }
     });
@@ -159,10 +169,11 @@
       ctrl.onUpdate({
         results: data.results,
         count: data.count,
-        field: displayListType
+        field: Utils.getFieldForQueryType()
       });
 
-      delayUpdate();
+      notPaging = true;
+      
 
     }
 
@@ -177,84 +188,28 @@
       ctrl.onNewSet({
         results: data.results,
         count: data.count,
-        field: displayListType
+        field: Utils.getFieldForQueryType()
       });
 
-      delayUpdate();
-
-    }
-
-    function delayUpdate() {
-      $timeout(function () {
-        /**
-         * Show the pager.
-         * @type {boolean}
-         */
-        ctrl.showPager = true;
-        /**
-         * Set pager in context.
-         */
-        AppContext.setPager(true);
-      }, 300);
+      notPaging = true;
 
     }
 
     /**
-     * Invokes query for LIST, SEARCH, and BROWSE actions and
-     * returns promise object.
-     * @param newOffset the offset to use in the
-     * @returns {*} promise
+     * Set delay on showing the pager button.  The pager's view state
+     * is managed via the application context.  This allows other components
+     * to hide the button until pager has new results to display.
      */
-    function invokeQuery() {
+    function delayPagerViewUpdate() {
+      console.log('setting page to show')
 
-      var action = QueryManager.getAction();
-      var context = QueryManager.getQuery();
+      $timeout(function () {
+        /**
+         * Set pager in context.
+         */
+        AppContext.setPager(true);
 
-      var items;
-      /**
-       * List query: POST.
-       */
-      if (action === QueryActions.LIST) {
-
-        items = SolrQuery.save({
-          params: context
-        });
-
-      }
-
-      /**
-       * Discovery or advanced search query: POST.
-       */
-      else if ((action === QueryActions.SEARCH ) && QueryManager.getSearchTerms() !== undefined) {
-
-        items = SolrQuery.save({
-          params: context
-
-        });
-
-      }
-
-      /**
-       * Browse query: GET.
-       */
-      else if (action === QueryActions.BROWSE) {
-
-        items = SolrBrowseQuery.query({
-          type: QueryManager.getAssetType(),
-          id: QueryManager.getAssetId(),
-          qType: QueryManager.getQueryType(),
-          field: context.query.field,
-          sort: QueryManager.getSort(),
-          terms: context.query.terms,
-          filter: QueryManager.getFilter(),
-          offset: QueryManager.getOffset(),
-          rows: QueryManager.getRows()
-
-        });
-
-      }
-
-      return items;
+      }, 300);
 
     }
 
@@ -263,6 +218,8 @@
      * @param start the start position for query result.
      */
     function updateList(newOffset, isNewSet) {
+
+      if (AppContext.getDiscoveryContext() === DiscoveryContext.ADVANCED_SEARCH) { return; }
 
       QueryManager.setOffset(newOffset);
 
@@ -275,14 +232,14 @@
        * Here, we check to be sure the current query is not for authors
        * or subjects.
        */
-      if (!QueryManager.isAuthorListRequest() && !QueryManager.isSubjectListRequest()) {
+      if (AppContext.isNotFacetQueryType()) {
 
-        var items = invokeQuery();
+        var items = SolrDataLoader.invokeQuery();
 
         if (items !== undefined) {
           items.$promise.then(function (data) {
             /** Handle result of the solr query. */
-            if (isNewSet) {
+            if (isNewSet && notPaging) {
               updateParentNewSet(data);
             } else {
               updateParent(data);
@@ -299,36 +256,35 @@
 
         QueryManager.setAction(QueryActions.LIST);
 
-
         var qs = $location.search();
         /**
          * For authors or subjects, get next results from the facets
-         * array rather than executing a new solr query.  This is always
-         * safe since the author and subject facets are retrieved by
-         * the sortOptions loader.
+         * array rather than executing a new solr query.
          */
-        if (QueryManager.isAuthorListRequest()) {
+        if (AppContext.isAuthorListRequest()) {
 
-          if (isNewSet) {
+          if (isNewSet && notPaging) {
 
             if (typeof qs.sort !== 'undefined') {
               QueryManager.setSort(qs.sort);
             }
 
-            var result = invokeQuery();
+            var result = SolrDataLoader.invokeQuery();
 
             result.$promise.then(function (data) {
-
-              if (qs.sort === QuerySort.DESCENDING) {
-                Utils.reverseArray(data.facets);
-              }
-
               /**
                * Add the author array to shared context.
                * @type {string|Array|*}
                */
               AppContext.setAuthorsList(data.facets);
+              /**
+               * If the sort order is desc, reverse the new authors list.
+               */
+              if (qs.sort === QuerySort.DESCENDING) {
+                AppContext.reverseAuthorList();
+              }
               updateParentNewSet(FacetHandler.getAuthorList());
+
 
             });
           } else {
@@ -336,20 +292,24 @@
 
           }
 
-        } else if (QueryManager.isSubjectListRequest()) {
-          if (isNewSet) {
+        } else if (AppContext.isSubjectListRequest()) {
 
-            var result = invokeQuery();
+          if (isNewSet && notPaging) {
+
+            var result = SolrDataLoader.invokeQuery();
 
             result.$promise.then(function (data) {
-              if (qs.sort === QuerySort.DESCENDING) {
-                Utils.reverseArray(data.facets);
-              }
               /**
                * Add the author array to shared context.
                * @type {string|Array|*}
                */
               AppContext.setSubjectList(data.facets);
+              /**
+               * If the sort order is desc, reverse the new subject list.
+               */
+              if (qs.sort === QuerySort.DESCENDING) {
+                AppContext.reverseSubjectList();
+              }
               updateParentNewSet(FacetHandler.getSubjectList());
             });
           } else {
@@ -357,6 +317,7 @@
           }
         }
       }
+      AppContext.setPager(true);
 
     }
 
@@ -390,17 +351,27 @@
 
       var qs = $location.search();
 
+      /**
+       * If a query string is provided, update the query type and
+       * sort order.
+       */
       if (Object.keys(qs).length !== 0) {
         QueryManager.setQueryType(qs.field);
         QueryManager.setSort(qs.sort);
+        QueryManager.setOffset(qs.offset);
       }
-
+      /**
+       *  When paging back through sort option changes we need to
+       *  preserve the original query type and sort order for reloading
+       *  the initial state.
+       */
       defaultField = QueryManager.getQueryType();
       defaultOrder = QueryManager.getSort();
 
-      if (AppContext.getDiscoveryContext() !== DiscoveryContext.ADVANCED_SEARCH) {
-        updateList(QueryManager.getOffset(), true);
-      }
+      AppContext.setPager(false);
+      notPaging = true;
+
+      getNewList(defaultField, defaultOrder, true);
 
     }
 
@@ -419,7 +390,8 @@
         ctrl.end = ctrl.start + 9;
         start -= setSize;
         QueryManager.setOffset(start);
-        updateList(start, false);
+        notPaging = false;
+        $location.search({'field': QueryManager.getQueryType(), 'sort': QueryManager.getSort(), 'terms': '', 'offset': start });
       }
     };
 
@@ -438,7 +410,8 @@
         ctrl.end = count;
       }
       QueryManager.setOffset(start);
-      updateList(start, false);
+      notPaging = false;
+      $location.search({'field': QueryManager.getQueryType(), 'sort': QueryManager.getSort(), 'terms': '', 'offset': start});
 
     };
 

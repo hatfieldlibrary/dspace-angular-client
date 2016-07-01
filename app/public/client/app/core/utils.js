@@ -116,15 +116,15 @@ dspaceServices.factory('Utils', [
      */
     utils.getFieldForQueryType = function () {
 
-      if (QueryManager.isAuthorListRequest()) {
-
+      if (AppContext.isAuthorListRequest()) {
+        
         return QueryFields.AUTHOR;
 
-      } else if (QueryManager.isSubjectListRequest()) {
+      } else if (AppContext.isSubjectListRequest()) {
 
         return QueryFields.SUBJECT;
 
-      } else if (QueryManager.isDiscoveryListRequest()) {
+      } else if (AppContext.isDiscoveryListRequest()) {
 
         return QueryFields.DISCOVER;
 
@@ -196,7 +196,7 @@ dspaceServices.factory('Utils', [
      * @returns {*} placeholder string
      */
     utils.placeholderMessage = function (qType) {
-      console.log(qType)
+
       if (qType === QueryTypes.DATES_LIST) {
         return Messages.SORT_JUMP_TO_YEAR_LABEL;
       }

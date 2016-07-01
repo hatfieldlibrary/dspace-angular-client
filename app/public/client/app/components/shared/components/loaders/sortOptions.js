@@ -7,8 +7,7 @@
 (function () {
 
   /**
-   * Controller for the sort options component that is included in
-   * the parent itemList component.
+   * Controller for the sort options component.
    * @param SolrQuery
    * @param ListQueryFieldMap
    * @param Utils
@@ -20,7 +19,6 @@
                            $location,
                            $timeout,
                            $mdMedia,
-                           SolrJumpToQuery,
                            CollectionQueryFieldMap,
                            BrowseQueryFieldMap,
                            ListSortOrderMap,
@@ -30,7 +28,9 @@
                            QueryFields,
                            QueryTypes,
                            AppContext,
-                           QueryManager) {
+                           AppConfig,
+                           QueryManager,
+                           SolrDataLoader) {
 
     var ctrl = this;
 
@@ -46,10 +46,7 @@
      * The end value is used to get a slice from the author array.
      * @type {number}
      */
-    var setSize = 20;
-
-
-    ctrl.filterTerms = '';
+    var setSize = AppConfig.RESPONSE_SET_SIZE;
 
     /**
      * Set default display list type to TITLE.
@@ -98,7 +95,9 @@
      * The current sort order.
      */
     ctrl.selectedOrder = QueryManager.getSort();
-
+    /**
+     * The current query filter.
+     */
     ctrl.filterTerms = QueryManager.getFilter();
 
     if (($mdMedia('sm') || $mdMedia('xs'))) {
@@ -141,18 +140,8 @@
      */
     var doJump = function () {
 
-      /**
-       * Get promise.
-       * @type {*|{method}|Session}
-       */
-      var items = SolrJumpToQuery.save({
-        params: QueryManager.getQuery()
-      });
-      /**
-       * Handle the response.
-       */
-      items.$promise.then(function (data) {
-
+      var filter = SolrDataLoader.filterQuery();
+      filter.$promise.then(function (data) {
         ctrl.resetListView();
         QueryManager.setOffset(data.offset);
         /**
@@ -162,6 +151,7 @@
           results: data.results,
           count: data.count,
           field: displayListType
+
         });
       });
 
@@ -202,10 +192,7 @@
        * Get promise.
        * @type {*|{method}|Session}
        */
-      var items = SolrQuery.save({
-        params: QueryManager.getQuery()
-
-      });
+      var items = SolrDataLoader.invokeQuery();
       /**
        * Handle the response.
        */
@@ -229,13 +216,15 @@
      */
     ctrl.resetOrder = function () {
 
+      AppContext.isNewSet(true);
+
       ctrl.resetListView();
       /**
        * Reset the selected item.
        */
       AppContext.setCurrentIndex(-1);
 
-      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms});
+      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms, 'offset': 0});
 
 
     };
@@ -246,7 +235,9 @@
      */
     ctrl.getFilter = function () {
 
-      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms});
+      AppContext.isNewSet(false);
+
+      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms, 'offset': 0});
 
       /**
        * Reset the selected item.
@@ -383,6 +374,7 @@
     ctrl.resetField = function setField() {
 
 
+      AppContext.isNewSet(true);
       /**
        * Reset the selected item.
        */
@@ -397,7 +389,7 @@
        */
       QueryManager.setQueryType(ctrl.selectedField);
 
-      console.log(ctrl.selectedField)
+
       /**
        * Set the placeholder message based on query type.
        */
@@ -408,13 +400,30 @@
        */
       QueryManager.setOffset(0);
       /**
-       * The intial sort order should be ASCENDING.
+       * The initial sort order should be ASCENDING.
        */
       QueryManager.setSort(QuerySort.ASCENDING);
+      /**
+       * Since subjects and authors toggle the array of facets, order
+       * is tracked separately for these fields.
+       */
+      if (ctrl.field === QueryTypes.AUTHOR_FACETS) {
+        AppContext.setAuthorsOrder(QuerySort.ASCENDING);
+      } else if (ctrl.field === QueryTypes.SUBJECT_FACETS) {
+        AppContext.setSubjectsOrder(QuerySort.ASCENDING);
+      } else {
+        AppContext.setListOrder(QuerySort.ASCENDING);
+      }
+
+      /**
+       * Update the select option.
+       */
       ctrl.selectedOrder = QuerySort.ASCENDING;
 
-      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms});
-
+      /**
+       * Update query string.
+       */
+      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms, 'offset': 0});
 
 
     };
