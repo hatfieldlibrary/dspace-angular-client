@@ -63,7 +63,7 @@
      * the current query.
      * @type {string}
      */
-    var displayListType = '';
+   // var displayListType = '';
 
     function getNewList(field, sort, newRequest) {
       QueryManager.setQueryType(field);
@@ -114,7 +114,8 @@
 
           } else {
             /**
-             * Update parent using existing array.
+             * Update parent using existing array. Reverse the array
+             * if the sort order has changed.
              */
             updateParentNewSet(FacetHandler.reverseAuthorList(qs.sort));
 
@@ -223,7 +224,7 @@
 
       QueryManager.setOffset(newOffset);
 
-      displayListType = Utils.getFieldForQueryType();
+   //   displayListType = Utils.getFieldForQueryType();
 
       /**
        * For items, we need to make a new solr query for the next

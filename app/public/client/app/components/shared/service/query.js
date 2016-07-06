@@ -71,7 +71,7 @@
           return items;
 
         },
-        filterQuery: function() {
+        filterQuery: function () {
           /**
            * Get promise.
            * @type {*|{method}|Session}
@@ -79,9 +79,14 @@
           var items = SolrJumpToQuery.save({
             params: QueryManager.getQuery()
           });
-          
+
           return items;
+
+        },
+        optionsFilterSearch: function () {
           
+          
+
         }
       }
 

@@ -6,7 +6,7 @@
 
 (function () {
 
-  function ItemListCtrl(
+  function ItemListCtrl($location,
                         QueryManager,
                         AppContext,
                         Messages) {
@@ -14,6 +14,8 @@
     var ctrl = this;
 
     ctrl.ready = false;
+
+    ctrl.showPager = false;
 
     ctrl.resultCountLabel = Messages.RESULTS_LABEL;
 
@@ -53,6 +55,7 @@
       ctrl.items = ctrl.items.concat(results);
 
     }
+
     /**
      * Adds new results to current items at start of the array.
      * @param results  items returned by paging query.
@@ -81,7 +84,7 @@
      */
     ctrl.onUpdate = function (results, count, field) {
 
-      ctrl.showPager = false;
+    //  ctrl.showPager = false;
       ctrl.ready = true;
       ctrl.items = results;
       ctrl.count = count;
@@ -128,7 +131,15 @@
        */
       ctrl.items = [];
 
-      ctrl.showPager = QueryManager.getOffset() > 0;
+      var qs =  $location.search();
+      if (typeof qs.offset != 'undefined') {
+        console.log('showing pager with qs offset')
+        ctrl.showPager = qs.offset > 0;
+        console.log(ctrl.showPager)
+      } else {
+        ctrl.showPager = QueryManager.getOffset() > 1;
+
+      }
 
     }
 

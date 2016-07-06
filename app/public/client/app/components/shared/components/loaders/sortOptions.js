@@ -224,7 +224,12 @@
        */
       AppContext.setCurrentIndex(-1);
 
-      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms, 'offset': 0});
+      $location.search({
+        'field': ctrl.selectedField,
+        'sort': ctrl.selectedOrder,
+        'terms': ctrl.filterTerms,
+        'offset': 0
+      });
 
 
     };
@@ -237,7 +242,12 @@
 
       AppContext.isNewSet(false);
 
-      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms, 'offset': 0});
+      $location.search({
+        'field': ctrl.selectedField,
+        'sort': ctrl.selectedOrder,
+        'terms': ctrl.filterTerms,
+        'offset': 0
+      });
 
       /**
        * Reset the selected item.
@@ -423,7 +433,12 @@
       /**
        * Update query string.
        */
-      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms, 'offset': 0});
+      $location.search({
+        'field': ctrl.selectedField,
+        'sort': ctrl.selectedOrder,
+        'terms': ctrl.filterTerms,
+        'offset': 0
+      });
 
 
     };
@@ -443,5 +458,4 @@
 
   });
 
-})
-();
+})();

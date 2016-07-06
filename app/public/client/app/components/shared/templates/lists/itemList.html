@@ -29,8 +29,8 @@
 
   <div flex="100" layout-fill layout="column" style="min-height: 100%;margin-top: -12px;">
 
-    <pager-back-component ng-if="$ctrl.showPager"
-                          on-update="$ctrl.onPagerUpdate(results, count, field)"
+    <pager-back-component
+                          on-update="$ctrl.onPreviousUpdate(results, count, field)"
                           on-new-set="$ctrl.onUpdate(results, count, field)"
                           context="$ctrl.context">
 
