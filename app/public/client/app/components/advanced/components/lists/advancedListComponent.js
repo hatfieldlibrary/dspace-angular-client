@@ -47,9 +47,9 @@
      * Adds new results to current items at start of the array.
      * @param results  items returned by paging query.
      */
-    function addPreviousResults(results) {
-      ctrl.items = results.concat(ctrl.items);
-    }
+    // function addPreviousResults(results) {
+    //   ctrl.items = results.concat(ctrl.items);
+    // }
 
     /**
      * Sets the selected index in the controller and in the application
@@ -70,28 +70,61 @@
      * @param field  the field queried.
      */
     /* jshint unused:false */
-    ctrl.onPagerUpdate = function (results, count, field) {
+    // ctrl.onPagerUpdate = function (results, count, field) {
+    //
+    //   ctrl.ready = true;
+    //   addResults(results);
+    //   ctrl.count = count;
+    //
+    // };
 
-      ctrl.ready = true;
-      addResults(results);
-      ctrl.count = count;
-
-    };
-
-    ctrl.onPreviousUpdate = function (results, index) {
-
-      if (index === 1) {
-        ctrl.showPager = false;
-      }
-      addPreviousResults(results);
-
-    };
+    // ctrl.onPreviousUpdate = function (results, index) {
+    //
+    //   if (index === 1) {
+    //     ctrl.showPager = false;
+    //   }
+    //   addPreviousResults(results);
+    //
+    // };
 
     ctrl.resetListView = function () {
       ctrl.ready = false;
 
     };
-    
+
+
+    /**
+     * Non-pager updates.
+     * @param results  items in result
+     * @param count  total number of items
+     * @param field   the field queried
+     */
+    ctrl.onUpdate = function (results, count, field) {
+
+      //  ctrl.showPager = false;
+      ctrl.ready = true;
+      ctrl.items = results;
+      ctrl.count = count;
+      ctrl.field = field;
+
+    };
+
+    /**
+     * Pager updates, including the initial page load.
+     * @param results  new items to add to list.
+     * @param count  total number of items.
+     * @param field  the field queried.
+     */
+    ctrl.onPagerUpdate = function (results, count, field) {
+
+      ctrl.ready = true;
+      addResults(results);
+      ctrl.count = count;
+      ctrl.field = field;
+
+    };
+
+
     function init() {
 
       ctrl.ready = true;

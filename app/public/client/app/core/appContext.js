@@ -33,6 +33,8 @@
          * to zero.
          */
         listOffset: 0,
+        
+        startIndex: 0,
 
         /**
          * These values are set by the sort options component, which is shared by collection
@@ -289,6 +291,14 @@
           return _context.newSet;
         }
       }
+      
+      function setStartIndex(index) {
+        _context.startIndex = index;
+      }
+      
+      function getStartIndex() {
+        return _context.startIndex;
+      }
 
 
 
@@ -376,7 +386,9 @@
         isSubjectListRequest: isSubjectListRequest,
         isDiscoveryListRequest: isDiscoveryListRequest,
         isNotFacetQueryType: isNotFacetQueryType,
-        isNewSet: isNewSet
+        isNewSet: isNewSet,
+        setStartIndex: setStartIndex,
+        getStartIndex: getStartIndex
 
       }
 

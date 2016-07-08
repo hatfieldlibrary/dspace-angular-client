@@ -1,4 +1,5 @@
 /**
+ * Component for paging backward through result set.
  * Created by mspalti on 4/10/16.
  */
 
@@ -9,13 +10,8 @@
 
   function PagerCtrl($scope,
                      $location,
-                     Utils,
                      QueryManager,
-                     AppContext,
-                     QueryActions,
-                     DiscoveryContext,
-                     SolrDataLoader,
-                     FacetHandler) {
+                     AppContext) {
 
 
     var backPager = this;
@@ -26,11 +22,31 @@
      */
     var setSize = AppContext.getSetSize();
 
+    var offset = 0;
+
+    backPager.showPager = false;
+
+    /**
+     * Watch for changes to query offset triggered by a
+     * query string update.
+     */
+    $scope.$watch(function () {
+        return AppContext.getStartIndex();
+      },
+      function (newValue) {
+        // unary operator
+        backPager.showPager = newValue !== +0;
+
+      });
+
 
     function init() {
+
       var qs = $location.search();
 
-      var offset = 0;
+      console.log('init');
+
+
       if (Object.keys(qs).length > 0) {
         // convert to int.
         offset = parseInt(qs.offset, 10);
@@ -51,7 +67,6 @@
        * Current start position for view model.
        * @type {number}
        */
-      // Use unary '+' operator to convert offset string to number.
       backPager.start = offset + 1;
       /**
        * Current end position for view model.
@@ -61,7 +76,7 @@
       /**
        * Used in ng-if to show/hide the component.
        * @type {boolean}
-         */
+       */
       backPager.showPager = offset > 0;
 
 
@@ -70,112 +85,40 @@
     init();
 
 
-    /**
-     * Update the parent component with new items.
-     * @param data the next set if items.
-     */
-    function updateParent(data) {
-
-      AppContext.setCount(data.count);
-
-      backPager.showPager = backPager.start > 1;
-
-      backPager.onUpdate({
-
-        results: data.results,
-        index: backPager.start,
-        field: Utils.getFieldForQueryType()
-
-      });
-
-    }
 
     /**
-     * This update function executes solr query.
-     * @param start the start position for query result.
-     */
-    function updateList(newOffset) {
-
-      if (AppContext.getDiscoveryContext() === DiscoveryContext.ADVANCED_SEARCH) {
-        return;
-      }
-
-      QueryManager.setOffset(newOffset);
-
-
-      /**
-       * For items, we need to make a new solr query for the next
-       * result set.
-       *
-       * Here, we check to be sure the current query is not for authors
-       * or subjects.
-       */
-      if (AppContext.isNotFacetQueryType()) {
-
-        var items = SolrDataLoader.invokeQuery();
-
-        if (items !== undefined) {
-          items.$promise.then(function (data) {
-
-            updateParent(data);
-
-          });
-        }
-
-      }
-      /**
-       * List author and subject.
-       */
-      else {
-
-        QueryManager.setAction(QueryActions.LIST);
-
-        /**
-         * For authors or subjects, get next results from the facets
-         * array rather than executing a new solr query.
-         */
-        if (AppContext.isAuthorListRequest()) {
-
-          updateParent(FacetHandler.getAuthorList());
-
-
-        } else if (AppContext.isSubjectListRequest()) {
-
-
-          updateParent(FacetHandler.getSubjectList());
-        }
-      }
-
-    }
-
-
-    /**
-     * View model method for retrieving the previous result set.
+     * Method for retrieving the previous result set.
      */
     backPager.previous = function () {
 
-      var start = QueryManager.getOffset();
+      /**
+       * Set the start value to the current lowest start index.
+       */
+      var start = AppContext.getStartIndex();
 
-      console.log(start);
-      console.log(setSize);
-      console.log(backPager.start)
 
       if (start >= setSize) {
-        backPager.start -= setSize;
-        backPager.end = backPager.start;
-        console.log(backPager.start);
-        QueryManager.setOffset(backPager.start);
-        updateList(backPager.start);
+        start -= setSize;
+        // QueryManager.setOffset(start + 1);
+        // Set the lowest start index to the new, decremented value.
+        AppContext.setStartIndex(start);
+        $location.search({
+          'field': QueryManager.getQueryType(),
+          'sort': QueryManager.getSort(),
+          'terms': '',
+          'offset': start,
+          'd': 'prev'
+        });
+      } else {
+        AppContext.setStartIndex(0);
       }
 
-      $location.search({'field': QueryManager.getQueryType(), 'sort': QueryManager.getSort(), 'terms': '', 'offset': backPager.start});
 
     };
 
-
-    $scope.$on('nextPage', function () {
-      updateList(QueryManager.getOffset());
-    });
+    // $scope.$on('nextPage', function () {
+    //   updateList(QueryManager.getOffset());
+    // });
 
   }
 

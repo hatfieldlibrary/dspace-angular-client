@@ -7,14 +7,25 @@
 (function () {
 
   /**
-   * Controller for the sort options component.
-   * @param SolrQuery
-   * @param ListQueryFieldMap
+   * Controller for sort options.
+   * @param $scope
+   * @param $location
+   * @param $timeout
+   * @param $mdMedia
+   * @param CollectionQueryFieldMap
+   * @param BrowseQueryFieldMap
+   * @param ListSortOrderMap
    * @param Utils
+   * @param Messages
    * @param QuerySort
-   * @param QueryManager
-   * @constructor
-   */
+   * @param QueryFields
+   * @param QueryTypes
+   * @param AppContext
+   * @param AppConfig
+     * @param QueryManager
+     * @param SolrDataLoader
+     * @constructor
+     */
   function SortOptionsCtrl($scope,
                            $location,
                            $timeout,
@@ -64,28 +75,6 @@
     ctrl.id = QueryManager.getAssetId();
 
     /**
-     * Label/Value map for query fields (title, author, subject, date)
-     * @type {*[]}
-     */
-    if (ctrl.context === 'collection') {
-      ctrl.fields = CollectionQueryFieldMap.fields;
-      /**
-       * The selected field is initialized to title.
-       * @type {string}
-       */
-      ctrl.selectedField = QueryManager.getQueryType();
-
-    }
-    else if (ctrl.context === 'browse') {
-      ctrl.fields = BrowseQueryFieldMap.fields;
-      /**
-       * The selected field is initialized to title.
-       * @type {string}
-       */
-      ctrl.selectedField = BrowseQueryFieldMap.fields[0].value;
-    }
-
-    /**
      * Label/Value map for the sort order.
      * @type {Array}
      */
@@ -110,7 +99,61 @@
 
     }
 
+    /**
+     * Watch for changes to query type triggered by a
+     * query string update.
+     */
+    $scope.$watch(function () {
+        return QueryManager.getQueryType()
+      },
+      function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+          ctrl.selectedField = newValue;
+          // Since we are not CURRENTLY tracking filtere
+          // terms in history, reset the bound values
+          // to empty string.
+          ctrl.filterTerms = '';
+        }
+      });
+
+    /**
+     * Watch for changes to sort order triggered by a
+     * query string update.
+     */
+    $scope.$watch(function () {
+        return QueryManager.getSort()
+      },
+      function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+          ctrl.selectedOrder = newValue;
+
+          ctrl.filterTerms = '';
+        }
+      });
+
     function init() {
+
+      /**
+       * Label/Value map for query fields (title, author, subject, date)
+       * @type {*[]}
+       */
+      if (ctrl.context === 'collection') {
+        ctrl.fields = CollectionQueryFieldMap.fields;
+        /**
+         * The selected field is initialized to title.
+         * @type {string}
+         */
+        ctrl.selectedField = QueryManager.getQueryType();
+
+      }
+      else if (ctrl.context === 'browse') {
+        ctrl.fields = BrowseQueryFieldMap.fields;
+        /**
+         * The selected field is initialized to title.
+         * @type {string}
+         */
+        ctrl.selectedField = BrowseQueryFieldMap.fields[0].value;
+      }
 
       /**
        * The search object will be empty on initial load.
@@ -242,12 +285,12 @@
 
       AppContext.isNewSet(false);
 
-      $location.search({
-        'field': ctrl.selectedField,
-        'sort': ctrl.selectedOrder,
-        'terms': ctrl.filterTerms,
-        'offset': 0
-      });
+      // $location.search({
+      //   'field': ctrl.selectedField,
+      //   'sort': ctrl.selectedOrder,
+      //   'terms': ctrl.filterTerms,
+      //   'offset': 0
+      // });
 
       /**
        * Reset the selected item.
@@ -300,6 +343,7 @@
 
         var offset;
 
+        console.log(QueryManager.getQuery());
 
         if (QueryManager.getJumpType() === QueryTypes.START_LETTER) {
           /**
@@ -357,6 +401,7 @@
 
         }
         else if (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS) {
+
           /**
            * Find the index of the first matching item.
            */

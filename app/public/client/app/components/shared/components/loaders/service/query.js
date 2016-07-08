@@ -9,8 +9,8 @@
 
 
   dspaceServices.factory('SolrDataLoader', [
-    'QueryManager', 'QueryActions', 'SolrQuery', 'SolrBrowseQuery',
-    function (QueryManager, QueryActions, SolrQuery, SolrBrowseQuery) {
+    'QueryManager', 'QueryActions', 'SolrQuery', 'SolrBrowseQuery', 'SolrJumpToQuery',
+    function (QueryManager, QueryActions, SolrQuery, SolrBrowseQuery, SolrJumpToQuery) {
 
       return {
         /**
@@ -22,7 +22,9 @@
         invokeQuery: function () {
 
           var action = QueryManager.getAction();
-          var context = QueryManager.getQuery();
+          var params = QueryManager.getQuery();
+
+          console.log(params)
 
           var items;
           /**
@@ -31,7 +33,7 @@
           if (action === QueryActions.LIST) {
 
             items = SolrQuery.save({
-              params: context
+              params: params
             });
 
           }
@@ -42,7 +44,7 @@
           else if ((action === QueryActions.SEARCH ) && QueryManager.getSearchTerms() !== undefined) {
 
             items = SolrQuery.save({
-              params: context
+              params: params
 
             });
 
@@ -57,9 +59,9 @@
               type: QueryManager.getAssetType(),
               id: QueryManager.getAssetId(),
               qType: QueryManager.getQueryType(),
-              field: context.query.field,
+              field: params.query.field,
               sort: QueryManager.getSort(),
-              terms: context.query.terms,
+              terms: params.query.terms,
               filter: QueryManager.getFilter(),
               offset: QueryManager.getOffset(),
               rows: QueryManager.getRows()
@@ -84,8 +86,8 @@
 
         },
         optionsFilterSearch: function () {
-          
-          
+
+
 
         }
       }

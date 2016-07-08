@@ -1,4 +1,5 @@
 /**
+ * Functions work working with facet arrays.
  * Created by mspalti on 6/29/16.
  */
 
@@ -35,7 +36,6 @@
           var end = Utils.getPageListCount(data.count, setSize);
           data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
           return data;
-
         },
         getAuthorList: function() {
           var data = {};

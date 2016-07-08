@@ -48,9 +48,7 @@
             </md-input-container>
           </div>
           <div class="filter-container intro">
-            <advanced-filter-container
-              on-update="adv.onUpdate(results, count, field)">
-            </advanced-filter-container>
+            <advanced-filter-container></advanced-filter-container>
           </div>
 
           <md-input-container flex-gt-sm="20">
@@ -61,8 +59,10 @@
 
       </div>
 
-      <advanced-list-component ng-if="!adv.hideComponents" items="adv.items"
-                               count="{{adv.count}}"></advanced-list-component>
+
+      <item-list-component flex="100" ng-if="!adv.hideComponents" layout-fill class="list-width" context="discover"></item-list-component>
+      <!--<advanced-list-component ng-if="!adv.hideComponents" items="adv.items"-->
+                               <!--count="{{adv.count}}"></advanced-list-component>-->
 
     </md-card-content>
   </md-card>

@@ -9,7 +9,7 @@
 
 (function () {
 
-  function AdvancedCtrl(SolrQuery,
+  function AdvancedCtrl($location,
                         QueryManager,
                         AssetTypes,
                         QueryTypes,
@@ -25,57 +25,57 @@
 
     /**
      * Executes query to retrieve a fresh result set.
-     */
-    function doSearch() {
-      /**
-       * Hide the pager button.
-       */
-      AppContext.setPager(false);
-
-      /**
-       * Get promise.
-       * @type {*|{method}|Session}
-       */
-      var items = SolrQuery.save({
-        params: QueryManager.getQuery()
-
-      });
-
-      /**
-       * Handle the response.
-       */
-      items.$promise.then(function (data) {
-        QueryManager.setOffset(data.offset);
-        adv.items = data.results;
-        adv.count = data.count;
-
-
-      });
-
-    }
-
-    function submit(terms) {
-
-      /**
-       * If search terms are provided, execute the search.
-       */
-      if (terms.length > 0) {
-
-        QueryManager.setSearchTerms(terms);
-
-        /**
-         * Show list components.
-         */
-        if (adv.hideComponents) {
-          adv.hideComponents = false;
-
-        }
-
-        doSearch();
-
-      }
-
-    }
+     //  */
+    // function doSearch() {
+    //   /**
+    //    * Hide the pager button.
+    //    */
+    //   AppContext.setPager(false);
+    //
+    //   /**
+    //    * Get promise.
+    //    * @type {*|{method}|Session}
+    //    */
+    //   var items = SolrQuery.save({
+    //     params: QueryManager.getQuery()
+    //
+    //   });
+    //
+    //   /**
+    //    * Handle the response.
+    //    */
+    //   items.$promise.then(function (data) {
+    //     QueryManager.setOffset(data.offset);
+    //     adv.items = data.results;
+    //     adv.count = data.count;
+    //
+    //
+    //   });
+    //
+    // }
+    //
+    // function submit(terms) {
+    //
+    //   /**
+    //    * If search terms are provided, execute the search.
+    //    */
+    //   if (terms.length > 0) {
+    //
+    //     QueryManager.setSearchTerms(terms);
+    //
+    //     /**
+    //      * Show list components.
+    //      */
+    //     if (adv.hideComponents) {
+    //       adv.hideComponents = false;
+    //
+    //     }
+    //
+    //     doSearch();
+    //
+    //   }
+    //
+    // }
 
     /**
      * Set this to be the controller updated by the discovery util methods.
@@ -154,7 +154,20 @@
      * Handles search form submission.
      * @param terms  the query terms
      */
-    adv.submit = submit;
+    adv.submit = function () {
+      console.log('exec new search')
+      if (adv.hideComponents) {
+               adv.hideComponents = false;
+
+             }
+      $location.search({'field': QueryTypes.DISCOVER, 'sort': QuerySort.ASCENDING, 'terms': '', 'offset': 0});
+      // $location.search({
+      //   'field': ctrl.selectedField,
+      //   'sort': ctrl.selectedOrder,
+      //   'terms': ctrl.filterTerms,
+      //   'offset': 0
+      // });
+    };
 
     /**
      * Handles collection selection.
@@ -168,7 +181,6 @@
     /**
      * Handles selection of community.
      */
-
     adv.selectCommunity = function () {
       DiscoveryFormExtensions.selectCommunity();
       DiscoveryFormExtensions.getCollectionsForCommunity(adv.communityId, adv.collectionId);

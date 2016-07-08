@@ -110,8 +110,9 @@
   appConstants.factory('BrowseQueryFieldMap', ['Messages', function (Messages) {
     return {
       fields: [
-        {label: Messages.SORT_OPTIONS_TITLE, value: titleList},
-        {label: Messages.SORT_OPTIONS_DATE, value: datesList}
+        {label: Messages.SORT_OPTIONS_DATE, value: datesList},
+        {label: Messages.SORT_OPTIONS_TITLE, value: titleList}
+
       ]
     }
   }]);

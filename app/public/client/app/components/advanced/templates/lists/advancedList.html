@@ -37,8 +37,8 @@
     </md-list>
 
     <pager-component
-
-      on-update="$ctrl.onPagerUpdate(results, count, field)">
+      on-update="$ctrl.onPagerUpdate(results, count, field)"
+      on-new-set="$ctrl.onUpdate(results, count, field)">
 
     </pager-component>
 

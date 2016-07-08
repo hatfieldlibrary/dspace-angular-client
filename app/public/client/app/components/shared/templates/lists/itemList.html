@@ -40,6 +40,8 @@
 
     <md-list ng-if="$ctrl.ready">
 
+
+
       <item-detail-component
 
         ng-if="$ctrl.field!='author' && $ctrl.field!='subject' && $ctrl.field!=='discover'"
@@ -110,6 +112,7 @@
     <pager-component
 
       on-update="$ctrl.onPagerUpdate(results, count, field)"
+      on-prev-update="$ctrl.onPreviousUpdate(results, count, field)"
       on-new-set="$ctrl.onUpdate(results, count, field)"
       context="{{$ctrl.context}}">
 

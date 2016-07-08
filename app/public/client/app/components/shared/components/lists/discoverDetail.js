@@ -57,7 +57,7 @@
       }
       // community or collection
       else {
-        $location.path('/handle/' + ctrl.handle);
+        $location.path('/handle/ds/' + ctrl.handle);
 
       }
 
