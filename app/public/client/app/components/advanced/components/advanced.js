@@ -155,18 +155,12 @@
      * @param terms  the query terms
      */
     adv.submit = function () {
-      console.log('exec new search')
       if (adv.hideComponents) {
-               adv.hideComponents = false;
+        adv.hideComponents = false;
+      }
+      QueryManager.setSearchTerms(adv.terms);
+      $location.search({'field': QueryTypes.DISCOVER, 'sort': QuerySort.ASCENDING, 'terms': adv.terms, 'offset': 0, 'filters': QueryManager.discoveryFilterCount(), 'comm': adv.communityId, 'coll': adv.collectionId});
 
-             }
-      $location.search({'field': QueryTypes.DISCOVER, 'sort': QuerySort.ASCENDING, 'terms': '', 'offset': 0});
-      // $location.search({
-      //   'field': ctrl.selectedField,
-      //   'sort': ctrl.selectedOrder,
-      //   'terms': ctrl.filterTerms,
-      //   'offset': 0
-      // });
     };
 
     /**

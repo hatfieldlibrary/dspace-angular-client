@@ -11,8 +11,7 @@
                                      Utils,
                                      QueryManager,
                                      AppContext,
-                                     Messages,
-                                     SolrQuery) {
+                                     Messages) {
 
     var ctrl = this;
 
@@ -50,8 +49,8 @@
        */
       AppContext.setPager(false);
 
-      $location.search({'field': 'discover', 'sort': 'asc', 'terms': '', 'offset': 0});
-      
+      $location.search({'field': 'discover', 'sort': 'asc', 'terms': '', 'offset': 0, 'filters': QueryManager.discoveryFilterCount()});
+
     }
 
     /**

@@ -125,18 +125,17 @@
             QueryManager.setAssetId(id);
 
           }
-        })
-        .catch(function (err) {
-          console.log('Handle Request: ' + err.message);
+        }).catch(function (err) {
+        console.log('Handle Request: ' + err.message);
 
-        })
-        /**
-         * If data was not returned the cause is likely
-         * to be an expired session or the user following an
-         * external link to the resource. We need more information
-         * from the DSpace REST API to know with certainty that
-         * the user needs to be authenticated.
-         */
+      })
+      /**
+       * If data was not returned the cause is likely
+       * to be an expired session or the user following an
+       * external link to the resource. We need more information
+       * from the DSpace REST API to know with certainty that
+       * the user needs to be authenticated.
+       */
         .finally(function () {
 
           /**

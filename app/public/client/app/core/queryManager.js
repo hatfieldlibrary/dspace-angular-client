@@ -163,7 +163,6 @@ dspaceContext.service('QueryManager', [
     }
 
     function setQueryType(type) {
-      console.log(type)
       _context.query.query.qType = type;
     }
 
@@ -204,6 +203,10 @@ dspaceContext.service('QueryManager', [
       _context.query.filters.splice(position, 1);
 
     }
+    
+    function discoveryFilterCount() {
+      return _context.query.filters.length;
+    }
 
     function clearDiscoveryFilters() {
       _context.query.filters = [];
@@ -243,7 +246,8 @@ dspaceContext.service('QueryManager', [
       getSort: getSort,
       addDiscoveryFilter: addDiscoveryFilter,
       removeDiscoveryFilter: removeDiscoveryFilter,
-      clearDiscoveryFilters: clearDiscoveryFilters
+      clearDiscoveryFilters: clearDiscoveryFilters,
+      discoveryFilterCount: discoveryFilterCount
 
     };
 

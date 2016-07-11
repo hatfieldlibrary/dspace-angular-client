@@ -121,7 +121,6 @@
       && query.params.query.terms.length > 0) {
 
       if (query.params.query.qType === constants.QueryType.DISCOVER) {
-        console.log('getting discovery url')
         solrUrl = discovery(query, dspaceToken);   // discovery
 
       }

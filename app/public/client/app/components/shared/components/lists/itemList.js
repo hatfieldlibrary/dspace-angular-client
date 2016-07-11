@@ -8,6 +8,7 @@
 
   function ItemListCtrl($location,
                         QueryManager,
+                        QueryActions,
                         AppContext,
                         Messages) {
 
@@ -16,6 +17,8 @@
     ctrl.ready = false;
 
     ctrl.showPager = false;
+
+    ctrl.showOptions = ctrl.context !== 'advanced' && ctrl.context !== 'discover';
 
     ctrl.resultCountLabel = Messages.RESULTS_LABEL;
 
@@ -132,13 +135,15 @@
       ctrl.items = [];
 
       var qs =  $location.search();
-      if (typeof qs.offset != 'undefined') {
-        console.log('showing pager with qs offset')
+      if (typeof qs.offset !== 'undefined') {
         ctrl.showPager = qs.offset > 0;
-        console.log(ctrl.showPager)
       } else {
         ctrl.showPager = QueryManager.getOffset() > 1;
 
+      }
+
+      if (QueryManager.getAction === QueryActions.SEARCH)  {
+        ctrl.showOptions = false;
       }
 
     }

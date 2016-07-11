@@ -51,13 +51,15 @@
      */
     ctrl.showItem = function (ev, id, type) {
 
-      // item
+      // Make sure the query string is empty.
+      $location.search({});
+      // item type, use service to launch item dialog.
       if (type === '2') {
         ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
       }
-      // community or collection
+      // community or collection type, use new route.
       else {
-        $location.path('/handle/ds/' + ctrl.handle);
+        $location.path('/ds/handle/' + ctrl.handle);
 
       }
 

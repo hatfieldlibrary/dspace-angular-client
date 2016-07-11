@@ -104,7 +104,7 @@
         {label: Messages.SORT_OPTIONS_DATE, value: datesList},
         {label: Messages.SORT_OPTIONS_SUBJECT, value: subjectSearch}
       ]
-    }
+    };
   }]);
 
   appConstants.factory('BrowseQueryFieldMap', ['Messages', function (Messages) {
@@ -114,7 +114,7 @@
         {label: Messages.SORT_OPTIONS_TITLE, value: titleList}
 
       ]
-    }
+    };
   }]);
 
   appConstants.factory('ListSortOrderMap', ['Messages', function (Messages) {
@@ -123,7 +123,7 @@
         {label: Messages.SORT_OPTIONS_ASCENDING, value: sortAscending},
         {label: Messages.SORT_OPTIONS_DESCENDING, value: sortDescending}
       ]
-    }
+    };
   }]);
 
   appConstants.factory('DiscoveryFieldMap', ['Messages', function (Messages) {
@@ -134,7 +134,7 @@
         {label: Messages.SORT_OPTIONS_DATE, value: filterDate},
         {label: Messages.SORT_OPTIONS_SUBJECT, value: filterSubject}
       ]
-    }
+    };
   }]);
 
 })();

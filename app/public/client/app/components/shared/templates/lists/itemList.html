@@ -4,7 +4,7 @@
 
   <div class="filter-container intro" ng-if="$ctrl.context=='discover' || $ctrl.count > 10">
 
-    <sort-options-component ng-if="$ctrl.context!='discover'"
+    <sort-options-component ng-if="$ctrl.showOptions"
                             context="{{$ctrl.context}}"
                             on-update="$ctrl.onUpdate(results, count, field)"
                             reset-list-view="$ctrl.resetListView()">

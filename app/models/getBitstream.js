@@ -28,12 +28,14 @@ var http = require('http');
 
     http.get(options, function (response) {
 
+      var mimeType;
+
       try {
         /**
          *  Get the content type of the stream return by DSpace
          *  and set Express response header.
          */
-        res.type(response.headers['content-type']);
+        mimeType = res.type(response.headers['content-type']);
 
       } catch (err) {
         console.log(err);
@@ -42,8 +44,13 @@ var http = require('http');
 
       // write data chunk to res.
       response.on('data', function (chunk) {
-        // Set to encode base64.
-        res.write(chunk, 'base64');
+
+        if (mimeType === 'text/plain') {
+          res.write(chunk, 'utf8');
+        } else {
+          // Set to encode base64.
+          res.write(chunk, 'base64');
+        }
 
       });
 

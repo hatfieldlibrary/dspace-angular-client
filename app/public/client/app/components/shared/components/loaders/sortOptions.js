@@ -104,7 +104,7 @@
      * query string update.
      */
     $scope.$watch(function () {
-        return QueryManager.getQueryType()
+        return QueryManager.getQueryType();
       },
       function (newValue, oldValue) {
         if (newValue !== oldValue) {
@@ -121,7 +121,7 @@
      * query string update.
      */
     $scope.$watch(function () {
-        return QueryManager.getSort()
+        return QueryManager.getSort();
       },
       function (newValue, oldValue) {
         if (newValue !== oldValue) {
@@ -171,7 +171,7 @@
        */
       if (ctrl.selectedField === QueryTypes.SUBJECT_FACETS ||
         ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
-        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField)
+        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
       }
     }
 
