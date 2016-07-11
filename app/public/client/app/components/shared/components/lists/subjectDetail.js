@@ -13,6 +13,7 @@
                                    QueryManager,
                                    QueryTypes,
                                    AppContext,
+                                   QueryActions,
                                    InlineBrowseRequest) {
 
 
@@ -89,6 +90,7 @@
         });
 
       } else {
+        QueryManager.setAction(QueryActions.BROWSE);
         $location.search({});
         $location.path('/ds/browse/' + ctrl.type + '/' + ctrl.id + '/' + QueryTypes.SUBJECT_SEARCH + '/' + ctrl.field + '/' + ctrl.sort + '/' + ctrl.subject + '/0/' + AppContext.getSetSize());
 

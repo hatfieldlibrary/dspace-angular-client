@@ -8,8 +8,25 @@
 (function () {
 
   dspaceContext.service('AppContext', [
-    'AppConfig', 'QuerySort',
-    function (AppConfig, QuerySort) {
+    'AppConfig', 'QuerySort', 'QueryManager', 'QueryTypes',
+    function (AppConfig, QuerySort, QueryManager, QueryTypes) {
+
+      /**
+       * Reverses the array values.  Used to sort subjects
+       * and authors by ascending and descending.
+       * @param arr
+       */
+      function reverseArray(arr) {
+        var i = 0;
+        var j = arr.length - 1;
+        while (i < j) {
+          var x = arr[i];
+          arr[i] = arr[j];
+          arr[j] = x;
+          i++;
+          j--;
+        }
+      }
 
       var _context = {
 
@@ -33,6 +50,8 @@
          * to zero.
          */
         listOffset: 0,
+        
+        startIndex: 0,
 
         /**
          * These values are set by the sort options component, which is shared by collection
@@ -42,6 +61,12 @@
          * tracked here.  Default to ascending.
          */
         listOrder: QuerySort.ASCENDING,
+
+        authorOrder: QuerySort.ASCENDING,
+
+        subjectOrder: QuerySort.ASCENDING,
+
+        newSet: true,
 
         /**
          * The index of the currently list item.  This is currently used by author
@@ -142,6 +167,14 @@
         return _context.canSubmit;
       }
 
+      function reverseAuthorList() {
+        reverseArray(_context.authorArray);
+      }
+
+      function reverseSubjectList() {
+        reverseArray(_context.subjectArray);
+      }
+
       function setCurrentIndex(index) {
         _context.currentListIndex = index;
       }
@@ -236,14 +269,6 @@
         _context.hasDspaceSession = hasSession;
       }
 
-      function reverseAuthorList() {
-        reverseArray(_context.authorArray);
-      }
-
-      function reverseSubjectList() {
-        reverseArray(_context.subjectArray);
-      }
-
       function setListOffset(offset) {
         _context.listOffset = offset;
       }
@@ -260,22 +285,55 @@
         return _context.listOrder;
       }
 
-      /**
-       * Reverses the array values.  Used to sort subjects
-       * and authors by ascending and descending.
-       * @param arr
-       */
-      function reverseArray(arr) {
-          var i = 0;
-          var j = arr.length - 1;
-          while (i < j) {
-            var x = arr[i];
-            arr[i] = arr[j];
-            arr[j] = x;
-            i++;
-            j--;
-          }
+      function setAuthorsOrder(order) {
+        _context.authorOrder = order;
       }
+
+      function getAuthorsOrder() {
+        return _context.authorOrder;
+      }
+
+      function setSubjectsOrder(order) {
+        _context.subjectOrder = order;
+      }
+
+      function getSubjectsOrder() {
+        return _context.subjectOrder;
+      }
+
+      function isNewSet(newSet) {
+        if (typeof newSet !== 'undefined') {
+          _context.newSet = newSet;
+        } else {
+          return _context.newSet;
+        }
+      }
+      
+      function setStartIndex(index) {
+        _context.startIndex = index;
+      }
+      
+      function getStartIndex() {
+        return _context.startIndex;
+      }
+
+      function isAuthorListRequest() {
+        return (QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS);
+      }
+
+      function isSubjectListRequest() {
+        return (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS);
+      }
+
+      function isDiscoveryListRequest() {
+        return (QueryManager.getQueryType() === QueryTypes.DISCOVER);
+      }
+
+      function isNotFacetQueryType() {
+        return !isAuthorListRequest() && !isSubjectListRequest();
+      }
+
+
 
       return {
 
@@ -292,6 +350,8 @@
         getWritePermission: getWritePermission,
         setSubmitPermission: setSubmitPermission,
         getSubmitPermission: getSubmitPermission,
+        reverseAuthorList: reverseAuthorList,
+        reverseSubjectList: reverseSubjectList,
         setCurrentIndex: setCurrentIndex,
         setAuthorsList: setAuthorsList,
         setSubjectList: setSubjectList,
@@ -314,14 +374,23 @@
         getHomeLink: getHomeLink,
         hasDspaceSession: hasDspaceSession,
         updateDspaceSession: updateDspaceSession,
-        reverseAuthorList: reverseAuthorList,
-        reverseSubjectList: reverseSubjectList,
         setListOffset: setListOffset,
         getListOffset: getListOffset,
         setListOrder: setListOrder,
-        getListOrder: getListOrder
+        getListOrder: getListOrder,
+        setAuthorsOrder: setAuthorsOrder,
+        getAuthorsOrder: getAuthorsOrder,
+        setSubjectsOrder: setSubjectsOrder,
+        getSubjectsOrder: getSubjectsOrder,
+        isAuthorListRequest: isAuthorListRequest,
+        isSubjectListRequest: isSubjectListRequest,
+        isDiscoveryListRequest: isDiscoveryListRequest,
+        isNotFacetQueryType: isNotFacetQueryType,
+        isNewSet: isNewSet,
+        setStartIndex: setStartIndex,
+        getStartIndex: getStartIndex
 
-      }
+      };
 
     }]);
 

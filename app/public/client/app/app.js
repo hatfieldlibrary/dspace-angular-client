@@ -41,13 +41,16 @@ var dspaceApp = angular.module('dspaceApp', [
           templateUrl: '/ds/partials/communities'
         })
         .when('/ds/browse/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', {
-          templateUrl: '/ds/partials/browse'
+          templateUrl: '/ds/partials/browse',
+          reloadOnSearch: false
         })
         .when('/ds/discover/:type/:id/:terms', {
-          templateUrl: '/ds/partials/discover'
+          templateUrl: '/ds/partials/discover',
+          reloadOnSearch: false
         })
         .when('/ds/advanced', {
-          templateUrl: '/ds/partials/advanced'
+          templateUrl: '/ds/partials/advanced',
+          reloadOnSearch: false
         })
         .when('/ds/discover', {
           templateUrl: '/ds/ds/partials/discover'

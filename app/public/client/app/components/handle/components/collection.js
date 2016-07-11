@@ -63,17 +63,8 @@
     }
 
     function init() {
-
-     // if (QueryStack.isEmpty()) {
+      
         doInitialization();
-
-     // } else {
-
-      //  QueryManager.setQuery(QueryStack.pop());
-
-      //  QueryStack.print();
-     // }
-
 
     }
 

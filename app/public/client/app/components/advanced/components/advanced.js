@@ -9,7 +9,7 @@
 
 (function () {
 
-  function AdvancedCtrl(SolrQuery,
+  function AdvancedCtrl($location,
                         QueryManager,
                         AssetTypes,
                         QueryTypes,
@@ -25,57 +25,57 @@
 
     /**
      * Executes query to retrieve a fresh result set.
-     */
-    function doSearch() {
-      /**
-       * Hide the pager button.
-       */
-      AppContext.setPager(false);
-
-      /**
-       * Get promise.
-       * @type {*|{method}|Session}
-       */
-      var items = SolrQuery.save({
-        params: QueryManager.getQuery()
-
-      });
-
-      /**
-       * Handle the response.
-       */
-      items.$promise.then(function (data) {
-        QueryManager.setOffset(data.offset);
-        adv.items = data.results;
-        adv.count = data.count;
-
-
-      });
-
-    }
-
-    function submit(terms) {
-
-      /**
-       * If search terms are provided, execute the search.
-       */
-      if (terms.length > 0) {
-
-        QueryManager.setSearchTerms(terms);
-
-        /**
-         * Show list components.
-         */
-        if (adv.hideComponents) {
-          adv.hideComponents = false;
-
-        }
-
-        doSearch();
-
-      }
-
-    }
+     //  */
+    // function doSearch() {
+    //   /**
+    //    * Hide the pager button.
+    //    */
+    //   AppContext.setPager(false);
+    //
+    //   /**
+    //    * Get promise.
+    //    * @type {*|{method}|Session}
+    //    */
+    //   var items = SolrQuery.save({
+    //     params: QueryManager.getQuery()
+    //
+    //   });
+    //
+    //   /**
+    //    * Handle the response.
+    //    */
+    //   items.$promise.then(function (data) {
+    //     QueryManager.setOffset(data.offset);
+    //     adv.items = data.results;
+    //     adv.count = data.count;
+    //
+    //
+    //   });
+    //
+    // }
+    //
+    // function submit(terms) {
+    //
+    //   /**
+    //    * If search terms are provided, execute the search.
+    //    */
+    //   if (terms.length > 0) {
+    //
+    //     QueryManager.setSearchTerms(terms);
+    //
+    //     /**
+    //      * Show list components.
+    //      */
+    //     if (adv.hideComponents) {
+    //       adv.hideComponents = false;
+    //
+    //     }
+    //
+    //     doSearch();
+    //
+    //   }
+    //
+    // }
 
     /**
      * Set this to be the controller updated by the discovery util methods.
@@ -149,12 +149,19 @@
      * @type {boolean}
      */
     adv.hideComponents = true;
-    
+
     /**
      * Handles search form submission.
      * @param terms  the query terms
      */
-    adv.submit = submit;
+    adv.submit = function () {
+      if (adv.hideComponents) {
+        adv.hideComponents = false;
+      }
+      QueryManager.setSearchTerms(adv.terms);
+      $location.search({'field': QueryTypes.DISCOVER, 'sort': QuerySort.ASCENDING, 'terms': adv.terms, 'offset': 0, 'filters': QueryManager.discoveryFilterCount(), 'comm': adv.communityId, 'coll': adv.collectionId});
+
+    };
 
     /**
      * Handles collection selection.
@@ -164,11 +171,10 @@
       adv.collectionId = id;
       DiscoveryFormExtensions.selectCollection(id);
     };
-    
+
     /**
      * Handles selection of community.
      */
-
     adv.selectCommunity = function () {
       DiscoveryFormExtensions.selectCommunity();
       DiscoveryFormExtensions.getCollectionsForCommunity(adv.communityId, adv.collectionId);
@@ -200,8 +206,6 @@
 
       AppContext.setDiscoveryContext(DiscoveryContext.BASIC_SEARCH);
 
-      QueryStack.clear();
-
       /**
        * Initialize the advanced search asset id to 0 (global search)
        */
@@ -211,7 +215,7 @@
        * Get the community list.
        */
       DiscoveryFormExtensions.getCommunities();
-      
+
 
     }
 

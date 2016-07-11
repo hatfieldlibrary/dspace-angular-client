@@ -1,4 +1,5 @@
 /**
+ * Functions work working with facet arrays.
  * Created by mspalti on 6/29/16.
  */
 
@@ -14,9 +15,10 @@
 
       return {
         reverseAuthorList: function (order) {
-          if (order !== AppContext.getListOrder()) {
+          if (order !== AppContext.getAuthorsOrder()) {
             AppContext.reverseAuthorList();
           }
+          AppContext.setAuthorsOrder(order);
           var data = {};
           data.count = AppContext.getAuthorsCount();
           var end = Utils.getPageListCount(data.count, setSize);
@@ -25,15 +27,15 @@
         },
         reverseSubjectList: function (order) {
 
-          if (order !== AppContext.getListOrder()) {
+          if (order !== AppContext.getSubjectsOrder()) {
             AppContext.reverseSubjectList();
           }
+          AppContext.setSubjectsOrder(order);
           var data = {};
           data.count = AppContext.getSubjectsCount();
           var end = Utils.getPageListCount(data.count, setSize);
           data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
           return data;
-
         },
         getAuthorList: function() {
           var data = {};
@@ -55,6 +57,6 @@
            }
         }
 
-      }
+      };
     }]);
 })();

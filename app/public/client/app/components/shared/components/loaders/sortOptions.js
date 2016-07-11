@@ -7,20 +7,29 @@
 (function () {
 
   /**
-   * Controller for the sort options component that is included in
-   * the parent itemList component.
-   * @param SolrQuery
-   * @param ListQueryFieldMap
+   * Controller for sort options.
+   * @param $scope
+   * @param $location
+   * @param $timeout
+   * @param $mdMedia
+   * @param CollectionQueryFieldMap
+   * @param BrowseQueryFieldMap
+   * @param ListSortOrderMap
    * @param Utils
+   * @param Messages
    * @param QuerySort
-   * @param QueryManager
-   * @constructor
-   */
+   * @param QueryFields
+   * @param QueryTypes
+   * @param AppContext
+   * @param AppConfig
+     * @param QueryManager
+     * @param SolrDataLoader
+     * @constructor
+     */
   function SortOptionsCtrl($scope,
                            $location,
                            $timeout,
                            $mdMedia,
-                           SolrJumpToQuery,
                            CollectionQueryFieldMap,
                            BrowseQueryFieldMap,
                            ListSortOrderMap,
@@ -30,7 +39,9 @@
                            QueryFields,
                            QueryTypes,
                            AppContext,
-                           QueryManager) {
+                           AppConfig,
+                           QueryManager,
+                           SolrDataLoader) {
 
     var ctrl = this;
 
@@ -46,10 +57,7 @@
      * The end value is used to get a slice from the author array.
      * @type {number}
      */
-    var setSize = 20;
-
-
-    ctrl.filterTerms = '';
+    var setSize = AppConfig.RESPONSE_SET_SIZE;
 
     /**
      * Set default display list type to TITLE.
@@ -67,28 +75,6 @@
     ctrl.id = QueryManager.getAssetId();
 
     /**
-     * Label/Value map for query fields (title, author, subject, date)
-     * @type {*[]}
-     */
-    if (ctrl.context === 'collection') {
-      ctrl.fields = CollectionQueryFieldMap.fields;
-      /**
-       * The selected field is initialized to title.
-       * @type {string}
-       */
-      ctrl.selectedField = QueryManager.getQueryType();
-
-    }
-    else if (ctrl.context === 'browse') {
-      ctrl.fields = BrowseQueryFieldMap.fields;
-      /**
-       * The selected field is initialized to title.
-       * @type {string}
-       */
-      ctrl.selectedField = BrowseQueryFieldMap.fields[0].value;
-    }
-
-    /**
      * Label/Value map for the sort order.
      * @type {Array}
      */
@@ -98,7 +84,9 @@
      * The current sort order.
      */
     ctrl.selectedOrder = QueryManager.getSort();
-
+    /**
+     * The current query filter.
+     */
     ctrl.filterTerms = QueryManager.getFilter();
 
     if (($mdMedia('sm') || $mdMedia('xs'))) {
@@ -111,7 +99,61 @@
 
     }
 
+    /**
+     * Watch for changes to query type triggered by a
+     * query string update.
+     */
+    $scope.$watch(function () {
+        return QueryManager.getQueryType();
+      },
+      function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+          ctrl.selectedField = newValue;
+          // Since we are not CURRENTLY tracking filtere
+          // terms in history, reset the bound values
+          // to empty string.
+          ctrl.filterTerms = '';
+        }
+      });
+
+    /**
+     * Watch for changes to sort order triggered by a
+     * query string update.
+     */
+    $scope.$watch(function () {
+        return QueryManager.getSort();
+      },
+      function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+          ctrl.selectedOrder = newValue;
+
+          ctrl.filterTerms = '';
+        }
+      });
+
     function init() {
+
+      /**
+       * Label/Value map for query fields (title, author, subject, date)
+       * @type {*[]}
+       */
+      if (ctrl.context === 'collection') {
+        ctrl.fields = CollectionQueryFieldMap.fields;
+        /**
+         * The selected field is initialized to title.
+         * @type {string}
+         */
+        ctrl.selectedField = QueryManager.getQueryType();
+
+      }
+      else if (ctrl.context === 'browse') {
+        ctrl.fields = BrowseQueryFieldMap.fields;
+        /**
+         * The selected field is initialized to title.
+         * @type {string}
+         */
+        ctrl.selectedField = BrowseQueryFieldMap.fields[0].value;
+      }
 
       /**
        * The search object will be empty on initial load.
@@ -129,7 +171,7 @@
        */
       if (ctrl.selectedField === QueryTypes.SUBJECT_FACETS ||
         ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
-        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField)
+        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
       }
     }
 
@@ -141,18 +183,8 @@
      */
     var doJump = function () {
 
-      /**
-       * Get promise.
-       * @type {*|{method}|Session}
-       */
-      var items = SolrJumpToQuery.save({
-        params: QueryManager.getQuery()
-      });
-      /**
-       * Handle the response.
-       */
-      items.$promise.then(function (data) {
-
+      var filter = SolrDataLoader.filterQuery();
+      filter.$promise.then(function (data) {
         ctrl.resetListView();
         QueryManager.setOffset(data.offset);
         /**
@@ -162,6 +194,7 @@
           results: data.results,
           count: data.count,
           field: displayListType
+
         });
       });
 
@@ -202,10 +235,7 @@
        * Get promise.
        * @type {*|{method}|Session}
        */
-      var items = SolrQuery.save({
-        params: QueryManager.getQuery()
-
-      });
+      var items = SolrDataLoader.invokeQuery();
       /**
        * Handle the response.
        */
@@ -229,13 +259,20 @@
      */
     ctrl.resetOrder = function () {
 
+      AppContext.isNewSet(true);
+
       ctrl.resetListView();
       /**
        * Reset the selected item.
        */
       AppContext.setCurrentIndex(-1);
 
-      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms});
+      $location.search({
+        'field': ctrl.selectedField,
+        'sort': ctrl.selectedOrder,
+        'terms': ctrl.filterTerms,
+        'offset': 0
+      });
 
 
     };
@@ -246,7 +283,14 @@
      */
     ctrl.getFilter = function () {
 
-      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms});
+      AppContext.isNewSet(false);
+
+      // $location.search({
+      //   'field': ctrl.selectedField,
+      //   'sort': ctrl.selectedOrder,
+      //   'terms': ctrl.filterTerms,
+      //   'offset': 0
+      // });
 
       /**
        * Reset the selected item.
@@ -299,6 +343,7 @@
 
         var offset;
 
+        console.log(QueryManager.getQuery());
 
         if (QueryManager.getJumpType() === QueryTypes.START_LETTER) {
           /**
@@ -356,6 +401,7 @@
 
         }
         else if (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS) {
+
           /**
            * Find the index of the first matching item.
            */
@@ -383,6 +429,7 @@
     ctrl.resetField = function setField() {
 
 
+      AppContext.isNewSet(true);
       /**
        * Reset the selected item.
        */
@@ -397,7 +444,7 @@
        */
       QueryManager.setQueryType(ctrl.selectedField);
 
-      console.log(ctrl.selectedField)
+
       /**
        * Set the placeholder message based on query type.
        */
@@ -408,13 +455,35 @@
        */
       QueryManager.setOffset(0);
       /**
-       * The intial sort order should be ASCENDING.
+       * The initial sort order should be ASCENDING.
        */
       QueryManager.setSort(QuerySort.ASCENDING);
+      /**
+       * Since subjects and authors toggle the array of facets, order
+       * is tracked separately for these fields.
+       */
+      if (ctrl.field === QueryTypes.AUTHOR_FACETS) {
+        AppContext.setAuthorsOrder(QuerySort.ASCENDING);
+      } else if (ctrl.field === QueryTypes.SUBJECT_FACETS) {
+        AppContext.setSubjectsOrder(QuerySort.ASCENDING);
+      } else {
+        AppContext.setListOrder(QuerySort.ASCENDING);
+      }
+
+      /**
+       * Update the select option.
+       */
       ctrl.selectedOrder = QuerySort.ASCENDING;
 
-      $location.search({'field': ctrl.selectedField, 'sort': ctrl.selectedOrder, 'terms': ctrl.filterTerms});
-
+      /**
+       * Update query string.
+       */
+      $location.search({
+        'field': ctrl.selectedField,
+        'sort': ctrl.selectedOrder,
+        'terms': ctrl.filterTerms,
+        'offset': 0
+      });
 
 
     };
@@ -434,5 +503,4 @@
 
   });
 
-})
-();
+})();

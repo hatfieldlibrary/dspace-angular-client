@@ -58,7 +58,7 @@
       QueryManager.removeDiscoveryFilter(position);
 
       removeFilter(position);
-      
+
 
     };
 
@@ -67,9 +67,6 @@
 
   dspaceComponents.component('advancedFilterContainer', {
 
-    bindings: {
-      onUpdate: '&'
-    },
     templateUrl: '/ds/advanced/templates/filters/advancedFilterContainer.html',
     controller: FilterContainerController
   });
