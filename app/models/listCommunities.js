@@ -10,7 +10,7 @@ var utils = require('../core/utils');
   /**
    * Model for retrieving the communities list via the REST API.
    */
-  module.exports = function (res, session) {
+  module.exports = function (session) {
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
@@ -28,17 +28,7 @@ var utils = require('../core/utils');
           json: true
 
         }
-      ).then(function (json) {
-          res.send(json);
-          res.end();
-        })
-        .catch(function (err) {
-          // log and return error code to client.
-          console.log(err);
-          res.statusCode = err.statusCode;
-          res.end();
-
-        });
+      );
 
     return list;
 

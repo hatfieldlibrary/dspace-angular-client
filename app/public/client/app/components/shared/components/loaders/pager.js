@@ -1,23 +1,47 @@
 /**
+ * The component for paging forward through result set.  This
+ * component functions as the primary loader for solr data.
  * Created by mspalti on 2/23/16.
  */
 
 'use strict';
 
 (function () {
+  /**
+   * Pager controller.
+   * @param $location
+   * @param $scope
+   * @param $timeout
+   * @param SolrDataLoader
+   * @param Utils
+   * @param QueryManager
+   * @param DiscoveryContext
+   * @param AppContext
+   * @param QuerySort
+   * @param QueryActions
+   * @param FacetHandler
+   * @constructor
+   */
 
-  function PagerCtrl($scope,
+  function PagerCtrl($location,
+                     $scope,
                      $timeout,
-                     SolrQuery,
-                     SolrBrowseQuery,
+                     SolrDataLoader,
                      Utils,
                      QueryManager,
                      DiscoveryContext,
                      AppContext,
-                     QueryActions) {
+                     QuerySort,
+                     QueryActions,
+                     QueryTypes,
+                     FacetHandler) {
 
 
-    var ctrl = this;
+    var pager = this;
+
+    var defaultField = QueryTypes.DATES_LIST;
+    var defaultOrder = QuerySort.DESCENDING;
+    var notPaging = true;
 
     /**
      * Number of items to return in pager.
@@ -31,75 +55,94 @@
     var count = 0;
 
     /**
-     * Get the offset for the next result set.
+     * Check to see if more search results are available.
      * @returns {boolean}
      */
-    ctrl.more = function () {
+    pager.more = function () {
       return AppContext.getCount() > QueryManager.getOffset() + setSize;
     };
+
+    pager.showPager = false;
+
     /**
      * Current start position for view model.
      * @type {number}
      */
-    ctrl.start = QueryManager.getOffset() + 1;
+    pager.start = QueryManager.getOffset() + 1;
     /**
      * Current end position for view model.
      * @type {number}
      */
-    ctrl.end = QueryManager.getOffset() + setSize;
+    pager.end = QueryManager.getOffset() + setSize;
 
     /**
      * This variable is used to hold the QueryField of
      * the current query.
      * @type {string}
      */
-    var displayListType = '';
+    // var displayListType = '';
 
     /**
      * Update the parent component with new items.
      * @param data the next set if items.
      */
-    function updateParent(data) {
-
+    function updateParent(data, direction) {
 
       AppContext.setCount(data.count);
 
-      ctrl.onUpdate({
+      if (direction === 'prev') {
 
-        results: data.results,
-        count: data.count,
-        field: displayListType
+        pager.onPrevUpdate({
+          results: data.results,
+          count: data.count,
+          field: Utils.getFieldForQueryType()
+        });
 
-      });
+      } else {
 
+        pager.onUpdate({
+          results: data.results,
+          count: data.count,
+          field: Utils.getFieldForQueryType()
+        });
 
-      $timeout(function () {
-        /**
-         * Show the pager.
-         * @type {boolean}
-         */
-        ctrl.showPager = true;
-        /**
-         * Set pager in context.
-         */
-        AppContext.setPager(true);
-      }, 300);
+      }
 
+      notPaging = true;
 
     }
 
     /**
-     * Execute node REST API call for solr query results.
+     * Update the parent component with new items.
+     * @param data the next set if items.
+     */
+    function updateParentNewSet(data) {
+
+      AppContext.setCount(data.count);
+
+      pager.onNewSet({
+        results: data.results,
+        count: data.count,
+        field: Utils.getFieldForQueryType()
+      });
+
+      notPaging = true;
+
+    }
+
+    /**
+     * Execute solr query.
      * @param start the start position for query result.
      */
-    function updateList(newOffset) {
+    function updateList(newOffset, isNewSet, direction) {
+
+      if (AppContext.getDiscoveryContext() === DiscoveryContext.ADVANCED_SEARCH) {
+        return;
+      }
 
       QueryManager.setOffset(newOffset);
 
-      var action = QueryManager.getAction();
-
-      displayListType = Utils.getFieldForQueryType();
-
+      //   displayListType = Utils.getFieldForQueryType();
 
       /**
        * For items, we need to make a new solr query for the next
@@ -108,61 +151,18 @@
        * Here, we check to be sure the current query is not for authors
        * or subjects.
        */
-      if (!QueryManager.isAuthorListRequest() && !QueryManager.isSubjectListRequest()) {
+      if (AppContext.isNotFacetQueryType()) {
 
-        var context = QueryManager.getQuery();
-
-        var items;
-        /**
-         * List query: POST.
-         */
-        if (action === QueryActions.LIST) {
-
-          items = SolrQuery.save({
-            params: context
-
-          });
-
-        }
-
-        /**
-         * Discovery or advanced search query: POST.
-         */
-
-        else if ((action === QueryActions.SEARCH ) && QueryManager.getSearchTerms() !== undefined) {
-
-          items = SolrQuery.save({
-            params: context
-
-          });
-        }
-
-        /**
-         * Browse query: GET.
-         */
-        else if (action === QueryActions.BROWSE) {
-
-
-          items = SolrBrowseQuery.query({
-            type: QueryManager.getAssetType(),
-            id: QueryManager.getAssetId(),
-            qType: QueryManager.getQueryType(),
-            field: context.query.field,
-            sort: QueryManager.getSort(),
-            terms: context.query.terms,
-            filter: QueryManager.getFilter(),
-            offset: newOffset,
-            rows: QueryManager.getRows()
-
-          });
-
-        }
+        var items = SolrDataLoader.invokeQuery();
 
         if (items !== undefined) {
-
           items.$promise.then(function (data) {
             /** Handle result of the solr query. */
-            updateParent(data);
+            if (isNewSet) {
+              updateParentNewSet(data);
+            } else {
+              updateParent(data, direction);
+            }
 
           });
         }
@@ -173,33 +173,212 @@
        */
       else {
 
-        var data = [];
+        QueryManager.setAction(QueryActions.LIST);
 
-        var end;
-
+        var qs = $location.search();
+        var result;
         /**
          * For authors or subjects, get next results from the facets
-         * array rather than executing a new solr query.  This is always
-         * safe since the author and subject facets are retrieved by
-         * the sortOptions loader.
+         * array rather than executing a new solr query.
          */
-        if (QueryManager.isAuthorListRequest()) {
-          data.count = AppContext.getAuthorsCount();
-          end = Utils.getPageListCount(data.count, setSize);
-          data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
+        if (AppContext.isAuthorListRequest()) {
 
-        } else if (QueryManager.isSubjectListRequest()) {
-          data.count = AppContext.getSubjectsCount();
-          end = Utils.getPageListCount(data.count, setSize);
-          data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
+          if (isNewSet && notPaging) {
 
+            if (typeof qs.sort !== 'undefined') {
+              QueryManager.setSort(qs.sort);
+            }
+
+            result = SolrDataLoader.invokeQuery();
+
+            result.$promise.then(function (data) {
+              /**
+               * Add the author array to shared context.
+               * @type {string|Array|*}
+               */
+              AppContext.setAuthorsList(data.facets);
+              /**
+               * If the sort order is desc, reverse the new authors list.
+               */
+              if (qs.sort === QuerySort.DESCENDING) {
+                AppContext.reverseAuthorList();
+              }
+              updateParentNewSet(FacetHandler.getAuthorList());
+
+
+            });
+          } else {
+            updateParent(FacetHandler.getAuthorList(), direction);
+
+          }
+
+        } else if (AppContext.isSubjectListRequest()) {
+
+          if (isNewSet && notPaging) {
+
+            result = SolrDataLoader.invokeQuery();
+
+            result.$promise.then(function (data) {
+              /**
+               * Add the author array to shared context.
+               * @type {string|Array|*}
+               */
+              AppContext.setSubjectList(data.facets);
+              /**
+               * If the sort order is desc, reverse the new subject list.
+               */
+              if (qs.sort === QuerySort.DESCENDING) {
+                AppContext.reverseSubjectList();
+              }
+              updateParentNewSet(FacetHandler.getSubjectList());
+            });
+          } else {
+            updateParent(FacetHandler.getSubjectList(), direction);
+          }
         }
-        updateParent(data);
-
       }
+
+      AppContext.setPager(true);
+      pager.showPager = true;
 
     }
 
+
+    function getNewList(field, sort, newRequest, direction) {
+
+      QueryManager.setQueryType(field);
+      QueryManager.setSort(sort);
+      updateList(QueryManager.getOffset(), newRequest, direction);
+
+    }
+
+
+
+
+    /**
+     * Set delay on showing the pager button.  The pager's view state
+     * is managed via the application context.  This allows other components
+     * to hide the button until pager has new results to display.
+     */
+    function delayPagerViewUpdate() {
+
+      $timeout(function () {
+        /**
+         * Set pager in context.
+         */
+        AppContext.setPager(true);
+
+      }, 300);
+
+    }
+
+    /**
+     * Listener for sort option location change.
+     */
+    $scope.$on('$locationChangeSuccess', function () {
+
+      var qs = $location.search();
+
+      /**
+       * Empty query string.  Use default field and sort order.
+       */
+      if (Object.keys(qs).length === 0) {
+
+        if (QueryManager.getAction() !== QueryActions.BROWSE) {
+          QueryManager.setOffset(0);
+          AppContext.setStartIndex(0);
+
+        }
+        getNewList(defaultField, defaultOrder, true, '');
+      }
+
+      else {
+
+        /**
+         * If true, query results will replace current result set
+         * in parent component.
+         * @type {boolean|*}
+         */
+        var newRequest = notPaging && AppContext.isNewSet();
+
+        QueryManager.setOffset(qs.offset);
+
+        if (qs.d === 'prev') {
+          // When back paging, the new offset is
+          // always tne new low index.
+          AppContext.setStartIndex(qs.offset);
+        }
+        else if (qs.offset === 0) {
+          AppContext.setStartIndex(0);
+        }
+
+
+        /**
+         * Let facet handler check for LIST action.
+         */
+        FacetHandler.checkForListAction();
+        /**
+         * Author and subject lists use facets. If the facet
+         * array is available, use it rather than making an
+         * unneeded request for data.
+         */
+        if (AppContext.isAuthorListRequest()) {
+          /**
+           * Facet array exists.
+           */
+          if (AppContext.isNewSet()) {
+            /**
+             * Request a new facet array.
+             */
+            getNewList(qs.field, qs.sort, newRequest, qs.d);
+
+          } else {
+            /**
+             * Update parent using existing array. Reverse the array
+             * if the sort order has changed.
+             */
+            updateParentNewSet(FacetHandler.reverseAuthorList(qs.sort));
+
+          }
+        }
+        else if (AppContext.isSubjectListRequest()) {
+          /**
+           * Facet array exists.
+           */
+          if (AppContext.isNewSet()) {
+            /**
+             * Request a new facet array.
+             */
+            getNewList(qs.field, qs.sort, newRequest, qs.d);
+
+          }
+          else {
+            /**
+             * Update parent using existing array.
+             */
+            updateParentNewSet(FacetHandler.reverseSubjectList(qs.sort));
+
+          }
+
+        } else {
+          /**
+           * If not subject or author, always request new
+           * list using the field and sort order provided in
+           * the query string.
+           */
+          getNewList(qs.field, qs.sort, newRequest, qs.d);
+
+        }
+        /**
+         * Set the new sort order in application context.
+         */
+        if (pager.context === 'collection') {
+          AppContext.setListOrder(qs.sort);
+        }
+        delayPagerViewUpdate();
+
+      }
+    });
 
     /**
      * This watch will show/hide the pager button
@@ -215,61 +394,74 @@
       },
       function (newValue, oldValue) {
         if (newValue !== oldValue) {
-          ctrl.showPager = newValue;
+          pager.showPager = newValue;
         }
       });
 
 
     /**
-     * Initialize data for the first set of items.
+     * Initialize the first set of items.
      *
-     * The initial QueryManager state for the query context is
-     * set outside of pager in the appropriate parent
-     * component, e.g.: collection, discover...
+     * The QueryManager state is set in the appropriate parent
+     * component (e.g.: collection, discover). The state is also
+     * updated here in response to changes in history state.
      */
     function init() {
 
-      if (AppContext.getDiscoveryContext() !== DiscoveryContext.ADVANCED_SEARCH) {
-        updateList(QueryManager.getOffset());
+      var qs = $location.search();
+
+
+      /**
+       * If a query string is provided, update the query type and
+       * sort order.
+       */
+      if (Object.keys(qs).length !== 0) {
+        QueryManager.setQueryType(qs.field);
+        QueryManager.setSort(qs.sort);
+        QueryManager.setOffset(qs.offset);
+        // unary operator
+        AppContext.setStartIndex(+qs.offset);
+      } else {
+        if (QueryManager.getQueryType() !== QueryTypes.DISCOVER) {
+          QueryManager.setQueryType(defaultField);
+          QueryManager.setSort(defaultOrder);
+          AppContext.setStartIndex(0);
+        }
       }
+
+      AppContext.setPager(false);
+
+      notPaging = true;
+
+      getNewList(QueryManager.getQueryType(), QueryManager.getSort(), true);
 
     }
 
     init();
-
-
-    /**
-     * View model method for retrieving the previous result set.
-     */
-    ctrl.previous = function () {
-
-      var start = QueryManager.getOffset();
-
-      if (start >= setSize) {
-        ctrl.start -= setSize;
-        ctrl.end = ctrl.start + 9;
-        start -= setSize;
-        QueryManager.setOffset(start);
-        updateList(start);
-      }
-    };
+    
 
     /**
-     * View model method for retrieveing the next result set.
+     * Method for retrieving the next result set.
      */
-    ctrl.next = function () {
+    pager.next = function () {
 
       var start = QueryManager.getOffset();
 
       start += setSize;
-      ctrl.start = start + 1;
-      if (ctrl.end + setSize <= count) {
-        ctrl.end += setSize;
+      pager.start = start + 1;
+      if (pager.end + setSize <= count) {
+        pager.end += setSize;
       } else {
-        ctrl.end = count;
+        pager.end = count;
       }
       QueryManager.setOffset(start);
-      updateList(start);
+      notPaging = false;
+      $location.search({
+        'field': QueryManager.getQueryType(),
+        'sort': QueryManager.getSort(),
+        'terms': '',
+        'offset': start
+      });
 
     };
 
@@ -278,11 +470,15 @@
 
   dspaceComponents.component('pagerComponent', {
 
-    template: '<div layout="row" layout-align="center center" ng-if="$ctrl.showPager"><md-button class="md-raised md-accent md-fab md-mini" ng-click="$ctrl.next()" ng-if="$ctrl.more()"><md-icon md-font-library="material-icons" class="md-light" aria-label="More Results">expand_more</md-icon></md-button></div>',
+    template: '<div layout="row" layout-align="center center" ng-if="pager.showPager"><md-button class="md-raised md-accent md-fab md-mini" ng-click="pager.next()" ng-if="pager.more()"><md-icon md-font-library="material-icons" class="md-light" aria-label="More Results">expand_more</md-icon></md-button></div>',
     bindings: {
-      onUpdate: '&'
+      onUpdate: '&',
+      onPrevUpdate: '&',
+      onNewSet: '&',
+      context: '@'
     },
-    controller: PagerCtrl
+    controller: PagerCtrl,
+    controllerAs: 'pager'
 
   });
 

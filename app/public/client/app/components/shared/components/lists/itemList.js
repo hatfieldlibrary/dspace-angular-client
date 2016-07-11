@@ -6,13 +6,19 @@
 
 (function () {
 
-  function ItemListCtrl(QueryManager,
+  function ItemListCtrl($location,
+                        QueryManager,
+                        QueryActions,
                         AppContext,
                         Messages) {
 
     var ctrl = this;
 
     ctrl.ready = false;
+
+    ctrl.showPager = false;
+
+    ctrl.showOptions = ctrl.context !== 'advanced' && ctrl.context !== 'discover';
 
     ctrl.resultCountLabel = Messages.RESULTS_LABEL;
 
@@ -52,6 +58,7 @@
       ctrl.items = ctrl.items.concat(results);
 
     }
+
     /**
      * Adds new results to current items at start of the array.
      * @param results  items returned by paging query.
@@ -71,6 +78,7 @@
 
     };
 
+
     /**
      * Non-pager updates.
      * @param results  items in result
@@ -79,7 +87,7 @@
      */
     ctrl.onUpdate = function (results, count, field) {
 
-      ctrl.showPager = false;
+    //  ctrl.showPager = false;
       ctrl.ready = true;
       ctrl.items = results;
       ctrl.count = count;
@@ -126,7 +134,17 @@
        */
       ctrl.items = [];
 
-      ctrl.showPager = QueryManager.getOffset() > 0;
+      var qs =  $location.search();
+      if (typeof qs.offset !== 'undefined') {
+        ctrl.showPager = qs.offset > 0;
+      } else {
+        ctrl.showPager = QueryManager.getOffset() > 1;
+
+      }
+
+      if (QueryManager.getAction === QueryActions.SEARCH)  {
+        ctrl.showOptions = false;
+      }
 
     }
 

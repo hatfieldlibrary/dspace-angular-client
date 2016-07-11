@@ -16,7 +16,18 @@
 
     req.session.url = '/ds/communities';
 
-    models.listCommunities(res, req.session);
+    models.listCommunities(req.session).then(function (json) {
+      res.send(json);
+      res.end();
+    })
+      .catch(function (err) {
+        // log and return error code to client.
+        console.log('DSpace returned an error.');
+        console.log(err);
+        res.statusCode = err.statusCode;
+        res.end();
+
+      });
 
   };
 
@@ -25,10 +36,23 @@
    * by discovery.
    * @param req
    * @param res
-     */
+   */
   exports.getCommunitiesForDiscover = function (req, res) {
 
-    models.listCommunities(res, req.session);
+    models.listCommunities(req.session)
+      .then(function (json) {
+        res.send(json);
+        res.end();
+      })
+      .catch(function (err) {
+        // log and return error code to client.
+        console.log('DSpace returned an error.');
+        console.log(err);
+        res.statusCode = err.statusCode;
+        res.end();
+
+      });
+    
 
   };
 
@@ -36,19 +60,19 @@
    * Retrieves collections that belong to the community.
    * @param req
    * @param res
-     */
-  exports.getCollections = function( req, res ) {
+   */
+  exports.getCollections = function (req, res) {
 
     var id = req.params.id;
 
     models.getCollectionsForCommunity(id, req.session)
-
       .then(function (result) {
         res.send(result);
         res.end();
 
       })
       .catch(function (err) {
+        console.log('DSpace returned an error.');
         console.log(err);
         res.statusCode = err.statusCode;
         res.end();

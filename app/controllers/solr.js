@@ -7,6 +7,34 @@ var constants = require('../core/constants');
 (function () {
 
 
+  function getQuery(req) {
+
+    var query = {
+      params: {
+        asset: {
+          type: req.params.type,
+          id: req.params.id
+        },
+        sort: {
+          order: req.params.sort
+        },
+        query: {
+          action: req.params.action,
+          qType: req.params.qType,
+          terms: req.params.terms,
+          field: req.params.field,
+          offset: req.params.offset,
+          rows: req.params.rows,
+          filter: req.params.filter
+        }
+      }
+    };
+    
+
+    return query;
+  }
+
+
   /**
    * Default solr query controller. Handles POST queries.
    * @param req
@@ -22,8 +50,14 @@ var constants = require('../core/constants');
     }
 
     var session = req.session;
-    
+
     models.solrQuery(req.body, res, session);
+
+  };
+
+  exports.sortOptions = function (req, res) {
+    var session = req.session;
+    models.solrQuery(getQuery(req), res, session);
 
   };
 
@@ -35,15 +69,17 @@ var constants = require('../core/constants');
    */
   exports.browse = function (req, res) {
 
-    /** @type {string} the site id from the handle */
+    req.params.action = 'browse';
+
+    /** @type {string} the item type */
     var type = req.params.type;
-    /** @type {string} the item id from the handle */
+    /** @type {string} the item id  */
     var id = req.params.id;
-    /** @type {*|string} dspace id */
+    /** @type {*|string} solr query thye */
     var qType = req.params.qType;
-    /** @type {string|string|*} the field to browse (author, subject) */
+    /** @type {string|string|*} the field to search (author, subject...) */
     var field = req.params.field;
-    /** @type {string|*} the term on which the browse query filters (e.g. author name) */
+    /** @type {string|*} the search terms */
     var terms = req.params.terms;
     /** @type {string|*} the start position */
     var offset = req.params.offset;
@@ -52,37 +88,14 @@ var constants = require('../core/constants');
 
     var rows = req.params.rows;
 
-    var filter = req.params.filter;
-
     req.session.url = '/ds/browse/' + type + '/' + id + '/' + qType + '/' + field + '/' + sort + '/' + terms + '/' + offset + '/' + rows;
 
     var session = req.session;
 
-    /** The new query object */
-    var query = {
-      params: {
-        asset: {
-          type: type,
-          id: id
-        },
-        sort: {
-          order: sort
-        },
-        query: {
-          action: constants.QueryActions.BROWSE,
-          qType: qType,
-          terms: terms,
-          field: field,
-          offset: offset,
-          rows: rows,
-          filter: filter
-        }
-      }
-    };
-
-    models.solrQuery(query, res, session);
+    models.solrQuery(getQuery(req), res, session);
 
   };
+
 
   // currently unused.
   exports.recentSubmissions = function (req, res) {
@@ -158,7 +171,6 @@ var constants = require('../core/constants');
             // log in again.
             utils.removeDspaceSession(req.session);
 
-            
 
           }
           res.statusCode = err.statusCode;

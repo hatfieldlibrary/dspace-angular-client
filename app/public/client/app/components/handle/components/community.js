@@ -61,7 +61,7 @@
      * that the user does not have access to collections still
      * hidden behind DSpace authorizations.
      */
-    $scope.$watch(function() { return AppContext.hasDspaceSession()},
+    $scope.$watch(function() { return AppContext.hasDspaceSession(); },
       function(data) {
         ctrl.hideLoginMessage = data;
       });

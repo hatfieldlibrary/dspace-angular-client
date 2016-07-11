@@ -15,7 +15,6 @@
                         AssetTypes,
                         QueryTypes,
                         QueryActions,
-                        QueryStack,
                         QuerySort,
                         DiscoveryContext,
                         AppContext,
@@ -109,8 +108,11 @@
      * @param terms  the query terms
      */
     disc.submit = function () {
+
+      $location.search({});
       /**
-       * If search terms are provided, execute the search.
+       * If search terms are provided, execute the search. Discovery searches
+       * use path routing to reload the page.
        */
       if (disc.terms.length > 0) {
         $location.path('/ds/discover/' + QueryManager.getAssetType() + '/' + QueryManager.getAssetId() + '/' + disc.terms);
@@ -145,7 +147,6 @@
 
       AppContext.setDiscoveryContext(DiscoveryContext.BASIC_SEARCH);
 
-      QueryStack.clear();
 
       /**
        * If the DSpace ID parameter is undefined then hide unnecessary

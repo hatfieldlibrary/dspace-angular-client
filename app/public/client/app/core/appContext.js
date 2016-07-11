@@ -8,8 +8,25 @@
 (function () {
 
   dspaceContext.service('AppContext', [
-    'AppConfig',
-    function (AppConfig) {
+    'AppConfig', 'QuerySort', 'QueryManager', 'QueryTypes',
+    function (AppConfig, QuerySort, QueryManager, QueryTypes) {
+
+      /**
+       * Reverses the array values.  Used to sort subjects
+       * and authors by ascending and descending.
+       * @param arr
+       */
+      function reverseArray(arr) {
+        var i = 0;
+        var j = arr.length - 1;
+        while (i < j) {
+          var x = arr[i];
+          arr[i] = arr[j];
+          arr[j] = x;
+          i++;
+          j--;
+        }
+      }
 
       var _context = {
 
@@ -25,6 +42,32 @@
          * paging request.
          */
         subjectArray: [],
+
+        /**
+         * The pager component is shared by the collection and browse components.  When the
+         * user moves from list to browse view, the list offset value is tracked outside
+         * of the query object so that it can be restored on return to the list view.  Default
+         * to zero.
+         */
+        listOffset: 0,
+        
+        startIndex: 0,
+
+        /**
+         * These values are set by the sort options component, which is shared by collection
+         * and browse components.  We need to track the 'list' and 'browse' states separately
+         * so that the loader knows whether author and subject arrays need to be reversed.
+         * That is determined by comparing the query string's sort order with the one
+         * tracked here.  Default to ascending.
+         */
+        listOrder: QuerySort.ASCENDING,
+
+        authorOrder: QuerySort.ASCENDING,
+
+        subjectOrder: QuerySort.ASCENDING,
+
+        newSet: true,
+
         /**
          * The index of the currently list item.  This is currently used by author
          * and subject facets to activate a card that contains item information.
@@ -124,6 +167,14 @@
         return _context.canSubmit;
       }
 
+      function reverseAuthorList() {
+        reverseArray(_context.authorArray);
+      }
+
+      function reverseSubjectList() {
+        reverseArray(_context.subjectArray);
+      }
+
       function setCurrentIndex(index) {
         _context.currentListIndex = index;
       }
@@ -213,10 +264,76 @@
       function hasDspaceSession() {
         return _context.hasDspaceSession;
       }
-      
+
       function updateDspaceSession(hasSession) {
         _context.hasDspaceSession = hasSession;
       }
+
+      function setListOffset(offset) {
+        _context.listOffset = offset;
+      }
+
+      function getListOffset() {
+        return _context.listOffset;
+      }
+
+      function setListOrder(order) {
+        _context.listOrder = order;
+      }
+
+      function getListOrder() {
+        return _context.listOrder;
+      }
+
+      function setAuthorsOrder(order) {
+        _context.authorOrder = order;
+      }
+
+      function getAuthorsOrder() {
+        return _context.authorOrder;
+      }
+
+      function setSubjectsOrder(order) {
+        _context.subjectOrder = order;
+      }
+
+      function getSubjectsOrder() {
+        return _context.subjectOrder;
+      }
+
+      function isNewSet(newSet) {
+        if (typeof newSet !== 'undefined') {
+          _context.newSet = newSet;
+        } else {
+          return _context.newSet;
+        }
+      }
+      
+      function setStartIndex(index) {
+        _context.startIndex = index;
+      }
+      
+      function getStartIndex() {
+        return _context.startIndex;
+      }
+
+      function isAuthorListRequest() {
+        return (QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS);
+      }
+
+      function isSubjectListRequest() {
+        return (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS);
+      }
+
+      function isDiscoveryListRequest() {
+        return (QueryManager.getQueryType() === QueryTypes.DISCOVER);
+      }
+
+      function isNotFacetQueryType() {
+        return !isAuthorListRequest() && !isSubjectListRequest();
+      }
+
+
 
       return {
 
@@ -233,6 +350,8 @@
         getWritePermission: getWritePermission,
         setSubmitPermission: setSubmitPermission,
         getSubmitPermission: getSubmitPermission,
+        reverseAuthorList: reverseAuthorList,
+        reverseSubjectList: reverseSubjectList,
         setCurrentIndex: setCurrentIndex,
         setAuthorsList: setAuthorsList,
         setSubjectList: setSubjectList,
@@ -254,9 +373,24 @@
         getHomeLogo: getHomeLogo,
         getHomeLink: getHomeLink,
         hasDspaceSession: hasDspaceSession,
-        updateDspaceSession: updateDspaceSession
+        updateDspaceSession: updateDspaceSession,
+        setListOffset: setListOffset,
+        getListOffset: getListOffset,
+        setListOrder: setListOrder,
+        getListOrder: getListOrder,
+        setAuthorsOrder: setAuthorsOrder,
+        getAuthorsOrder: getAuthorsOrder,
+        setSubjectsOrder: setSubjectsOrder,
+        getSubjectsOrder: getSubjectsOrder,
+        isAuthorListRequest: isAuthorListRequest,
+        isSubjectListRequest: isSubjectListRequest,
+        isDiscoveryListRequest: isDiscoveryListRequest,
+        isNotFacetQueryType: isNotFacetQueryType,
+        isNewSet: isNewSet,
+        setStartIndex: setStartIndex,
+        getStartIndex: getStartIndex
 
-      }
+      };
 
     }]);
 

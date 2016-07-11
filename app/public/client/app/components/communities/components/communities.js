@@ -9,7 +9,6 @@
 
 
   function CommunitiesCtrl(GetCommunities,
-                           QueryStack,
                            QueryManager,
                            AssetTypes,
                            Messages) {
@@ -31,8 +30,7 @@
      * @type {{}}
      */
     ctrl.communities = {};
-
-    QueryStack.clear();
+    
 
     QueryManager.setAssetType(AssetTypes.COMMUNITY_LIST);
 

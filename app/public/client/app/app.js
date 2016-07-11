@@ -31,19 +31,26 @@ var dspaceApp = angular.module('dspaceApp', [
 
       $routeProvider
         .when('/ds/handle/:site/:item', {
+          templateUrl: '/ds/partials/handle',
+          reloadOnSearch: false
+        })
+        .when('/ds/handle/:site/:id/:field/:sort', {
           templateUrl: '/ds/partials/handle'
         })
         .when('/ds/communities', {
           templateUrl: '/ds/partials/communities'
         })
-        .when('/ds/browse/:type/:id/:field/:sort/:terms/:offset/:rows', {
-          templateUrl: '/ds/partials/browse'
+        .when('/ds/browse/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', {
+          templateUrl: '/ds/partials/browse',
+          reloadOnSearch: false
         })
         .when('/ds/discover/:type/:id/:terms', {
-          templateUrl: '/ds/partials/discover'
+          templateUrl: '/ds/partials/discover',
+          reloadOnSearch: false
         })
         .when('/ds/advanced', {
-          templateUrl: '/ds/partials/advanced'
+          templateUrl: '/ds/partials/advanced',
+          reloadOnSearch: false
         })
         .when('/ds/discover', {
           templateUrl: '/ds/ds/partials/discover'
