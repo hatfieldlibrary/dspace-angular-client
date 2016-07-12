@@ -46,6 +46,8 @@
 
       QueryManager.setAction(QueryActions.SEARCH);
 
+      $location.search({});
+
 
       $location.path('/ds/discover/' + sb.type + '/' + sb.id + '/' + terms);
 
