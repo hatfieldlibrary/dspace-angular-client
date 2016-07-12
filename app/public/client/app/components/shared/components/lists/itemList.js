@@ -20,6 +20,8 @@
 
     ctrl.showOptions = ctrl.context !== 'advanced' && ctrl.context !== 'discover';
 
+    ctrl.showDiscoverContainer = false;
+
     ctrl.resultCountLabel = Messages.RESULTS_LABEL;
 
     if (ctrl.context === 'browse') {
@@ -92,6 +94,7 @@
       ctrl.items = results;
       ctrl.count = count;
       ctrl.field = field;
+      ctrl.showDiscoverContainer = ctrl.context==='discover' || (ctrl.count > 10 && ctrl.context !== 'advanced');
 
     };
 

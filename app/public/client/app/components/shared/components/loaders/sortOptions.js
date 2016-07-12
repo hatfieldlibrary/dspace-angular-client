@@ -22,10 +22,10 @@
    * @param QueryTypes
    * @param AppContext
    * @param AppConfig
-     * @param QueryManager
-     * @param SolrDataLoader
-     * @constructor
-     */
+   * @param QueryManager
+   * @param SolrDataLoader
+   * @constructor
+   */
   function SortOptionsCtrl($scope,
                            $location,
                            $timeout,
@@ -484,11 +484,9 @@
         'terms': ctrl.filterTerms,
         'offset': 0
       });
-
-
+      
     };
-
-
+    
   }
 
   dspaceComponents.component('sortOptionsComponent', {

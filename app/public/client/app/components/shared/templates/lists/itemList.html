@@ -2,7 +2,7 @@
 
   <h2 class="md-title" ng-if="$ctrl.isBrowseContext()">Browsing: {{$ctrl.browseTerms}}</h2>
 
-  <div class="filter-container intro" ng-if="$ctrl.context=='discover' || $ctrl.count > 10">
+  <div class="filter-container intro" ng-if="$ctrl.showDiscoverContainer">
 
     <sort-options-component ng-if="$ctrl.showOptions"
                             context="{{$ctrl.context}}"

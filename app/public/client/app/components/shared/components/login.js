@@ -12,11 +12,6 @@
 
     var ctrl = this;
 
-    /**
-     * Used to indicate button type.
-     * @type {boolean}
-     */
-    ctrl.raised = false;
 
     ctrl.loginLabel = Messages.LOGIN_LABEL;
 
@@ -54,6 +49,10 @@
   dspaceComponents.component('loginComponent', {
 
     bindings: {
+      /**
+       * Used to indicate button type.
+       * @type {boolean}
+       */
       raised: '<'
     },
     templateUrl: '/ds/shared/templates/login.html',
