@@ -56,7 +56,7 @@ var dspaceApp = angular.module('dspaceApp', [
           templateUrl: '/ds/ds/partials/discover'
         });
 
-      $locationProvider.html5Mode(true).hashPrefix('!');
+      $locationProvider.html5Mode(true);
 
     }
   ]);

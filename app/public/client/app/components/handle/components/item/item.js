@@ -11,7 +11,8 @@
   function ItemCtrl(GetCollectionInfo,
                     Utils,
                     Messages,
-                    AppContext) {
+                    AppContext,
+                    PageTitle) {
 
     var ctrl = this;
 
@@ -48,6 +49,7 @@
       ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
       ctrl.canWrite = AppContext.getWritePermission();
       ctrl.itemId = data.id;
+      PageTitle.setTitle(data.name);
 
     });
 
