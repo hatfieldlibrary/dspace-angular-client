@@ -158,6 +158,7 @@
       if (adv.hideComponents) {
         adv.hideComponents = false;
       }
+      $location.search({});
       QueryManager.setSearchTerms(adv.terms);
       $location.search({'field': QueryTypes.DISCOVER, 'sort': QuerySort.ASCENDING, 'terms': adv.terms, 'offset': 0, 'filters': QueryManager.discoveryFilterCount(), 'comm': adv.communityId, 'coll': adv.collectionId});
 
