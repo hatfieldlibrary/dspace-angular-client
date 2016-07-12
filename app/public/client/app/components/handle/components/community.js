@@ -10,7 +10,11 @@
    * Community view controller.
    */
 
-  function CommunityCtrl(Messages, Utils, AppContext, $scope) {
+  function CommunityCtrl(Messages,
+                         Utils,
+                         AppContext,
+                         PageTitle,
+                         $scope) {
 
     var ctrl = this;
 
@@ -41,6 +45,8 @@
     ctrl.getLogo = getLogo;
 
     ctrl.hasLogo = hasLogo;
+
+    PageTitle.setTitle(ctrl.data.name);
 
     /**
      * Shows login message if the count of returned collections

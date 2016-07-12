@@ -19,6 +19,7 @@
                         AppContext,
                         Utils,
                         Messages,
+                        PageTitle,
                         DiscoveryFormExtensions) {
 
     var adv = this;
@@ -99,6 +100,8 @@
      * @type {string}
      */
     adv.pageHeader = Messages.DISCOVERY_PAGE_HEADER;
+
+    PageTitle.setTitle(Messages.DISCOVERY_PAGE_HEADER);
 
     /**
      * Label for the community select input.
