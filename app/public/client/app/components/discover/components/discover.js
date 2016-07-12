@@ -20,6 +20,7 @@
                         AppContext,
                         Utils,
                         Messages,
+                        PageTitle,
                         DiscoveryFormExtensions) {
 
     var disc = this;
@@ -54,6 +55,8 @@
      * @type {string}
      */
     disc.pageHeader = Messages.DISCOVERY_PAGE_HEADER;
+
+    PageTitle.setTitle(Messages.DISCOVERY_PAGE_HEADER);
 
     /**
      * Label for the community select input.

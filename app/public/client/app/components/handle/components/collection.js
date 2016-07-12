@@ -14,6 +14,7 @@
                           QueryActions,
                           QueryTypes,
                           QuerySort,
+                          PageTitle,
                           Utils) {
 
     var ctrl = this;
@@ -43,7 +44,7 @@
     ctrl.hasLogo = hasLogo;
 
     function doInitialization() {
-      
+
         /**
          * Default field.
          */
@@ -63,7 +64,9 @@
     }
 
     function init() {
-      
+
+      PageTitle.setTitle(ctrl.data.name);
+
         doInitialization();
 
     }
