@@ -1,6 +1,6 @@
 /**
- * The component for paging forward through result set.  This
- * component functions as the primary loader for solr data.
+ * This component contains most of the logic for responding to
+ * location changes and loading data.
  * Created by mspalti on 2/23/16.
  */
 
@@ -34,7 +34,8 @@
                      QuerySort,
                      QueryActions,
                      QueryTypes,
-                     FacetHandler) {
+                     FacetHandler,
+                     $mdDialog) {
 
 
     var pager = this;
@@ -42,6 +43,9 @@
     var defaultField = QueryTypes.DATES_LIST;
     var defaultOrder = QuerySort.DESCENDING;
     var notPaging = true;
+    var currentField = '';
+    var currentOrder = '';
+    var currentOffset = '';
 
     /**
      * Number of items to return in pager.
@@ -82,6 +86,19 @@
      */
     // var displayListType = '';
 
+    function isNewQuery(field, order, offset) {
+      console.log('current off ' + currentOffset)
+      console.log('offset provided ' + offset)
+
+      var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset);
+      currentField = field;
+      currentOrder = order;
+      currentOffset = offset;
+      console.log('check is ' + check)
+      return check;
+
+    }
+
     /**
      * Update the parent component with new items.
      * @param data the next set if items.
@@ -118,13 +135,15 @@
      */
     function updateParentNewSet(data) {
 
-      AppContext.setCount(data.count);
+      if (data) {
+        AppContext.setCount(data.count);
 
-      pager.onNewSet({
-        results: data.results,
-        count: data.count,
-        field: Utils.getFieldForQueryType()
-      });
+        pager.onNewSet({
+          results: data.results,
+          count: data.count,
+          field: Utils.getFieldForQueryType()
+        });
+      }
 
       notPaging = true;
 
@@ -134,13 +153,13 @@
      * Execute solr query.
      * @param start the start position for query result.
      */
-    function updateList(newOffset, isNewSet, direction) {
+    function updateList(isNewSet, direction) {
 
       if (AppContext.getDiscoveryContext() === DiscoveryContext.ADVANCED_SEARCH) {
         return;
       }
 
-      QueryManager.setOffset(newOffset);
+    //  QueryManager.setOffset(newOffset);
 
       //   displayListType = Utils.getFieldForQueryType();
 
@@ -157,6 +176,7 @@
 
         if (items !== undefined) {
           items.$promise.then(function (data) {
+            console.log(data)
             /** Handle result of the solr query. */
             if (isNewSet) {
               updateParentNewSet(data);
@@ -245,14 +265,12 @@
 
 
     function getNewList(field, sort, newRequest, direction) {
-
+      
       QueryManager.setQueryType(field);
       QueryManager.setSort(sort);
-      updateList(QueryManager.getOffset(), newRequest, direction);
+      updateList(newRequest, direction);
 
     }
-
-
 
 
     /**
@@ -287,6 +305,12 @@
         if (QueryManager.getAction() !== QueryActions.BROWSE) {
           QueryManager.setOffset(0);
           AppContext.setStartIndex(0);
+          AppContext.setOpenItem(-1);
+          AppContext.setCurrentIndex(-1);
+          /**
+           * Item dialog might be open.  Close it.
+           */
+          $mdDialog.cancel();
 
         }
         getNewList(defaultField, defaultOrder, true, '');
@@ -312,6 +336,17 @@
           AppContext.setStartIndex(0);
         }
 
+        /**
+         * Check for item position in the query string.
+         */
+        if (typeof qs.pos !== 'undefined') {
+          AppContext.setOpenItem(qs.pos);
+          AppContext.setCurrentIndex(qs.pos);
+          //QueryManager.setOffset(0);
+        } else {
+          AppContext.setOpenItem(-1);
+          AppContext.setCurrentIndex(-1);
+        }
 
         /**
          * Let facet handler check for LIST action.
@@ -324,7 +359,7 @@
          */
         if (AppContext.isAuthorListRequest()) {
           /**
-           * Facet array exists.
+           * Facet array does not exist. Requesting new data set.
            */
           if (AppContext.isNewSet()) {
             /**
@@ -343,7 +378,7 @@
         }
         else if (AppContext.isSubjectListRequest()) {
           /**
-           * Facet array exists.
+           * Facet array does not exist. Requesting new data set.
            */
           if (AppContext.isNewSet()) {
             /**
@@ -361,12 +396,19 @@
           }
 
         } else {
+
+          /**
+           * Item dialog might be open.  Close it.
+           */
+          $mdDialog.cancel();
           /**
            * If not subject or author, always request new
            * list using the field and sort order provided in
            * the query string.
            */
-          getNewList(qs.field, qs.sort, newRequest, qs.d);
+          if (isNewQuery(qs.field, qs.sort, qs.offset)) {
+            getNewList(qs.field, qs.sort, newRequest, qs.d);
+          }
 
         }
         /**
@@ -415,7 +457,7 @@
        * If a query string is provided, update the query type and
        * sort order.
        */
-      if (Object.keys(qs).length !== 0) {
+      if (Object.keys(qs).length !== 0 && typeof qs.field !== 'undefined') {
         QueryManager.setQueryType(qs.field);
         QueryManager.setSort(qs.sort);
         QueryManager.setOffset(qs.offset);
@@ -428,17 +470,29 @@
           AppContext.setStartIndex(0);
         }
       }
+      if (typeof qs.pos !== 'undefined') {
+        AppContext.setOpenItem(qs.pos);
+        AppContext.setCurrentIndex(qs.pos);
+        QueryManager.setOffset(0);
+      } else {
+        AppContext.setOpenItem(-1);
+        AppContext.setCurrentIndex(-1);
+      }
 
       AppContext.setPager(false);
 
       notPaging = true;
+      currentField = QueryManager.getQueryType();
+      currentOrder = QueryManager.getSort();
 
-      getNewList(QueryManager.getQueryType(), QueryManager.getSort(), true);
+      if (isNewQuery(qs.field, qs.sort, qs.offset)) {
+        getNewList(QueryManager.getQueryType(), QueryManager.getSort(), true);
+      }
 
     }
 
     init();
-    
+
 
     /**
      * Method for retrieving the next result set.
@@ -454,7 +508,7 @@
       } else {
         pager.end = count;
       }
-      QueryManager.setOffset(start);
+    // QueryManager.setOffset(start);
       notPaging = false;
       $location.search({
         'field': QueryManager.getQueryType(),

@@ -89,12 +89,14 @@
      */
     ctrl.onUpdate = function (results, count, field) {
 
-    //  ctrl.showPager = false;
+      //  ctrl.showPager = false;
       ctrl.ready = true;
       ctrl.items = results;
       ctrl.count = count;
       ctrl.field = field;
-      ctrl.showDiscoverContainer = ctrl.context==='discover' || (ctrl.count > 10 && ctrl.context !== 'advanced');
+      ctrl.showDiscoverContainer = ctrl.context === 'discover'
+        || (ctrl.count > 10 && ctrl.context !== 'advanced')
+        || (ctrl.count === 0 && ctrl.context !== 'advanced');
 
     };
 
@@ -137,7 +139,7 @@
        */
       ctrl.items = [];
 
-      var qs =  $location.search();
+      var qs = $location.search();
       if (typeof qs.offset !== 'undefined') {
         ctrl.showPager = qs.offset > 0;
       } else {
@@ -145,7 +147,7 @@
 
       }
 
-      if (QueryManager.getAction === QueryActions.SEARCH)  {
+      if (QueryManager.getAction === QueryActions.SEARCH) {
         ctrl.showOptions = false;
       }
 

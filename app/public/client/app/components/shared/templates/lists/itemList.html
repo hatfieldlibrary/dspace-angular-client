@@ -53,7 +53,8 @@
         year="{{col.year}}"
         handle="{{col.handle}}"
         abstract="{{col.abstract}}"
-        id="{{col.id}}">
+        id="{{col.id}}"
+      pos="{{$index}}">
 
       </item-detail-component>
 
@@ -67,11 +68,11 @@
         count="{{au.author.count}}"
         type="{{$ctrl.type}}"
         id="{{$ctrl.id}}"
-        index="{{$index}}"
+        pos="{{$index}}"
         field="{{$ctrl.field}}"
         abstract="{{col.abstract}}"
         last="$last"
-        set-selected="$ctrl.setSelected(index)">
+        set-selected="$ctrl.setSelected(pos)">
 
       </author-detail-component>
 
@@ -84,11 +85,11 @@
         count="{{sub.author.count}}"
         type="{{$ctrl.type}}"
         id="{{$ctrl.id}}"
-        index="{{$index}}"
+        pos="{{$index}}"
         field="{{$ctrl.field}}"
         abstract="{{col.abstract}}"
         last="$last"
-        set-selected="$ctrl.setSelected(index)">
+        set-selected="$ctrl.setSelected(pos)">
 
       </subject-detail-component>
 

@@ -5,7 +5,7 @@
 'use strict';
 
 dspaceServices.factory('Utils', [
-
+  '$location',
   'QueryManager',
   'AppContext',
   'Messages',
@@ -16,7 +16,8 @@ dspaceServices.factory('Utils', [
   'QuerySort',
   'QueryTypes',
 
-  function (QueryManager,
+  function ($location,
+            QueryManager,
             AppContext,
             Messages,
             CheckSession,
@@ -117,7 +118,7 @@ dspaceServices.factory('Utils', [
     utils.getFieldForQueryType = function () {
 
       if (AppContext.isAuthorListRequest()) {
-        
+
         return QueryFields.AUTHOR;
 
       } else if (AppContext.isSubjectListRequest()) {
@@ -327,10 +328,31 @@ dspaceServices.factory('Utils', [
      * Constructs path to DSpace bitstream service.
      * @param logoId
      * @returns {string}
-       */
+     */
     utils.getLogoPath = function (logoId) {
       var path = '/ds/bitstream/' + logoId + '/logo';
       return path;
+    };
+
+    /**
+     * Updates the query string with the id and position
+     * of the selected item.
+     * @param id the item id
+     * @param pos the position in itemList
+     */
+    utils.setLocationForItem = function (id, pos) {
+
+      var qs = $location.search();
+      /**
+       * Add id and position to the query string.
+       */
+      qs.id = id;
+      qs.pos = pos;
+      /**
+       * Change location.
+       */
+      $location.search(qs);
+
     };
 
 

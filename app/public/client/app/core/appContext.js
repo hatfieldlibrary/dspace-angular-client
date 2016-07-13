@@ -50,8 +50,10 @@
          * to zero.
          */
         listOffset: 0,
-        
+
         startIndex: 0,
+
+        openItem: -1,
 
         /**
          * These values are set by the sort options component, which is shared by collection
@@ -69,7 +71,7 @@
         newSet: true,
 
         /**
-         * The index of the currently list item.  This is currently used by author
+         * The index of the currently selected list item.  This is used by author
          * and subject facets to activate a card that contains item information.
          */
         currentListIndex: -1,
@@ -176,7 +178,13 @@
       }
 
       function setCurrentIndex(index) {
+        console.log('setting index to ' + index);
         _context.currentListIndex = index;
+      }
+
+      function getCurrentIndex() {
+        console.log('got current index ' + _context.currentListIndex)
+        return _context.currentListIndex;
       }
 
       function setAuthorsList(list) {
@@ -308,11 +316,11 @@
           return _context.newSet;
         }
       }
-      
+
       function setStartIndex(index) {
         _context.startIndex = index;
       }
-      
+
       function getStartIndex() {
         return _context.startIndex;
       }
@@ -333,6 +341,13 @@
         return !isAuthorListRequest() && !isSubjectListRequest();
       }
 
+      function setOpenItem(itemPosition) {
+        _context.openItem = itemPosition;
+      }
+
+      function getOpenItem () {
+        return _context.openItem;
+      }
 
 
       return {
@@ -353,6 +368,7 @@
         reverseAuthorList: reverseAuthorList,
         reverseSubjectList: reverseSubjectList,
         setCurrentIndex: setCurrentIndex,
+        getCurrentIndex: getCurrentIndex,
         setAuthorsList: setAuthorsList,
         setSubjectList: setSubjectList,
         getAuthors: getAuthors,
@@ -388,7 +404,9 @@
         isNotFacetQueryType: isNotFacetQueryType,
         isNewSet: isNewSet,
         setStartIndex: setStartIndex,
-        getStartIndex: getStartIndex
+        getStartIndex: getStartIndex,
+        setOpenItem: setOpenItem,
+        getOpenItem: getOpenItem
 
       };
 

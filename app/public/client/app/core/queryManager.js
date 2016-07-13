@@ -203,7 +203,7 @@ dspaceContext.service('QueryManager', [
       _context.query.filters.splice(position, 1);
 
     }
-    
+
     function discoveryFilterCount() {
       return _context.query.filters.length;
     }

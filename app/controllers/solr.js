@@ -29,7 +29,6 @@ var constants = require('../core/constants');
         }
       }
     };
-    
 
     return query;
   }

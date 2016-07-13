@@ -1,5 +1,5 @@
 <md-list-item flex ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();"
-              ng-class="{ 'md-whiteframe-z2': $ctrl.index == $ctrl.selectedIndex, 'selected-index': $ctrl.index == $ctrl.selectedIndex,  'selected-sm-index': $ctrl.index == $ctrl.xsSelectedIndex}">
+              ng-class="{ 'md-whiteframe-z2': $ctrl.pos == $ctrl.selectedIndex, 'selected-index': $ctrl.pos == $ctrl.selectedIndex,  'selected-sm-index': $ctrl.pos == $ctrl.xsSelectedIndex}">
 
 
   <md-item-content layout-fill>
@@ -17,7 +17,7 @@
 
       <div ng-if="$ctrl.count <= 10" layout="row" flex >
 
-        <a class="browse-anchor" ng-class="{'md-title': $ctrl.index == $ctrl.selectedIndex}" $ng-href="#">{{$ctrl.subject}}
+        <a class="browse-anchor" ng-class="{'md-title': $ctrl.pos == $ctrl.selectedIndex}" $ng-href="#">{{$ctrl.subject}}
           ({{$ctrl.count}})</a>
         <span flex></span>
 
@@ -39,6 +39,7 @@
               handle="{{col.handle}}"
               abstract="{{col.abstract}}"
               id="{{col.id}}"
+              type="inline"
               last="$last">
             </item-detail-component>
           </md-content>
