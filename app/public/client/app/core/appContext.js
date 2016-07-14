@@ -179,7 +179,7 @@
 
       function setCurrentIndex(index) {
         console.log('setting index to ' + index);
-        _context.currentListIndex = index;
+        _context.currentListIndex = +index;
       }
 
       function getCurrentIndex() {
@@ -318,7 +318,7 @@
       }
 
       function setStartIndex(index) {
-        _context.startIndex = index;
+        _context.startIndex = +index;
       }
 
       function getStartIndex() {
@@ -342,7 +342,7 @@
       }
 
       function setOpenItem(itemPosition) {
-        _context.openItem = itemPosition;
+        _context.openItem = +itemPosition;
       }
 
       function getOpenItem () {

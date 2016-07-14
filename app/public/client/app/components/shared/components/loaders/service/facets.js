@@ -14,20 +14,19 @@
       var setSize = AppContext.getSetSize();
 
       return {
-        
+
         reverseAuthorList: function (order) {
-          
+
+          var data = {};
+          data.count = AppContext.getAuthorsCount();
+          var end = Utils.getPageListCount(data.count, setSize);
           if (order !== AppContext.getAuthorsOrder()) {
             AppContext.reverseAuthorList();
             AppContext.setAuthorsOrder(order);
-            var data = {};
-            data.count = AppContext.getAuthorsCount();
-            var end = Utils.getPageListCount(data.count, setSize);
-            data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
-            return data;
           }
-          return null;
-          
+          data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
+          return data;
+
         },
         reverseSubjectList: function (order) {
 
@@ -41,28 +40,28 @@
             return data;
           }
           return null;
-          
+
         },
         getAuthorList: function() {
-          
+
           var data = {};
           data.count = AppContext.getAuthorsCount();
           var end = Utils.getPageListCount(data.count, setSize);
           data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
           return data;
-          
+
         },
         getSubjectList: function() {
-          
+
           var data = {};
           data.count = AppContext.getSubjectsCount();
           var end = Utils.getPageListCount(data.count, setSize);
           data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + end);
           return data;
-          
+
         },
         checkForListAction: function() {
-          
+
            if (QueryManager.isSubjectListRequest || QueryManager.isAuthorListRequest) {
              QueryManager.setAction(QueryActions.LIST);
            }

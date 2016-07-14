@@ -42,7 +42,8 @@
 
     var defaultField = QueryTypes.DATES_LIST;
     var defaultOrder = QuerySort.DESCENDING;
-    var notPaging = true;
+    var paging = false;
+    console.log('not paging is ' + paging)
     var currentField = '';
     var currentOrder = '';
     var currentOffset = '';
@@ -58,13 +59,17 @@
      */
     var count = 0;
 
+    function more() {
+      console.log('count ' + AppContext.getCount())
+      console.log('offset ' + QueryManager.getOffset() )
+      return AppContext.getCount() > QueryManager.getOffset() + setSize;
+    }
+
     /**
      * Check to see if more search results are available.
      * @returns {boolean}
      */
-    pager.more = function () {
-      return AppContext.getCount() > QueryManager.getOffset() + setSize;
-    };
+    pager.more = false;
 
     pager.showPager = false;
 
@@ -86,9 +91,28 @@
      */
     // var displayListType = '';
 
+    function resetFacetField() {
+
+      console.log('reset current action ' + QueryManager.getAction())
+      console.log('reset current query type ' + QueryManager.getQueryType())
+
+      if (QueryManager.getAction() === QueryActions.LIST) {
+        if (QueryManager.getQueryType() === QueryTypes.SUBJECT_SEARCH) {
+          QueryManager.setQueryType(QueryTypes.SUBJECT_FACETS);
+        }
+        if (QueryManager.getQueryType() === QueryTypes.AUTHOR_SEARCH) {
+          QueryManager.setQueryType(QueryTypes.AUTHOR_FACETS);
+        }
+      }
+    }
+
     function isNewQuery(field, order, offset) {
       console.log('current off ' + currentOffset)
       console.log('offset provided ' + offset)
+      console.log('current field ' + currentField)
+      console.log('provided field ' + field)
+      console.log('current order ' + currentOrder)
+      console.log('provided order ' + order)
 
       var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset);
       currentField = field;
@@ -106,26 +130,33 @@
     function updateParent(data, direction) {
 
       AppContext.setCount(data.count);
+      pager.more = more();
+
+      var off = QueryManager.getOffset() + 1;
 
       if (direction === 'prev') {
 
         pager.onPrevUpdate({
           results: data.results,
           count: data.count,
-          field: Utils.getFieldForQueryType()
+          field: Utils.getFieldForQueryType(),
+          offset: off
         });
 
       } else {
 
-        pager.onUpdate({
+        pager.onPagerUpdate({
           results: data.results,
           count: data.count,
-          field: Utils.getFieldForQueryType()
+          field: Utils.getFieldForQueryType(),
+          offset: off
         });
 
       }
 
-      notPaging = true;
+      paging = false;
+      AppContext.isNewSet(true);
+      console.log('not paging is ' + paging)
 
     }
 
@@ -135,17 +166,25 @@
      */
     function updateParentNewSet(data) {
 
+      var off = QueryManager.getOffset() + 1;
+
       if (data) {
         AppContext.setCount(data.count);
+        pager.more = more();
 
+        console.log('more pager ' + pager.more)
+
+        console.log('calling parent new set method')
         pager.onNewSet({
           results: data.results,
           count: data.count,
-          field: Utils.getFieldForQueryType()
+          field: Utils.getFieldForQueryType(),
+          offset: off
         });
       }
 
-      notPaging = true;
+      //paging = false;
+      //console.log('not paging is ' + notPaging)
 
     }
 
@@ -153,13 +192,14 @@
      * Execute solr query.
      * @param start the start position for query result.
      */
-    function updateList(isNewSet, direction) {
+    function updateList(isNewRequest, direction) {
+      console.log('update with new data ' + isNewRequest)
 
       if (AppContext.getDiscoveryContext() === DiscoveryContext.ADVANCED_SEARCH) {
         return;
       }
 
-    //  QueryManager.setOffset(newOffset);
+      //  QueryManager.setOffset(newOffset);
 
       //   displayListType = Utils.getFieldForQueryType();
 
@@ -172,18 +212,20 @@
        */
       if (AppContext.isNotFacetQueryType()) {
 
+        console.log('is not facet query ' + AppContext.isNotFacetQueryType())
+
         var items = SolrDataLoader.invokeQuery();
 
         if (items !== undefined) {
           items.$promise.then(function (data) {
             console.log(data)
+
             /** Handle result of the solr query. */
-            if (isNewSet) {
+            if (isNewRequest) {
               updateParentNewSet(data);
             } else {
               updateParent(data, direction);
             }
-
           });
         }
 
@@ -192,6 +234,8 @@
        * List author and subject.
        */
       else {
+
+        console.log('is facet query')
 
         QueryManager.setAction(QueryActions.LIST);
 
@@ -203,11 +247,13 @@
          */
         if (AppContext.isAuthorListRequest()) {
 
-          if (isNewSet && notPaging) {
+          /**
+           * Author and subject lists use facets. If the facet
+           * array is available, use it rather than making an
+           * unneeded request for data.
+           */
 
-            if (typeof qs.sort !== 'undefined') {
-              QueryManager.setSort(qs.sort);
-            }
+          if (isNewRequest) {
 
             result = SolrDataLoader.invokeQuery();
 
@@ -225,16 +271,22 @@
               }
               updateParentNewSet(FacetHandler.getAuthorList());
 
-
             });
           } else {
-            updateParent(FacetHandler.getAuthorList(), direction);
+
+            if (currentField === QueryTypes.TITLES_LIST) {
+              currentField = QueryTypes.AUTHOR_FACETS;
+            }
+            if (isNewQuery(qs.field, qs.sort, qs.offset)) {
+              updateParent(FacetHandler.getAuthorList(), direction);
+            }
+
 
           }
 
         } else if (AppContext.isSubjectListRequest()) {
 
-          if (isNewSet && notPaging) {
+          if (isNewRequest) {
 
             result = SolrDataLoader.invokeQuery();
 
@@ -265,7 +317,7 @@
 
 
     function getNewList(field, sort, newRequest, direction) {
-      
+
       QueryManager.setQueryType(field);
       QueryManager.setSort(sort);
       updateList(newRequest, direction);
@@ -307,6 +359,7 @@
           AppContext.setStartIndex(0);
           AppContext.setOpenItem(-1);
           AppContext.setCurrentIndex(-1);
+          AppContext.isNewSet();
           /**
            * Item dialog might be open.  Close it.
            */
@@ -318,12 +371,13 @@
 
       else {
 
+
         /**
          * If true, query results will replace current result set
          * in parent component.
          * @type {boolean|*}
          */
-        var newRequest = notPaging && AppContext.isNewSet();
+        var newRequest =  AppContext.isNewSet() && !paging;
 
         QueryManager.setOffset(qs.offset);
 
@@ -332,7 +386,8 @@
           // always tne new low index.
           AppContext.setStartIndex(qs.offset);
         }
-        else if (qs.offset === 0) {
+          // unary operator
+        else if (+qs.offset === 0) {
           AppContext.setStartIndex(0);
         }
 
@@ -340,6 +395,7 @@
          * Check for item position in the query string.
          */
         if (typeof qs.pos !== 'undefined') {
+          console.log('setting author positon to ' + qs.pos)
           AppContext.setOpenItem(qs.pos);
           AppContext.setCurrentIndex(qs.pos);
           //QueryManager.setOffset(0);
@@ -352,51 +408,9 @@
          * Let facet handler check for LIST action.
          */
         FacetHandler.checkForListAction();
-        /**
-         * Author and subject lists use facets. If the facet
-         * array is available, use it rather than making an
-         * unneeded request for data.
-         */
-        if (AppContext.isAuthorListRequest()) {
-          /**
-           * Facet array does not exist. Requesting new data set.
-           */
-          if (AppContext.isNewSet()) {
-            /**
-             * Request a new facet array.
-             */
-            getNewList(qs.field, qs.sort, newRequest, qs.d);
 
-          } else {
-            /**
-             * Update parent using existing array. Reverse the array
-             * if the sort order has changed.
-             */
-            updateParentNewSet(FacetHandler.reverseAuthorList(qs.sort));
 
-          }
-        }
-        else if (AppContext.isSubjectListRequest()) {
-          /**
-           * Facet array does not exist. Requesting new data set.
-           */
-          if (AppContext.isNewSet()) {
-            /**
-             * Request a new facet array.
-             */
-            getNewList(qs.field, qs.sort, newRequest, qs.d);
-
-          }
-          else {
-            /**
-             * Update parent using existing array.
-             */
-            updateParentNewSet(FacetHandler.reverseSubjectList(qs.sort));
-
-          }
-
-        } else {
-
+        if (AppContext.isNotFacetQueryType()) {
           /**
            * Item dialog might be open.  Close it.
            */
@@ -410,7 +424,60 @@
             getNewList(qs.field, qs.sort, newRequest, qs.d);
           }
 
+
         }
+        else  {
+          /**
+           * Author and subject lists use facets. If the facet
+           * array is available, use it rather than making an
+           * unneeded request for data.
+           */
+
+          console.log('location change is author request')
+
+          console.log('context new set is ' + AppContext.isNewSet())
+          /**
+           * Facet array does not exist. Requesting new data set.
+           */
+         // if (AppContext.isNewSet()) {
+            console.log('location change is update list')
+
+            /**
+             * Request a new facet array.
+             */
+            getNewList(qs.field, qs.sort, newRequest, qs.d);
+
+       //   } else {
+        //    console.log('location change is existing array')
+            /**
+             * Update parent using existing array. Reverse the array
+             * if the sort order has changed.
+             */
+        //    updateParentNewSet(FacetHandler.reverseAuthorList(qs.sort));
+
+        //  }
+      //  }
+      //  else if (AppContext.isSubjectListRequest()) {
+          /**
+           * Facet array does not exist. Requesting new data set.
+           */
+          //if (AppContext.isNewSet()) {
+            /**
+             * Request a new facet array.
+             */
+        //    getNewList(qs.field, qs.sort, newRequest, qs.d);
+
+        //  }
+        //  else {
+            /**
+             * Update parent using existing array.
+             */
+           // updateParentNewSet(FacetHandler.reverseSubjectList(qs.sort));
+
+         // }
+
+        }
+
         /**
          * Set the new sort order in application context.
          */
@@ -462,18 +529,27 @@
         QueryManager.setSort(qs.sort);
         QueryManager.setOffset(qs.offset);
         // unary operator
-        AppContext.setStartIndex(+qs.offset);
+        AppContext.setStartIndex(qs.offset);
       } else {
         if (QueryManager.getQueryType() !== QueryTypes.DISCOVER) {
           QueryManager.setQueryType(defaultField);
           QueryManager.setSort(defaultOrder);
+          QueryManager.setOffset(0);
           AppContext.setStartIndex(0);
         }
       }
       if (typeof qs.pos !== 'undefined') {
-        AppContext.setOpenItem(qs.pos);
-        AppContext.setCurrentIndex(qs.pos);
-        QueryManager.setOffset(0);
+
+        if (qs.pos < QueryManager.getOffset()) {
+          var newOffset =  Math.floor(qs.pos / 20) * 20;
+          QueryManager.setOffset(newOffset);
+          AppContext.setOpenItem(qs.pos - newOffset);
+          AppContext.setCurrentIndex(qs.pos - newOffset);
+        }  else {
+          AppContext.setOpenItem(qs.pos - qs.offset);
+          AppContext.setCurrentIndex(qs.pos - qs.offset);
+        }
+        // QueryManager.setOffset(0);
       } else {
         AppContext.setOpenItem(-1);
         AppContext.setCurrentIndex(-1);
@@ -481,11 +557,16 @@
 
       AppContext.setPager(false);
 
-      notPaging = true;
+      resetFacetField();
+
+      paging = false;
+      console.log('not paging is ' + paging)
       currentField = QueryManager.getQueryType();
       currentOrder = QueryManager.getSort();
 
+
       if (isNewQuery(qs.field, qs.sort, qs.offset)) {
+        console.log('init new query')
         getNewList(QueryManager.getQueryType(), QueryManager.getSort(), true);
       }
 
@@ -501,6 +582,8 @@
 
       var start = QueryManager.getOffset();
 
+     // resetFacetField();
+
       start += setSize;
       pager.start = start + 1;
       if (pager.end + setSize <= count) {
@@ -508,14 +591,20 @@
       } else {
         pager.end = count;
       }
-    // QueryManager.setOffset(start);
-      notPaging = false;
-      $location.search({
-        'field': QueryManager.getQueryType(),
-        'sort': QueryManager.getSort(),
-        'terms': '',
-        'offset': start
-      });
+      // QueryManager.setOffset(start);
+      //currentOffset = start;
+      paging = true;
+      AppContext.isNewSet(false);
+      console.log('not paging is ' + paging)
+      var qs = $location.search();
+      qs.field = QueryManager.getQueryType();
+      qs.sort = QueryManager.getSort();
+      qs.terms = '';
+      qs.offset = start;
+      delete qs.d;
+      delete qs.id;
+      delete qs.pos;
+      $location.search(qs);
 
     };
 
@@ -524,9 +613,9 @@
 
   dspaceComponents.component('pagerComponent', {
 
-    template: '<div layout="row" layout-align="center center" ng-if="pager.showPager"><md-button class="md-raised md-accent md-fab md-mini" ng-click="pager.next()" ng-if="pager.more()"><md-icon md-font-library="material-icons" class="md-light" aria-label="More Results">expand_more</md-icon></md-button></div>',
+    template: '<div layout="row" layout-align="center center" ng-if="pager.showPager"><md-button class="md-raised md-accent md-fab md-mini" ng-click="pager.next()" ng-if="pager.more"><md-icon md-font-library="material-icons" class="md-light" aria-label="More Results">expand_more</md-icon></md-button></div>',
     bindings: {
-      onUpdate: '&',
+      onPagerUpdate: '&',
       onPrevUpdate: '&',
       onNewSet: '&',
       context: '@'

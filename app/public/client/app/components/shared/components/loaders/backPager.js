@@ -34,8 +34,7 @@
         return AppContext.getStartIndex();
       },
       function (newValue) {
-        // unary operator
-        backPager.showPager = newValue !== +0;
+        backPager.showPager = +newValue !== 0;
 
       });
 

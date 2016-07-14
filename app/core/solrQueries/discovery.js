@@ -22,7 +22,7 @@
      */
 
     var discover = utils.getSolrUrl() + '/solr/search/select?f.dc.title_hl.hl.snippets=5&f.dc.title_hl.hl.fragsize=0&spellcheck=true&sort=score+desc&spellcheck.q=%s&f.fulltext_hl.hl.fragsize=250&hl.fl=dc.description.abstract_hl&hl.fl=dc.title_hl&hl.fl=dc.contributor.author_hl&hl.fl=fulltext_hl&wt=json&spellcheck.collate=true&hl=true&version=2&rows=20&f.fulltext_hl.hl.snippets=2&f.dc.description.abstract_hl.hl.snippets=2&f.dc.contributor.author_hl.hl.snippets=5&fl=handle,dc.title,search.resourcetype,search.resourceid&start=%s&q=%s&f.dc.contributor.author_hl.hl.fragsize=0&hl.usePhraseHighlighter=true&f.dc.description.abstract_hl.hl.fragsize=250%s&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)%s%s';
-         console.log('DISCOVERY')
+
     return util.format(
       discover,
       query.params.query.terms,

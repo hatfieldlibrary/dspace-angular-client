@@ -35,6 +35,7 @@
       result.$promise.then(function (data) {
         ctrl.ready = true;
         ctrl.items = data;
+
       });
     }
 
@@ -68,6 +69,7 @@
      * on the parent component, using the provided callback.
      */
     ctrl.setSelectedIndex = function () {
+      console.log('setting position ' + ctrl.pos)
       ctrl.setSelected({pos: ctrl.pos});
 
     };
@@ -109,18 +111,24 @@
         return AppContext.getCurrentIndex();
       },
       function (newValue) {
+        console.log(newValue);
+        console.log(ctrl.pos);
+        console.log(ctrl.pos === newValue)
+        if (newValue === parseInt(ctrl.pos)) {
+          console.log('getting author items')
+          getResults();
 
-        getResults();
+          if (($mdMedia('sm') || $mdMedia('xs'))) {
+            ctrl.xsSelectedIndex = newValue;
 
-        if (($mdMedia('sm') || $mdMedia('xs'))) {
-          ctrl.xsSelectedIndex = newValue;
+          } else {
+            ctrl.selectedIndex = newValue;
+
+          }
 
         } else {
-          ctrl.selectedIndex = newValue;
-
+          ctrl.selectedIndex = -1;
         }
-
-
       }
     );
 

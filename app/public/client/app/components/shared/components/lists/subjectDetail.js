@@ -62,7 +62,7 @@
      * @type {number}
      */
     ctrl.selectedIndex = -1;
-    AppContext.setCurrentIndex(-1);
+   // AppContext.setCurrentIndex(-1);
 
     ctrl.xsSelectedIndex = -1;
 
@@ -126,17 +126,21 @@
         return AppContext.getCurrentIndex();
       },
       function (newValue) {
+        if (newValue === parseInt(ctrl.pos)) {
 
-        getResults();
+          getResults();
 
-        if (($mdMedia('sm') || $mdMedia('xs'))) {
-          ctrl.xsSelectedIndex = newValue;
+          if (($mdMedia('sm') || $mdMedia('xs'))) {
+            ctrl.xsSelectedIndex = newValue;
+
+          } else {
+            ctrl.selectedIndex = newValue;
+
+          }
 
         } else {
-          ctrl.selectedIndex = newValue;
-
+          ctrl.selectedIndex = -1;
         }
-
       }
     );
 

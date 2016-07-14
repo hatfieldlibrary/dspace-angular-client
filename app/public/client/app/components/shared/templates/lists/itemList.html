@@ -21,7 +21,7 @@
     {{$ctrl.resultCountLabel}} {{$ctrl.count}}
   </div>
 
-  <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent layout-padding">{{$ctrl.resultCountLabel}} {{$ctrl.count}}
+  <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent layout-padding">{{$ctrl.resultMessage}}
   </div>
 
   <md-divider></md-divider>
@@ -30,8 +30,8 @@
   <div flex="100" layout-fill layout="column" style="min-height: 100%;margin-top: -12px;">
 
     <pager-back-component
-                          on-update="$ctrl.onPreviousUpdate(results, count, field)"
-                          on-new-set="$ctrl.onUpdate(results, count, field)"
+                          on-update="$ctrl.onPreviousUpdate(results, count, field, offset)"
+                          on-new-set="$ctrl.onUpdate(results, count, field, offset)"
                           context="$ctrl.context">
 
     </pager-back-component>
@@ -112,9 +112,9 @@
 
     <pager-component
 
-      on-update="$ctrl.onPagerUpdate(results, count, field)"
+      on-pager-update="$ctrl.onPagerUpdate(results, count, field, offset)"
       on-prev-update="$ctrl.onPreviousUpdate(results, count, field)"
-      on-new-set="$ctrl.onUpdate(results, count, field)"
+      on-new-set="$ctrl.onUpdate(results, count, field, offset)"
       context="{{$ctrl.context}}">
 
     </pager-component>

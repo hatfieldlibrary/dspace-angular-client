@@ -62,9 +62,9 @@
     FILTER_REMOVE_BUTTON_LABEL: 'Remove Filter',
 
     /**
-     * Takes the form 'n label' where n is number of results and label is the string constant.
+     * String interpolated using current start index, last item in view and total result count
      */
-    RESULTS_LABEL: 'Results:',
+    RESULTS_LABEL: 'Viewing {0} - {1} of {2}',
 
     LOGOUT_LABEL: 'Logout',
 
