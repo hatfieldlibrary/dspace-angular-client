@@ -52,6 +52,8 @@
         listOffset: 0,
 
         startIndex: 0,
+        
+        selectedItemId: -1,
 
         openItem: -1,
 
@@ -178,12 +180,10 @@
       }
 
       function setSelectedPositionIndex(index) {
-        console.log('setting index to ' + index);
         _context.currentListIndex = +index;
       }
 
       function getSelectedPositionIndex() {
-        console.log('got current index ' + _context.currentListIndex)
         return _context.currentListIndex;
       }
 
@@ -348,6 +348,14 @@
       function getOpenItem () {
         return _context.openItem;
       }
+      
+      function setSelectedItemId(itemId) {
+        _context.selectedItemId = itemId;
+      }
+      
+      function getSelectedItemId() {
+        return _context.selectedItemId;
+      }
 
 
       return {
@@ -406,7 +414,9 @@
         setStartIndex: setStartIndex,
         getStartIndex: getStartIndex,
         setOpenItem: setOpenItem,
-        getOpenItem: getOpenItem
+        getOpenItem: getOpenItem,
+        setSelectedItemId: setSelectedItemId,
+        getSelectedItemId: getSelectedItemId
 
       };
 

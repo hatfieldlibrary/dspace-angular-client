@@ -183,19 +183,29 @@
      */
     var doJump = function () {
 
+      AppContext.setOpenItem(-1);
+
       var filter = SolrDataLoader.filterQuery();
       filter.$promise.then(function (data) {
-        ctrl.resetListView();
-        QueryManager.setOffset(data.offset);
-        /**
-         * Update parent component.
-         */
-        ctrl.onUpdate({
-          results: data.results,
-          count: data.count,
-          field: displayListType
 
-        });
+        if (typeof data.results !== 'undefined') {
+
+          ctrl.resetListView();
+          QueryManager.setOffset(data.offset);
+          AppContext.setStartIndex(data.offset);
+          /**
+           * Update parent component.
+           */
+          ctrl.onUpdate({
+            results: data.results,
+            count: data.count,
+            field: displayListType,
+            offset: data.offset,
+            jump: true
+
+          });
+        }
+
       });
 
     };
@@ -230,6 +240,7 @@
        * hide the pager button.)
        */
       AppContext.setPager(false);
+      AppContext.setStartIndex(0);
 
       /**
        * Get promise.
@@ -248,7 +259,9 @@
         ctrl.onUpdate({
           results: data.results,
           count: data.count,
-          field: displayListType
+          field: displayListType,
+          offset: data.offset,
+          jump: true
         });
       });
     };
@@ -343,8 +356,6 @@
 
         var offset;
 
-        console.log(QueryManager.getQuery());
-
         if (QueryManager.getJumpType() === QueryTypes.START_LETTER) {
           /**
            * If we have a filter term, so filter query.
@@ -390,13 +401,16 @@
           offset = Utils.findIndexInArray(AppContext.getAuthors(), ctrl.filterTerms);
           QueryManager.setOffset(offset);
           remaining = Utils.getPageListCount(AppContext.getAuthorsCount(), setSize);
+          AppContext.setStartIndex(offset);
           /**
            * Update view here.
            */
           ctrl.onUpdate({
             results: Utils.facetsArraySlice(QueryTypes.AUTHOR_FACETS, offset, offset + remaining),
             count: AppContext.getAuthorsCount(),
-            field: QueryFields.AUTHOR
+            field: QueryFields.AUTHOR,
+            offset: offset,
+            jump: true
           });
 
         }
@@ -408,13 +422,16 @@
           offset = Utils.findIndexInArray(AppContext.getSubjects(), ctrl.filterTerms);
           QueryManager.setOffset(offset);
           remaining = Utils.getPageListCount(AppContext.getSubjectsCount(), setSize);
+          AppContext.setStartIndex(offset);
           /**
            * Update view here.
            */
           ctrl.onUpdate({
             results: Utils.facetsArraySlice(QueryTypes.SUBJECT_FACETS, offset, offset + remaining),
             count: AppContext.getSubjectsCount(),
-            field: QueryFields.SUBJECT
+            field: QueryFields.SUBJECT,
+            offset: offset,
+            jump: true
           });
 
         }

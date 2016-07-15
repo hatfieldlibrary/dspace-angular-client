@@ -130,10 +130,9 @@
 
       AppContext.setCount(data.count);
       pager.more = more();
-      var off = QueryManager.getOffset() + 1;
+      var off = QueryManager.getOffset();
 
-      console.log('old set ' + off)
-
+      // Leave jump value undefined in pager updates.
       if (direction === 'prev') {
 
         pager.onPrevUpdate({
@@ -149,7 +148,7 @@
           results: data.results,
           count: data.count,
           field: Utils.getFieldForQueryType(),
-          offset: off
+          offset: off,
         });
 
       }
@@ -165,7 +164,7 @@
      */
     function updateParentNewSet(data) {
 
-      var off = QueryManager.getOffset() + 1;
+      var off = QueryManager.getOffset();
       /**
        * For new sets, always update the start index.
        */
@@ -178,7 +177,8 @@
           results: data.results,
           count: data.count,
           field: Utils.getFieldForQueryType(),
-          offset: off
+          offset: off,
+          jump: false
         });
       }
     }
@@ -225,18 +225,6 @@
     }
 
 
-    function setOpenItem(qs) {
-      console.log(AppContext.getStartIndex())
-      console.log(qs.pos)
-      console.log(qs.offset)
-
-      if (typeof qs.offset !== 'undefined') {
-        QueryManager.setOffset(qs.offset);
-      }
-
-      setOpenItemPosition(qs);
-
-    }
 
     /**
      * Sets the position of the currently open item on
@@ -248,7 +236,7 @@
     function setOpenItemPosition(qs) {
 
       if (typeof qs.pos !== 'undefined') {
-        console.log(QueryManager.getOffset())
+        
         /**
          * The position is lower than the current offset.
          */
@@ -261,7 +249,6 @@
 
             var newOffset = verifyOffset(qs);
 
-            console.log('new offset ' + newOffset)
             /**
              * Update the query with the new offset value.
              */
@@ -269,6 +256,7 @@
             /**
              * Use the new offset to determine the item position.
              */
+
             AppContext.setOpenItem(qs.pos - newOffset);
             AppContext.setSelectedPositionIndex(qs.pos - newOffset);
           }
@@ -312,11 +300,29 @@
       }
     }
 
+
+    function setOpenItem(qs) {
+
+      if (typeof qs.offset !== 'undefined') {
+        QueryManager.setOffset(qs.offset);
+      }
+
+      if (typeof qs.id !== 'undefined') {
+        AppContext.setSelectedItemId(qs.id);
+      }
+
+
+      setOpenItemPosition(qs);
+
+    }
+
     /**
      * Execute solr query.
      * @param start the start position for query result.
      */
     function updateList(isNewRequest, direction) {
+
+      var qs = $location.search();
 
       /**
        * If advanced search, do nothing here.
@@ -330,8 +336,6 @@
        * or subjects.  These are handled differently.
        */
       if (AppContext.isNotFacetQueryType()) {
-        var qs = $location.search();
-
 
         var items = SolrDataLoader.invokeQuery();
 
@@ -358,7 +362,6 @@
 
         QueryManager.setAction(QueryActions.LIST);
 
-        var qs = $location.search();
         var result;
 
         /** Author */
@@ -655,7 +658,7 @@
         }
       }
 
-      setOpenItemPosition(qs);
+      setOpenItem(qs);
 
       AppContext.setPager(false);
 

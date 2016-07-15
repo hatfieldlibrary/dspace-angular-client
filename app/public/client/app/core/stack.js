@@ -37,7 +37,6 @@
 
       (function () {
         var q = makeCopy(query);
-        console.log(q)
         stack.queries.push(q);
       })(query);
 

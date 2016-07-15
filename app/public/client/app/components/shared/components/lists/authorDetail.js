@@ -69,7 +69,6 @@
      * on the parent component, using the provided callback.
      */
     ctrl.setSelectedIndex = function () {
-      console.log('setting position ' + ctrl.pos)
       ctrl.setSelected({pos: ctrl.pos});
 
     };

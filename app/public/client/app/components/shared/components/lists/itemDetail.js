@@ -37,17 +37,17 @@
      * If the open item is this item, launch the
      * dialog.  The pager init method updates the
      * open item value on initialization.  This allows
-     * bookmarking and seo for items using the defaul item
+     * bookmarking and seo for items using the default item
      * dialog component.
      */
     $scope.$watch(function () {
-      return AppContext.getOpenItem();
+      return AppContext.getSelectedItemId();
     }, function (newValue) {
 
-      console.log(newValue)
+      if (newValue === ctrl.id) {
 
-      if (newValue === parseInt(ctrl.pos)) {
         ItemDialogFactory.showItem(null, ctrl.id, $scope.customFullscreen);
+
       }
 
     });
@@ -73,7 +73,6 @@
        * the query string.
        */
       else {
-        console.log('setting location ' + ctrl.pos)
         /**
          * Add item id and position to the location query string.
          */
