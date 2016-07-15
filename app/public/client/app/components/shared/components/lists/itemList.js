@@ -18,11 +18,19 @@
 
     ctrl.showPager = false;
 
+    ctrl.offset = 0;
+
     ctrl.showOptions = ctrl.context !== 'advanced' && ctrl.context !== 'discover';
 
     ctrl.showDiscoverContainer = false;
 
-    ctrl.resultCountLabel = Messages.RESULTS_LABEL;
+    ctrl.resultMessage = '';
+
+    function _format (str, arr) {
+      return str.replace(/{(\d+)}/g, function (match, number) {
+        return typeof arr[number] != 'undefined' ? arr[number] : match;
+      });
+    };
 
     if (ctrl.context === 'browse') {
       ctrl.browseTerms = QueryManager.getSearchTerms();
@@ -45,6 +53,8 @@
     ctrl.id = QueryManager.getAssetId();
 
     ctrl.offset = QueryManager.getOffset();
+
+    var endIncrement = AppContext.getSetSize() - 1;
 
     ctrl.isBrowseContext = function () {
       return ctrl.context === 'browse';
@@ -76,7 +86,7 @@
      */
     ctrl.setSelected = function (index) {
       ctrl.selectedIndex = index;
-      AppContext.setCurrentIndex(index);
+      AppContext.setSelectedPositionIndex(index);
 
     };
 
@@ -87,13 +97,16 @@
      * @param count  total number of items
      * @param field   the field queried
      */
-    ctrl.onUpdate = function (results, count, field) {
+    ctrl.onUpdate = function (results, count, field, offset) {
 
       //  ctrl.showPager = false;
       ctrl.ready = true;
       ctrl.items = results;
-      ctrl.count = count;
       ctrl.field = field;
+      ctrl.count = count;
+      var end = offset + endIncrement;
+      var start = AppContext.getStartIndex() + 1;
+      ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
       ctrl.showDiscoverContainer = ctrl.context === 'discover'
         || (ctrl.count > 10 && ctrl.context !== 'advanced')
         || (ctrl.count === 0 && ctrl.context !== 'advanced');
@@ -106,12 +119,15 @@
      * @param count  total number of items.
      * @param field  the field queried.
      */
-    ctrl.onPagerUpdate = function (results, count, field) {
+    ctrl.onPagerUpdate = function (results, count, field, offset) {
 
       ctrl.ready = true;
       addResults(results);
-      ctrl.count = count;
       ctrl.field = field;
+      ctrl.count = count;
+      var end = offset + endIncrement;
+      var start = AppContext.getStartIndex() + 1;
+      ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
 
     };
 
@@ -141,6 +157,7 @@
 
       var qs = $location.search();
       if (typeof qs.offset !== 'undefined') {
+        ctrl.currentOffset = qs.offset;
         ctrl.showPager = qs.offset > 0;
       } else {
         ctrl.showPager = QueryManager.getOffset() > 1;

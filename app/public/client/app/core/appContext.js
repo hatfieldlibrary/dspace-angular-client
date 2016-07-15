@@ -177,12 +177,12 @@
         reverseArray(_context.subjectArray);
       }
 
-      function setCurrentIndex(index) {
+      function setSelectedPositionIndex(index) {
         console.log('setting index to ' + index);
-        _context.currentListIndex = index;
+        _context.currentListIndex = +index;
       }
 
-      function getCurrentIndex() {
+      function getSelectedPositionIndex() {
         console.log('got current index ' + _context.currentListIndex)
         return _context.currentListIndex;
       }
@@ -318,7 +318,7 @@
       }
 
       function setStartIndex(index) {
-        _context.startIndex = index;
+        _context.startIndex = +index;
       }
 
       function getStartIndex() {
@@ -342,7 +342,7 @@
       }
 
       function setOpenItem(itemPosition) {
-        _context.openItem = itemPosition;
+        _context.openItem = +itemPosition;
       }
 
       function getOpenItem () {
@@ -367,8 +367,8 @@
         getSubmitPermission: getSubmitPermission,
         reverseAuthorList: reverseAuthorList,
         reverseSubjectList: reverseSubjectList,
-        setCurrentIndex: setCurrentIndex,
-        getCurrentIndex: getCurrentIndex,
+        setSelectedPositionIndex: setSelectedPositionIndex,
+        getSelectedPositionIndex: getSelectedPositionIndex,
         setAuthorsList: setAuthorsList,
         setSubjectList: setSubjectList,
         getAuthors: getAuthors,

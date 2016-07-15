@@ -37,8 +37,8 @@ module.exports = {
   QueryType: {
     AUTHOR_FACETS: 'authorFacets',
     SUBJECT_FACETS: 'subjectFacets',
-    AUTHOR_SEARCH: 'authorBrowse',
-    SUBJECT_SEARCH: 'subjectBrowse',
+    ITEMS_BY_AUTHOR: 'authorBrowse',
+    ITEMS_BY_SUBJECT: 'subjectBrowse',
     TITLES_LIST: 'allTitlesBrowse',
     DATES_LIST: 'allDatesBrowse',
     START_DATE: 'startDateLocation',

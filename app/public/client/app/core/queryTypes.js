@@ -64,8 +64,8 @@
   appConstants.constant('QueryTypes', {
     AUTHOR_FACETS: authorSearch,
     SUBJECT_FACETS: subjectSearch,
-    AUTHOR_SEARCH: 'authorBrowse',
-    SUBJECT_SEARCH: 'subjectBrowse',
+    ITEMS_BY_AUTHOR: 'authorBrowse',
+    ITEMS_BY_SUBJECT: 'subjectBrowse',
     TITLES_LIST: titleList,
     DATES_LIST: datesList,
     START_DATE: 'startDateLocation',

@@ -14,6 +14,7 @@
                       QuerySort,
                       QueryFields,
                       Utils,
+                      QueryStack,
                       GetCollectionInfo) {
 
     var ctrl = this;
@@ -45,7 +46,7 @@
 
       if (ctrl.field === QueryFields.SUBJECT) {
 
-        QueryManager.setQueryType(QueryTypes.SUBJECT_SEARCH);
+        QueryManager.setQueryType(QueryTypes.ITEMS_BY_SUBJECT);
 
         QueryManager.setAssetType(ctrl.type);
 
@@ -56,7 +57,7 @@
 
       } else if (ctrl.field === QueryFields.AUTHOR) {
 
-        QueryManager.setQueryType(QueryTypes.AUTHOR_SEARCH);
+        QueryManager.setQueryType(QueryTypes.ITEMS_BY_AUTHOR);
 
         QueryManager.setBrowseField(QueryFields.AUTHOR);
 
@@ -77,7 +78,8 @@
     init();
 
     ctrl.back = function() {
-      $window.history.back();
+      var backPath = QueryStack.pop();
+      $window.location = backPath;
     };
 
   }

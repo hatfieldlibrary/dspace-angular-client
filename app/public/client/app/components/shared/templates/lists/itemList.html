@@ -21,7 +21,7 @@
     {{$ctrl.resultCountLabel}} {{$ctrl.count}}
   </div>
 
-  <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent layout-padding">{{$ctrl.resultCountLabel}} {{$ctrl.count}}
+  <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent layout-padding">{{$ctrl.resultMessage}}
   </div>
 
   <md-divider></md-divider>
@@ -30,8 +30,8 @@
   <div flex="100" layout-fill layout="column" style="min-height: 100%;margin-top: -12px;">
 
     <pager-back-component
-                          on-update="$ctrl.onPreviousUpdate(results, count, field)"
-                          on-new-set="$ctrl.onUpdate(results, count, field)"
+                          on-update="$ctrl.onPreviousUpdate(results, count, field, offset)"
+                          on-new-set="$ctrl.onUpdate(results, count, field, offset)"
                           context="$ctrl.context">
 
     </pager-back-component>
@@ -64,8 +64,8 @@
         ng-repeat="au in $ctrl.items"
         class="'animate'"
         ng-class="{'selected': $index==$ctrl.selectedIndex}"
-        author="{{au.author.value}}"
-        count="{{au.author.count}}"
+        author="{{au.item.value}}"
+        count="{{au.item.count}}"
         type="{{$ctrl.type}}"
         id="{{$ctrl.id}}"
         pos="{{$index}}"
@@ -81,8 +81,8 @@
         ng-if="$ctrl.field=='subject'"
         ng-repeat="sub in $ctrl.items"
         ng-class="{'selected': $index==$ctrl.selectedIndex}"
-        subject="{{sub.author.value}}"
-        count="{{sub.author.count}}"
+        subject="{{sub.item.value}}"
+        count="{{sub.item.count}}"
         type="{{$ctrl.type}}"
         id="{{$ctrl.id}}"
         pos="{{$index}}"
@@ -112,12 +112,15 @@
 
     <pager-component
 
-      on-update="$ctrl.onPagerUpdate(results, count, field)"
+      on-pager-update="$ctrl.onPagerUpdate(results, count, field, offset)"
       on-prev-update="$ctrl.onPreviousUpdate(results, count, field)"
-      on-new-set="$ctrl.onUpdate(results, count, field)"
+      on-new-set="$ctrl.onUpdate(results, count, field, offset)"
       context="{{$ctrl.context}}">
 
     </pager-component>
+
+    <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent layout-padding">{{$ctrl.resultMessage}}
+    </div>
 
     <p>&nbsp;</p>
   </div>

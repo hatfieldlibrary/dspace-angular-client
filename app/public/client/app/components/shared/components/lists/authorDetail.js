@@ -24,7 +24,7 @@
         {
           type: ctrl.type,
           id: ctrl.id,
-          qType: QueryTypes.AUTHOR_SEARCH,
+          qType: QueryTypes.ITEMS_BY_AUTHOR,
           field: ctrl.field,
           sort: ctrl.sort,
           terms: ctrl.author,
@@ -35,6 +35,7 @@
       result.$promise.then(function (data) {
         ctrl.ready = true;
         ctrl.items = data;
+
       });
     }
 
@@ -68,6 +69,7 @@
      * on the parent component, using the provided callback.
      */
     ctrl.setSelectedIndex = function () {
+      console.log('setting position ' + ctrl.pos)
       ctrl.setSelected({pos: ctrl.pos});
 
     };
@@ -106,21 +108,24 @@
      */
     $scope.$watch(
       function () {
-        return AppContext.getCurrentIndex();
+        return AppContext.getSelectedPositionIndex();
       },
       function (newValue) {
+        if (newValue === parseInt(ctrl.pos)) {
 
-        getResults();
+          getResults();
 
-        if (($mdMedia('sm') || $mdMedia('xs'))) {
-          ctrl.xsSelectedIndex = newValue;
+          if (($mdMedia('sm') || $mdMedia('xs'))) {
+            ctrl.xsSelectedIndex = newValue;
+
+          } else {
+            ctrl.selectedIndex = newValue;
+
+          }
 
         } else {
-          ctrl.selectedIndex = newValue;
-
+          ctrl.selectedIndex = -1;
         }
-
-
       }
     );
 

@@ -43,7 +43,10 @@
     $scope.$watch(function () {
       return AppContext.getOpenItem();
     }, function (newValue) {
-      if (newValue === ctrl.pos) {
+
+      console.log(newValue)
+
+      if (newValue === parseInt(ctrl.pos)) {
         ItemDialogFactory.showItem(null, ctrl.id, $scope.customFullscreen);
       }
 
@@ -70,6 +73,7 @@
        * the query string.
        */
       else {
+        console.log('setting location ' + ctrl.pos)
         /**
          * Add item id and position to the location query string.
          */
@@ -85,7 +89,7 @@
          * on the AppContext, but re-opening the same item
          * is not picked up by watch. Handle that case here.
          */
-        if (AppContext.getOpenItem() === ctrl.pos) {
+        if (AppContext.getOpenItem() === parseInt(ctrl.pos)) {
           ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
         }
 
