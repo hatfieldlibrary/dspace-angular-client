@@ -86,7 +86,7 @@
      */
     ctrl.setSelected = function (index) {
       ctrl.selectedIndex = index;
-      AppContext.setCurrentIndex(index);
+      AppContext.setSelectedPositionIndex(index);
 
     };
 

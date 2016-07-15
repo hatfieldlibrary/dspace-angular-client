@@ -64,8 +64,8 @@
         ng-repeat="au in $ctrl.items"
         class="'animate'"
         ng-class="{'selected': $index==$ctrl.selectedIndex}"
-        author="{{au.author.value}}"
-        count="{{au.author.count}}"
+        author="{{au.item.value}}"
+        count="{{au.item.count}}"
         type="{{$ctrl.type}}"
         id="{{$ctrl.id}}"
         pos="{{$index}}"
@@ -81,8 +81,8 @@
         ng-if="$ctrl.field=='subject'"
         ng-repeat="sub in $ctrl.items"
         ng-class="{'selected': $index==$ctrl.selectedIndex}"
-        subject="{{sub.author.value}}"
-        count="{{sub.author.count}}"
+        subject="{{sub.item.value}}"
+        count="{{sub.item.count}}"
         type="{{$ctrl.type}}"
         id="{{$ctrl.id}}"
         pos="{{$index}}"
@@ -118,6 +118,9 @@
       context="{{$ctrl.context}}">
 
     </pager-component>
+
+    <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent layout-padding">{{$ctrl.resultMessage}}
+    </div>
 
     <p>&nbsp;</p>
   </div>

@@ -24,7 +24,7 @@
         {
           type: ctrl.type,
           id: ctrl.id,
-          qType: QueryTypes.AUTHOR_SEARCH,
+          qType: QueryTypes.ITEMS_BY_AUTHOR,
           field: ctrl.field,
           sort: ctrl.sort,
           terms: ctrl.author,
@@ -108,14 +108,11 @@
      */
     $scope.$watch(
       function () {
-        return AppContext.getCurrentIndex();
+        return AppContext.getSelectedPositionIndex();
       },
       function (newValue) {
-        console.log(newValue);
-        console.log(ctrl.pos);
-        console.log(ctrl.pos === newValue)
         if (newValue === parseInt(ctrl.pos)) {
-          console.log('getting author items')
+
           getResults();
 
           if (($mdMedia('sm') || $mdMedia('xs'))) {

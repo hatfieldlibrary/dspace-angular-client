@@ -44,6 +44,8 @@
       return AppContext.getOpenItem();
     }, function (newValue) {
 
+      console.log(newValue)
+
       if (newValue === parseInt(ctrl.pos)) {
         ItemDialogFactory.showItem(null, ctrl.id, $scope.customFullscreen);
       }
@@ -71,7 +73,7 @@
        * the query string.
        */
       else {
-        console.log('setting location')
+        console.log('setting location ' + ctrl.pos)
         /**
          * Add item id and position to the location query string.
          */

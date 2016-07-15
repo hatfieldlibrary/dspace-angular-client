@@ -265,7 +265,7 @@
       /**
        * Reset the selected item.
        */
-      AppContext.setCurrentIndex(-1);
+      AppContext.setSelectedPositionIndex(-1);
 
       $location.search({
         'field': ctrl.selectedField,
@@ -295,7 +295,7 @@
       /**
        * Reset the selected item.
        */
-      AppContext.setCurrentIndex(-1);
+      AppContext.setSelectedPositionIndex(-1);
 
       /**
        * Get the current query type.
@@ -320,7 +320,7 @@
 
         QueryManager.setJumpType(QueryTypes.START_DATE);
 
-      } else if (queryType === QueryTypes.SUBJECT_SEARCH) {
+      } else if (queryType === QueryTypes.ITEMS_BY_SUBJECT) {
 
         QueryManager.setJumpType(QueryTypes.START_LETTER);
 
@@ -394,7 +394,7 @@
            * Update view here.
            */
           ctrl.onUpdate({
-            results: Utils.authorArraySlice(offset, offset + remaining),
+            results: Utils.facetsArraySlice(QueryTypes.AUTHOR_FACETS, offset, offset + remaining),
             count: AppContext.getAuthorsCount(),
             field: QueryFields.AUTHOR
           });
@@ -412,7 +412,7 @@
            * Update view here.
            */
           ctrl.onUpdate({
-            results: Utils.subjectArraySlice(offset, offset + remaining),
+            results: Utils.facetsArraySlice(QueryTypes.SUBJECT_FACETS, offset, offset + remaining),
             count: AppContext.getSubjectsCount(),
             field: QueryFields.SUBJECT
           });
@@ -430,10 +430,12 @@
 
 
       AppContext.isNewSet(true);
+
+      AppContext.setOpenItem(-1);
       /**
        * Reset the selected item.
        */
-      AppContext.setCurrentIndex(-1);
+      AppContext.setSelectedPositionIndex(-1);
       /**
        * Reset the filter.
        * @type {string}
@@ -484,9 +486,9 @@
         'terms': ctrl.filterTerms,
         'offset': 0
       });
-      
+
     };
-    
+
   }
 
   dspaceComponents.component('sortOptionsComponent', {

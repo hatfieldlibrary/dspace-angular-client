@@ -8,12 +8,14 @@
 
   function SubjectDetailController($scope,
                                    $location,
+                                   $window,
                                    $mdMedia,
                                    Utils,
                                    QueryManager,
                                    QueryTypes,
                                    AppContext,
                                    QueryActions,
+                                   QueryStack,
                                    InlineBrowseRequest) {
 
 
@@ -27,7 +29,7 @@
         {
           type: ctrl.type,
           id: ctrl.id,
-          qType: QueryTypes.SUBJECT_SEARCH,
+          qType: QueryTypes.ITEMS_BY_SUBJECT,
           field: ctrl.field,
           sort: ctrl.sort,
           terms: encodeURI(ctrl.subject),
@@ -109,9 +111,18 @@
         getResults();
 
       } else {
+        /**
+         * To many results to show inline.  Switch to 
+         * browse view.
+         */
         QueryManager.setAction(QueryActions.BROWSE);
+        /** Add current path to stack **/
+        var path = $window.location.pathname + $window.location.search;
+        QueryStack.push(path);
+        /** clear query */
         $location.search({});
-        $location.path('/ds/browse/' + ctrl.type + '/' + ctrl.id + '/' + QueryTypes.SUBJECT_SEARCH + '/' + ctrl.field + '/' + ctrl.sort + '/' + ctrl.subject + '/0/' + AppContext.getSetSize());
+        /** redirect */
+        $location.path('/ds/browse/' + ctrl.type + '/' + ctrl.id + '/' + QueryTypes.ITEMS_BY_SUBJECT + '/' + ctrl.field + '/' + ctrl.sort + '/' + ctrl.subject + '/0/' + AppContext.getSetSize());
 
       }
 
@@ -123,7 +134,7 @@
      */
     $scope.$watch(
       function () {
-        return AppContext.getCurrentIndex();
+        return AppContext.getSelectedPositionIndex();
       },
       function (newValue) {
         if (newValue === parseInt(ctrl.pos)) {

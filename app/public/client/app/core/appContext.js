@@ -177,12 +177,12 @@
         reverseArray(_context.subjectArray);
       }
 
-      function setCurrentIndex(index) {
+      function setSelectedPositionIndex(index) {
         console.log('setting index to ' + index);
         _context.currentListIndex = +index;
       }
 
-      function getCurrentIndex() {
+      function getSelectedPositionIndex() {
         console.log('got current index ' + _context.currentListIndex)
         return _context.currentListIndex;
       }
@@ -367,8 +367,8 @@
         getSubmitPermission: getSubmitPermission,
         reverseAuthorList: reverseAuthorList,
         reverseSubjectList: reverseSubjectList,
-        setCurrentIndex: setCurrentIndex,
-        getCurrentIndex: getCurrentIndex,
+        setSelectedPositionIndex: setSelectedPositionIndex,
+        getSelectedPositionIndex: getSelectedPositionIndex,
         setAuthorsList: setAuthorsList,
         setSubjectList: setSubjectList,
         getAuthors: getAuthors,
