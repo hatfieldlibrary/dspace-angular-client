@@ -50,8 +50,12 @@
          * to zero.
          */
         listOffset: 0,
-        
+
         startIndex: 0,
+        
+        selectedItemId: -1,
+
+        openItem: -1,
 
         /**
          * These values are set by the sort options component, which is shared by collection
@@ -69,7 +73,7 @@
         newSet: true,
 
         /**
-         * The index of the currently list item.  This is currently used by author
+         * The index of the currently selected list item.  This is used by author
          * and subject facets to activate a card that contains item information.
          */
         currentListIndex: -1,
@@ -175,8 +179,12 @@
         reverseArray(_context.subjectArray);
       }
 
-      function setCurrentIndex(index) {
-        _context.currentListIndex = index;
+      function setSelectedPositionIndex(index) {
+        _context.currentListIndex = +index;
+      }
+
+      function getSelectedPositionIndex() {
+        return _context.currentListIndex;
       }
 
       function setAuthorsList(list) {
@@ -308,11 +316,11 @@
           return _context.newSet;
         }
       }
-      
+
       function setStartIndex(index) {
-        _context.startIndex = index;
+        _context.startIndex = +index;
       }
-      
+
       function getStartIndex() {
         return _context.startIndex;
       }
@@ -333,6 +341,21 @@
         return !isAuthorListRequest() && !isSubjectListRequest();
       }
 
+      function setOpenItem(itemPosition) {
+        _context.openItem = +itemPosition;
+      }
+
+      function getOpenItem () {
+        return _context.openItem;
+      }
+      
+      function setSelectedItemId(itemId) {
+        _context.selectedItemId = itemId;
+      }
+      
+      function getSelectedItemId() {
+        return _context.selectedItemId;
+      }
 
 
       return {
@@ -352,7 +375,8 @@
         getSubmitPermission: getSubmitPermission,
         reverseAuthorList: reverseAuthorList,
         reverseSubjectList: reverseSubjectList,
-        setCurrentIndex: setCurrentIndex,
+        setSelectedPositionIndex: setSelectedPositionIndex,
+        getSelectedPositionIndex: getSelectedPositionIndex,
         setAuthorsList: setAuthorsList,
         setSubjectList: setSubjectList,
         getAuthors: getAuthors,
@@ -388,7 +412,11 @@
         isNotFacetQueryType: isNotFacetQueryType,
         isNewSet: isNewSet,
         setStartIndex: setStartIndex,
-        getStartIndex: getStartIndex
+        getStartIndex: getStartIndex,
+        setOpenItem: setOpenItem,
+        getOpenItem: getOpenItem,
+        setSelectedItemId: setSelectedItemId,
+        getSelectedItemId: getSelectedItemId
 
       };
 

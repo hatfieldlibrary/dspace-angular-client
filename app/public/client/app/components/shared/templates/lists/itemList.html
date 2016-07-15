@@ -6,7 +6,7 @@
 
     <sort-options-component ng-if="$ctrl.showOptions"
                             context="{{$ctrl.context}}"
-                            on-update="$ctrl.onUpdate(results, count, field)"
+                            on-update="$ctrl.onUpdate(results, count, field, offset, jump)"
                             reset-list-view="$ctrl.resetListView()">
     </sort-options-component>
 
@@ -21,17 +21,17 @@
     {{$ctrl.resultCountLabel}} {{$ctrl.count}}
   </div>
 
-  <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent layout-padding">{{$ctrl.resultCountLabel}} {{$ctrl.count}}
+  <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent layout-padding">{{$ctrl.resultMessage}}
   </div>
 
   <md-divider></md-divider>
 
 
-  <div flex="100" layout-fill layout="column" style="min-height: 100%;margin-top: -12px;">
+  <div flex="100"  layout-fill layout="column" style="min-height: 100%;margin-top: -12px;">
 
-    <pager-back-component
-                          on-update="$ctrl.onPreviousUpdate(results, count, field)"
-                          on-new-set="$ctrl.onUpdate(results, count, field)"
+    <pager-back-component ng-if="!$ctrl.jump"
+                          on-update="$ctrl.onPreviousUpdate(results, count, field, offset)"
+                          on-new-set="$ctrl.onUpdate(results, count, field, offset, jump)"
                           context="$ctrl.context">
 
     </pager-back-component>
@@ -53,7 +53,8 @@
         year="{{col.year}}"
         handle="{{col.handle}}"
         abstract="{{col.abstract}}"
-        id="{{col.id}}">
+        id="{{col.id}}"
+      pos="{{$index}}">
 
       </item-detail-component>
 
@@ -63,15 +64,15 @@
         ng-repeat="au in $ctrl.items"
         class="'animate'"
         ng-class="{'selected': $index==$ctrl.selectedIndex}"
-        author="{{au.author.value}}"
-        count="{{au.author.count}}"
+        author="{{au.item.value}}"
+        count="{{au.item.count}}"
         type="{{$ctrl.type}}"
         id="{{$ctrl.id}}"
-        index="{{$index}}"
+        pos="{{$index}}"
         field="{{$ctrl.field}}"
         abstract="{{col.abstract}}"
         last="$last"
-        set-selected="$ctrl.setSelected(index)">
+        set-selected="$ctrl.setSelected(pos)">
 
       </author-detail-component>
 
@@ -80,15 +81,15 @@
         ng-if="$ctrl.field=='subject'"
         ng-repeat="sub in $ctrl.items"
         ng-class="{'selected': $index==$ctrl.selectedIndex}"
-        subject="{{sub.author.value}}"
-        count="{{sub.author.count}}"
+        subject="{{sub.item.value}}"
+        count="{{sub.item.count}}"
         type="{{$ctrl.type}}"
         id="{{$ctrl.id}}"
-        index="{{$index}}"
+        pos="{{$index}}"
         field="{{$ctrl.field}}"
         abstract="{{col.abstract}}"
         last="$last"
-        set-selected="$ctrl.setSelected(index)">
+        set-selected="$ctrl.setSelected(pos)">
 
       </subject-detail-component>
 
@@ -111,12 +112,15 @@
 
     <pager-component
 
-      on-update="$ctrl.onPagerUpdate(results, count, field)"
+      on-pager-update="$ctrl.onPagerUpdate(results, count, field, offset)"
       on-prev-update="$ctrl.onPreviousUpdate(results, count, field)"
-      on-new-set="$ctrl.onUpdate(results, count, field)"
+      on-new-set="$ctrl.onUpdate(results, count, field, offset, jump)"
       context="{{$ctrl.context}}">
 
     </pager-component>
+
+    <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent layout-padding">{{$ctrl.resultMessage}}
+    </div>
 
     <p>&nbsp;</p>
   </div>

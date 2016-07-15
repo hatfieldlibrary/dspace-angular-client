@@ -34,8 +34,7 @@
         return AppContext.getStartIndex();
       },
       function (newValue) {
-        // unary operator
-        backPager.showPager = newValue !== +0;
+        backPager.showPager = +newValue !== 0;
 
       });
 
@@ -102,13 +101,16 @@
         // QueryManager.setOffset(start + 1);
         // Set the lowest start index to the new, decremented value.
         AppContext.setStartIndex(start);
-        $location.search({
-          'field': QueryManager.getQueryType(),
-          'sort': QueryManager.getSort(),
-          'terms': '',
-          'offset': start,
-          'd': 'prev'
-        });
+
+        var qs = $location.search();
+        qs.field = QueryManager.getQueryType();
+        qs.sort = QueryManager.getSort();
+        qs.terms = '';
+        qs.offset = start;
+        delete qs.d;
+        delete qs.id;
+        delete qs.pos;
+        $location.search(qs);
       } else {
         AppContext.setStartIndex(0);
       }

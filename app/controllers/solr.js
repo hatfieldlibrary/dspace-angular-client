@@ -29,7 +29,6 @@ var constants = require('../core/constants');
         }
       }
     };
-    
 
     return query;
   }
@@ -176,10 +175,12 @@ var constants = require('../core/constants');
           res.statusCode = err.statusCode;
           res.end();
 
-        }
+        } else {
 
-        /** send response */
-        utils.jsonResponse(res, result);
+          /** send response */
+          utils.jsonResponse(res, result);
+
+        }
 
       }
     );

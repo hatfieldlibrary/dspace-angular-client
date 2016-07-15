@@ -16,6 +16,30 @@
 
     var ctrl = this;
 
+    function getResults() {
+      /**
+       * Load items inline.
+       */
+      var result = InlineBrowseRequest.query(
+        {
+          type: ctrl.type,
+          id: ctrl.id,
+          qType: QueryTypes.ITEMS_BY_AUTHOR,
+          field: ctrl.field,
+          sort: ctrl.sort,
+          terms: ctrl.author,
+          offset: 0,
+          rows: 10
+        }
+      );
+      result.$promise.then(function (data) {
+        ctrl.ready = true;
+        ctrl.items = data;
+
+      });
+    }
+
+
     ctrl.ready = false;
 
     ctrl.isSmallScreen = ($mdMedia('sm') || $mdMedia('xs'));
@@ -26,14 +50,14 @@
      *
      *  @type {{context: {}}}
      */
-    $scope.context = AppContext.getContext();
+    // $scope.context = AppContext.getContext();
 
     /**
      * The selected index. This will be set by the $watch.
      * @type {number}
      */
     ctrl.selectedIndex = -1;
-    AppContext.setCurrentIndex(-1);
+    //AppContext.setCurrentIndex(-1);
 
     ctrl.xsSelectedIndex = -1;
 
@@ -45,7 +69,7 @@
      * on the parent component, using the provided callback.
      */
     ctrl.setSelectedIndex = function () {
-      ctrl.setSelected({index: ctrl.index});
+      ctrl.setSelected({pos: ctrl.pos});
 
     };
 
@@ -63,22 +87,17 @@
      */
     ctrl.getItems = function () {
 
-      var result = InlineBrowseRequest.query(
-        {
-          type: ctrl.type,
-          id: ctrl.id,
-          qType: QueryTypes.AUTHOR_SEARCH,
-          field: ctrl.field,
-          sort: ctrl.sort,
-          terms: ctrl.author,
-          offset: 0,
-          rows: 10
-        }
-      );
-      result.$promise.then(function (data) {
-        ctrl.ready = true;
-        ctrl.items = data;
-      });
+      /**
+       * Add item id and position to the query string.
+       */
+      Utils.setLocationForItem(ctrl.id, ctrl.pos);
+
+
+      /**
+       * Tell the app not to load a new set of results.
+       */
+      AppContext.isNewSet(false);
+
 
     };
 
@@ -87,9 +106,14 @@
      * Sets a $watch on the context's currentListIndex.
      */
     $scope.$watch(
-      'context.currentListIndex',
-      function updateSelecteIndex(newValue, oldValue) {
-        if (newValue !== oldValue) {
+      function () {
+        return AppContext.getSelectedPositionIndex();
+      },
+      function (newValue) {
+        if (newValue === parseInt(ctrl.pos)) {
+
+          getResults();
+
           if (($mdMedia('sm') || $mdMedia('xs'))) {
             ctrl.xsSelectedIndex = newValue;
 
@@ -97,9 +121,13 @@
             ctrl.selectedIndex = newValue;
 
           }
+
+        } else {
+          ctrl.selectedIndex = -1;
         }
       }
     );
+
 
   }
 
@@ -109,10 +137,10 @@
     bindings: {
       type: '@',
       id: '@',
+      pos: '@',
       author: '@',
       field: '@',
       offset: '@',
-      index: '@',
       count: '@',
       last: '<',
       setSelected: '&'

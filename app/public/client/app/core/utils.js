@@ -5,7 +5,7 @@
 'use strict';
 
 dspaceServices.factory('Utils', [
-
+  '$location',
   'QueryManager',
   'AppContext',
   'Messages',
@@ -16,7 +16,8 @@ dspaceServices.factory('Utils', [
   'QuerySort',
   'QueryTypes',
 
-  function (QueryManager,
+  function ($location,
+            QueryManager,
             AppContext,
             Messages,
             CheckSession,
@@ -117,7 +118,7 @@ dspaceServices.factory('Utils', [
     utils.getFieldForQueryType = function () {
 
       if (AppContext.isAuthorListRequest()) {
-        
+
         return QueryFields.AUTHOR;
 
       } else if (AppContext.isSubjectListRequest()) {
@@ -158,30 +159,27 @@ dspaceServices.factory('Utils', [
     };
 
     /**
-     * Returns values for a range of indices from the author facets array.
+     * Returns values for a range of indices from the facets array.
      * @param start  the start index
      * @param end    the end index
      * @returns {Array}
      */
-    utils.authorArraySlice = function (start, end) {
-
-
+    utils.facetsArraySlice = function (type, start, end) {
       if (end < setSize) {
         setSize = end;
       }
-
       try {
-
-        var authors = AppContext.getAuthors().slice(start, end);
-
-        var data = new Array(authors.length);
-
+        var arr = [];
+        if (type === QueryTypes.AUTHOR_FACETS) {
+          arr = AppContext.getAuthors().slice(start, end);
+        } else if (type === QueryTypes.SUBJECT_FACETS) {
+          arr = AppContext.getSubjects().slice(start, end);
+        }
+        var data = new Array(arr.length);
         var arraySize = end - start;
         for (var i = 0; i < arraySize; i++) {
-          data[i] = {author: authors[i]};
-
+          data[i] = {item: arr[i]};
         }
-
         return data;
 
       } catch (err) {
@@ -211,36 +209,6 @@ dspaceServices.factory('Utils', [
     };
 
 
-    /**
-     * Returns values for a range of indices from the subject facets array.
-     * @param start  the start index
-     * @param end    the end index
-     * @returns {Array}
-     */
-    utils.subjectArraySlice = function (start, end) {
-
-      if (end < setSize) {
-        setSize = end;
-      }
-
-      try {
-
-        var authors = AppContext.getSubjects().slice(start, end);
-
-        var data = new Array(authors.length);
-        var arraySize = end - start;
-        for (var i = 0; i < arraySize; i++) {
-
-          data[i] = {author: authors[i]};
-        }
-
-        return data;
-
-      } catch (err) {
-        console.log(err);
-      }
-
-    };
 
 
     /**
@@ -327,10 +295,31 @@ dspaceServices.factory('Utils', [
      * Constructs path to DSpace bitstream service.
      * @param logoId
      * @returns {string}
-       */
+     */
     utils.getLogoPath = function (logoId) {
       var path = '/ds/bitstream/' + logoId + '/logo';
       return path;
+    };
+
+    /**
+     * Updates the query string with the id and position
+     * of the selected item.
+     * @param id the item id
+     * @param pos the position in itemList
+     */
+    utils.setLocationForItem = function (id, pos) {
+
+      var qs = $location.search();
+      /**
+       * Add id and position to the query string.
+       */
+      qs.id = id;
+      qs.pos = pos;
+      /**
+       * Change location.
+       */
+      $location.search(qs);
+
     };
 
 
