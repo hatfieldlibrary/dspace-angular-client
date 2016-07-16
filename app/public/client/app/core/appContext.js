@@ -270,10 +270,12 @@
       }
 
       function hasDspaceSession() {
+        console.log('got sessoin ' +  _context.hasDspaceSession)
         return _context.hasDspaceSession;
       }
 
       function updateDspaceSession(hasSession) {
+        console.log('update session to ' + hasSession);
         _context.hasDspaceSession = hasSession;
       }
 
