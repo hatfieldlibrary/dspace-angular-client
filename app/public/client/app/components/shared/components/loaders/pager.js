@@ -305,10 +305,14 @@
 
       if (typeof qs.offset !== 'undefined') {
         QueryManager.setOffset(qs.offset);
+      } else {
+        QueryManager.setOffset(0);
       }
 
       if (typeof qs.id !== 'undefined') {
         AppContext.setSelectedItemId(qs.id);
+      } else {
+        AppContext.setSelectedItemId(-1);
       }
 
 
@@ -514,6 +518,7 @@
           AppContext.setStartIndex(0);
           AppContext.setOpenItem(-1);
           AppContext.setSelectedPositionIndex(-1);
+          AppContext.setSelectedItemId(-1);
           AppContext.isNewSet();
           /**
            * Item dialog might be open.  Close it.
