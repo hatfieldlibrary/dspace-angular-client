@@ -11,7 +11,6 @@
     'QueryManager', 'QueryActions', 'QueryTypes', 'AppContext', 'Utils',
     function (QueryManager, QueryActions, QueryTypes, AppContext, Utils) {
 
-      var setSize = AppContext.getSetSize();
 
       /**
        * Returns values for a range of indices from the author facets array.
@@ -20,19 +19,21 @@
        * @returns {Array}
        */
       function arraySlice(type, start, end) {
-        if (end < setSize) {
-          setSize = end;
-        }
+
+        //var setSize = AppContext.getSetSize();
+
+        // if (end < setSize) {
+        //   setSize = end;
+        //
+        // }
         try {
           var arr = [];
 
-          console.log(type);
           if (type === QueryTypes.AUTHOR_FACETS) {
             arr = AppContext.getAuthors().slice(start, end);
           } else if (type === QueryTypes.SUBJECT_FACETS) {
             arr = AppContext.getSubjects().slice(start, end);
           }
-          console.log(arr);
 
           var data = new Array(arr.length);
           var arraySize = end - start;
@@ -50,6 +51,7 @@
       return {
 
         reverseAuthorList: function (order) {
+          var setSize = AppContext.getSetSize();
 
           var data = {};
           data.count = AppContext.getAuthorsCount();
@@ -64,9 +66,7 @@
 
         },
         reverseSubjectList: function (order) {
-          console.log(order);
-          console.log(AppContext.getSubjectsOrder());
-
+          var setSize = AppContext.getSetSize();
           var data = {};
           data.count = AppContext.getSubjectsCount();
           var end = Utils.getPageListCount(data.count, setSize);
@@ -80,6 +80,7 @@
 
         },
         getAuthorList: function () {
+          var setSize = AppContext.getSetSize();
 
           var data = {};
           data.count = AppContext.getAuthorsCount();
@@ -89,6 +90,7 @@
 
         },
         getSubjectList: function () {
+          var setSize = AppContext.getSetSize();
 
           var data = {};
           data.count = AppContext.getSubjectsCount();
