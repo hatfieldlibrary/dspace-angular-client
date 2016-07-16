@@ -49,13 +49,19 @@
     PageTitle.setTitle(ctrl.data.name);
 
     /**
+     * Initialize login message to be not hidden.
+     * @type {boolean}
+       */
+    ctrl.hideLoginMessage = true;
+
+    /**
      * Shows login message if the count of returned collections
      * does not equal the total collections in the community.
      * Assumes that some of the collections are hidden behind DSpace
      * access restrictions.
      */
-    if (ctrl.data.countItems === ctrl.data.itemTotal) {
-      ctrl.hideLoginMessage = true;
+    if (ctrl.data.countItems !== ctrl.data.itemTotal) {
+      ctrl.hideLoginMessage = false;
 
     }
 
@@ -68,8 +74,10 @@
      * hidden behind DSpace authorizations.
      */
     $scope.$watch(function() { return AppContext.hasDspaceSession(); },
-      function(data) {
-        ctrl.hideLoginMessage = data;
+      function(newValue, oldValue) {
+        if (newValue !== oldValue) {
+          ctrl.hideLoginMessage = newValue;
+        }
       });
 
   }
