@@ -52,7 +52,7 @@
         listOffset: 0,
 
         startIndex: 0,
-        
+
         selectedItemId: -1,
 
         openItem: -1,
@@ -348,11 +348,11 @@
       function getOpenItem () {
         return _context.openItem;
       }
-      
+
       function setSelectedItemId(itemId) {
         _context.selectedItemId = itemId;
       }
-      
+
       function getSelectedItemId() {
         return _context.selectedItemId;
       }
