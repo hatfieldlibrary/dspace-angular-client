@@ -49,7 +49,7 @@
     PageTitle.setTitle(ctrl.data.name);
 
     /**
-     * Initialize login message to be not hidden.
+     * Initialize login message to be hidden.
      * @type {boolean}
        */
     ctrl.hideLoginMessage = true;
@@ -69,7 +69,7 @@
      * Watch for updates to the DSpace session status and show
      * or hide the login message in response. We don't want to
      * show the community's inline login component if the user
-     * is already logged in.  In this case, we can safely assume
+     * is already logged in.  In that case, we can safely assume
      * that the user does not have access to collections still
      * hidden behind DSpace authorizations.
      */
