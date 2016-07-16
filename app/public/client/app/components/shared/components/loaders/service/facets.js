@@ -20,7 +20,7 @@
        */
       function arraySlice(type, start, end) {
 
-        var setSize = AppContext.getSetSize();
+        //var setSize = AppContext.getSetSize();
 
         // if (end < setSize) {
         //   setSize = end;
