@@ -116,10 +116,19 @@
       ctrl.field = field;
       ctrl.count = count;
       offset++;
-      var end = offset + endIncrement;
+      var end = '';
+      if (count < endIncrement) {
+        end = count;
+      } else {
+        end = offset + endIncrement;
+      }
       var start = AppContext.getStartIndex() + 1;
-      ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
-      ctrl.showDiscoverContainer = ctrl.context === 'discover' || (ctrl.count > 10 && ctrl.context !== 'advanced') || (ctrl.count === 0 && ctrl.context !== 'advanced');
+      if (count > 0) {
+        ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
+      } else {
+        ctrl.resultMessage = Messages.NO_RESULTS_LABEL;
+      }
+      ctrl.showDiscoverContainer = ctrl.context === 'discover' || ( ctrl.context !== 'advanced');
 
     };
 

@@ -66,6 +66,8 @@
      */
     RESULTS_LABEL: 'Viewing {0} - {1} of {2}',
 
+    NO_RESULTS_LABEL: 'Sorry, no results for this query.',
+
     LOGOUT_LABEL: 'Logout',
 
     LOGIN_LABEL: 'Login',

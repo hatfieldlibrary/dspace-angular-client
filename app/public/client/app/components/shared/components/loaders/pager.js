@@ -236,7 +236,7 @@
     function setOpenItemPosition(qs) {
 
       if (typeof qs.pos !== 'undefined') {
-        
+
         /**
          * The position is lower than the current offset.
          */
@@ -376,6 +376,7 @@
             result = SolrDataLoader.invokeQuery();
             result.$promise.then(function (data) {
 
+
               setOpenItem(qs);
 
               /**
@@ -397,6 +398,7 @@
                * If order is asc, just add the author list to parent.
                */
               else {
+
                 updateParentNewSet(FacetHandler.getAuthorList());
               }
             });
