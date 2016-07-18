@@ -48,6 +48,8 @@ var constants = require('../core/constants');
       req.session.url = '/ds/discover/' + type + '/' + id + '/' + term;
     }
 
+
+    console.log(req.body)
     var session = req.session;
 
     models.solrQuery(req.body, res, session);
