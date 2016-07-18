@@ -41,20 +41,6 @@
 
     function init() {
 
-      var qs = $location.search();
-
-      console.log('init');
-
-
-      if (Object.keys(qs).length > 0) {
-        // convert to int.
-        offset = parseInt(qs.offset, 10);
-        QueryManager.setOffset(qs.offset);
-        QueryManager.setSort(qs.sort);
-        QueryManager.setQueryType(qs.field);
-      } else {
-        offset = QueryManager.getOffset();
-      }
       /**
        * Get the offset for the next result set.
        * @returns {boolean}
@@ -117,10 +103,6 @@
 
 
     };
-
-    // $scope.$on('nextPage', function () {
-    //   updateList(QueryManager.getOffset());
-    // });
 
   }
 

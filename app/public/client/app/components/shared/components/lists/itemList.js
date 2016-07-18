@@ -121,6 +121,9 @@
         end = count;
       } else {
         end = offset + endIncrement;
+        if (end > count) {
+          end = count;
+        }
       }
       var start = AppContext.getStartIndex() + 1;
       if (count > 0) {
