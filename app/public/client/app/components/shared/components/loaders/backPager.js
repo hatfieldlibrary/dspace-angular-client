@@ -109,7 +109,7 @@
 
   dspaceComponents.component('pagerBackComponent', {
 
-    template: '<div layout="row" layout-align="center center" ng-if="backPager.showPager"><md-button class="md-raised md-accent md-fab md-mini" ng-click="backPager.previous()" ng-if="backPager.more()"><md-icon md-font-library="material-icons" class="md-light" aria-label="Previous Results">expand_less</md-icon></md-button></div>',
+    template: '<div layout="row" layout-align="center center" ng-if="backPager.showPager"><a href="#" ng-click="backPager.previous()"><md-button class="md-raised md-accent md-fab md-mini" ng-if="backPager.more()"><md-icon md-font-library="material-icons" class="md-light" aria-label="Previous Results">expand_less</md-icon></md-button></a></div>',
 
     bindings: {
       onUpdate: '&'
