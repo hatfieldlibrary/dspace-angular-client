@@ -185,6 +185,8 @@
 
       AppContext.setOpenItem(-1);
 
+      console.log(QueryManager.getOffset())
+
       var filter = SolrDataLoader.filterQuery();
       filter.$promise.then(function (data) {
 
@@ -233,8 +235,6 @@
      * Executes query to retrieve a fresh result set.
      */
     var doSearch = function () {
-
-
       /**
        * Set pager in context.  (The pager component will
        * hide the pager button.)
@@ -242,28 +242,49 @@
       AppContext.setPager(false);
       AppContext.setStartIndex(0);
 
+
       /**
-       * Get promise.
-       * @type {*|{method}|Session}
+       * Using a hybrid approach here.  If an id exists
+       * in the query string, we just update the location
+       * search string and let pager do the work.
+       *
+       * If an id does not exist in the query string, then
+       * execute the search from here.
+       * @type {Number|*}
        */
-      var items = SolrDataLoader.invokeQuery();
-      /**
-       * Handle the response.
-       */
-      items.$promise.then(function (data) {
-        ctrl.resetListView();
-        QueryManager.setOffset(data.offset);
+      var qs = $location.search();
+      // update the location and let pager pick up the change
+      if (typeof qs.id !== 'undefined') {
+        delete qs.pos;
+        delete qs.id;
+        $location.search(qs);
+      }
+      // execute search from here
+      else {
         /**
-         * Update parent component.
+         * Get promise.
+         * @type {*|{method}|Session}
          */
-        ctrl.onUpdate({
-          results: data.results,
-          count: data.count,
-          field: displayListType,
-          offset: data.offset,
-          jump: true
+        var items = SolrDataLoader.invokeQuery();
+        /**
+         * Handle the response.
+         */
+        items.$promise.then(function (data) {
+          ctrl.resetListView();
+          QueryManager.setOffset(data.offset);
+          /**
+           * Update parent component.
+           */
+          ctrl.onUpdate({
+            results: data.results,
+            count: data.count,
+            field: displayListType,
+            offset: data.offset,
+            jump: true
+          });
         });
-      });
+
+      }
     };
 
 

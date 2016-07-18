@@ -37,7 +37,7 @@
         count++;
 
       }
-      // The even indicies contain author information.  Add to
+      // The even indices contain author information.  Add to
       // the authorObj.
       else {
 
@@ -131,6 +131,7 @@
 
     var ret = {};
     var resultArr = [];
+
 
     for (var i = 0; i < json.length; i++) {
       var tmp = {};
