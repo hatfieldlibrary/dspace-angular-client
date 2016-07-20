@@ -49,9 +49,13 @@
    */
   exports.removeDspaceSession = function (session) {
 
-    if ('dspaceToken' in session) {
-      delete session.getDspaceToken;
+    try {
+      if ('dspaceToken' in session) {
+        delete session.getDspaceToken;
 
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 

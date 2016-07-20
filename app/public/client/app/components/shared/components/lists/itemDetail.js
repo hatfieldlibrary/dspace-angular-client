@@ -89,6 +89,7 @@
          * is not picked up by watch. Handle that case here.
          */
         if (AppContext.getOpenItem() === parseInt(ctrl.pos)) {
+
           ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
         }
 

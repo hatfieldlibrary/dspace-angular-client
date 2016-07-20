@@ -29,6 +29,8 @@
       }
 
       var _context = {
+        
+        isFilter: false,
 
         /**
          * The array of authors returned by browse/sort by author query. This is
@@ -121,6 +123,14 @@
 
       function getContext() {
         return _context;
+      }
+      
+      function isFilter(filter) {
+        if (typeof filter !== 'undefined') {
+          _context.isFilter = filter;
+        } else {
+          return _context.isFilter;
+        }
       }
 
       function getDspaceHost() {
@@ -361,6 +371,7 @@
       return {
 
         getContext: getContext,
+        isFilter: isFilter,
         getDspaceHost: getDspaceHost,
         getDspaceRoot: getDspaceRoot,
         getHandlePrefix: getHandlePrefix,

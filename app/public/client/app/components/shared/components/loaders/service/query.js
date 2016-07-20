@@ -9,8 +9,14 @@
 
 
   dspaceServices.factory('SolrDataLoader', [
-    'QueryManager', 'QueryActions', 'SolrQuery', 'SolrBrowseQuery', 'SolrJumpToQuery',
-    function (QueryManager, QueryActions, SolrQuery, SolrBrowseQuery, SolrJumpToQuery) {
+    'QueryManager', 'AppContext','QueryActions', 'SolrQuery', 'SolrBrowseQuery', 'SolrJumpToQuery','QueryTypes',
+    function (QueryManager, AppContext, QueryActions, SolrQuery, SolrBrowseQuery, SolrJumpToQuery, QueryTypes) {
+
+      /**
+       * Number of items to return in pager.
+       * @type {number}
+       */
+      var setSize = AppContext.getSetSize();
 
       return {
         /**
@@ -86,8 +92,114 @@
         optionsFilterSearch: function () {
           // todo
 
+        },
+        /**
+         * Returns the previous sort order after updating
+         * context with the new provided sort order.  Order
+         * is independently tracked for subject, author
+         * and item lists. This allows them to be toggled
+         * (reversing the order) needed.
+         * @param field  the current field
+         * @param newSortOrder the new sort order
+         * @returns {*}
+         */
+        getSortOrder: function (field, newSortOrder) {
+          /**
+           * If the sort order is desc, reverse the new subject list
+           * and update parent.
+           */
+          var order;
+          if (field === QueryTypes.SUBJECT_FACETS) {
+            order = AppContext.getSubjectsOrder();
+            AppContext.setSubjectsOrder(newSortOrder);
+          } else if (field === QueryTypes.AUTHOR_FACETS) {
+            order = AppContext.getAuthorsOrder();
+            AppContext.setAuthorsOrder(newSortOrder);
+          } else {
+            order = AppContext.getListOrder();
+            AppContext.setListOrder(newSortOrder);
+          }
+
+          return order;
+        },
+        /**
+         * Recalculates the offset if the item position
+         * provided in the query is less than the provided
+         * offset value.
+         * @param qs query string
+         * @returns {number}
+         */
+        verifyOffset: function (qs) {
+          var offset = 0;
+
+          if (qs.pos < qs.offset) {
+            offset = Math.floor(qs.pos / setSize) * setSize;
+
+          } else {
+            offset = qs.offset;
+          }
+
+          return offset;
+        },
+        /**
+         * Sets the offset value based on provided query
+         * @param qs  the query string
+         */
+        setOffset: function (qs) {
+
+          if (typeof qs.offset !== 'undefined') {
+            QueryManager.setOffset(this.verifyOffset(qs));
+          }
+
+          if (qs.d === 'prev') {
+            // When backward paging, the new offset is
+            // always tne new low index.
+            AppContext.setStartIndex(qs.offset);
+          }
+          // unary operator
+          else if (+qs.offset === 0) {
+            AppContext.setStartIndex(0);
+          }
+        },
+        setJumpType: function() {
+          /**
+           * Get the current query type.
+           */
+          var queryType = QueryManager.getQueryType();
+          /**
+           * When filtering for titles and dates, we use distinct solr queries
+           * (START_LETTER and START_DATE).
+           *
+           * For authors and subjects, we can use the same query type
+           * used elsewhere (AUTHOR_FACETS and SUBJECT_FACETS).
+           *
+           * Setting the filter search type in QueryManager.
+           */
+          if (queryType === QueryTypes.TITLES_LIST) {
+
+            QueryManager.setJumpType(QueryTypes.START_LETTER);
+
+          } else if (queryType === QueryTypes.DATES_LIST) {
+
+            QueryManager.setJumpType(QueryTypes.START_DATE);
+
+          } else if (queryType === QueryTypes.ITEMS_BY_SUBJECT) {
+
+            QueryManager.setJumpType(QueryTypes.START_LETTER);
+
+          } else if (queryType === QueryTypes.AUTHOR_FACETS) {
+
+            QueryManager.setJumpType(QueryTypes.AUTHOR_FACETS);
+
+          } else if (queryType === QueryTypes.SUBJECT_FACETS) {
+
+            QueryManager.setJumpType(QueryTypes.SUBJECT_FACETS);
+
+          }
         }
-      };
+
+
+    };
 
 
     }]);

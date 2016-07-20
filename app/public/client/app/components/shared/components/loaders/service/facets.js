@@ -49,39 +49,37 @@
       }
 
       return {
+        /**
+         *  Set the author facet list order.
+         *  The order will be changed if the context differs from the order provided in the
+         *  current query. If the order is changed, it will be updated in the context as well.
+         *  @param order
+         */
+        setAuthorListOrder: function (order) {
 
-        reverseAuthorList: function (order) {
-          var setSize = AppContext.getSetSize();
-
-          var data = {};
-          data.count = AppContext.getAuthorsCount();
-          var end = Utils.getPageListCount(data.count, setSize);
-          // toggle order if necessary
-          if (order !== AppContext.getAuthorsOrder()) {
+          if (order !== QueryManager.getSort()) {
             AppContext.reverseAuthorList();
             AppContext.setAuthorsOrder(order);
           }
-          data.results = arraySlice(QueryTypes.AUTHOR_FACETS, QueryManager.getOffset(), QueryManager.getOffset() + end);
-          return data;
 
         },
-        reverseSubjectList: function (order) {
-          var setSize = AppContext.getSetSize();
-          var data = {};
-          data.count = AppContext.getSubjectsCount();
-          var end = Utils.getPageListCount(data.count, setSize);
-          // toggle order if necessary.
-          if (order !== AppContext.getSubjectsOrder()) {
+        /**
+         *  Set the subject facet list order.
+         *  The order will be changed if the context differs from the order provided in the
+         *  current query. If the order is changed, it will be updated in the context as well.
+         *  @param order
+         */
+        setSubjectListOrder: function (order) {
+
+          if (order !== QueryManager.getSort()) {
+            console.log('reversing order')
             AppContext.reverseSubjectList();
             AppContext.setSubjectsOrder(order);
           }
-          data.results = arraySlice(QueryTypes.SUBJECT_FACETS, QueryManager.getOffset(), QueryManager.getOffset() + end);
-          return data;
 
         },
-        getAuthorList: function () {
+        getAuthorListSlice: function () {
           var setSize = AppContext.getSetSize();
-
           var data = {};
           data.count = AppContext.getAuthorsCount();
           var end = Utils.getPageListCount(data.count, setSize);
@@ -89,9 +87,9 @@
           return data;
 
         },
-        getSubjectList: function () {
-          var setSize = AppContext.getSetSize();
-
+        getSubjectListSlice: function (setSize) {
+          //var setSize = AppContext.getSetSize();
+          console.log(setSize)
           var data = {};
           data.count = AppContext.getSubjectsCount();
           var end = Utils.getPageListCount(data.count, setSize);
@@ -104,6 +102,25 @@
           if (QueryManager.isSubjectListRequest || QueryManager.isAuthorListRequest) {
             QueryManager.setAction(QueryActions.LIST);
           }
+        }, /**
+         * Traverses a provided array and returns the index of the
+         * first element that matches a case-insensitive regex that
+         * looks for the letters at the beginning of each line.
+         * @param arr   the input array
+         * @param letters  the characters to match
+         * @returns {number} the array index
+         */
+        findIndexInArray: function (arr, letters) {
+
+          if (letters.length > 0) {
+            var regex = new RegExp('^' + letters, 'i');
+            for (var i = 0; i < arr.length; i++) {
+              if (arr[i].value.match(regex) !== null) {
+                return i;
+              }
+            }
+          }
+          return 0;
         }
 
       };

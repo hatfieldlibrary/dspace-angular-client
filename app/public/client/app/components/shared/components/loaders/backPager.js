@@ -22,32 +22,35 @@
      */
     var setSize = AppContext.getSetSize();
 
-    var offset = 0;
+    backPager.showPager = true;
 
-    backPager.showPager = false;
+    backPager.more = false;
 
     /**
      * Watch for changes to query offset triggered by a
-     * query string update.
+     * query string update.   Probably UNNECESSARY.
      */
     $scope.$watch(function () {
         return AppContext.getStartIndex();
       },
       function (newValue) {
-        backPager.showPager = +newValue !== 0;
+        backPager.more = more(newValue)
 
       });
 
+    /**
+     * Checks for additional previous items.
+     * @param offset
+     * @returns {boolean}
+     */
+    function more(offset) {
+      return offset !== 0 && !AppContext.isFilter();
+    }
 
     function init() {
 
-      /**
-       * Get the offset for the next result set.
-       * @returns {boolean}
-       */
-      backPager.more = function () {
-        return AppContext.getCount() > offset - setSize;
-      };
+      var offset = QueryManager.getOffset();
+
       /**
        * Current start position for view model.
        * @type {number}
@@ -57,18 +60,22 @@
        * Current end position for view model.
        * @type {number}
        */
-      backPager.end = offset - setSize;
+      backPager.end = QueryManager.getOffset() !== 0;
       /**
        * Used in ng-if to show/hide the component.
        * @type {boolean}
        */
-      backPager.showPager = offset > 0;
+      backPager.showPager = AppContext.getPager();
+
+      /**
+       * Show/hide the pager based on the query offset.
+       */
+      backPager.more = more(offset);
 
 
     }
 
     init();
-
 
 
     /**
@@ -79,27 +86,33 @@
       /**
        * Set the start value to the current lowest start index.
        */
-      var start = AppContext.getStartIndex();
+      var offset = AppContext.getStartIndex();
 
-
-      if (start >= setSize) {
-        start -= setSize;
-        // QueryManager.setOffset(start + 1);
-        // Set the lowest start index to the new, decremented value.
-        AppContext.setStartIndex(start);
-
-        var qs = $location.search();
-        qs.field = QueryManager.getQueryType();
-        qs.sort = QueryManager.getSort();
-        qs.terms = '';
-        qs.offset = start;
-        delete qs.d;
-        delete qs.id;
-        delete qs.pos;
-        $location.search(qs);
-      } else {
+      if (offset < setSize) {
+        offset = 0;
         AppContext.setStartIndex(0);
       }
+      else if (offset >= setSize) {
+
+        offset -= setSize;
+        AppContext.setStartIndex(offset);
+      }
+
+      backPager.more = more(offset);
+      // Set the lowest start index to the new, decremented value.
+      AppContext.isNewSet(false);
+      var qs = $location.search();
+      qs.field = QueryManager.getQueryType();
+      qs.sort = QueryManager.getSort();
+      qs.terms = '';
+      qs.offset = offset;
+      qs.d = 'prev';
+      //delete qs.d;
+      delete qs.id;
+      delete qs.pos;
+      $location.search(qs);
+
+
 
 
     };
@@ -109,10 +122,10 @@
 
   dspaceComponents.component('pagerBackComponent', {
 
-    template: '<div layout="row" layout-align="center center" ng-if="backPager.showPager"><a href="#" ng-click="backPager.previous()"><md-button class="md-raised md-accent md-fab md-mini" ng-if="backPager.more()"><md-icon md-font-library="material-icons" class="md-light" aria-label="Previous Results">expand_less</md-icon></md-button></a></div>',
+    template: '<div layout="row" layout-align="center center" ><a href ng-click="backPager.previous()"><md-button class="md-raised md-accent md-fab md-mini" ng-if="backPager.more"><md-icon md-font-library="material-icons" class="md-light" aria-label="Previous Results">expand_less</md-icon></md-button></a></div>',
 
     bindings: {
-      onUpdate: '&'
+      context: '@'
 
     },
     controller: PagerCtrl,

@@ -171,10 +171,10 @@ var constants = require('../core/constants');
             // to detect a change in session status and direct the user to
             // log in again.
             utils.removeDspaceSession(req.session);
-
+            res.statusCode = err.statusCode;
 
           }
-          res.statusCode = err.statusCode;
+
           res.end();
 
         } else {

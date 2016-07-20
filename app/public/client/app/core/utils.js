@@ -9,6 +9,7 @@
 
   dspaceServices.factory('Utils', [
     '$location',
+    '$timeout',
     'QueryManager',
     'AppContext',
     'Messages',
@@ -20,6 +21,7 @@
     'QueryTypes',
 
     function ($location,
+              $timeout,
               QueryManager,
               AppContext,
               Messages,
@@ -320,6 +322,23 @@
          * Change location.
          */
         $location.search(qs);
+
+      };
+
+      /**
+       * Set delay on showing the pager button.  The pager's view state
+       * is managed via the application context.  This allows other components
+       * to hide the button until pager has new results to display.
+       */
+      utils.delayPagerViewUpdate = function() {
+
+        $timeout(function () {
+          /**
+           * Set pager in context.
+           */
+          AppContext.setPager(true);
+
+        }, 300);
 
       };
 

@@ -11,7 +11,6 @@
    * Pager controller.
    * @param $location
    * @param $scope
-   * @param $timeout
    * @param SolrDataLoader
    * @param Utils
    * @param QueryManager
@@ -25,7 +24,6 @@
 
   function PagerCtrl($location,
                      $scope,
-                     $timeout,
                      SolrDataLoader,
                      Utils,
                      QueryManager,
@@ -40,12 +38,20 @@
 
     var pager = this;
 
+    /**
+     * Default field
+     */
     var defaultField = QueryTypes.DATES_LIST;
+    /**
+     * Default sort order
+     */
     var defaultOrder = QuerySort.DESCENDING;
-    var paging = false;
+
     var currentField = '';
     var currentOrder = '';
-    var currentOffset = '';
+    var currentOffset = 0;
+    var currentFilter ;
+
 
     /**
      * Number of items to return in pager.
@@ -58,17 +64,15 @@
      */
     var count = 0;
 
-    function more() {
-      return AppContext.getCount() > QueryManager.getOffset() + setSize;
-    }
-
     /**
      * Check to see if more search results are available.
      * @returns {boolean}
      */
-    pager.more = false;
+    pager.more = function () {
+      return AppContext.getCount() > QueryManager.getOffset() + setSize;
+    };
 
-    pager.showPager = false;
+    pager.showPager = true;
 
     /**
      * Current start position for view model.
@@ -81,150 +85,181 @@
      */
     pager.end = QueryManager.getOffset() + setSize;
 
-    /**
-     * Returns the previous sort order after updating
-     * context with the new provided sort order.  Order
-     * is independently tracked for subject, author
-     * and item lists. This allows them to be toggled
-     * (reversing the order) needed.
-     * @param field  the current field
-     * @param newSortOrder the new sort order
-     * @returns {*}
-     */
-    function getSortOrder(field, newSortOrder) {
-      /**
-       * If the sort order is desc, reverse the new subject list
-       * and update parent.
-       */
-      var order;
-      if (field === QueryTypes.SUBJECT_FACETS) {
-        order = AppContext.getSubjectsOrder();
-        AppContext.setSubjectsOrder(newSortOrder);
-      } else if (field === QueryTypes.AUTHOR_FACETS) {
-        order = AppContext.getAuthorsOrder();
-        AppContext.setAuthorsOrder(newSortOrder);
+    function _addResult(direction, data) {
+      if (AppContext.isNewSet()) {
+        /**
+         * If not a new request, swap in the new data.
+         */
+        updateParentNewSet(data);
       } else {
-        order = AppContext.getListOrder();
-        AppContext.setListOrder(newSortOrder);
+        /**
+         * If paging, add the new data to the view.
+         */
+        updateParent(data, direction);
       }
-
-      return order;
     }
 
+    function _itemFilter() {
 
-    function isNewQuery(field, order, offset) {
-      var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset);
+      AppContext.isFilter(true);
+
+      var items = SolrDataLoader.filterQuery();
+      items.$promise.then(function (data) {
+        QueryManager.setOffset(data.offset);
+
+        _addResult('next', data);
+      });
+    }
+
+    /**
+     * Fetches the authors array.
+     * @param terms
+     */
+    function _fetchAuthors(terms, sort) {
+      // Fetch authors.
+      var result = SolrDataLoader.invokeQuery();
+      result.$promise.then(function (data) {
+        // Add the author array to context.
+        AppContext.setAuthorsList(data.facets);
+        // Initialize author sort order.
+        AppContext.setAuthorsOrder(sort);
+        // Call the filter method.
+        _authorFilter(terms);
+      });
+    }
+
+    /**
+     * Authors filter.
+     * @param terms
+     */
+    function _authorFilter(terms, sort, direction, initOffset) {
+
+      AppContext.isFilter(true);
+
+      // Author array exists, run filter.
+      if (AppContext.getAuthors().length > 0) {
+        // Get the authors sort order from context.
+        var order = SolrDataLoader.getSortOrder(QueryManager.getQueryType, QueryManager.getSort());
+        // Set the author facet list order.
+        FacetHandler.setAuthorListOrder(order);
+        // Get the offset for the matching index.
+        var offset;
+        if (AppContext.isNewSet()) {
+          offset = FacetHandler.findIndexInArray(AppContext.getAuthors(), terms);
+        } else {
+          offset = QueryManager.getOffset() + setSize;
+        }
+        QueryManager.setOffset(offset);
+
+        var set = setSize;
+        if (typeof initOffset !== 'undefined') {
+          set = Math.floor(initOffset / setSize) * setSize;
+        }
+        // Set the context start index to the matching offset.
+        AppContext.setStartIndex(offset);
+        if (AppContext.isNewSet()) {
+          updateParentNewSet(FacetHandler.getAuthorListSlice());
+        } else {
+          updateParent(FacetHandler.getAuthorListSlice(), direction);
+        }
+      }
+      else {
+        // No author array is available on page initialization.
+        // Fetch it.
+        _fetchAuthors(terms, sort);
+      }
+
+
+    }
+
+    /**
+     * Fetches the subjects array.
+     * @param terms
+     */
+    function _fetchSubjects(terms, sort, direction, initOffset) {
+      // Fetch subjects.
+      var result = SolrDataLoader.invokeQuery();
+      result.$promise.then(function (data) {
+        // Add the subject array to context.
+        AppContext.setSubjectList(data.facets);
+        // Initialize subject sort order.
+        AppContext.setSubjectsOrder(sort);
+
+        // Call the filter method.
+        _subjectFilter(terms, sort, direction, initOffset);
+      });
+    }
+
+    function _subjectFilter(terms, sort, direction, initOffset) {
+      console.log(initOffset)
+
+      AppContext.isFilter(true);
+
+      if (AppContext.getSubjects().length > 0) {
+        // Get the subjects sort order from context.
+        var order = SolrDataLoader.getSortOrder(QueryManager.getQueryType(), QueryManager.getSort());
+        // Set the subject facet list order.
+        FacetHandler.setSubjectListOrder(order);
+        // Get the offset for the matching index.
+        var offset;
+        console.log(initOffset)
+       if (AppContext.isNewSet()) {
+
+          offset = FacetHandler.findIndexInArray(AppContext.getSubjects(), terms);
+
+        } else {
+          offset = QueryManager.getOffset() + setSize;
+        }
+        console.log(offset)
+        QueryManager.setOffset(offset);
+
+        console.log(initOffset)
+        var set = setSize;
+        console.log(set)
+        if (typeof initOffset !== 'undefined') {
+          set = (Math.floor(initOffset / setSize) * setSize) + 20;
+          if (AppContext.getSubjects().length > set) {
+            set = AppContext.getSubjects().length;
+          }
+
+          console.log(set)
+        }
+
+        // Set the context start index to the matching offset.
+        AppContext.setStartIndex(offset);
+
+
+        if (AppContext.isNewSet()) {
+          updateParentNewSet(FacetHandler.getSubjectListSlice(set));
+        } else {
+          updateParent(FacetHandler.getSubjectListSlice(set), direction);
+        }
+
+      }
+      else {
+        _fetchSubjects(terms, sort, direction, initOffset);
+      }
+    }
+
+    /**
+     * Tests to see if the current state requires a new solr query.
+     * @param field field for the current state
+     * @param order the sort order for the current state
+     * @param offset the offset for the current state.
+     * @returns {boolean}
+     */
+    function isNewQuery(field, order, offset, filter) {
+
+      var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset || filter !== currentFilter);
+
       currentField = field;
       currentOrder = order;
       currentOffset = offset;
+      currentFilter = filter;
 
       return check;
 
     }
-
-    /**
-     * Update the parent component with additional items.
-     * @param data the next set of items.
-     */
-    function updateParent(data, direction) {
-
-      AppContext.setCount(data.count);
-      pager.more = more();
-      var off = QueryManager.getOffset();
-
-      // Leave jump value undefined in pager updates.
-      if (direction === 'prev') {
-
-        pager.onPrevUpdate({
-          results: data.results,
-          count: data.count,
-          field: Utils.getFieldForQueryType(),
-          offset: off
-        });
-
-      } else {
-
-        pager.onPagerUpdate({
-          results: data.results,
-          count: data.count,
-          field: Utils.getFieldForQueryType(),
-          offset: off,
-        });
-
-      }
-
-      paging = false;
-      AppContext.isNewSet(true);
-
-    }
-
-    /**
-     * Replace the data in parent component.
-     * @param data the next set if items.
-     */
-    function updateParentNewSet(data) {
-
-      var off = QueryManager.getOffset();
-      /**
-       * For new sets, always update the start index.
-       */
-      AppContext.setStartIndex(QueryManager.getOffset());
-
-      if (data) {
-        AppContext.setCount(data.count);
-        pager.more = more();
-        pager.onNewSet({
-          results: data.results,
-          count: data.count,
-          field: Utils.getFieldForQueryType(),
-          offset: off,
-          jump: false
-        });
-      }
-    }
-
-    /**
-     * Recalculates the offset if the item position
-     * provided in the query is less than the provided
-     * offset value.
-     * @param qs query string
-     * @returns {number}
-     */
-    function verifyOffset(qs) {
-      var offset = 0;
-
-      if (qs.pos < qs.offset) {
-        offset = Math.floor(qs.pos / setSize) * setSize;
-
-      } else {
-        offset = qs.offset;
-      }
-
-      return offset;
-    }
-
-    /**
-     * Sets the offset value based on provided query
-     * @param qs  the query string
-     */
-    function setOffset(qs) {
-
-      if (typeof qs.offset !== 'undefined') {
-        QueryManager.setOffset(verifyOffset(qs));
-      }
-
-      if (qs.d === 'prev') {
-        // When backward paging, the new offset is
-        // always tne new low index.
-        AppContext.setStartIndex(qs.offset);
-      }
-      // unary operator
-      else if (+qs.offset === 0) {
-        AppContext.setStartIndex(0);
-      }
-    }
-
-
 
     /**
      * Sets the position of the currently open item on
@@ -247,7 +282,7 @@
              * @type {number}
              */
 
-            var newOffset = verifyOffset(qs);
+            var newOffset = SolrDataLoader.verifyOffset(qs);
 
             /**
              * Update the query with the new offset value.
@@ -300,8 +335,75 @@
       }
     }
 
+    /**
+     * Update the parent component with additional items.
+     * @param data the next set of items.
+     */
+    function updateParent(data, direction) {
 
-    function setOpenItem(qs) {
+      AppContext.setCount(data.count);
+      // pager.more = more();
+      var off = QueryManager.getOffset();
+
+
+      // Leave jump value undefined in pager updates.
+      if (direction === 'prev') {
+
+        pager.onPrevUpdate({
+          results: data.results,
+          count: data.count,
+          field: Utils.getFieldForQueryType(),
+          offset: off
+        });
+
+      } else {
+
+        pager.onPagerUpdate({
+          results: data.results,
+          count: data.count,
+          field: Utils.getFieldForQueryType(),
+          offset: off,
+          jump: false
+        });
+
+      }
+
+      /** Return new set to true */
+      AppContext.isNewSet(true);
+
+    }
+
+    /**
+     * Replace the data in parent component.
+     * @param data the next set if items.
+     */
+    function updateParentNewSet(data) {
+
+      var off = QueryManager.getOffset();
+      /**
+       * For new sets, always update the start index.
+       */
+      AppContext.setStartIndex(QueryManager.getOffset());
+
+      if (data) {
+        AppContext.setCount(data.count);
+        pager.onNewSet({
+          results: data.results,
+          count: data.count,
+          field: Utils.getFieldForQueryType(),
+          offset: off,
+          jump: true
+        });
+      }
+    }
+
+
+    /**
+     * Sets offset, selected item and position for the
+     * current state.
+     * @param qs
+     */
+    function initializePositions(qs) {
 
       if (typeof qs.offset !== 'undefined') {
         QueryManager.setOffset(qs.offset);
@@ -315,16 +417,28 @@
         AppContext.setSelectedItemId(-1);
       }
 
-
       setOpenItemPosition(qs);
 
     }
 
+
     /**
-     * Execute solr query.
-     * @param start the start position for query result.
+     *
+     * @param field
+     * @param sort
+     * @param isNewRequest
+     * @param direction
      */
-    function updateList(isNewRequest, direction) {
+    function updateList(field, sort, direction) {
+
+      var isNewRequest = AppContext.isNewSet();
+
+      if (typeof field !== 'undefined') {
+        QueryManager.setQueryType(field);
+      }
+      if (typeof sort != 'undefined') {
+        QueryManager.setSort(sort);
+      }
 
       var qs = $location.search();
 
@@ -346,11 +460,9 @@
         if (items !== undefined) {
           items.$promise.then(function (data) {
 
-            setOpenItem(qs);
-
             if (isNewRequest) {
               /**
-               * If not paging, swap in the new data.
+               * If not a new request, swap in the new data.
                */
               updateParentNewSet(data);
             } else {
@@ -359,6 +471,8 @@
                */
               updateParent(data, direction);
             }
+
+            initializePositions(qs);
           });
         }
       }
@@ -371,6 +485,7 @@
         /** Author */
 
         if (AppContext.isAuthorListRequest()) {
+
           /**
            * If a new request, retrieve facets.
            */
@@ -379,9 +494,6 @@
             /** Retrieving new author facet list */
             result = SolrDataLoader.invokeQuery();
             result.$promise.then(function (data) {
-
-
-              setOpenItem(qs);
 
               /**
                * Add the author array to shared context.
@@ -393,18 +505,12 @@
                * update parent.
                */
 
-              var order = getSortOrder(qs.field, qs.sort);
+              FacetHandler.setAuthorListOrder(SolrDataLoader.getSortOrder(qs.field, qs.sort));
 
-              if (qs.sort !== order) {
-                updateParentNewSet(FacetHandler.reverseAuthorList());
-              }
-              /**
-               * If order is asc, just add the author list to parent.
-               */
-              else {
+              updateParentNewSet(FacetHandler.getAuthorListSlice(setSize));
 
-                updateParentNewSet(FacetHandler.getAuthorList());
-              }
+              initializePositions(qs);
+
             });
           } else {
 
@@ -412,10 +518,7 @@
              * If not a new request, use the existing author
              * facets.
              */
-            if (currentField === QueryTypes.TITLES_LIST) {
-              currentField = QueryTypes.AUTHOR_FACETS;
-            }
-            updateParent(FacetHandler.getAuthorList(), direction);
+            updateParent(FacetHandler.getAuthorListSlice(setSize), direction);
 
           }
 
@@ -426,78 +529,35 @@
         else if (AppContext.isSubjectListRequest()) {
 
           if (isNewRequest) {
-
             /**
              * If a new request, retrieve facets.
              */
             result = SolrDataLoader.invokeQuery();
-
             result.$promise.then(function (data) {
-
-              setOpenItem(qs);
               /**
                * Add the subject array to context.
                * @type {string|Array|*}
                */
               AppContext.setSubjectList(data.facets);
 
-              var order = getSortOrder(qs.field, qs.sort);
+              FacetHandler.setSubjectListOrder(SolrDataLoader.getSortOrder(qs.field, qs.sort));
 
-              if (qs.sort !== order) {
-                updateParentNewSet(FacetHandler.reverseSubjectList(order));
-              }
-              /**
-               * If order is asc, just add the subject list to parent.
-               */
-              else {
-                updateParentNewSet(FacetHandler.getSubjectList());
-              }
+              updateParentNewSet(FacetHandler.getSubjectListSlice(setSize));
+
+              initializePositions(qs);
+
 
             });
 
           } else {
 
             /** Updating parent with current facets */
-            updateParent(FacetHandler.getSubjectList(), direction);
+            updateParent(FacetHandler.getSubjectListSlice(setSize), direction);
           }
         }
       }
 
       AppContext.setPager(true);
-      pager.showPager = true;
-
-    }
-
-    /**
-     * Initializes the request for new data.
-     * @param field
-     * @param sort
-     * @param newRequest
-     * @param direction
-     */
-    function getNewList(field, sort, newRequest, direction) {
-
-      QueryManager.setQueryType(field);
-      QueryManager.setSort(sort);
-      updateList(newRequest, direction);
-
-    }
-
-
-    /**
-     * Set delay on showing the pager button.  The pager's view state
-     * is managed via the application context.  This allows other components
-     * to hide the button until pager has new results to display.
-     */
-    function delayPagerViewUpdate() {
-
-      $timeout(function () {
-        /**
-         * Set pager in context.
-         */
-        AppContext.setPager(true);
-
-      }, 300);
 
     }
 
@@ -506,6 +566,8 @@
      */
     $scope.$on('$locationChangeSuccess', function () {
 
+      AppContext.isFilter(false);
+
       var qs = $location.search();
 
       /**
@@ -513,35 +575,51 @@
        */
       if (Object.keys(qs).length === 0) {
 
+        AppContext.isNewSet(true);
+
         if (QueryManager.getAction() !== QueryActions.BROWSE) {
           QueryManager.setOffset(0);
+          QueryManager.setFilter('');
           AppContext.setStartIndex(0);
           AppContext.setOpenItem(-1);
           AppContext.setSelectedPositionIndex(-1);
           AppContext.setSelectedItemId(-1);
-          AppContext.isNewSet();
           /**
            * Item dialog might be open.  Close it.
            */
           $mdDialog.cancel();
 
         }
-        getNewList(defaultField, defaultOrder, true, '');
+
+
+        updateList(defaultField, defaultOrder, 'next');
       }
 
       else {
 
-        setOffset(qs);
+        AppContext.isFilter(false);
+
+        console.log('getting facets')
+
+        if (typeof qs.filter === 'undefined') {
+          qs.filter = 'none';
+        }
+
+        if (typeof qs.terms !== 'undefined') {
+          QueryManager.setFilter(qs.terms);
+        }
+
+        SolrDataLoader.setOffset(qs);
 
         /**
          * If true, query results will replace current result set
          * in parent component.
          * @type {boolean|*}
          */
-        var newRequest = AppContext.isNewSet() && !paging;
 
 
         if (AppContext.isNotFacetQueryType()) {
+
           /**
            * Item dialog might be open.  Close it.
            */
@@ -551,10 +629,16 @@
            * list using the field and sort order provided in
            * the query string.
            */
-          if (isNewQuery(qs.field, qs.sort, qs.offset)) {
-            getNewList(qs.field, qs.sort, newRequest, qs.d);
-          } else {
-            setOpenItem(qs);
+          if (qs.filter === 'item' && AppContext.isNewSet()) {
+
+            _itemFilter();
+
+          }
+          else if (isNewQuery(qs.field, qs.sort, qs.offset, qs.filter)) {
+            updateList(qs.field, qs.sort, qs.d);
+          }
+          else {
+            initializePositions(qs);
           }
 
         }
@@ -564,13 +648,21 @@
            */
           FacetHandler.checkForListAction();
 
-          if (isNewQuery(qs.field, qs.sort, qs.offset)) {
+          if (qs.filter === 'author') {
+            _authorFilter(qs.terms, qs.d);
+
+          }
+          else if (qs.filter === 'subject') {
+            _subjectFilter(qs.terms, qs.d);
+          }
+          else if (isNewQuery(qs.field, qs.sort, qs.offset, qs.filter)) {
             /**
              * Request a new facet array.
              */
-            getNewList(qs.field, qs.sort, newRequest, qs.d);
-          } else {
-            setOpenItem(qs);
+            updateList(qs.field, qs.sort, qs.d);
+          }
+          else {
+            initializePositions(qs);
           }
         }
         /**
@@ -580,7 +672,7 @@
           AppContext.setListOrder(qs.sort);
         }
 
-        delayPagerViewUpdate();
+        Utils.delayPagerViewUpdate();
 
       }
     });
@@ -599,7 +691,7 @@
       },
       function (newValue, oldValue) {
         if (newValue !== oldValue) {
-          pager.showPager = newValue;
+          // pager.showPager = newValue;
         }
       });
 
@@ -617,12 +709,11 @@
       } else {
         pager.end = count;
       }
-      paging = true;
+      //  paging = true;
       AppContext.isNewSet(false);
       var qs = $location.search();
       qs.field = QueryManager.getQueryType();
       qs.sort = QueryManager.getSort();
-      qs.terms = '';
       qs.offset = start;
       delete qs.d;
       delete qs.id;
@@ -640,18 +731,32 @@
      */
     function _init() {
 
+      AppContext.isFilter(false);
+
       var qs = $location.search();
+
+      AppContext.isNewSet(true);
 
       /**
        * If a query string is provided, update the query type,
        * sort order, and offset.
        */
-      if (Object.keys(qs).length !== 0 && typeof qs.field !== 'undefined') {
-        QueryManager.setQueryType(qs.field);
-        QueryManager.setSort(qs.sort);
-        QueryManager.setOffset(qs.offset);
-        // unary operator
-        AppContext.setStartIndex(qs.offset);
+      if (Object.keys(qs).length !== 0) {
+
+        if (typeof qs.field !== 'undefined') {
+          QueryManager.setQueryType(qs.field);
+          QueryManager.setSort(qs.sort);
+          QueryManager.setOffset(qs.offset);
+          if (qs.d === 'prev') {
+            AppContext.setStartIndex(qs.offset);
+          }
+        } else {
+          QueryManager.setQueryType(defaultField);
+          QueryManager.setSort(defaultOrder);
+          QueryManager.setOffset(0);
+          AppContext.setStartIndex(0);
+        }
+
       }
       /**
        * If no query string is provided, set defaults.
@@ -662,20 +767,68 @@
           QueryManager.setSort(defaultOrder);
           QueryManager.setOffset(0);
           AppContext.setStartIndex(0);
+
         }
       }
 
-      setOpenItem(qs);
+      if (typeof qs.filter === 'undefined') {
+        qs.filter = 'none';
+      }
+
+
+      if (typeof qs.terms !== 'undefined') {
+        QueryManager.setFilter(qs.terms);
+      }
+
+      /**
+       * Sets the open position or item id for the current state.
+       */
+      initializePositions(qs);
 
       AppContext.setPager(false);
 
-      paging = false;
+
       currentField = QueryManager.getQueryType();
       currentOrder = QueryManager.getSort();
 
+      if (qs.filter !== 'none') {
+        /**
+         * Set the filter query type.
+         */
+        SolrDataLoader.setJumpType();
+        /**
+         * Set offset.
+         */
+        SolrDataLoader.setOffset(qs);
+        if (qs.filter === 'item' && AppContext.isNewSet()) {
+          /**
+           * Execute item filter.
+           */
+          _itemFilter();
+        } else if (qs.filter === 'author') {
+          /**
+           * Execute author filter.
+           */
+          if (typeof qs.terms !== 'undefined' && qs.terms.length === 0)  {
+            QueryManager.setOffset(0);
+            AppContext.setStartIndex(0)
+          }
+          _authorFilter(qs.terms, qs.d, qs.offset);
+        } else if (qs.filter === 'subject') {
 
-      if (isNewQuery(qs.field, qs.sort, qs.offset)) {
-        getNewList(QueryManager.getQueryType(), QueryManager.getSort(), true);
+          if (typeof qs.terms !== 'undefined' && qs.terms.length === 0)  {
+            QueryManager.setOffset(0);
+            AppContext.setStartIndex(0);
+          }
+          /**
+           * Execute subject filter.
+           */
+          console.log(qs.offset)
+          _subjectFilter(qs.terms, qs.sort, qs.d, qs.offset);
+        }
+      }
+      else if (isNewQuery(qs.field, qs.sort, qs.offset, qs.filter)) {
+        updateList(QueryManager.getQueryType(), QueryManager.getSort(), qs.d);
       }
 
     }
@@ -687,7 +840,7 @@
 
   dspaceComponents.component('pagerComponent', {
 
-    template: '<div layout="row" layout-align="center center" ng-if="pager.showPager"><a href="#" ng-click="pager.next()"><md-button class="md-raised md-accent md-fab md-mini" ng-if="pager.more"><md-icon md-font-library="material-icons" class="md-light" aria-label="More Results">expand_more</md-icon></md-button></a></div>',
+    template: '<div layout="row" layout-align="center center" ng-if="pager.showPager"><a href ng-click="pager.next()"><md-button class="md-raised md-accent md-fab md-mini" ng-if="pager.more()"><md-icon md-font-library="material-icons" class="md-light" aria-label="More Results">expand_more</md-icon></md-button></a></div>',
     bindings: {
       onPagerUpdate: '&',
       onPrevUpdate: '&',
