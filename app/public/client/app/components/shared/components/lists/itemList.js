@@ -141,13 +141,13 @@
      * @param count  total number of items.
      * @param field  the field queried.
      */
-    ctrl.onPagerUpdate = function (results, count, field, offset) {
+    ctrl.onPagerUpdate = function (results, count, field) {
 
       ctrl.ready = true;
       addResults(results);
       ctrl.field = field;
       ctrl.count = count;
-      var off = parseInt(offset, 10);
+      var off = parseInt(AppContext.getNextPagerOffset(), 10);
       off++;
       var end = off + endIncrement;
       if (end > count) {
@@ -159,18 +159,14 @@
 
     };
 
-    ctrl.onPreviousUpdate = function (results, count, field, offset) {
+    ctrl.onPreviousUpdate = function (results, count, field) {
 
       ctrl.ready = true;
       addPreviousResults(results);
       ctrl.field = field;
       ctrl.count = count;
-      var off = parseInt(offset, 10);
-      off++;
-      var end = off + endIncrement;
-      if (end > count) {
-        end = count;
-      }
+      var end = parseInt(AppContext.getNextPagerOffset(), 10) + endIncrement + 1;
+      console.log('backwards got end of ' +end)
       var start = AppContext.getStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
 

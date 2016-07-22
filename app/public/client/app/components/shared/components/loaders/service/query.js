@@ -104,14 +104,13 @@
          * @returns {*}
          */
         getSortOrder: function (field, newSortOrder) {
-          /**
-           * If the sort order is desc, reverse the new subject list
-           * and update parent.
-           */
+
           var order;
           if (field === QueryTypes.SUBJECT_FACETS) {
             order = AppContext.getSubjectsOrder();
-            AppContext.setSubjectsOrder(newSortOrder);
+            console.log(order)
+            console.log(newSortOrder)
+           // AppContext.setSubjectsOrder(newSortOrder);
           } else if (field === QueryTypes.AUTHOR_FACETS) {
             order = AppContext.getAuthorsOrder();
             AppContext.setAuthorsOrder(newSortOrder);

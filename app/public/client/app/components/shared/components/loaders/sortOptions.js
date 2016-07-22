@@ -227,7 +227,6 @@
       delete qs.pos;
       delete qs.id;
 
-      alert()
       $location.search(qs);
 
     };
@@ -260,7 +259,7 @@
       AppContext.isNewSet(true);
 
       if (ctrl.selectedField === QueryTypes.SUBJECT_FACETS) {
-        AppContext.setSubjectsOrder(ctrl.selectedOrder);
+       // AppContext.setSubjectsOrder(ctrl.selectedOrder);
       } else if (ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
         AppContext.setAuthorsOrder(ctrl.selectedOrder);
       }  else {

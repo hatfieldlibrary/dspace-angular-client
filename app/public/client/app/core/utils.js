@@ -312,18 +312,25 @@
        */
       utils.setLocationForItem = function (id, pos) {
 
+        var offset = QueryManager.getOffset();
+
+
+    //    var newOffset =  offset + Math.floor(pos / setSize) * setSize;
+
         var qs = $location.search();
         /**
          * Add id and position to the query string.
          */
         qs.id = id;
         qs.pos = pos;
+      //  qs.offset = newOffset;
         /**
          * Change location.
          */
         $location.search(qs);
 
       };
+
 
       /**
        * Set delay on showing the pager button.  The pager's view state

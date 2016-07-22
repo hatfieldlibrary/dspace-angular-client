@@ -64,6 +64,8 @@
        */
       if (ctrl.type === 'inline') {
 
+        AppContext.isNewSet(false);
+
         ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
 
       }

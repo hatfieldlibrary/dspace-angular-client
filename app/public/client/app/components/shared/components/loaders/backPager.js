@@ -93,10 +93,11 @@
         AppContext.setStartIndex(0);
       }
       else if (offset >= setSize) {
-
         offset -= setSize;
         AppContext.setStartIndex(offset);
       }
+      
+      AppContext.setPreviousPagerOffset(offset);
 
       backPager.more = more(offset);
       // Set the lowest start index to the new, decremented value.

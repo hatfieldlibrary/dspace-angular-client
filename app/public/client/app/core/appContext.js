@@ -29,7 +29,7 @@
       }
 
       var _context = {
-        
+
         isFilter: false,
 
         /**
@@ -71,6 +71,10 @@
         authorOrder: QuerySort.ASCENDING,
 
         subjectOrder: QuerySort.ASCENDING,
+
+        nextPagerOffset: 0,
+
+        previousPagerOffset: 0,
 
         newSet: true,
 
@@ -124,7 +128,7 @@
       function getContext() {
         return _context;
       }
-      
+
       function isFilter(filter) {
         if (typeof filter !== 'undefined') {
           _context.isFilter = filter;
@@ -187,6 +191,7 @@
 
       function reverseSubjectList() {
         reverseArray(_context.subjectArray);
+
       }
 
       function setSelectedPositionIndex(index) {
@@ -367,6 +372,24 @@
         return _context.selectedItemId;
       }
 
+      function setNextPagerOffset(offset) {
+        console.log('setting offset to ' +offset)
+        _context.nextPagerOffset = offset;
+      }
+
+      function getNextPagerOffset() {
+        return _context.nextPagerOffset;
+      }
+
+      function setPreviousPagerOffset(offset) {
+        console.log('setting offset to ' +offset)
+        _context.previousPagerOffset = offset;
+      }
+
+      function getPreviousPagerOffset() {
+        return _context.previousPagerOffset;
+      }
+
 
       return {
 
@@ -427,7 +450,11 @@
         setOpenItem: setOpenItem,
         getOpenItem: getOpenItem,
         setSelectedItemId: setSelectedItemId,
-        getSelectedItemId: getSelectedItemId
+        getSelectedItemId: getSelectedItemId,
+        setNextPagerOffset: setNextPagerOffset,
+        getNextPagerOffset: getNextPagerOffset,
+        setPreviousPagerOffset: setPreviousPagerOffset,
+        getPrevousPagerOffset: getPreviousPagerOffset
 
       };
 

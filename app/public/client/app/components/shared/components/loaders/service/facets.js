@@ -8,8 +8,8 @@
 (function () {
 
   dspaceServices.factory('FacetHandler', [
-    'QueryManager', 'QueryActions', 'QueryTypes', 'AppContext', 'Utils',
-    function (QueryManager, QueryActions, QueryTypes, AppContext, Utils) {
+    'QueryManager', 'QueryActions', 'QuerySort','QueryTypes', 'AppContext', 'Utils',
+    function (QueryManager, QueryActions, QuerySort, QueryTypes, AppContext, Utils) {
 
 
       /**
@@ -20,12 +20,6 @@
        */
       function arraySlice(type, start, end) {
 
-        //var setSize = AppContext.getSetSize();
-
-        // if (end < setSize) {
-        //   setSize = end;
-        //
-        // }
         try {
           var arr = [];
 
@@ -56,12 +50,10 @@
          *  @param order
          */
         setAuthorListOrder: function (order) {
-
-          if (order !== QueryManager.getSort()) {
+          if (order === QuerySort.DESCENDING) {
             AppContext.reverseAuthorList();
-            AppContext.setAuthorsOrder(order);
           }
-
+          AppContext.setAuthorsOrder(order);
         },
         /**
          *  Set the subject facet list order.
@@ -70,16 +62,14 @@
          *  @param order
          */
         setSubjectListOrder: function (order) {
-
-          if (order !== QueryManager.getSort()) {
-            console.log('reversing order')
+          if (order === QuerySort.DESCENDING) {
             AppContext.reverseSubjectList();
-            AppContext.setSubjectsOrder(order);
+
           }
+          AppContext.setSubjectsOrder(order);
 
         },
-        getAuthorListSlice: function () {
-          var setSize = AppContext.getSetSize();
+        getAuthorListSlice: function (setSize) {
           var data = {};
           data.count = AppContext.getAuthorsCount();
           var end = Utils.getPageListCount(data.count, setSize);
@@ -88,8 +78,6 @@
 
         },
         getSubjectListSlice: function (setSize) {
-          //var setSize = AppContext.getSetSize();
-          console.log(setSize)
           var data = {};
           data.count = AppContext.getSubjectsCount();
           var end = Utils.getPageListCount(data.count, setSize);
@@ -121,6 +109,31 @@
             }
           }
           return 0;
+        },
+        getFilterOffset: function(initOffset, terms, type) {
+
+          var offset;
+          var arr = [];
+
+          if (type === 'subject') {
+             arr = AppContext.getSubjects();
+          } else if (type === 'author') {
+            console.log('getting authors')
+            arr = AppContext.getAuthors();
+          }
+          console.log(arr)
+
+          if (typeof initOffset !== 'undefined') {
+            if (initOffset > 0) {
+              offset = initOffset;
+            } else {
+              offset = this.findIndexInArray(arr, terms);
+            }
+          } else {
+            offset = this.findIndexInArray(arr, terms);
+          }
+
+          return offset;
         }
 
       };
