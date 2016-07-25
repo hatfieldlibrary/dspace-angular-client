@@ -378,6 +378,7 @@
       }
 
       function getNextPagerOffset() {
+        console.log('getting next pager offset')
         return _context.nextPagerOffset;
       }
 

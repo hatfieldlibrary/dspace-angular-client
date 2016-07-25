@@ -6,7 +6,7 @@
         <!-- SEO:  For a normal user, this anchor is unreachable inside the list item. It's
          here to provide a link for search engines that don't follow the ng-click attribute
          in the md-list-item element. -->
-        <a href="#" ng-click="$ctrl.showItem($event, $ctrl.id)">{{$ctrl.title}}</a>
+        <a href="{{$ctrl.getItemUrl()}}">{{$ctrl.title}}</a>
       </span>
         <br>
         <span ng-repeat="au in $ctrl.author" class="md-caption">{{au}}; </span> <span class="md-caption"

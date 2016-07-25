@@ -107,11 +107,12 @@
     function _itemFilter() {
 
       AppContext.isFilter(true);
+      console.log(QueryManager.getQuery())
 
       var items = SolrDataLoader.filterQuery();
       items.$promise.then(function (data) {
-
         QueryManager.setOffset(data.offset);
+        AppContext.setNextPagerOffset(data.offset);
         AppContext.setStartIndex(data.offset);
 
         _addResult('next', data);
@@ -122,21 +123,14 @@
     function _findOffset(initOffset, terms, direction, type) {
 
       var offset;
-      if (AppContext.isNewSet()) {
-
-        offset = FacetHandler.getFilterOffset(initOffset, terms, type);
-
-        AppContext.setNextPagerOffset(offset);
-        AppContext.setPreviousPagerOffset(offset);
-
+      offset = FacetHandler.getFilterOffset(initOffset, terms, type);
+      AppContext.setNextPagerOffset(offset);
+      AppContext.setPreviousPagerOffset(offset);
+      if (direction === 'prev') {
+        offset = AppContext.getPrevousPagerOffset();
       } else {
-        if (direction === 'prev') {
-          offset = AppContext.getPrevousPagerOffset();
-        } else {
-          offset = AppContext.getNextPagerOffset();
-        }
+        offset = AppContext.getNextPagerOffset();
       }
-
       return offset;
 
     }
@@ -152,12 +146,12 @@
         // Add the author array to context.
         AppContext.setAuthorsList(data.facets);
         // Initialize author sort order.
-        AppContext.setAuthorsOrder(sort);
+       // AppContext.setAuthorsOrder(sort);
+        AppContext.setNextPagerOffset(data.offset);
         // Call the filter method.
         _authorFilter(terms, sort, direction, initOffset);
       });
     }
-
 
 
     /**
@@ -173,9 +167,13 @@
         FacetHandler.setAuthorListOrder(sort);
 
         // Get the offset.
+        console.log(initOffset)
         var offset = _findOffset(initOffset, terms, direction, 'author');
+        console.log('got offset ' + offset)
 
         QueryManager.setOffset(offset);
+        AppContext.setNextPagerOffset(offset);
+
 
         if (AppContext.isNewSet()) {
           // Set the context start index to the matching offset.
@@ -208,6 +206,7 @@
       result.$promise.then(function (data) {
         // Add the subject array to context.
         AppContext.setSubjectList(data.facets);
+        AppContext.setNextPagerOffset(data.offset);
         // Call the filter method.
         _subjectFilter(terms, sort, direction, initOffset);
       });
@@ -224,10 +223,8 @@
         var offset = _findOffset(initOffset, terms, direction, 'subject');
 
         QueryManager.setOffset(offset);
+        AppContext.setNextPagerOffset(offset);
 
-        var qs = $location.search();
-        qs.offset = offset;
-        $location.search(qs);
         if (AppContext.isNewSet()) {
           // Set the context start index to the matching offset.
           AppContext.setStartIndex(offset);
@@ -416,17 +413,18 @@
      */
     function initializePositions(qs) {
 
-      if (typeof qs.offset !== 'undefined') {
-        // QueryManager.setOffset(qs.offset);
-        if (qs.d === 'prev') {
-          AppContext.setPreviousPagerOffset(qs.offset);
-        } else {
-          AppContext.setNextPagerOffset(qs.offset);
-        }
-
-      } else {
-        QueryManager.setOffset(0);
-      }
+      // if (typeof qs.offset !== 'undefined') {
+      //   // QueryManager.setOffset(qs.offset);
+      //   if (qs.d === 'prev') {
+      //     AppContext.setPreviousPagerOffset(qs.offset);
+      //   } else {
+      //     console.log('setting offset')
+      //   //  AppContext.setNextPagerOffset(qs.offset);
+      //   }
+      //
+      // } else {
+      //   QueryManager.setOffset(0);
+      // }
 
       if (typeof qs.id !== 'undefined') {
         AppContext.setSelectedItemId(qs.id);
@@ -596,6 +594,8 @@
 
       var qs = $location.search();
 
+      console.log(qs)
+
       /**
        * Empty query string.  Use default field and sort order.
        */
@@ -630,11 +630,20 @@
         }
 
         if (typeof qs.terms !== 'undefined') {
+          console.log('setting filter term sto ' + qs.terms);
           QueryManager.setFilter(qs.terms);
         }
 
-        SolrDataLoader.setOffset(qs);
+        if (typeof qs.new !== 'undefined') {
+          if (qs.new === 'false') {
+            AppContext.isNewSet(false);
+          } else {
+            AppContext.isNewSet(true);
+          }
+        }
 
+
+        SolrDataLoader.setOffset(qs);
 
         if (AppContext.isNotFacetQueryType()) {
 
@@ -648,12 +657,19 @@
            * the query string.
            */
           if (qs.filter === 'item' && AppContext.isNewSet()) {
+
             currentFilter = qs.filter;
             _itemFilter();
 
           }
 
           else if (isNewQuery(qs.field, qs.sort, qs.offset, qs.filter)) {
+
+            if (typeof qs.offset !== 'undefined') {
+              console.log('got offset form qs ' + qs.offset)
+              AppContext.setNextPagerOffset(qs.offset);
+            }
+
             updateList(qs.field, qs.sort, qs.d);
           }
           else {
@@ -670,21 +686,21 @@
           if (qs.filter === 'author') {
 
             currentFilter = qs.filter;
-            _authorFilter(qs.terms, qs.d);
+            _authorFilter(qs.terms, qs.sort, qs.d, qs.offset);
 
 
           }
           else if (qs.filter === 'subject') {
 
-           // if (currentFilter === qs.filter) {
-              // do nothing
-           // }  else {
-              currentFilter = qs.filter;
-              _subjectFilter(qs.terms, qs.d);
-           // }
+            currentFilter = qs.filter;
+            _subjectFilter(qs.terms, qs.sort, qs.d, qs.offset);
+
 
           }
           else if (isNewQuery(qs.field, qs.sort, qs.offset, qs.filter)) {
+            if (typeof qs.offset !== 'undefined') {
+              AppContext.setNextPagerOffset(qs.offset);
+            }
             updateList(qs.field, qs.sort, qs.d);
 
           }
@@ -725,30 +741,60 @@
     /**
      * Method for retrieving the next result set.
      */
-    pager.next = function () {
+    // pager.next = function () {
+    //
+    //   var offset = parseInt(AppContext.getNextPagerOffset(), 10);
+    //
+    //   console.log(offset)
+    //
+    //   offset += setSize;
+    //
+    //   AppContext.setNextPagerOffset(offset);
+    //   pager.start = offset + 1;
+    //   if (pager.end + setSize <= count) {
+    //     pager.end += setSize;
+    //   } else {
+    //     pager.end = count;
+    //   }
+    //   AppContext.isNewSet(false);
+    //   var qs = $location.search();
+    //   qs.field = QueryManager.getQueryType();
+    //   qs.sort = QueryManager.getSort();
+    //   qs.offset = offset;
+    //   delete qs.d;
+    //   delete qs.id;
+    //   delete qs.pos;
+    //   //  alert('next')
+    //   // $location.search(qs);
+    //   ctrl.url = $location.path() + 'field=' + qs.field + '&sort=' + qs.sort + '&offset=' + qs.offset;
+    //
+    // };
+
+    pager.nextUrl = function () {
 
       var offset = parseInt(AppContext.getNextPagerOffset(), 10);
-
-      console.log(offset)
-
       offset += setSize;
 
-      AppContext.setNextPagerOffset(offset);
       pager.start = offset + 1;
       if (pager.end + setSize <= count) {
         pager.end += setSize;
       } else {
         pager.end = count;
       }
-      AppContext.isNewSet(false);
+
       var qs = $location.search();
-      qs.field = QueryManager.getQueryType();
-      qs.sort = QueryManager.getSort();
-      qs.offset = offset;
-      delete qs.d;
-      delete qs.id;
-      delete qs.pos;
-      $location.search(qs);
+      var url = $location.path() + '?';
+      var arr = Object.keys(qs);
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i] !== 'offset' && arr[i] !== 'new') {
+          url += '&' + arr[i] + "=" + qs[arr[i]];
+        }
+      }
+      url += '&offset=' + offset;
+      url += '&new=false';
+      console.log(url)
+      return url;
+
 
     };
 
@@ -869,7 +915,7 @@
 
   dspaceComponents.component('pagerComponent', {
 
-    template: '<div layout="row" layout-align="center center" ng-if="pager.showPager"><a href ng-click="pager.next()"><md-button class="md-raised md-accent md-fab md-mini" ng-if="pager.more"><md-icon md-font-library="material-icons" class="md-light" aria-label="More Results">expand_more</md-icon></md-button></a></div>',
+    templateUrl: '/ds/shared/templates/loaders/pager.html',
     bindings: {
       onPagerUpdate: '&',
       onPrevUpdate: '&',

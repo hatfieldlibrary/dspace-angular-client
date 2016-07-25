@@ -184,6 +184,7 @@
 
       qs.filter = filterType;
       qs.terms = ctrl.filterTerms;
+      qs.new='true';
       if (ctrl.filterTerms.length === 0) {
         qs.offset = 0;
       }
@@ -259,9 +260,9 @@
       AppContext.isNewSet(true);
 
       if (ctrl.selectedField === QueryTypes.SUBJECT_FACETS) {
-       // AppContext.setSubjectsOrder(ctrl.selectedOrder);
+        AppContext.setSubjectsOrder(ctrl.selectedOrder);
       } else if (ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
-        AppContext.setAuthorsOrder(ctrl.selectedOrder);
+     //   AppContext.setAuthorsOrder(ctrl.selectedOrder);
       }  else {
         AppContext.setListOrder(ctrl.selectedOrder);
       }
@@ -370,6 +371,11 @@
       AppContext.isNewSet(true);
 
       AppContext.setOpenItem(-1);
+
+      AppContext.setNextPagerOffset(0);
+
+      AppContext.setPreviousPagerOffset(0);
+
       /**
        * Reset the selected item.
        */
@@ -423,7 +429,8 @@
         'sort': ctrl.selectedOrder,
         'terms': ctrl.filterTerms,
         'offset': 0,
-        'filter': 'none'
+        'filter': 'none',
+        'new': 'true'
       });
 
     };

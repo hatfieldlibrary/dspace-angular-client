@@ -113,7 +113,7 @@
            // AppContext.setSubjectsOrder(newSortOrder);
           } else if (field === QueryTypes.AUTHOR_FACETS) {
             order = AppContext.getAuthorsOrder();
-            AppContext.setAuthorsOrder(newSortOrder);
+          //  AppContext.setAuthorsOrder(newSortOrder);
           } else {
             order = AppContext.getListOrder();
             AppContext.setListOrder(newSortOrder);
@@ -138,6 +138,7 @@
             offset = qs.offset;
           }
 
+          console.log('calculated offset ' + offset)
           return offset;
         },
         /**

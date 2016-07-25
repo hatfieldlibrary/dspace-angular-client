@@ -16,6 +16,7 @@
    * @constructor
    */
   function ItemDetailController($scope,
+                                $location,
                                 $mdMedia,
                                 Utils,
                                 AppContext,
@@ -51,6 +52,20 @@
       }
 
     });
+
+    ctrl.getItemUrl = function() {
+
+      var qs = $location.search();
+      var url = $location.path() + '?';
+      var arr = Object.keys(qs);
+      for (var i = 0; i < arr.length; i++) {
+        url += '&' + arr[i] + "=" + qs[arr[i]];
+      }
+      url += '&id=' + ctrl.id;
+      url += '&pos=' + ctrl.pos;
+      return url;
+
+    };
 
     /**
      * Shows the dialog.

@@ -50,10 +50,14 @@
          *  @param order
          */
         setAuthorListOrder: function (order) {
-          if (order === QuerySort.DESCENDING) {
+          console.log(order)
+          console.log(AppContext.getAuthorsOrder())
+          if (order == AppContext.getAuthorsOrder()) {
+            console.log('REVERSING authors')
             AppContext.reverseAuthorList();
+            AppContext.setAuthorsOrder(order);
           }
-          AppContext.setAuthorsOrder(order);
+
         },
         /**
          *  Set the subject facet list order.
@@ -132,6 +136,8 @@
           } else {
             offset = this.findIndexInArray(arr, terms);
           }
+          console.log(initOffset)
+          console.log(offset)
 
           return offset;
         }
