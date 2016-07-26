@@ -16,6 +16,7 @@
    * @constructor
    */
   function ItemDetailController($scope,
+                                $location,
                                 $mdMedia,
                                 Utils,
                                 AppContext,
@@ -52,6 +53,25 @@
 
     });
 
+    ctrl.getItemUrl = function() {
+
+      var qs = $location.search();
+      var url = $location.path() + '?';
+      var arr = Object.keys(qs);
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i] === 'filter') {
+          url += '&' + arr[i] + '=none';
+        }
+        else {
+          url += '&' + arr[i] + '=' + qs[arr[i]];
+        }
+      }
+      url += '&id=' + ctrl.id;
+      url += '&pos=' + ctrl.pos;
+      return url;
+
+    };
+
     /**
      * Shows the dialog.
      * @param ev the event
@@ -63,6 +83,8 @@
        * For inline lists (author or subject) just show the dialog.
        */
       if (ctrl.type === 'inline') {
+
+        AppContext.isNewSet(false);
 
         ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
 
@@ -82,6 +104,7 @@
          * want to show the item dialog.
          */
         AppContext.isNewSet(false);
+
         /**
          * Launch item dialog if the user clicks on the previously
          * selected item. Normally the dialog is handled by a watch
@@ -89,6 +112,7 @@
          * is not picked up by watch. Handle that case here.
          */
         if (AppContext.getOpenItem() === parseInt(ctrl.pos)) {
+
           ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
         }
 

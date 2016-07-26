@@ -33,6 +33,10 @@ a, a:visited {
 
 }
 
+.lastitem {
+  border-bottom: 6px solid #ccc;
+}
+
 .spinner {
   position: relative;
   padding-top: 6px;

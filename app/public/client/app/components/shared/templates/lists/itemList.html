@@ -6,7 +6,6 @@
 
     <sort-options-component ng-if="$ctrl.showOptions"
                             context="{{$ctrl.context}}"
-                            on-update="$ctrl.onUpdate(results, count, field, offset, jump)"
                             reset-list-view="$ctrl.resetListView()">
     </sort-options-component>
 
@@ -29,9 +28,7 @@
 
   <div flex="100"  layout-fill layout="column" style="min-height: 100%;margin-top: -12px;">
 
-    <pager-back-component ng-if="!$ctrl.jump"
-                          on-update="$ctrl.onPreviousUpdate(results, count, field, offset)"
-                          on-new-set="$ctrl.onUpdate(results, count, field, offset, jump)"
+    <pager-back-component ng-if="$ctrl.jump"
                           context="$ctrl.context">
 
     </pager-back-component>
@@ -112,7 +109,7 @@
 
     <pager-component
 
-      on-pager-update="$ctrl.onPagerUpdate(results, count, field, offset)"
+      on-pager-update="$ctrl.onPagerUpdate(results, count, field)"
       on-prev-update="$ctrl.onPreviousUpdate(results, count, field)"
       on-new-set="$ctrl.onUpdate(results, count, field, offset, jump)"
       context="{{$ctrl.context}}">
