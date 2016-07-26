@@ -104,35 +104,33 @@
       }
     }
 
-    function _itemFilter() {
+    function _itemFilter(offset) {
 
       AppContext.isFilter(true);
-      console.log(QueryManager.getQuery())
-
-      var items = SolrDataLoader.filterQuery();
-      items.$promise.then(function (data) {
-        QueryManager.setOffset(data.offset);
-        AppContext.setNextPagerOffset(data.offset);
-        AppContext.setStartIndex(data.offset);
-
-        _addResult('next', data);
-
-      });
-    }
-
-    function _findOffset(initOffset, terms, direction, type) {
-
-      var offset;
-      offset = FacetHandler.getFilterOffset(initOffset, terms, type);
-      AppContext.setNextPagerOffset(offset);
-      AppContext.setPreviousPagerOffset(offset);
-      if (direction === 'prev') {
-        offset = AppContext.getPrevousPagerOffset();
-      } else {
-        offset = AppContext.getNextPagerOffset();
+      var items;
+      // unary operator
+      if (typeof offset !== 'undefined' && +offset !== 0) {
+        QueryManager.setOffset(offset);
+        items = SolrDataLoader.invokeQuery();
+        items.$promise.then(function (data) {
+          AppContext.setNextPagerOffset(data.offset);
+          AppContext.setStartIndex(data.offset);
+          _addResult('next', data);
+        });
       }
-      return offset;
 
+      else {
+        items = SolrDataLoader.filterQuery();
+        items.$promise.then(function (data) {
+
+          QueryManager.setOffset(data.offset);
+          AppContext.setNextPagerOffset(data.offset);
+          AppContext.setStartIndex(data.offset);
+
+          _addResult('next', data);
+
+        });
+      }
     }
 
     /**
@@ -146,33 +144,44 @@
         // Add the author array to context.
         AppContext.setAuthorsList(data.facets);
         // Initialize author sort order.
-       // AppContext.setAuthorsOrder(sort);
+        // AppContext.setAuthorsOrder(sort);
         AppContext.setNextPagerOffset(data.offset);
+
         // Call the filter method.
+
         _authorFilter(terms, sort, direction, initOffset);
       });
     }
 
+    function _findOffset(initOffset, terms, direction, type) {
+
+      var offset;
+      offset = FacetHandler.getFilterOffset(initOffset, terms, type);
+      AppContext.setNextPagerOffset(offset);
+      AppContext.setPreviousPagerOffset(offset);
+
+      return offset;
+
+    }
 
     /**
      * Authors filter.
      * @param terms
      */
+
     function _authorFilter(terms, sort, direction, initOffset) {
 
       AppContext.isFilter(true);
       // Author array exists. We can run filter.
       if (AppContext.getAuthors().length > 0) {
-        // Set the author facet list order.
-        FacetHandler.setAuthorListOrder(sort);
 
         // Get the offset.
-        console.log(initOffset)
+
         var offset = _findOffset(initOffset, terms, direction, 'author');
-        console.log('got offset ' + offset)
+
 
         QueryManager.setOffset(offset);
-        AppContext.setNextPagerOffset(offset);
+       // AppContext.setNextPagerOffset(offset);
 
 
         if (AppContext.isNewSet()) {
@@ -182,7 +191,6 @@
           updateParentNewSet(FacetHandler.getAuthorListSlice(set));
 
         } else {
-
           updateParent(FacetHandler.getAuthorListSlice(set), direction);
         }
 
@@ -195,6 +203,7 @@
 
 
     }
+
 
     /**
      * Fetches the subjects array.
@@ -218,7 +227,7 @@
 
       if (AppContext.getSubjects().length > 0) {
         // Set the subject facet list order.
-        FacetHandler.setSubjectListOrder(sort);
+        // FacetHandler.setSubjectListOrder(sort);
         // Get the offset.
         var offset = _findOffset(initOffset, terms, direction, 'subject');
 
@@ -254,8 +263,7 @@
     function isNewQuery(field, order, offset, filter) {
 
       var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset || filter !== currentFilter);
-      console.log(filter)
-      console.log(currentFilter)
+
       currentField = field;
       currentOrder = order;
       currentOffset = offset;
@@ -310,8 +318,10 @@
              * in the current set.
              */
             if (typeof qs.offset !== 'undefined') {
-              AppContext.setOpenItem(qs.pos - qs.offset);
-              AppContext.setSelectedPositionIndex(qs.pos - qs.offset);
+              if (qs.filter === 'none') {
+                AppContext.setOpenItem(qs.pos - qs.offset);
+                AppContext.setSelectedPositionIndex(qs.pos - qs.offset);
+              }
             }
             /**
              * If the offset has not been provided in the query,
@@ -324,8 +334,23 @@
             }
           }
         } else {
-          AppContext.setOpenItem(qs.pos);
-          AppContext.setSelectedPositionIndex(qs.pos);
+          if (typeof qs.offset !== 'undefined') {
+            if (qs.filter === 'none') {
+              AppContext.setOpenItem(qs.pos);
+              AppContext.setSelectedPositionIndex(qs.pos);
+            }
+            else {
+              if (qs.pos > setSize) {
+                AppContext.setOpenItem(qs.pos - setSize);
+                AppContext.setSelectedPositionIndex(qs.pos - setSize);
+              } else {
+                AppContext.setOpenItem(qs.pos);
+                AppContext.setSelectedPositionIndex(qs.pos);
+              }
+            }
+          }
+          // AppContext.setOpenItem(qs.pos);
+          // AppContext.setSelectedPositionIndex(qs.pos);
 
         }
       }
@@ -347,8 +372,6 @@
 
 
       AppContext.setCount(data.count);
-
-      var off = QueryManager.getOffset();
 
 
       // Leave jump value undefined in pager updates.
@@ -413,18 +436,12 @@
      */
     function initializePositions(qs) {
 
-      // if (typeof qs.offset !== 'undefined') {
-      //   // QueryManager.setOffset(qs.offset);
-      //   if (qs.d === 'prev') {
-      //     AppContext.setPreviousPagerOffset(qs.offset);
-      //   } else {
-      //     console.log('setting offset')
-      //   //  AppContext.setNextPagerOffset(qs.offset);
-      //   }
-      //
-      // } else {
-      //   QueryManager.setOffset(0);
-      // }
+      if (typeof qs.offset !== 'undefined') {
+        QueryManager.setOffset(qs.offset);
+
+      } else {
+        QueryManager.setOffset(0);
+      }
 
       if (typeof qs.id !== 'undefined') {
         AppContext.setSelectedItemId(qs.id);
@@ -459,11 +476,13 @@
       if (typeof field !== 'undefined') {
         QueryManager.setQueryType(field);
       }
-      if (typeof sort != 'undefined') {
+      if (typeof sort !== 'undefined') {
         QueryManager.setSort(sort);
       }
 
       var qs = $location.search();
+
+
       /**
        * If advanced search, do nothing here.
        */
@@ -594,8 +613,6 @@
 
       var qs = $location.search();
 
-      console.log(qs)
-
       /**
        * Empty query string.  Use default field and sort order.
        */
@@ -630,7 +647,6 @@
         }
 
         if (typeof qs.terms !== 'undefined') {
-          console.log('setting filter term sto ' + qs.terms);
           QueryManager.setFilter(qs.terms);
         }
 
@@ -646,6 +662,12 @@
         SolrDataLoader.setOffset(qs);
 
         if (AppContext.isNotFacetQueryType()) {
+
+          if (qs.d !== 'prev') {
+            if (typeof qs.offset !== 'undefined') {
+              AppContext.setNextPagerOffset(qs.offset);
+            }
+          }
 
           /**
            * Item dialog might be open.  Close it.
@@ -664,12 +686,6 @@
           }
 
           else if (isNewQuery(qs.field, qs.sort, qs.offset, qs.filter)) {
-
-            if (typeof qs.offset !== 'undefined') {
-              console.log('got offset form qs ' + qs.offset)
-              AppContext.setNextPagerOffset(qs.offset);
-            }
-
             updateList(qs.field, qs.sort, qs.d);
           }
           else {
@@ -686,20 +702,31 @@
           if (qs.filter === 'author') {
 
             currentFilter = qs.filter;
-            _authorFilter(qs.terms, qs.sort, qs.d, qs.offset);
-
+            if (AppContext.isNewSet()) {
+              _authorFilter(qs.terms, qs.sort, qs.d);
+            }
+            else {
+              _authorFilter(qs.terms, qs.sort, qs.d, qs.offset);
+            }
 
           }
           else if (qs.filter === 'subject') {
 
             currentFilter = qs.filter;
-            _subjectFilter(qs.terms, qs.sort, qs.d, qs.offset);
+            if (AppContext.isNewSet()) {
+              _subjectFilter(qs.terms, qs.sort, qs.d);
+            }
+            else {
+              _subjectFilter(qs.terms, qs.sort, qs.d, qs.offset);
+            }
 
 
           }
           else if (isNewQuery(qs.field, qs.sort, qs.offset, qs.filter)) {
-            if (typeof qs.offset !== 'undefined') {
-              AppContext.setNextPagerOffset(qs.offset);
+            if (qs.d !== 'prev') {
+              if (typeof qs.offset !== 'undefined') {
+                AppContext.setNextPagerOffset(qs.offset);
+              }
             }
             updateList(qs.field, qs.sort, qs.d);
 
@@ -774,27 +801,24 @@
 
       var offset = parseInt(AppContext.getNextPagerOffset(), 10);
       offset += setSize;
-
       pager.start = offset + 1;
       if (pager.end + setSize <= count) {
         pager.end += setSize;
       } else {
         pager.end = count;
       }
-
       var qs = $location.search();
       var url = $location.path() + '?';
       var arr = Object.keys(qs);
       for (var i = 0; i < arr.length; i++) {
-        if (arr[i] !== 'offset' && arr[i] !== 'new') {
-          url += '&' + arr[i] + "=" + qs[arr[i]];
+        if (arr[i] !== 'offset' && arr[i] !== 'new' && arr[i] !== 'd') {
+          url += '&' + arr[i] + '=' + qs[arr[i]];
         }
       }
       url += '&offset=' + offset;
       url += '&new=false';
-      console.log(url)
-      return url;
 
+      return url;
 
     };
 
@@ -811,6 +835,7 @@
 
       var qs = $location.search();
 
+
       AppContext.isNewSet(true);
 
       /**
@@ -823,15 +848,15 @@
           QueryManager.setQueryType(qs.field);
           QueryManager.setSort(qs.sort);
           QueryManager.setOffset(qs.offset);
-          if (qs.d === 'prev') {
-            AppContext.setStartIndex(qs.offset);
-          }
+
         } else {
           QueryManager.setQueryType(defaultField);
           QueryManager.setSort(defaultOrder);
           QueryManager.setOffset(0);
           AppContext.setStartIndex(0);
         }
+
+
 
       }
       /**
@@ -876,21 +901,31 @@
          * Set offset.
          */
         SolrDataLoader.setOffset(qs);
+
         if (qs.filter === 'item' && AppContext.isNewSet()) {
           /**
            * Execute item filter.
            */
-          _itemFilter();
+          _itemFilter(qs.offset);
+
         } else if (qs.filter === 'author') {
+
+          AppContext.setAuthorsOrder(qs.sort);
+
           /**
            * Execute author filter.
            */
           if (typeof qs.terms !== 'undefined' && qs.terms.length === 0) {
             QueryManager.setOffset(0);
-            AppContext.setStartIndex(0)
+            AppContext.setStartIndex(0);
           }
           _authorFilter(qs.terms, qs.sort, qs.d, qs.offset);
+
         } else if (qs.filter === 'subject') {
+
+          AppContext.setSubjectsOrder(qs.sort);
+
+      //    AppContext.isNewSet(true);
 
           if (typeof qs.terms !== 'undefined' && qs.terms.length === 0) {
             QueryManager.setOffset(0);
@@ -900,12 +935,33 @@
            * Execute subject filter.
            */
           _subjectFilter(qs.terms, qs.sort, qs.d, qs.offset);
+
+
         }
       }
       else if (isNewQuery(qs.field, qs.sort, qs.offset, qs.filter)) {
+
+        setIndex(qs);
+
+
+        // if (typeof qs.offset !== 'undefined') {
+        //   QueryManager.setOffset(qs.offset);
+        // }
         updateList(QueryManager.getQueryType(), QueryManager.getSort(), qs.d);
       }
 
+    }
+    
+    function setIndex(qs) {
+      if (typeof qs.offset !== 'undefined') {
+        if (qs.d !== 'prev') {
+          AppContext.setNextPagerOffset(+qs.offset + setSize);
+        }
+        else {
+          AppContext.setStartIndex(qs.offset);
+        }
+
+      }
     }
 
     _init();

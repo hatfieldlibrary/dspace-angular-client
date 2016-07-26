@@ -106,8 +106,6 @@
          * Tell the app not to load a new set of results.
          */
         AppContext.isNewSet(false);
-
-
         getResults();
 
       } else {
@@ -120,21 +118,15 @@
 
         var setSize = AppContext.getSetSize();
 
-        var newOffset;
+        var newOffset = qs.offset;
 
         if (qs.pos > 20) {
           newOffset =  parseInt(qs.offset, 10) - ((Math.floor(ctrl.pos / setSize) * setSize) + 20);
         }
-        console.log(qs.offset)
-        console.log(ctrl.pos / setSize)
-        console.log(Math.floor(ctrl.pos / setSize) * setSize)
-        console.log(newOffset);
-
-        //newOffset = qs.offset - 20;
+        
         var query = $window.location.search.toString();
 
         var newQs = query.replace(/offset=([^&]*)/, 'offset=' + newOffset);
-
 
         /** Add current path to stack **/
         var path = $window.location.pathname + newQs;

@@ -28,7 +28,6 @@
           } else if (type === QueryTypes.SUBJECT_FACETS) {
             arr = AppContext.getSubjects().slice(start, end);
           }
-
           var data = new Array(arr.length);
           var arraySize = end - start;
           for (var i = 0; i < arraySize; i++) {
@@ -50,14 +49,10 @@
          *  @param order
          */
         setAuthorListOrder: function (order) {
-          console.log(order)
-          console.log(AppContext.getAuthorsOrder())
-          if (order == AppContext.getAuthorsOrder()) {
-            console.log('REVERSING authors')
+          if (order !== AppContext.getAuthorsOrder()) {
             AppContext.reverseAuthorList();
-            AppContext.setAuthorsOrder(order);
+          
           }
-
         },
         /**
          *  Set the subject facet list order.
@@ -118,15 +113,11 @@
 
           var offset;
           var arr = [];
-
           if (type === 'subject') {
              arr = AppContext.getSubjects();
           } else if (type === 'author') {
-            console.log('getting authors')
             arr = AppContext.getAuthors();
           }
-          console.log(arr)
-
           if (typeof initOffset !== 'undefined') {
             if (initOffset > 0) {
               offset = initOffset;
@@ -136,9 +127,6 @@
           } else {
             offset = this.findIndexInArray(arr, terms);
           }
-          console.log(initOffset)
-          console.log(offset)
-
           return offset;
         }
 

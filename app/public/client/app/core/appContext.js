@@ -373,17 +373,14 @@
       }
 
       function setNextPagerOffset(offset) {
-        console.log('setting offset to ' +offset)
         _context.nextPagerOffset = offset;
       }
 
       function getNextPagerOffset() {
-        console.log('getting next pager offset')
         return _context.nextPagerOffset;
       }
 
       function setPreviousPagerOffset(offset) {
-        console.log('setting offset to ' +offset)
         _context.previousPagerOffset = offset;
       }
 

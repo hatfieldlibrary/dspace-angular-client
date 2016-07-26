@@ -312,17 +312,14 @@
        */
       utils.setLocationForItem = function (id, pos) {
 
-        var offset = QueryManager.getOffset();
-
-
-    //    var newOffset =  offset + Math.floor(pos / setSize) * setSize;
-
         var qs = $location.search();
         /**
          * Add id and position to the query string.
+         * Set new to false to prevent item set reload.
          */
         qs.id = id;
         qs.pos = pos;
+        qs.new = 'false';
       //  qs.offset = newOffset;
         /**
          * Change location.

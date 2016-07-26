@@ -78,6 +78,7 @@
 
         },
         filterQuery: function () {
+          
           /**
            * Get promise.
            * @type {*|{method}|Session}
@@ -103,20 +104,15 @@
          * @param newSortOrder the new sort order
          * @returns {*}
          */
-        getSortOrder: function (field, newSortOrder) {
+        getSortOrder: function (field) {
 
           var order;
           if (field === QueryTypes.SUBJECT_FACETS) {
             order = AppContext.getSubjectsOrder();
-            console.log(order)
-            console.log(newSortOrder)
-           // AppContext.setSubjectsOrder(newSortOrder);
           } else if (field === QueryTypes.AUTHOR_FACETS) {
             order = AppContext.getAuthorsOrder();
-          //  AppContext.setAuthorsOrder(newSortOrder);
           } else {
             order = AppContext.getListOrder();
-            AppContext.setListOrder(newSortOrder);
           }
 
           return order;
@@ -138,7 +134,6 @@
             offset = qs.offset;
           }
 
-          console.log('calculated offset ' + offset)
           return offset;
         },
         /**

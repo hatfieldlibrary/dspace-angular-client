@@ -15,7 +15,8 @@
     'ItemById',
     'PageTitle',
 
-    function ($mdDialog,
+    function (
+              $mdDialog,
               $mdMedia,
               /*jshint unused:false */
               ItemById,

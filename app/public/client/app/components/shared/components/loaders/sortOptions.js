@@ -175,10 +175,15 @@
 
       AppContext.setOpenItem(-1);
 
+
+
       /**
        * Set application context to expect a new set.
        */
       AppContext.isNewSet(true);
+
+      AppContext.setOpenItem(-1);
+      AppContext.setSelectedItemId(-1);
 
       var qs = $location.search();
 
@@ -188,6 +193,8 @@
       if (ctrl.filterTerms.length === 0) {
         qs.offset = 0;
       }
+      delete qs.pos;
+      delete qs.id;
       $location.search(qs);
 
     };
@@ -225,6 +232,7 @@
       qs.terms = '';
       qs.offset = 0;
       qs.filter = 'none';
+      qs.new = 'true';
       delete qs.pos;
       delete qs.id;
 
@@ -262,7 +270,7 @@
       if (ctrl.selectedField === QueryTypes.SUBJECT_FACETS) {
         AppContext.setSubjectsOrder(ctrl.selectedOrder);
       } else if (ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
-     //   AppContext.setAuthorsOrder(ctrl.selectedOrder);
+      //  AppContext.setAuthorsOrder(ctrl.selectedOrder);
       }  else {
         AppContext.setListOrder(ctrl.selectedOrder);
       }
@@ -313,7 +321,6 @@
            * If we have a filter term, so filter query.
            */
           if (ctrl.filterTerms.length > 0) {
-            // QueryManager.setFilter(ctrl.filterTerms);
             doJump('item');
 
           }
@@ -409,7 +416,7 @@
        * is tracked separately for these fields.
        */
       if (ctrl.field === QueryTypes.AUTHOR_FACETS) {
-        AppContext.setAuthorsOrder(QuerySort.ASCENDING);
+     //   AppContext.setAuthorsOrder(QuerySort.ASCENDING);
       } else if (ctrl.field === QueryTypes.SUBJECT_FACETS) {
         AppContext.setSubjectsOrder(QuerySort.ASCENDING);
       } else {

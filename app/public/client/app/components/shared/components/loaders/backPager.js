@@ -27,18 +27,6 @@
     backPager.more = false;
 
     /**
-     * Watch for changes to query offset triggered by a
-     * query string update.   Probably UNNECESSARY.
-     */
-    $scope.$watch(function () {
-        return AppContext.getStartIndex();
-      },
-      function (newValue) {
-        backPager.more = more(newValue)
-
-      });
-
-    /**
      * Checks for additional previous items.
      * @param offset
      * @returns {boolean}
@@ -46,6 +34,18 @@
     function more(offset) {
       return offset !== 0 && !AppContext.isFilter();
     }
+
+    /**
+     * Watch for changes to query offset triggered by a
+     * query string update.   Probably UNNECESSARY.
+     */
+    $scope.$watch(function () {
+        return AppContext.getStartIndex();
+      },
+      function (newValue) {
+        backPager.more = more(newValue);
+
+      });
 
     function init() {
 
@@ -96,8 +96,11 @@
         offset -= setSize;
         AppContext.setStartIndex(offset);
       }
-      
+
       AppContext.setPreviousPagerOffset(offset);
+
+      AppContext.setOpenItem(-1);
+      AppContext.setSelectedPositionIndex(-1);
 
       backPager.more = more(offset);
       // Set the lowest start index to the new, decremented value.
@@ -108,7 +111,6 @@
       qs.terms = '';
       qs.offset = offset;
       qs.d = 'prev';
-      //delete qs.d;
       delete qs.id;
       delete qs.pos;
       $location.search(qs);

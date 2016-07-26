@@ -166,7 +166,6 @@
       ctrl.field = field;
       ctrl.count = count;
       var end = parseInt(AppContext.getNextPagerOffset(), 10) + endIncrement + 1;
-      console.log('backwards got end of ' +end)
       var start = AppContext.getStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
 
@@ -189,14 +188,13 @@
       ctrl.items = [];
 
       var qs = $location.search();
+
       if (typeof qs.offset !== 'undefined') {
         ctrl.currentOffset = qs.offset;
         ctrl.showPager = qs.offset > 0;
       } else {
         ctrl.showPager = QueryManager.getOffset() > 1;
-
       }
-      console.log(' pager init ' + ctrl.showPager)
 
       if (QueryManager.getAction === QueryActions.SEARCH) {
         ctrl.showOptions = false;

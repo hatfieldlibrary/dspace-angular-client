@@ -59,7 +59,12 @@
       var url = $location.path() + '?';
       var arr = Object.keys(qs);
       for (var i = 0; i < arr.length; i++) {
-        url += '&' + arr[i] + "=" + qs[arr[i]];
+        if (arr[i] === 'filter') {
+          url += '&' + arr[i] + '=none';
+        }
+        else {
+          url += '&' + arr[i] + '=' + qs[arr[i]];
+        }
       }
       url += '&id=' + ctrl.id;
       url += '&pos=' + ctrl.pos;
@@ -99,6 +104,7 @@
          * want to show the item dialog.
          */
         AppContext.isNewSet(false);
+
         /**
          * Launch item dialog if the user clicks on the previously
          * selected item. Normally the dialog is handled by a watch
