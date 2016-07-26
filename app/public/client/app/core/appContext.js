@@ -30,6 +30,8 @@
 
       var _context = {
 
+        isFilter: false,
+
         /**
          * The array of authors returned by browse/sort by author query. This is
          * cached so that the array (which can be large) isn't returned with every
@@ -69,6 +71,10 @@
         authorOrder: QuerySort.ASCENDING,
 
         subjectOrder: QuerySort.ASCENDING,
+
+        nextPagerOffset: 0,
+
+        previousPagerOffset: 0,
 
         newSet: true,
 
@@ -121,6 +127,14 @@
 
       function getContext() {
         return _context;
+      }
+
+      function isFilter(filter) {
+        if (typeof filter !== 'undefined') {
+          _context.isFilter = filter;
+        } else {
+          return _context.isFilter;
+        }
       }
 
       function getDspaceHost() {
@@ -177,6 +191,7 @@
 
       function reverseSubjectList() {
         reverseArray(_context.subjectArray);
+
       }
 
       function setSelectedPositionIndex(index) {
@@ -357,10 +372,27 @@
         return _context.selectedItemId;
       }
 
+      function setNextPagerOffset(offset) {
+        _context.nextPagerOffset = offset;
+      }
+
+      function getNextPagerOffset() {
+        return _context.nextPagerOffset;
+      }
+
+      function setPreviousPagerOffset(offset) {
+        _context.previousPagerOffset = offset;
+      }
+
+      function getPreviousPagerOffset() {
+        return _context.previousPagerOffset;
+      }
+
 
       return {
 
         getContext: getContext,
+        isFilter: isFilter,
         getDspaceHost: getDspaceHost,
         getDspaceRoot: getDspaceRoot,
         getHandlePrefix: getHandlePrefix,
@@ -416,7 +448,11 @@
         setOpenItem: setOpenItem,
         getOpenItem: getOpenItem,
         setSelectedItemId: setSelectedItemId,
-        getSelectedItemId: getSelectedItemId
+        getSelectedItemId: getSelectedItemId,
+        setNextPagerOffset: setNextPagerOffset,
+        getNextPagerOffset: getNextPagerOffset,
+        setPreviousPagerOffset: setPreviousPagerOffset,
+        getPrevousPagerOffset: getPreviousPagerOffset
 
       };
 

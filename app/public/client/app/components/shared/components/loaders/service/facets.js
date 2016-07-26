@@ -8,8 +8,8 @@
 (function () {
 
   dspaceServices.factory('FacetHandler', [
-    'QueryManager', 'QueryActions', 'QueryTypes', 'AppContext', 'Utils',
-    function (QueryManager, QueryActions, QueryTypes, AppContext, Utils) {
+    'QueryManager', 'QueryActions', 'QuerySort','QueryTypes', 'AppContext', 'Utils',
+    function (QueryManager, QueryActions, QuerySort, QueryTypes, AppContext, Utils) {
 
 
       /**
@@ -20,12 +20,6 @@
        */
       function arraySlice(type, start, end) {
 
-        //var setSize = AppContext.getSetSize();
-
-        // if (end < setSize) {
-        //   setSize = end;
-        //
-        // }
         try {
           var arr = [];
 
@@ -34,7 +28,6 @@
           } else if (type === QueryTypes.SUBJECT_FACETS) {
             arr = AppContext.getSubjects().slice(start, end);
           }
-
           var data = new Array(arr.length);
           var arraySize = end - start;
           for (var i = 0; i < arraySize; i++) {
@@ -49,39 +42,33 @@
       }
 
       return {
-
-        reverseAuthorList: function (order) {
-          var setSize = AppContext.getSetSize();
-
-          var data = {};
-          data.count = AppContext.getAuthorsCount();
-          var end = Utils.getPageListCount(data.count, setSize);
-          // toggle order if necessary
+        /**
+         *  Set the author facet list order.
+         *  The order will be changed if the context differs from the order provided in the
+         *  current query. If the order is changed, it will be updated in the context as well.
+         *  @param order
+         */
+        setAuthorListOrder: function (order) {
           if (order !== AppContext.getAuthorsOrder()) {
             AppContext.reverseAuthorList();
-            AppContext.setAuthorsOrder(order);
+          
           }
-          data.results = arraySlice(QueryTypes.AUTHOR_FACETS, QueryManager.getOffset(), QueryManager.getOffset() + end);
-          return data;
-
         },
-        reverseSubjectList: function (order) {
-          var setSize = AppContext.getSetSize();
-          var data = {};
-          data.count = AppContext.getSubjectsCount();
-          var end = Utils.getPageListCount(data.count, setSize);
-          // toggle order if necessary.
-          if (order !== AppContext.getSubjectsOrder()) {
+        /**
+         *  Set the subject facet list order.
+         *  The order will be changed if the context differs from the order provided in the
+         *  current query. If the order is changed, it will be updated in the context as well.
+         *  @param order
+         */
+        setSubjectListOrder: function (order) {
+          if (order === QuerySort.DESCENDING) {
             AppContext.reverseSubjectList();
-            AppContext.setSubjectsOrder(order);
+
           }
-          data.results = arraySlice(QueryTypes.SUBJECT_FACETS, QueryManager.getOffset(), QueryManager.getOffset() + end);
-          return data;
+          AppContext.setSubjectsOrder(order);
 
         },
-        getAuthorList: function () {
-          var setSize = AppContext.getSetSize();
-
+        getAuthorListSlice: function (setSize) {
           var data = {};
           data.count = AppContext.getAuthorsCount();
           var end = Utils.getPageListCount(data.count, setSize);
@@ -89,9 +76,7 @@
           return data;
 
         },
-        getSubjectList: function () {
-          var setSize = AppContext.getSetSize();
-
+        getSubjectListSlice: function (setSize) {
           var data = {};
           data.count = AppContext.getSubjectsCount();
           var end = Utils.getPageListCount(data.count, setSize);
@@ -104,6 +89,45 @@
           if (QueryManager.isSubjectListRequest || QueryManager.isAuthorListRequest) {
             QueryManager.setAction(QueryActions.LIST);
           }
+        }, /**
+         * Traverses a provided array and returns the index of the
+         * first element that matches a case-insensitive regex that
+         * looks for the letters at the beginning of each line.
+         * @param arr   the input array
+         * @param letters  the characters to match
+         * @returns {number} the array index
+         */
+        findIndexInArray: function (arr, letters) {
+
+          if (letters.length > 0) {
+            var regex = new RegExp('^' + letters, 'i');
+            for (var i = 0; i < arr.length; i++) {
+              if (arr[i].value.match(regex) !== null) {
+                return i;
+              }
+            }
+          }
+          return 0;
+        },
+        getFilterOffset: function(initOffset, terms, type) {
+
+          var offset;
+          var arr = [];
+          if (type === 'subject') {
+             arr = AppContext.getSubjects();
+          } else if (type === 'author') {
+            arr = AppContext.getAuthors();
+          }
+          if (typeof initOffset !== 'undefined') {
+            if (initOffset > 0) {
+              offset = initOffset;
+            } else {
+              offset = this.findIndexInArray(arr, terms);
+            }
+          } else {
+            offset = this.findIndexInArray(arr, terms);
+          }
+          return offset;
         }
 
       };

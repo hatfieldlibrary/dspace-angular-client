@@ -106,18 +106,30 @@
          * Tell the app not to load a new set of results.
          */
         AppContext.isNewSet(false);
-
-
         getResults();
 
       } else {
         /**
-         * To many results to show inline.  Switch to 
+         * To many results to show inline.  Switch to
          * browse view.
          */
         QueryManager.setAction(QueryActions.BROWSE);
+        var qs = $location.search();
+
+        var setSize = AppContext.getSetSize();
+
+        var newOffset = qs.offset;
+
+        if (qs.pos > 20) {
+          newOffset =  parseInt(qs.offset, 10) - ((Math.floor(ctrl.pos / setSize) * setSize) + 20);
+        }
+        
+        var query = $window.location.search.toString();
+
+        var newQs = query.replace(/offset=([^&]*)/, 'offset=' + newOffset);
+
         /** Add current path to stack **/
-        var path = $window.location.pathname + $window.location.search;
+        var path = $window.location.pathname + newQs;
         QueryStack.push(path);
         /** clear query */
         $location.search({});

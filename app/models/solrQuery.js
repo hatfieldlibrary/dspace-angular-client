@@ -47,11 +47,16 @@ var constants = require('../core/constants');
      * Setting the processType. This allows us to distinguish requests
      * to sort an author list from other requests for items (more typical).
      */
-   // if (query.params.query.qType) {
+
+    try {
       if (query.params.query.qType.length > 0) {
         processType = query.params.query.qType;
       }
-  //  }
+    } catch (err) {
+      console.log('ERROR: Missing query type.');
+      console.log(err);
+    }
+
 
     /**
      * Get the solr URL.

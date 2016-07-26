@@ -141,25 +141,34 @@
      * @param count  total number of items.
      * @param field  the field queried.
      */
-    ctrl.onPagerUpdate = function (results, count, field, offset) {
+    ctrl.onPagerUpdate = function (results, count, field) {
 
       ctrl.ready = true;
       addResults(results);
       ctrl.field = field;
       ctrl.count = count;
-      offset++;
-      var end = offset + endIncrement;
+      var off = parseInt(AppContext.getNextPagerOffset(), 10);
+      off++;
+      var end = off + endIncrement;
+      if (end > count) {
+        end = count;
+      }
       var start = AppContext.getStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
 
+
     };
 
-    ctrl.onPreviousUpdate = function (results, index) {
+    ctrl.onPreviousUpdate = function (results, count, field) {
 
-      if (index === 1) {
-        ctrl.showPager = false;
-      }
+      ctrl.ready = true;
       addPreviousResults(results);
+      ctrl.field = field;
+      ctrl.count = count;
+      var end = parseInt(AppContext.getNextPagerOffset(), 10) + endIncrement + 1;
+      var start = AppContext.getStartIndex() + 1;
+      ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
+
 
     };
 
@@ -179,16 +188,24 @@
       ctrl.items = [];
 
       var qs = $location.search();
+
       if (typeof qs.offset !== 'undefined') {
         ctrl.currentOffset = qs.offset;
         ctrl.showPager = qs.offset > 0;
       } else {
         ctrl.showPager = QueryManager.getOffset() > 1;
-
       }
 
       if (QueryManager.getAction === QueryActions.SEARCH) {
         ctrl.showOptions = false;
+      }
+
+      if (typeof qs.filter !== 'undefined') {
+        if (qs.filter === 'none') {
+          ctrl.jump = false;
+        } else {
+          ctrl.jump = true;
+        }
       }
 
     }
