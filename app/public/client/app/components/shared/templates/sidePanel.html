@@ -44,8 +44,7 @@
       <!--</md-input-container>-->
 
       <md-list-item class="icon-list" ng-if="$ctrl.type!='global'"
-                    ng-href="/ds/communities"
-      >
+                    ng-href="/ds/communities">
         <md-icon md-font-set="material-icons">subject</md-icon>
         <p class="md-body-1">{{$ctrl.allCommunitiesLink}} </p>
       </md-list-item>
@@ -73,7 +72,7 @@
 
 
       <md-list-item class="icon-list" ng-show="$ctrl.canAdminister"
-                    href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/collection?collectionID={{$ctrl.itemId}}"
+                    href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/{{$ctrl.service}}?{{$ctrl.service}}ID={{$ctrl.itemId}}"
                     target="_blank">
         <md-icon md-font-set="material-icons">group</md-icon>
         <p class="md-body-1">Administer {{$ctrl.actionType}} </p>
