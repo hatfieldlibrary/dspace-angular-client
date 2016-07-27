@@ -295,12 +295,17 @@
       };
 
       /**
-       * Constructs path to DSpace bitstream service.
+       * Constructs path to DSpace bitstream service. 
        * @param logoId
        * @returns {string}
        */
       utils.getLogoPath = function (logoId) {
+
         var path = '/ds/bitstream/' + logoId + '/logo';
+        
+        // Use to request from xmlui; prior authentication not guaranteed!
+       // var path = AppContext.getDspaceHost() + AppContext.getDspaceRoot() + '/bitstream/id/' + logoId + '/?sequence=-1';
+        
         return path;
       };
 
