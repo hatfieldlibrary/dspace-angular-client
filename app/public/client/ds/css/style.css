@@ -33,6 +33,10 @@ a, a:visited {
 
 }
 
+img {
+  -ms-interpolation-mode: bicubic;
+}
+
 .lastitem {
   border-bottom: 6px solid #ccc;
 }

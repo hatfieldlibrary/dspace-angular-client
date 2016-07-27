@@ -58,8 +58,10 @@ var utils = require('../core/utils');
       logo.retrieveLink = json.logo.retrieveLink;
       logo.sizeBytes = json.logo.sizeBytes;
       logo.mimeType = json.logo.mimeType;
+
     }
     ret.logo = logo;
+  
     var collections = [];
     var itemTotal = 0;
     for (var i = 0; i < json.collections.length; i++) {
