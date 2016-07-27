@@ -11,8 +11,9 @@ var config = {
     host: 'dspace.willamette.edu',
     protocol: 'http',
     port: '8080',
-    // Servlet context.
+    // Servlet API context.
     context: 'rest',
+    
     // Solr host (for development, this is localhost).
     solrHost: 'localhost',
     // Solr port. Use port forwarding for development on localhost if

@@ -37,7 +37,7 @@
   exports.jsonResponse = function (res, json) {
 
     // Set custom response header.
-    res.setHeader('Access-Control-Allow-Origin', '*');
+   // res.setHeader('Access-Control-Allow-Origin', '*');
     res.json(json);
 
   };
