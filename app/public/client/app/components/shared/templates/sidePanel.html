@@ -45,7 +45,7 @@
 
       <md-list-item class="icon-list" ng-if="$ctrl.type!='global'"
                     ng-href="/ds/communities">
-        <md-icon md-font-set="material-icons">subject</md-icon>
+        <md-icon md-font-set="material-icons"> subject </md-icon>
         <p class="md-body-1">{{$ctrl.allCommunitiesLink}} </p>
       </md-list-item>
 
@@ -53,19 +53,19 @@
       <md-list-item class="icon-list" ng-show="$ctrl.canSubmit"
                     href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/handle/{{$ctrl.itemHandle}}/submit"
                     target="_blank">
-        <md-icon md-font-set="material-icons">file_upload</md-icon>
+        <md-icon md-font-set="material-icons"> file_upload </md-icon>
         <p class="md-body-1">{{$ctrl.submitButtonLabel}} </p>
       </md-list-item>
 
       <md-list-item class="icon-list" ng-show="$ctrl.showSubmitInstuctions" href="{{$ctrl.submitInformationLink}}"
                     target="_blank">
-        <md-icon md-font-set="material-icons">info_outline</md-icon>
+        <md-icon md-font-set="material-icons"> info_outline </md-icon>
         <p class="md-body-1">{{$ctrl.submitInformationLabel}} </p>
       </md-list-item>
 
       <md-list-item class="icon-list" ng-show="$ctrl.showSubmitInstuctions" href="{{$ctrl.submitInstructionsLink}}"
                     target="_blank">
-        <md-icon md-font-set="material-icons">directions_run</md-icon>
+        <md-icon md-font-set="material-icons"> directions_run </md-icon>
         <p class="md-body-1">{{$ctrl.submitInstructionsLabel}} </p>
       </md-list-item>
 
@@ -74,14 +74,15 @@
       <md-list-item class="icon-list" ng-show="$ctrl.canAdminister"
                     href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/{{$ctrl.service}}?{{$ctrl.service}}ID={{$ctrl.itemId}}"
                     target="_blank">
-        <md-icon md-font-set="material-icons">group</md-icon>
+        <!--<md-icon md-font-icon="group" />-->
+        <md-icon> group </md-icon>
         <p class="md-body-1">Administer {{$ctrl.actionType}} </p>
       </md-list-item>
 
       <md-list-item class="icon-list" ng-show="$ctrl.isSystemAdmin"
                     href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/panel"
                     target="_blank">
-        <md-icon md-font-set="material-icons">group</md-icon>
+        <md-icon md-font-set="material-icons"> group </md-icon>
         <p class="md-body-1">Administer DSpace </p>
       </md-list-item>
 

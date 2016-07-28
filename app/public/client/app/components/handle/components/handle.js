@@ -137,17 +137,18 @@
        * the user needs to be authenticated.
        */
         .finally(function () {
-
           /**
            * If data was not returned, check the user's authentication.
            */
           if (!ctrl.ready) {
+            console.log('not ready')
             /**
              * If configured to allow redirects, this checks for authenticated
              * user and give the user an opportunity to log in if no
              * authenticated session exists.
              */
             if (AppContext.useRedirect()) {
+              console.log('use redirect')
               /**
                * Attempt to login. Redirect only if no DSpace session exists.
                * This avoids infinite loop.
@@ -164,6 +165,8 @@
                 ctrl.accessNotAllowed = true;
 
                 ctrl.ready = true;
+
+                console.log(ctrl.accessNotAllowed);
               }
             }
             else {
@@ -182,12 +185,14 @@
 
     init();
 
+
+
   }
 
   dspaceComponents.component('handleComponent', {
 
     template: '<!-- Switch components based on item type --> ' +
-    '<div ng-if="$ctrl.loginRequired"> ' +
+    '<div ng-if="$ctrl.loginRequired || $ctrl.accessNotAllowed"> ' +
     '<login-required-component></login-required-component> ' +
     '</div> ' +
     '<div layout-fill class="spinner" ng-hide="$ctrl.ready" >' +
