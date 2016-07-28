@@ -67,15 +67,16 @@
      */
     var count = 0;
 
-    pager.more = false;
+   // pager.more = false;
 
     /**
      * Check to see if more search results are available.
      * @returns {boolean}
      */
-    function _moreItems() {
+    pager.moreItems = function() {
+      console.log('more ' + AppContext.getCount() > QueryManager.getOffset() + set);
       return AppContext.getCount() > QueryManager.getOffset() + set;
-    }
+    } ;
 
     pager.showPager = true;
 
@@ -396,7 +397,7 @@
       /** Return new set to true */
       AppContext.isNewSet(true);
 
-      pager.more = _moreItems();
+   //   pager.more = _moreItems();
 
 
     }
@@ -425,7 +426,7 @@
       }
 
 
-      pager.more = _moreItems();
+     // pager.more = _moreItems();
     }
 
 
@@ -951,7 +952,7 @@
       }
 
     }
-    
+
     function setIndex(qs) {
       if (typeof qs.offset !== 'undefined') {
         if (qs.d !== 'prev') {

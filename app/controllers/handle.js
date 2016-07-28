@@ -123,10 +123,11 @@ var utils = require('../core/utils');
           });
 
 
-        }
+        }   else {
 
-        /** send response */
-        utils.jsonResponse(res, result);
+          /** send response */
+          utils.jsonResponse(res, result);
+        }
 
       }
     );

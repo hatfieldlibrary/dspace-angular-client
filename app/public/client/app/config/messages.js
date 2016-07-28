@@ -122,7 +122,13 @@
 
     SORT_OPTIONS_ASCENDING: 'Ascending',
 
-    SORT_OPTIONS_DESCENDING: 'Descending'
+    SORT_OPTIONS_DESCENDING: 'Descending',
+
+    UNABLE_TO_ACCESS_CONTENT: 'We are unable to access the content you requested.',
+
+    ADMINISTRATOR_CONTACT: 'Bill Kelm',
+
+    ADMINISTRATOR_EMAIL: 'bkelm@willamette.edu'
 
   });
 
