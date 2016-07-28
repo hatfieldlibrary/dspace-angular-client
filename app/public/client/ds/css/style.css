@@ -516,6 +516,33 @@ discover-detail-component {
   transition-duration: 0s;
 }
 
+.repeat-animation.ng-enter,
+.repeat-animation.ng-leave,
+.repeat-animation.ng-move {
+  -webkit-transition: all linear 1s;
+  -moz-transition: all linear 1s;
+  -o-transition: all linear 1s;
+  transition: all linear 1s;
+}
+.repeat-animation.ng-enter {
+  opacity: 0;
+}
+.repeat-animation.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+.repeat-animation.ng-leave {
+  opacity: 1;
+}
+.repeat-animation.ng-leave.ng-leave-active {
+  opacity: 0;
+}
+.repeat-animation.ng-move {
+  opacity: 0.5;
+}
+.repeat-animation.ng-move.ng-move-active {
+  opacity: 1;
+}
+
 .discoveryMessages {
   /* NOTE: Check the demo's HTML to see some additional RTL support CSS */
   /* Setup animations similar to the ng-messages */
