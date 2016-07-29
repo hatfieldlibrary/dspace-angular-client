@@ -521,10 +521,10 @@ discover-detail-component {
 .repeat-animation.ng-enter,
 .repeat-animation.ng-leave,
 .repeat-animation.ng-move {
-  -webkit-transition: all linear 1s;
-  -moz-transition: all linear 1s;
-  -o-transition: all linear 1s;
-  transition: all linear 1s;
+  -webkit-transition: all linear 0.5s;
+  -moz-transition: all linear 0.5s;
+  -o-transition: all linear 0.5s;
+  transition: all linear 0.5s;
 }
 .repeat-animation.ng-enter {
   opacity: 0;
