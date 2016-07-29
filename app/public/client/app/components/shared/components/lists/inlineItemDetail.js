@@ -16,7 +16,6 @@
    * @constructor
    */
   function ItemDetailController($scope,
-                                $location,
                                 $mdMedia,
                                 Utils,
                                 AppContext,
@@ -53,31 +52,59 @@
 
     });
 
-    ctrl.getItemUrl = function() {
+    /**
+     * Shows the dialog.
+     * @param ev the event
+     * @param id the DSpace id of the item
+     */
+    ctrl.showItem = function (ev, id) {
 
-      var qs = $location.search();
+      /**
+       * For inline lists (author or subject) just show the dialog.
+       */
+      if (ctrl.type === 'inline') {
 
-      var url = $location.path() + '?';
-      var arr = Object.keys(qs);
-      for (var i = 0; i < arr.length; i++) {
-        if (arr[i] === 'filter') {
-          url += '&' + arr[i] + '=none';
-        }
-        else if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype') {
-          url += '&' + arr[i] + '=' + qs[arr[i]];
-        }
+        AppContext.isNewSet(false);
+
+        ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
+
       }
-      url += '&id=' + ctrl.id;
-      url += '&pos=' + ctrl.pos;
-      url += '&itype=i';
-      return url;
+      /**
+       * For item lists, use the query string to add the item
+       * to browser history.  The pager component will handle
+       * the query string.
+       */
+      else {
+
+        /**
+         * Add item id and position to the location query string.
+         */
+        Utils.setLocationForItem(id, ctrl.pos);
+        /**
+         * Tell the app not to load a new set of results. We just
+         * want to show the item dialog.
+         */
+        AppContext.isNewSet(false);
+
+
+        /**
+         * Launch item dialog if the user clicks on the previously
+         * selected item. Normally the dialog is handled by a watch
+         * on the AppContext, but re-opening the same item
+         * is not picked up by watch. Handle that case here.
+         */
+        if (AppContext.getOpenItem() === parseInt(ctrl.pos)) {
+
+          ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
+        }
+
+      }
 
     };
-    
 
   }
 
-  dspaceComponents.component('itemDetailComponent', {
+  dspaceComponents.component('inlineItemDetailComponent', {
 
     bindings: {
       title: '@',
@@ -93,8 +120,9 @@
 
     },
     controller: ItemDetailController,
-    templateUrl: '/ds/shared/templates/lists/itemDetail.html'
+    templateUrl: '/ds/shared/templates/lists/inlineItemDetail.html'
 
   });
 
 })();
+
