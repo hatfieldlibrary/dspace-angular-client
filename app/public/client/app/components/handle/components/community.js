@@ -54,16 +54,7 @@
        */
     ctrl.hideLoginMessage = true;
 
-    /**
-     * Shows login message if the count of returned collections
-     * does not equal the total collections in the community.
-     * Assumes that some of the collections are hidden behind DSpace
-     * access restrictions.
-     */
-    if (ctrl.data.countItems !== ctrl.data.itemTotal) {
-      ctrl.hideLoginMessage = false;
 
-    }
 
     /**
      * Watch for updates to the DSpace session status and show
@@ -79,6 +70,29 @@
           ctrl.hideLoginMessage = newValue;
         }
       });
+
+    /**
+     * Shows login message if the count of returned collections
+     * does not equal the total collections in the community.
+     * Will ignore count if the user has already logged in.
+     */
+    function showLoginMessage(dspaceTokenExists) {
+
+      if (!dspaceTokenExists) {
+        if (ctrl.data.countItems !== ctrl.data.itemTotal) {
+          ctrl.hideLoginMessage = false;
+
+        }
+      }
+    }
+
+    function init() {
+
+         Utils.checkStatus(showLoginMessage)
+
+    }
+
+    init();
 
   }
 

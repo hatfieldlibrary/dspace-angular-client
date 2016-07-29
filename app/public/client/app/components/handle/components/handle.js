@@ -124,67 +124,67 @@
              */
             QueryManager.setAssetId(id);
 
+
           }
         }).catch(function (err) {
+
         console.log('Handle Request: ' + err.message);
+        Utils.checkStatus(status);
 
-      })
-      /**
-       * If data was not returned the cause is likely
-       * to be an expired session or the user following an
-       * external link to the resource. We need more information
-       * from the DSpace REST API to know with certainty that
-       * the user needs to be authenticated.
-       */
-        .finally(function () {
-          /**
-           * If data was not returned, check the user's authentication.
-           */
-          if (!ctrl.ready) {
-            console.log('not ready')
-            /**
-             * If configured to allow redirects, this checks for authenticated
-             * user and give the user an opportunity to log in if no
-             * authenticated session exists.
-             */
-            if (AppContext.useRedirect()) {
-              console.log('use redirect')
-              /**
-               * Attempt to login. Redirect only if no DSpace session exists.
-               * This avoids infinite loop.
-               */
-              if (!AppContext.hasDspaceSession()) {
-                $window.location = '/ds/auth/login';
-
-              } else {
-                /**
-                 * If the user has a Dspace session, assume that the user is
-                 * not authorized to access the resource.
-                 * @type {boolean}
-                 */
-                ctrl.accessNotAllowed = true;
-
-                ctrl.ready = true;
-
-                console.log(ctrl.accessNotAllowed);
-              }
-            }
-            else {
-              /**
-               * If not offering auto redirection, this shows the login required
-               * component.
-               */
-              ctrl.loginRequired = true;
-              ctrl.ready = true;
-            }
-          }
-
-        });
+      });
 
     };
 
     init();
 
+    /**
+     * If data was not returned the cause is likely
+     * to be an expired session or the user following an
+     * external link to a resource they are not authorized
+     * to use.
+     *
+     * If no session exists we will login and retrieve
+     * a token.
+     *
+     * If we have an existing token, then the user does not
+     * have access to the item.
+     *
+     * We need more information from the DSpace REST API to
+     * know with certainty that the user needs to be authenticated.
+     * So it probably makes sense to provide an administrative
+     * contact in the message to the user.  The admin can investigate
+     * the problem if contacted.
+     */
+    function status(dspaceSession) {
+
+      if (AppContext.useRedirect()) {
+        /**
+         * Attempt to login. Redirect only if no DSpace session exists.
+         * This avoids infinite loop.
+         */
+        if (!dspaceSession) {
+          $window.location = '/ds/auth/login';
+
+        } else {
+          /**
+           * If the user has a Dspace session, assume that the user is
+           * not authorized to access the resource.
+           * @type {boolean}
+           */
+          ctrl.accessNotAllowed = true;
+          ctrl.ready = true;
+        }
+      }
+      else {
+        /**
+         * If not offering auto redirection, this shows the login required
+         * component.
+         */
+        ctrl.loginRequired = true;
+        ctrl.ready = true;
+      }
+
+    }
 
 
   }

@@ -220,18 +220,36 @@
        */
       utils.checkSession = function () {
 
-        console.log('check session')
         var sessionStatus = CheckSession.query();
         sessionStatus.$promise.then(function () {
           if (sessionStatus.status === 'ok') {
-            console.log('session ok')
             AppContext.updateDspaceSession(true);
-            return true;
           } else {
             AppContext.updateDspaceSession(false);
-            console.log(sessionStatus.status)
-            return false;
           }
+
+        });
+      };
+
+      /**
+       * Calls the server to see if a dspace token is
+       * associated with the current user session.
+       * This method is used with a callback function.
+       * @param callback function that takes the session status as parameter.
+       */
+      utils.checkStatus = function (callback) {
+
+        var sessionStatus = CheckSession.query();
+        sessionStatus.$promise.then(function () {
+
+          var dspaceSession;
+          if (sessionStatus.status === 'ok') {
+            dspaceSession = true;
+          } else {
+            dspaceSession = false;
+          }
+
+          callback(dspaceSession);
 
         });
       };
@@ -256,7 +274,7 @@
        * Get the discovery query filter for the input.
        * @param field the QueryFilterField
        * @param type the QueryMode
-       * @param terns the query terms
+       * @param terms the query terms
        * @returns {*}
        */
       utils.getDiscoveryFilter = function (field, type, terms) {
@@ -306,7 +324,7 @@
         var path = '/ds/bitstream/' + logoId + '/logo';
 
         // Use to request from xmlui; prior authentication not guaranteed!
-       // var path = AppContext.getDspaceHost() + AppContext.getDspaceRoot() + '/bitstream/id/' + logoId + '/?sequence=-1';
+        // var path = AppContext.getDspaceHost() + AppContext.getDspaceRoot() + '/bitstream/id/' + logoId + '/?sequence=-1';
 
         return path;
       };
@@ -327,7 +345,7 @@
         qs.id = id;
         qs.pos = pos;
         qs.new = 'false';
-      //  qs.offset = newOffset;
+        //  qs.offset = newOffset;
         /**
          * Change location.
          */
@@ -341,7 +359,7 @@
        * is managed via the application context.  This allows other components
        * to hide the button until pager has new results to display.
        */
-      utils.delayPagerViewUpdate = function() {
+      utils.delayPagerViewUpdate = function () {
 
         $timeout(function () {
           /**
