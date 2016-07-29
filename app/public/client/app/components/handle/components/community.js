@@ -88,7 +88,7 @@
 
     function init() {
 
-         Utils.checkStatus(showLoginMessage)
+         Utils.checkStatus(showLoginMessage);
 
     }
 
