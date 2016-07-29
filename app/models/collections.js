@@ -56,7 +56,6 @@ var utils = require('../core/utils');
     ret.type = json.type;
     var logo = {};
     if (typeof json.permission !== 'undefined') {
-      console.log(json.permission);
       ret.canSubmit = json.permission.canSubmit;
       ret.canAdminister = json.permission.canAdminister;
       ret.canWrite = json.permission.canWrite;

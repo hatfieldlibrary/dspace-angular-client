@@ -344,8 +344,9 @@
          */
         qs.id = id;
         qs.pos = pos;
+        qs.itype = 'i';
         qs.new = 'false';
-        //  qs.offset = newOffset;
+
         /**
          * Change location.
          */

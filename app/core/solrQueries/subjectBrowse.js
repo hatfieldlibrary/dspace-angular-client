@@ -12,8 +12,6 @@ var utils = require('../utils');
 
   module.exports = function (query, dspaceToken) {
 
-    console.log('generating subject search')
-
     /**
      * URL TEMPLATE: Browse for all items by an author.
      * Tokens: order, fields, offset, location, query, rows, anonymousFilter

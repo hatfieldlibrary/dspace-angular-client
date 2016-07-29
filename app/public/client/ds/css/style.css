@@ -518,6 +518,9 @@ discover-detail-component {
   transition-duration: 0s;
 }
 
+/**
+* Fade ng-repeat animation.
+*/
 .repeat-animation.ng-enter,
 .repeat-animation.ng-leave,
 .repeat-animation.ng-move {

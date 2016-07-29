@@ -67,8 +67,6 @@
 
   exports.processSubject = function (solrResponse) {
 
-    console.log(solrResponse)
-
     var json = solrResponse.facet_counts.facet_fields;
 
     var ret = {};

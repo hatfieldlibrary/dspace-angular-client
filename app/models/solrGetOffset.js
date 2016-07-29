@@ -15,8 +15,7 @@ var queryGenerator = require('../core/queryGenerator');
   module.exports = function (query, res, session) {
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
-
-    console.log(query)
+    
 
     /**
      * Get the solr URL.

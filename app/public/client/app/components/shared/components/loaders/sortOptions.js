@@ -190,11 +190,12 @@
       qs.filter = filterType;
       qs.terms = ctrl.filterTerms;
       qs.new='true';
-      if (ctrl.filterTerms.length === 0) {
+     // if (ctrl.filterTerms.length === 0) {
         qs.offset = 0;
-      }
+     // }
       delete qs.pos;
       delete qs.id;
+      delete qs.itype;
       $location.search(qs);
 
     };
@@ -235,6 +236,7 @@
       qs.new = 'true';
       delete qs.pos;
       delete qs.id;
+      delete qs.itype;
 
       $location.search(qs);
 
