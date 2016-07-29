@@ -688,7 +688,7 @@
 
           }
 
-          else if (hasNewParams(qs.field, qs.sort, qs.offset, qs.filter) && qs.itype != 'i') {
+          else if (hasNewParams(qs.field, qs.sort, qs.offset, qs.filter) && qs.itype !== 'i') {
             updateList(qs.field, qs.sort, qs.d);
           }
           else {

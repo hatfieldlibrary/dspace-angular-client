@@ -30,7 +30,7 @@
 
           <md-content>
             <small-spinner ng-hide="$ctrl.ready"></small-spinner>
-            <item-detail-component
+            <inline-item-detail-component
               ng-repeat="col in $ctrl.items.results"
               title="{{col.title}}"
               author="col.author"
@@ -41,7 +41,7 @@
               id="{{col.id}}"
               type="inline"
               last="$last">
-            </item-detail-component>
+            </inline-item-detail-component>
           </md-content>
 
         </div>
