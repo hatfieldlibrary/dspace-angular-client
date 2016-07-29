@@ -20,7 +20,8 @@ var utils = require('../core/utils');
 
     if (!config) {
       console.log('ERROR: Missing application configuration.  Cannot access application key.');
-      return;
+      res.statusCode = 500;
+      res.end();
     }
 
     var session = req.session;
@@ -33,6 +34,7 @@ var utils = require('../core/utils');
         config,
         req)
         .then(function () {
+          console.log('login succeeded')
           // If successful, redirect to session.url or to home page.
           if (session.url !== 'undefined') {
             res.redirect(session.url);
@@ -48,6 +50,8 @@ var utils = require('../core/utils');
           res.statusCode = err.statusCode;
           res.end();
         });
+    } else {
+      res.end();
     }
 
   };
