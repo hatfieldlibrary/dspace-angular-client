@@ -18,6 +18,8 @@
        */
       var setSize = AppContext.getSetSize();
 
+      var offset = 0;
+
       return {
         /**
          * Invokes query for LIST, SEARCH, or BROWSE action and
@@ -78,7 +80,7 @@
 
         },
         filterQuery: function () {
-          
+
           /**
            * Get promise.
            * @type {*|{method}|Session}
@@ -142,8 +144,9 @@
          */
         setOffset: function (qs) {
 
+          offset =  this.verifyOffset(qs);
           if (typeof qs.offset !== 'undefined') {
-            QueryManager.setOffset(this.verifyOffset(qs));
+            QueryManager.setOffset(offset);
           }
 
           if (qs.d === 'prev') {
@@ -155,6 +158,9 @@
           else if (+qs.offset === 0) {
             AppContext.setStartIndex(0);
           }
+        },
+        getOffset: function() {
+          return offset;
         },
         setJumpType: function() {
           /**

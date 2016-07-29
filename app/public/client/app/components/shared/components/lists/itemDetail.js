@@ -44,7 +44,7 @@
     $scope.$watch(function () {
       return AppContext.getSelectedItemId();
     }, function (newValue) {
-
+      
       if (newValue === ctrl.id) {
 
         ItemDialogFactory.showItem(null, ctrl.id, $scope.customFullscreen);
@@ -56,18 +56,20 @@
     ctrl.getItemUrl = function() {
 
       var qs = $location.search();
+
       var url = $location.path() + '?';
       var arr = Object.keys(qs);
       for (var i = 0; i < arr.length; i++) {
         if (arr[i] === 'filter') {
           url += '&' + arr[i] + '=none';
         }
-        else {
+        else if (arr[i] !== 'id' && arr[i] !== 'pos') {
           url += '&' + arr[i] + '=' + qs[arr[i]];
         }
       }
       url += '&id=' + ctrl.id;
       url += '&pos=' + ctrl.pos;
+      url += '&type=i';
       return url;
 
     };
@@ -95,6 +97,7 @@
        * the query string.
        */
       else {
+        
         /**
          * Add item id and position to the location query string.
          */
@@ -104,6 +107,7 @@
          * want to show the item dialog.
          */
         AppContext.isNewSet(false);
+
 
         /**
          * Launch item dialog if the user clicks on the previously

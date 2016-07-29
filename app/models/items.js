@@ -50,12 +50,10 @@ var utils = require('../core/utils');
     ret.archived = json.archived;
     ret.withdrawn = json.withdrawn;
     ret.metadata = json.metadata;
-    console.log('break 1')
     if (typeof json.permission !== 'undefined') {
       ret.canAdminister = json.permission.canAdminister;
       ret.canWrite = json.permission.canWrite;
     }
-    console.log('break 2')
     ret.author = '';
     var authCount = 0;
     for (var i = 0; i < ret.metadata.length; i++) {
@@ -78,7 +76,6 @@ var utils = require('../core/utils');
         ret.description = ret.metadata[i].value;
       }
     }
-    console.log('break 3')
     var bits = [];
     for (var i = 0; i < json.bitstreams.length; i++) {
       var tmpItem = {};
@@ -93,9 +90,7 @@ var utils = require('../core/utils');
       tmpItem.policies = json.bitstreams[i].policies;
       bits[i] = tmpItem;
     }
-    console.log('break 4')
     ret.bitstreams = bits;
-     console.log(ret)
     return ret;
 
   }

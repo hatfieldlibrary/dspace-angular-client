@@ -113,6 +113,7 @@
       qs.d = 'prev';
       delete qs.id;
       delete qs.pos;
+      delete qs.itype;
       $location.search(qs);
 
 

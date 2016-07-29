@@ -14,6 +14,7 @@
     '$mdMedia',
     'ItemById',
     'PageTitle',
+    'AppContext',
 
     function (
               $mdDialog,

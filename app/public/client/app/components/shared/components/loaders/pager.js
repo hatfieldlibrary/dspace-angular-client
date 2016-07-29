@@ -74,7 +74,6 @@
      * @returns {boolean}
      */
     pager.moreItems = function() {
-      console.log('more ' + AppContext.getCount() > QueryManager.getOffset() + set);
       return AppContext.getCount() > QueryManager.getOffset() + set;
     } ;
 
@@ -123,10 +122,12 @@
       else {
         items = SolrDataLoader.filterQuery();
         items.$promise.then(function (data) {
-
           QueryManager.setOffset(data.offset);
           AppContext.setNextPagerOffset(data.offset);
           AppContext.setStartIndex(data.offset);
+          // We need to update the query object!
+          var qs = $location.search();
+          qs.offset = data.offset;
 
           _addResult('next', data);
 
@@ -261,7 +262,7 @@
      * @param offset the offset for the current state.
      * @returns {boolean}
      */
-    function isNewQuery(field, order, offset, filter) {
+    function hasNewParams(field, order, offset, filter) {
 
       var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset || filter !== currentFilter);
 
@@ -284,6 +285,8 @@
     function setOpenItemPosition(qs) {
 
       if (typeof qs.pos !== 'undefined') {
+
+
 
         /**
          * The position is lower than the current offset.
@@ -443,7 +446,7 @@
       } else {
         QueryManager.setOffset(0);
       }
-
+      
       if (typeof qs.id !== 'undefined') {
         AppContext.setSelectedItemId(qs.id);
       } else {
@@ -679,14 +682,13 @@
            * list using the field and sort order provided in
            * the query string.
            */
-          if (qs.filter === 'item' && AppContext.isNewSet()) {
-
+          if (qs.filter === 'item' && qs.itype !=='i') {
             currentFilter = qs.filter;
-            _itemFilter();
+            _itemFilter(qs.offset);
 
           }
 
-          else if (isNewQuery(qs.field, qs.sort, qs.offset, qs.filter)) {
+          else if (hasNewParams(qs.field, qs.sort, qs.offset, qs.filter) && qs.itype != 'i') {
             updateList(qs.field, qs.sort, qs.d);
           }
           else {
@@ -723,7 +725,7 @@
 
 
           }
-          else if (isNewQuery(qs.field, qs.sort, qs.offset, qs.filter)) {
+          else if (hasNewParams(qs.field, qs.sort, qs.offset, qs.filter)) {
             if (qs.d !== 'prev') {
               if (typeof qs.offset !== 'undefined') {
                 AppContext.setNextPagerOffset(qs.offset);
@@ -747,56 +749,7 @@
 
       }
     });
-
-    // /**
-    //  * This watch will show/hide the pager button
-    //  * based on the app context.  This allows sort
-    //  * options components to hide the pager button
-    //  * so that it doesn't flash into view when changing
-    //  * the option. Since both pager and sort options
-    //  * are children of item list, this might be done
-    //  * more efficiently via callbacks.
-    //  */
-    // $scope.$watch(function () {
-    //     return AppContext.getPager();
-    //   },
-    //   function (newValue, oldValue) {
-    //     if (newValue !== oldValue) {
-    //       // pager.showPager = newValue;
-    //     }
-    //   });
-
-    /**
-     * Method for retrieving the next result set.
-     */
-    // pager.next = function () {
-    //
-    //   var offset = parseInt(AppContext.getNextPagerOffset(), 10);
-    //
-    //   console.log(offset)
-    //
-    //   offset += setSize;
-    //
-    //   AppContext.setNextPagerOffset(offset);
-    //   pager.start = offset + 1;
-    //   if (pager.end + setSize <= count) {
-    //     pager.end += setSize;
-    //   } else {
-    //     pager.end = count;
-    //   }
-    //   AppContext.isNewSet(false);
-    //   var qs = $location.search();
-    //   qs.field = QueryManager.getQueryType();
-    //   qs.sort = QueryManager.getSort();
-    //   qs.offset = offset;
-    //   delete qs.d;
-    //   delete qs.id;
-    //   delete qs.pos;
-    //   //  alert('next')
-    //   // $location.search(qs);
-    //   ctrl.url = $location.path() + 'field=' + qs.field + '&sort=' + qs.sort + '&offset=' + qs.offset;
-    //
-    // };
+    
 
     pager.nextUrl = function () {
 
@@ -812,7 +765,7 @@
       var url = $location.path() + '?';
       var arr = Object.keys(qs);
       for (var i = 0; i < arr.length; i++) {
-        if (arr[i] !== 'offset' && arr[i] !== 'new' && arr[i] !== 'd') {
+        if (arr[i] !== 'offset' && arr[i] !== 'new' && arr[i] !== 'd' && arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype') {
           url += '&' + arr[i] + '=' + qs[arr[i]];
         }
       }
@@ -882,6 +835,10 @@
         QueryManager.setFilter(qs.terms);
       }
 
+      if (typeof qs.offset !== 'undefined') {
+        currentOffset = qs.offset;
+      }
+
       /**
        * Sets the open position or item id for the current state.
        */
@@ -904,6 +861,7 @@
         SolrDataLoader.setOffset(qs);
 
         if (qs.filter === 'item' && AppContext.isNewSet()) {
+          
           /**
            * Execute item filter.
            */
@@ -926,7 +884,7 @@
 
           AppContext.setSubjectsOrder(qs.sort);
 
-      //    AppContext.isNewSet(true);
+          AppContext.isNewSet(true);
 
           if (typeof qs.terms !== 'undefined' && qs.terms.length === 0) {
             QueryManager.setOffset(0);
@@ -940,14 +898,10 @@
 
         }
       }
-      else if (isNewQuery(qs.field, qs.sort, qs.offset, qs.filter)) {
+      else if (hasNewParams(qs.field, qs.sort, qs.offset, qs.filter)) {
 
         setIndex(qs);
 
-
-        // if (typeof qs.offset !== 'undefined') {
-        //   QueryManager.setOffset(qs.offset);
-        // }
         updateList(QueryManager.getQueryType(), QueryManager.getSort(), qs.d);
       }
 
