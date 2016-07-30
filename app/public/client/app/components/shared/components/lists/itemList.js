@@ -110,8 +110,12 @@
      */
     ctrl.onUpdate = function (results, count, field, offset, jump) {
 
-      ctrl.jump = jump;
+      console.log('updating list!')
+
       ctrl.ready = true;
+
+      ctrl.jump = jump;
+
       ctrl.items = results;
       ctrl.field = field;
       ctrl.count = count;
@@ -173,7 +177,7 @@
     };
 
     ctrl.resetListView = function () {
-      ctrl.ready = false;
+      //ctrl.ready = false;
       ctrl.items = [];
 
     };
@@ -207,6 +211,9 @@
           ctrl.jump = true;
         }
       }
+
+      // This assures that aminmation runs.
+      ctrl.ready = true;
 
     }
 

@@ -17,7 +17,7 @@
   </div>
 
   <!--<div ng-if="$ctrl.count <= 10" class="md-body-1 md-accent layout-padding" style="padding-top: 30px;">-->
-    <!--{{$ctrl.resultCountLabel}} {{$ctrl.count}}-->
+  <!--{{$ctrl.resultCountLabel}} {{$ctrl.count}}-->
   <!--</div>-->
 
   <div class="md-body-1 md-accent layout-padding">{{$ctrl.resultMessage}}
@@ -26,7 +26,7 @@
   <md-divider></md-divider>
 
 
-  <div flex="100"  layout-fill layout="column" style="min-height: 100%;margin-top: -12px;">
+  <div flex="100" layout-fill layout="column" style="min-height: 100%;margin-top: -12px;">
 
     <pager-back-component ng-if="$ctrl.jump"
                           context="$ctrl.context">
@@ -35,13 +35,12 @@
 
     <small-spinner ng-hide="$ctrl.ready"></small-spinner>
 
-    <md-list ng-if="$ctrl.ready">
-
+    <md-list ng-show="$ctrl.ready">
 
 
       <item-detail-component
 
-        ng-if="$ctrl.field!='author' && $ctrl.field!='subject' && $ctrl.field!=='discover'"
+        ng-if="$ctrl.field!='author' && $ctrl.field!='subject' && $ctrl.field!='discover'"
         ng-repeat="col in $ctrl.items"
         class="repeat-animation"
         title="{{col.title}}"
@@ -51,7 +50,7 @@
         handle="{{col.handle}}"
         abstract="{{col.abstract}}"
         id="{{col.id}}"
-      pos="{{$index}}">
+        pos="{{$index}}">
 
       </item-detail-component>
 
