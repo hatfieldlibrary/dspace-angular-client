@@ -446,7 +446,7 @@
       } else {
         QueryManager.setOffset(0);
       }
-      
+
       if (typeof qs.id !== 'undefined') {
         AppContext.setSelectedItemId(qs.id);
       } else {
@@ -624,7 +624,10 @@
 
         AppContext.isNewSet(true);
 
-        if (QueryManager.getAction() !== QueryActions.BROWSE) {
+        /**
+         * Browse and Search actions do not use query string.
+         */
+        if (QueryManager.getAction() !== QueryActions.BROWSE && QueryManager.getAction() !== QueryActions.SEARCH) {
           QueryManager.setOffset(0);
           QueryManager.setFilter('');
           AppContext.setStartIndex(0);
@@ -749,7 +752,7 @@
 
       }
     });
-    
+
 
     pager.nextUrl = function () {
 
@@ -861,7 +864,7 @@
         SolrDataLoader.setOffset(qs);
 
         if (qs.filter === 'item' && AppContext.isNewSet()) {
-          
+
           /**
            * Execute item filter.
            */

@@ -59,7 +59,7 @@ function SideNavCtrl($scope,
     ctrl.submitInformationLink = Messages.SUBMIT_INFORMATION_LINK;
 
     ctrl.submitInstructionsLink = Messages.SUBMIT_INSTRUCTIONS_LINK;
-    
+
 
   }
 
@@ -117,7 +117,7 @@ function SideNavCtrl($scope,
           ctrl.canSubmit = AppContext.getSubmitPermission();
           ctrl.isSystemAdmin = false; // not needed
           ctrl.canAdminister = AppContext.getAdministerPermission();
-          ctrl.showSubmitInstuctions = true;
+          ctrl.showSubmitInstuctions = ctrl.canSubmit;
 
         }
         else if (newValue === AssetTypes.COMMUNITY) {
@@ -127,7 +127,7 @@ function SideNavCtrl($scope,
           ctrl.canSubmit = false;
           ctrl.isSystemAdmin = false; // not needed
           ctrl.canAdminister = AppContext.getAdministerPermission();
-          ctrl.showSubmitInstuctions = true;
+          ctrl.showSubmitInstuctions = false;
 
         }
         else if (newValue === AssetTypes.ITEM) {
