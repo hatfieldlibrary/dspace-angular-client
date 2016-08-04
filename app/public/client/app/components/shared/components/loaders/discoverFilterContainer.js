@@ -11,6 +11,8 @@
                                      Utils,
                                      QueryManager,
                                      AppContext,
+                                     QueryTypes,
+                                     QuerySort,
                                      Messages) {
 
     var ctrl = this;
@@ -49,7 +51,7 @@
        */
       AppContext.setPager(false);
 
-      $location.search({'field': 'discover', 'sort': 'asc', 'terms': '', 'offset': 0, 'filters': QueryManager.discoveryFilterCount()});
+      $location.search({'field': QueryTypes.DISCOVER , 'sort': QuerySort.ASCENDING, 'terms': '', 'offset': 0, 'filters': QueryManager.discoveryFilterCount()});
 
     }
 

@@ -33,7 +33,8 @@
                      QueryActions,
                      QueryTypes,
                      FacetHandler,
-                     $mdDialog) {
+                     $mdDialog,
+                     SetNextLinkInHeader) {
 
 
     var pager = this;
@@ -67,15 +68,15 @@
      */
     var count = 0;
 
-   // pager.more = false;
+    // pager.more = false;
 
     /**
      * Check to see if more search results are available.
      * @returns {boolean}
      */
-    pager.moreItems = function() {
+    pager.moreItems = function () {
       return AppContext.getCount() > QueryManager.getOffset() + set;
-    } ;
+    };
 
     pager.showPager = true;
 
@@ -183,7 +184,7 @@
 
 
         QueryManager.setOffset(offset);
-       // AppContext.setNextPagerOffset(offset);
+        // AppContext.setNextPagerOffset(offset);
 
 
         if (AppContext.isNewSet()) {
@@ -286,8 +287,6 @@
 
       if (typeof qs.pos !== 'undefined') {
 
-
-
         /**
          * The position is lower than the current offset.
          */
@@ -352,9 +351,10 @@
                 AppContext.setSelectedPositionIndex(qs.pos);
               }
             }
+          } else {
+             AppContext.setOpenItem(qs.pos);
+             AppContext.setSelectedPositionIndex(qs.pos);
           }
-          // AppContext.setOpenItem(qs.pos);
-          // AppContext.setSelectedPositionIndex(qs.pos);
 
         }
       }
@@ -400,7 +400,7 @@
       /** Return new set to true */
       AppContext.isNewSet(true);
 
-   //   pager.more = _moreItems();
+      //   pager.more = _moreItems();
 
 
     }
@@ -429,7 +429,7 @@
       }
 
 
-     // pager.more = _moreItems();
+      // pager.more = _moreItems();
     }
 
 
@@ -446,7 +446,7 @@
       } else {
         QueryManager.setOffset(0);
       }
-      
+
       if (typeof qs.id !== 'undefined') {
         AppContext.setSelectedItemId(qs.id);
       } else {
@@ -624,7 +624,10 @@
 
         AppContext.isNewSet(true);
 
-        if (QueryManager.getAction() !== QueryActions.BROWSE) {
+        /**
+         * Browse and Search actions do not use query string.
+         */
+        if (QueryManager.getAction() !== QueryActions.BROWSE && QueryManager.getAction() !== QueryActions.SEARCH) {
           QueryManager.setOffset(0);
           QueryManager.setFilter('');
           AppContext.setStartIndex(0);
@@ -682,7 +685,7 @@
            * list using the field and sort order provided in
            * the query string.
            */
-          if (qs.filter === 'item' && qs.itype !=='i') {
+          if (qs.filter === 'item' && qs.itype !== 'i') {
             currentFilter = qs.filter;
             _itemFilter(qs.offset);
 
@@ -749,7 +752,7 @@
 
       }
     });
-    
+
 
     pager.nextUrl = function () {
 
@@ -771,6 +774,8 @@
       }
       url += '&offset=' + offset;
       url += '&new=false';
+
+      SetNextLinkInHeader.setNextLink(url);
 
       return url;
 
@@ -809,7 +814,6 @@
           QueryManager.setOffset(0);
           AppContext.setStartIndex(0);
         }
-
 
 
       }
@@ -861,7 +865,7 @@
         SolrDataLoader.setOffset(qs);
 
         if (qs.filter === 'item' && AppContext.isNewSet()) {
-          
+
           /**
            * Execute item filter.
            */

@@ -8,15 +8,14 @@
 (function () {
 
   /**
-   * Controller for the sort options component that is included in
-   * the parent itemList component.
-   * @param SolrQuery
-   * @param ListQueryFieldMap
-   * @param Utils
-   * @param QuerySort
+   * Discovery filter component.  
+   * @param $mdMedia
+   * @param DiscoveryFieldMap
+   * @param QueryModeMap
+   * @param Messages
    * @param QueryManager
-   * @constructor
-   */
+     * @constructor
+     */
   function DiscoverFilterCtrl($mdMedia,
                               DiscoveryFieldMap,
                               QueryModeMap,

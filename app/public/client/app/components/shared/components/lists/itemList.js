@@ -110,8 +110,6 @@
      */
     ctrl.onUpdate = function (results, count, field, offset, jump) {
 
-      console.log('updating list!')
-
       ctrl.ready = true;
 
       ctrl.jump = jump;
@@ -177,7 +175,7 @@
     };
 
     ctrl.resetListView = function () {
-      //ctrl.ready = false;
+      ctrl.ready = false;
       ctrl.items = [];
 
     };
