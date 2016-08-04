@@ -7,11 +7,13 @@
 
 (function () {
 
-  function FilterContainerController(Utils,
+  function FilterContainerController($location,
+                                     Utils,
                                      QueryManager,
                                      AppContext,
-                                     Messages,
-                                     SolrQuery) {
+                                     QueryTypes,
+                                     QuerySort,
+                                     Messages) {
 
     var ctrl = this;
 
@@ -49,31 +51,8 @@
        */
       AppContext.setPager(false);
 
+      $location.search({'field': QueryTypes.DISCOVER , 'sort': QuerySort.ASCENDING, 'terms': '', 'offset': 0, 'filters': QueryManager.discoveryFilterCount()});
 
-      /**
-       * Get promise.
-       * @type {*|{method}|Session}
-       */
-      var items = SolrQuery.save({
-        params: QueryManager.getQuery()
-
-      });
-      /**
-       * Handle the response.
-       */
-      items.$promise.then(function (data) {
-
-
-        QueryManager.setOffset(data.offset);
-
-
-        ctrl.onUpdate({
-          results: data.results,
-          count: data.count,
-          field: Utils.getFieldForQueryType()
-        });
-
-      });
     }
 
     /**

@@ -10,7 +10,11 @@
    * Community view controller.
    */
 
-  function CommunityCtrl(Messages, Utils, AppContext, $scope) {
+  function CommunityCtrl(Messages,
+                         Utils,
+                         AppContext,
+                         PageTitle,
+                         $scope) {
 
     var ctrl = this;
 
@@ -42,29 +46,53 @@
 
     ctrl.hasLogo = hasLogo;
 
-    /**
-     * Shows login message if the count of returned collections
-     * does not equal the total collections in the community.
-     * Assumes that some of the collections are hidden behind DSpace
-     * access restrictions.
-     */
-    if (ctrl.data.countItems === ctrl.data.itemTotal) {
-      ctrl.hideLoginMessage = true;
+    PageTitle.setTitle(ctrl.data.name);
 
-    }
+    /**
+     * Initialize login message to be hidden.
+     * @type {boolean}
+       */
+    ctrl.hideLoginMessage = true;
+
+
 
     /**
      * Watch for updates to the DSpace session status and show
      * or hide the login message in response. We don't want to
      * show the community's inline login component if the user
-     * is already logged in.  In this case, we can safely assume
+     * is already logged in.  In that case, we can safely assume
      * that the user does not have access to collections still
      * hidden behind DSpace authorizations.
      */
-    $scope.$watch(function() { return AppContext.hasDspaceSession()},
-      function(data) {
-        ctrl.hideLoginMessage = data;
+    $scope.$watch(function() { return AppContext.hasDspaceSession(); },
+      function(newValue, oldValue) {
+        if (newValue !== oldValue) {
+          ctrl.hideLoginMessage = newValue;
+        }
       });
+
+    /**
+     * Shows login message if the count of returned collections
+     * does not equal the total collections in the community.
+     * Will ignore count if the user has already logged in.
+     */
+    function showLoginMessage(dspaceTokenExists) {
+
+      if (!dspaceTokenExists) {
+        if (ctrl.data.countItems !== ctrl.data.itemTotal) {
+          ctrl.hideLoginMessage = false;
+
+        }
+      }
+    }
+
+    function init() {
+
+         Utils.checkStatus(showLoginMessage);
+
+    }
+
+    init();
 
   }
 

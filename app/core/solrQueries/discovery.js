@@ -79,7 +79,7 @@
     }
 
     function addDiscoveryFilters(filters) {
-      
+
       var fq = '';
       if (filters.length > 0) {
         for (var i = 0; i < filters.length; i++) {

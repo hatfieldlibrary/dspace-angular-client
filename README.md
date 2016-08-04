@@ -97,7 +97,7 @@ Create a `node` user on the system. Next, verify that your init.d startup script
 Next: 
  
 1. Copy the tar file to the production host.
-2. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service dspace stop).
+2. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service dspace_client stop).
 3. Unpack the tar file into the application directory.
 4. Set the owner and group for project all files (including .* files) to `node`.
 5. Start forever via the init.d script (e.g. /sbin/service dspace_client start).

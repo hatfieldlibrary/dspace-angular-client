@@ -2,11 +2,10 @@
 
   <h2 class="md-title" ng-if="$ctrl.isBrowseContext()">Browsing: {{$ctrl.browseTerms}}</h2>
 
-  <div class="filter-container intro" ng-if="$ctrl.context=='discover' || $ctrl.count > 10">
+  <div class="filter-container intro" ng-if="$ctrl.showDiscoverContainer">
 
-    <sort-options-component  ng-if="$ctrl.context!='discover'"
+    <sort-options-component ng-if="$ctrl.showOptions"
                             context="{{$ctrl.context}}"
-                            on-update="$ctrl.onUpdate(results, count, field)"
                             reset-list-view="$ctrl.resetListView()">
     </sort-options-component>
 
@@ -17,11 +16,11 @@
 
   </div>
 
-  <div ng-if="$ctrl.count <= 10" class="md-body-1 md-accent layout-padding" style="padding-top: 30px;">
-    {{$ctrl.resultCountLabel}} {{$ctrl.count}}
-  </div>
+  <!--<div ng-if="$ctrl.count <= 10" class="md-body-1 md-accent layout-padding" style="padding-top: 30px;">-->
+  <!--{{$ctrl.resultCountLabel}} {{$ctrl.count}}-->
+  <!--</div>-->
 
-  <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent layout-padding">{{$ctrl.resultCountLabel}} {{$ctrl.count}}
+  <div class="md-body-1 md-accent layout-padding">{{$ctrl.resultMessage}}
   </div>
 
   <md-divider></md-divider>
@@ -29,28 +28,29 @@
 
   <div flex="100" layout-fill layout="column" style="min-height: 100%;margin-top: -12px;">
 
-    <pager-back-component ng-if="$ctrl.showPager"
-
-                          on-update="$ctrl.onPreviousUpdate(results, index)">
+    <pager-back-component ng-if="$ctrl.jump"
+                          context="$ctrl.context">
 
     </pager-back-component>
 
     <small-spinner ng-hide="$ctrl.ready"></small-spinner>
 
-    <md-list ng-if="$ctrl.ready">
+    <md-list ng-show="$ctrl.ready">
+
 
       <item-detail-component
 
-        ng-if="$ctrl.field!='author' && $ctrl.field!='subject' && $ctrl.field!=='discover'"
+        ng-if="$ctrl.field!='author' && $ctrl.field!='subject' && $ctrl.field!='discover'"
         ng-repeat="col in $ctrl.items"
-        class="animate"
+        class="repeat-animation"
         title="{{col.title}}"
         author="col.author"
         publisher="{{col.publisher}}"
         year="{{col.year}}"
         handle="{{col.handle}}"
         abstract="{{col.abstract}}"
-        id="{{col.id}}">
+        id="{{col.id}}"
+        pos="{{$index}}">
 
       </item-detail-component>
 
@@ -60,14 +60,15 @@
         ng-repeat="au in $ctrl.items"
         class="'animate'"
         ng-class="{'selected': $index==$ctrl.selectedIndex}"
-        author="{{au.author.value}}"
-        count="{{au.author.count}}"
+        author="{{au.item.value}}"
+        count="{{au.item.count}}"
         type="{{$ctrl.type}}"
         id="{{$ctrl.id}}"
-        index="{{$index}}"
+        pos="{{$index}}"
         field="{{$ctrl.field}}"
+        abstract="{{col.abstract}}"
         last="$last"
-        set-selected="$ctrl.setSelected(index)">
+        set-selected="$ctrl.setSelected(pos)">
 
       </author-detail-component>
 
@@ -76,14 +77,15 @@
         ng-if="$ctrl.field=='subject'"
         ng-repeat="sub in $ctrl.items"
         ng-class="{'selected': $index==$ctrl.selectedIndex}"
-        subject="{{sub.author.value}}"
-        count="{{sub.author.count}}"
+        subject="{{sub.item.value}}"
+        count="{{sub.item.count}}"
         type="{{$ctrl.type}}"
         id="{{$ctrl.id}}"
-        index="{{$index}}"
+        pos="{{$index}}"
         field="{{$ctrl.field}}"
+        abstract="{{col.abstract}}"
         last="$last"
-        set-selected="$ctrl.setSelected(index)">
+        set-selected="$ctrl.setSelected(pos)">
 
       </subject-detail-component>
 
@@ -106,9 +108,15 @@
 
     <pager-component
 
-      on-update="$ctrl.onPagerUpdate(results, count, field)">
+      on-pager-update="$ctrl.onPagerUpdate(results, count, field)"
+      on-prev-update="$ctrl.onPreviousUpdate(results, count, field)"
+      on-new-set="$ctrl.onUpdate(results, count, field, offset, jump)"
+      context="{{$ctrl.context}}">
 
     </pager-component>
+
+    <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent layout-padding">{{$ctrl.resultMessage}}
+    </div>
 
     <p>&nbsp;</p>
   </div>

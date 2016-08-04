@@ -8,11 +8,13 @@
 
   function SubjectDetailController($scope,
                                    $location,
+                                   $window,
                                    $mdMedia,
                                    Utils,
                                    QueryManager,
                                    QueryTypes,
                                    AppContext,
+                                   QueryActions,
                                    QueryStack,
                                    InlineBrowseRequest) {
 
@@ -20,6 +22,28 @@
     var ctrl = this;
 
     ctrl.ready = false;
+
+    function getResults() {
+
+      var result = InlineBrowseRequest.query(
+        {
+          type: ctrl.type,
+          id: ctrl.id,
+          qType: QueryTypes.ITEMS_BY_SUBJECT,
+          field: ctrl.field,
+          sort: ctrl.sort,
+          terms: encodeURI(ctrl.subject),
+          offset: 0,
+          rows: 10
+        }
+      );
+      result.$promise.then(function (data) {
+        ctrl.ready = true;
+        ctrl.items = data;
+      });
+
+
+    }
 
     /**
      * The current application context.
@@ -40,7 +64,7 @@
      * @type {number}
      */
     ctrl.selectedIndex = -1;
-    AppContext.setCurrentIndex(-1);
+   // AppContext.setCurrentIndex(-1);
 
     ctrl.xsSelectedIndex = -1;
 
@@ -52,7 +76,7 @@
      * on the parent component, using the provided callback.
      */
     ctrl.setSelectedIndex = function () {
-      ctrl.setSelected({index: ctrl.index});
+      ctrl.setSelected({pos: ctrl.pos});
 
     };
 
@@ -60,7 +84,7 @@
      * Gets the integer used to set the css style for height.
      * The upper limit value is 10.
      * @returns {*}
-       */
+     */
     ctrl.getHeightForCount = function () {
       return Utils.getHeightForCount(ctrl.count);
     };
@@ -71,29 +95,46 @@
     ctrl.getItems = function () {
 
       if (ctrl.count <= 10) {
-        // Before executing browse query, add the current
-        // query to the stack.
-        QueryStack.replaceWith(QueryManager.getQuery());
 
-        var result = InlineBrowseRequest.query(
-          {
-            type: ctrl.type,
-            id: ctrl.id,
-            qType: QueryTypes.SUBJECT_SEARCH,
-            field: ctrl.field,
-            sort: ctrl.sort,
-            terms: encodeURI(ctrl.subject),
-            offset: 0,
-            rows: 10
-          }
-        );
-        result.$promise.then(function (data) {
-          ctrl.ready = true;
-          ctrl.items = data;
-        });
+        /**
+         * Add item id and position to the query string.
+         */
+        Utils.setLocationForItem(ctrl.id, ctrl.pos);
+
+
+        /**
+         * Tell the app not to load a new set of results.
+         */
+        AppContext.isNewSet(false);
+        getResults();
 
       } else {
-        $location.path('/ds/browse/' + ctrl.type + '/' + ctrl.id + '/' + ctrl.field + '/' + ctrl.sort + '/' + ctrl.subject + '/0/' + AppContext.getSetSize());
+        /**
+         * To many results to show inline.  Switch to
+         * browse view.
+         */
+        QueryManager.setAction(QueryActions.BROWSE);
+        var qs = $location.search();
+
+        var setSize = AppContext.getSetSize();
+
+        var newOffset = qs.offset;
+
+        if (qs.pos > 20) {
+          newOffset =  parseInt(qs.offset, 10) - ((Math.floor(ctrl.pos / setSize) * setSize) + 20);
+        }
+        
+        var query = $window.location.search.toString();
+
+        var newQs = query.replace(/offset=([^&]*)/, 'offset=' + newOffset);
+
+        /** Add current path to stack **/
+        var path = $window.location.pathname + newQs;
+        QueryStack.push(path);
+        /** clear query */
+        $location.search({});
+        /** redirect */
+        $location.path('/ds/browse/' + ctrl.type + '/' + ctrl.id + '/' + QueryTypes.ITEMS_BY_SUBJECT + '/' + ctrl.field + '/' + ctrl.sort + '/' + ctrl.subject + '/0/' + AppContext.getSetSize());
 
       }
 
@@ -104,9 +145,14 @@
      * Sets a $watch on the context's currentListIndex.
      */
     $scope.$watch(
-      'context.currentListIndex',
-      function updateSelecteIndex(newValue, oldValue) {
-        if (newValue !== oldValue) {
+      function () {
+        return AppContext.getSelectedPositionIndex();
+      },
+      function (newValue) {
+        if (newValue === parseInt(ctrl.pos)) {
+
+          getResults();
+
           if (($mdMedia('sm') || $mdMedia('xs'))) {
             ctrl.xsSelectedIndex = newValue;
 
@@ -114,6 +160,9 @@
             ctrl.selectedIndex = newValue;
 
           }
+
+        } else {
+          ctrl.selectedIndex = -1;
         }
       }
     );
@@ -130,6 +179,7 @@
       id: '@',
       index: '@',
       field: '@',
+      pos: '@',
       last: '<',
       setSelected: '&'
 

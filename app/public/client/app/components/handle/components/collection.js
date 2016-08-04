@@ -9,11 +9,12 @@
   /**
    * Component controller.
    */
-  function CollectionCtrl(QueryManager, 
-                          QueryActions, 
-                          QueryTypes, 
-                          QuerySort, 
-                          QueryStack, 
+  function CollectionCtrl(
+                          QueryManager,
+                          QueryActions,
+                          QueryTypes,
+                          QuerySort,
+                          PageTitle,
                           Utils) {
 
     var ctrl = this;
@@ -43,34 +44,33 @@
     ctrl.hasLogo = hasLogo;
 
     function doInitialization() {
+
+        /**
+         * Default field.
+         */
+        QueryManager.setQueryType(QueryTypes.DATES_LIST);
+
+        /**
+         * Default sort order.
+         */
+        QueryManager.setSort(QuerySort.DESCENDING);
+
       /**
        * Set query action to retrieve list.
        */
       QueryManager.setAction(QueryActions.LIST);
-      /**
-       * Set query type to title list.
-       */
-      QueryManager.setQueryType(QueryTypes.DATES_LIST);
-      
-      
-      QueryManager.setSort(QuerySort.DESCENDING);
+
 
     }
-    
+
     function init() {
 
-      if (QueryStack.isEmpty()) {
+      PageTitle.setTitle(ctrl.data.name);
+
         doInitialization();
 
-      } else {
-
-        QueryManager.setQuery(QueryStack.pop());
-
-        QueryStack.print();
-      }
-
-
     }
+
     // Initialize component state.
     init();
 

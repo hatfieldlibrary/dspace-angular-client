@@ -37,13 +37,13 @@
         count++;
 
       }
-      // The even indicies contain author information.  Add to
+      // The even indices contain author information.  Add to
       // the authorObj.
       else {
 
         authorObj = {};
         var author = authors[i].split('|||');
-        // remove carriage returns, etc. 
+        // remove carriage returns, etc.
         authorObj.value = author[1].replace(/^[\n\r]+/, '');
 
       }
@@ -124,12 +124,13 @@
    * @returns {{}}
    */
   exports.processItems = function (solrResponse) {
-    
+
     var json = solrResponse.response.docs;
 
     var ret = {};
     var resultArr = [];
-    
+
+
     for (var i = 0; i < json.length; i++) {
       var tmp = {};
       if (json[i]['dc.title'] !== undefined) {
@@ -153,7 +154,7 @@
       }
       resultArr[i] = tmp;
     }
-    
+
     ret.offset = solrResponse.response.start;
     ret.results = resultArr;
     ret.count = solrResponse.response.numFound;

@@ -9,10 +9,10 @@
 
 
   function CommunitiesCtrl(GetCommunities,
-                           QueryStack,
                            QueryManager,
                            AssetTypes,
-                           Messages) {
+                           Messages,
+                           PageTitle) {
 
     var ctrl = this;
 
@@ -32,7 +32,8 @@
      */
     ctrl.communities = {};
 
-    QueryStack.clear();
+    PageTitle.setTitle(Messages.COMMUNITIES_LIST_HEADING);
+
 
     QueryManager.setAssetType(AssetTypes.COMMUNITY_LIST);
 
@@ -43,7 +44,7 @@
     }, function (err) {
       console.log('Error status: ' + err.status + ' - ' + err.statusText);
     });
-    
+
   }
 
   dspaceComponents.component('communitiesComponent', {

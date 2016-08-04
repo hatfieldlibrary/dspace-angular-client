@@ -8,20 +8,21 @@ var utils = require('../core/utils');
 var queryGenerator = require('../core/queryGenerator');
 
 (function () {
-  
+
   /**
    * Returns API response for handle.
    */
   module.exports = function (query, res, session) {
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
+    
 
     /**
      * Get the solr URL.
      * @type {string}
      */
     var solrUrl = queryGenerator.getOffsetUrl(query, dspaceTokenHeader);
-    
+
     /**
      * The request-promise.
      */
@@ -51,12 +52,12 @@ var queryGenerator = require('../core/queryGenerator');
    * @returns {{}}
    */
   function processResult(solrResponse) {
-   
-    
+
+
     return {offset: solrResponse.response.numFound - 1};
-          
-    
-    
+
+
+
   }
 
 

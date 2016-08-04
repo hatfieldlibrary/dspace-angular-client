@@ -79,7 +79,7 @@
       else if (query.params.query.qType === constants.QueryType.DATES_LIST) {
 
         solrUrl = datesList(query, dspaceToken);     // list items by date
-        
+
       }
 
     }

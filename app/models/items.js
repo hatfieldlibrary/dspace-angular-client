@@ -91,7 +91,6 @@ var utils = require('../core/utils');
       bits[i] = tmpItem;
     }
     ret.bitstreams = bits;
-
     return ret;
 
   }

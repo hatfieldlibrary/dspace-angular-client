@@ -62,9 +62,11 @@
     FILTER_REMOVE_BUTTON_LABEL: 'Remove Filter',
 
     /**
-     * Takes the form 'n label' where n is number of results and label is the string constant.
+     * String interpolated using current start index, last item in view and total result count
      */
-    RESULTS_LABEL: 'Results:',
+    RESULTS_LABEL: 'Viewing {0} - {1} of {2}',
+
+    NO_RESULTS_LABEL: 'Sorry, no results for this query.',
 
     LOGOUT_LABEL: 'Logout',
 
@@ -120,7 +122,13 @@
 
     SORT_OPTIONS_ASCENDING: 'Ascending',
 
-    SORT_OPTIONS_DESCENDING: 'Descending'
+    SORT_OPTIONS_DESCENDING: 'Descending',
+
+    UNABLE_TO_ACCESS_CONTENT: 'We are unable to access the content you requested.',
+
+    ADMINISTRATOR_CONTACT: 'Bill Kelm',
+
+    ADMINISTRATOR_EMAIL: 'bkelm@willamette.edu'
 
   });
 

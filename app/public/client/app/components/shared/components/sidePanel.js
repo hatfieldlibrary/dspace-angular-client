@@ -60,6 +60,7 @@ function SideNavCtrl($scope,
 
     ctrl.submitInstructionsLink = Messages.SUBMIT_INSTRUCTIONS_LINK;
 
+
   }
 
   init();
@@ -110,21 +111,23 @@ function SideNavCtrl($scope,
 
         if (newValue === AssetTypes.COLLECTION) {
           ctrl.actionType = 'Collection';
+          ctrl.service = 'collection';
           ctrl.itemHandle = QueryManager.getHandle();
           ctrl.itemId = QueryManager.getAssetId();
           ctrl.canSubmit = AppContext.getSubmitPermission();
           ctrl.isSystemAdmin = false; // not needed
           ctrl.canAdminister = AppContext.getAdministerPermission();
-          ctrl.showSubmitInstuctions = true;
+          ctrl.showSubmitInstuctions = ctrl.canSubmit;
 
         }
         else if (newValue === AssetTypes.COMMUNITY) {
           ctrl.actionType = 'Community';
+          ctrl.service = 'community';
           ctrl.itemId = QueryManager.getAssetId();
           ctrl.canSubmit = false;
           ctrl.isSystemAdmin = false; // not needed
           ctrl.canAdminister = AppContext.getAdministerPermission();
-          ctrl.showSubmitInstuctions = true;
+          ctrl.showSubmitInstuctions = false;
 
         }
         else if (newValue === AssetTypes.ITEM) {
@@ -141,7 +144,7 @@ function SideNavCtrl($scope,
       }
     }
   );
-  
+
   /**
    * Since we cannot use AssetType with Discovery queries, we need
    * to add another watch.  It would be nice to eliminate this one,

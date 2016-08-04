@@ -13,13 +13,15 @@
     '$mdDialog',
     '$mdMedia',
     'ItemById',
+    'PageTitle',
     'AppContext',
 
-    function ($mdDialog,
+    function (
+              $mdDialog,
               $mdMedia,
               /*jshint unused:false */
               ItemById,
-              AppContext) {
+              PageTitle) {
 
       /**
        * Dialog controller.
@@ -55,7 +57,7 @@
         ctrl.abstractLabel = Messages.ITEM_ABSTRACT_LABEL;
 
         ctrl.metadataLabel = Messages.ITEM_METADATA_LABEL;
-        
+
         ctrl.parentCollectionLabel = Messages.PARENT_COLLECTION_LABEL;
 
         ctrl.dspaceHost = AppContext.getDspaceHost();
@@ -86,6 +88,7 @@
           ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
           ctrl.canWrite = AppContext.getWritePermission();
           ctrl.itemId = data.id;
+          PageTitle.setTitle(data.name);
 
         });
 

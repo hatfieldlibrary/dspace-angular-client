@@ -8,10 +8,29 @@
 (function () {
 
   dspaceContext.service('AppContext', [
-    'AppConfig',
-    function (AppConfig) {
+    'AppConfig', 'QuerySort', 'QueryManager', 'QueryTypes',
+    function (AppConfig, QuerySort, QueryManager, QueryTypes) {
+
+      /**
+       * Reverses the array values.  Used to sort subjects
+       * and authors by ascending and descending.
+       * @param arr
+       */
+      function reverseArray(arr) {
+        var i = 0;
+        var j = arr.length - 1;
+        while (i < j) {
+          var x = arr[i];
+          arr[i] = arr[j];
+          arr[j] = x;
+          i++;
+          j--;
+        }
+      }
 
       var _context = {
+
+        isFilter: false,
 
         /**
          * The array of authors returned by browse/sort by author query. This is
@@ -25,8 +44,42 @@
          * paging request.
          */
         subjectArray: [],
+
         /**
-         * The index of the currently list item.  This is currently used by author
+         * The pager component is shared by the collection and browse components.  When the
+         * user moves from list to browse view, the list offset value is tracked outside
+         * of the query object so that it can be restored on return to the list view.  Default
+         * to zero.
+         */
+        listOffset: 0,
+
+        startIndex: 0,
+
+        selectedItemId: -1,
+
+        openItem: -1,
+
+        /**
+         * These values are set by the sort options component, which is shared by collection
+         * and browse components.  We need to track the 'list' and 'browse' states separately
+         * so that the loader knows whether author and subject arrays need to be reversed.
+         * That is determined by comparing the query string's sort order with the one
+         * tracked here.  Default to ascending.
+         */
+        listOrder: QuerySort.ASCENDING,
+
+        authorOrder: QuerySort.ASCENDING,
+
+        subjectOrder: QuerySort.ASCENDING,
+
+        nextPagerOffset: 0,
+
+        previousPagerOffset: 0,
+
+        newSet: true,
+
+        /**
+         * The index of the currently selected list item.  This is used by author
          * and subject facets to activate a card that contains item information.
          */
         currentListIndex: -1,
@@ -74,6 +127,14 @@
 
       function getContext() {
         return _context;
+      }
+
+      function isFilter(filter) {
+        if (typeof filter !== 'undefined') {
+          _context.isFilter = filter;
+        } else {
+          return _context.isFilter;
+        }
       }
 
       function getDspaceHost() {
@@ -124,8 +185,21 @@
         return _context.canSubmit;
       }
 
-      function setCurrentIndex(index) {
-        _context.currentListIndex = index;
+      function reverseAuthorList() {
+        reverseArray(_context.authorArray);
+      }
+
+      function reverseSubjectList() {
+        reverseArray(_context.subjectArray);
+
+      }
+
+      function setSelectedPositionIndex(index) {
+        _context.currentListIndex = +index;
+      }
+
+      function getSelectedPositionIndex() {
+        return _context.currentListIndex;
       }
 
       function setAuthorsList(list) {
@@ -213,14 +287,112 @@
       function hasDspaceSession() {
         return _context.hasDspaceSession;
       }
-      
+
       function updateDspaceSession(hasSession) {
         _context.hasDspaceSession = hasSession;
       }
 
+      function setListOffset(offset) {
+        _context.listOffset = offset;
+      }
+
+      function getListOffset() {
+        return _context.listOffset;
+      }
+
+      function setListOrder(order) {
+        _context.listOrder = order;
+      }
+
+      function getListOrder() {
+        return _context.listOrder;
+      }
+
+      function setAuthorsOrder(order) {
+        _context.authorOrder = order;
+      }
+
+      function getAuthorsOrder() {
+        return _context.authorOrder;
+      }
+
+      function setSubjectsOrder(order) {
+        _context.subjectOrder = order;
+      }
+
+      function getSubjectsOrder() {
+        return _context.subjectOrder;
+      }
+
+      function isNewSet(newSet) {
+        if (typeof newSet !== 'undefined') {
+          _context.newSet = newSet;
+        } else {
+          return _context.newSet;
+        }
+      }
+
+      function setStartIndex(index) {
+        _context.startIndex = +index;
+      }
+
+      function getStartIndex() {
+        return _context.startIndex;
+      }
+
+      function isAuthorListRequest() {
+        return (QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS);
+      }
+
+      function isSubjectListRequest() {
+        return (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS);
+      }
+
+      function isDiscoveryListRequest() {
+        return (QueryManager.getQueryType() === QueryTypes.DISCOVER);
+      }
+
+      function isNotFacetQueryType() {
+        return !isAuthorListRequest() && !isSubjectListRequest();
+      }
+
+      function setOpenItem(itemPosition) {
+        _context.openItem = +itemPosition;
+      }
+
+      function getOpenItem () {
+        return _context.openItem;
+      }
+
+      function setSelectedItemId(itemId) {
+        _context.selectedItemId = itemId;
+      }
+
+      function getSelectedItemId() {
+        return _context.selectedItemId;
+      }
+
+      function setNextPagerOffset(offset) {
+        _context.nextPagerOffset = offset;
+      }
+
+      function getNextPagerOffset() {
+        return _context.nextPagerOffset;
+      }
+
+      function setPreviousPagerOffset(offset) {
+        _context.previousPagerOffset = offset;
+      }
+
+      function getPreviousPagerOffset() {
+        return _context.previousPagerOffset;
+      }
+
+
       return {
 
         getContext: getContext,
+        isFilter: isFilter,
         getDspaceHost: getDspaceHost,
         getDspaceRoot: getDspaceRoot,
         getHandlePrefix: getHandlePrefix,
@@ -233,7 +405,10 @@
         getWritePermission: getWritePermission,
         setSubmitPermission: setSubmitPermission,
         getSubmitPermission: getSubmitPermission,
-        setCurrentIndex: setCurrentIndex,
+        reverseAuthorList: reverseAuthorList,
+        reverseSubjectList: reverseSubjectList,
+        setSelectedPositionIndex: setSelectedPositionIndex,
+        getSelectedPositionIndex: getSelectedPositionIndex,
         setAuthorsList: setAuthorsList,
         setSubjectList: setSubjectList,
         getAuthors: getAuthors,
@@ -254,9 +429,32 @@
         getHomeLogo: getHomeLogo,
         getHomeLink: getHomeLink,
         hasDspaceSession: hasDspaceSession,
-        updateDspaceSession: updateDspaceSession
+        updateDspaceSession: updateDspaceSession,
+        setListOffset: setListOffset,
+        getListOffset: getListOffset,
+        setListOrder: setListOrder,
+        getListOrder: getListOrder,
+        setAuthorsOrder: setAuthorsOrder,
+        getAuthorsOrder: getAuthorsOrder,
+        setSubjectsOrder: setSubjectsOrder,
+        getSubjectsOrder: getSubjectsOrder,
+        isAuthorListRequest: isAuthorListRequest,
+        isSubjectListRequest: isSubjectListRequest,
+        isDiscoveryListRequest: isDiscoveryListRequest,
+        isNotFacetQueryType: isNotFacetQueryType,
+        isNewSet: isNewSet,
+        setStartIndex: setStartIndex,
+        getStartIndex: getStartIndex,
+        setOpenItem: setOpenItem,
+        getOpenItem: getOpenItem,
+        setSelectedItemId: setSelectedItemId,
+        getSelectedItemId: getSelectedItemId,
+        setNextPagerOffset: setNextPagerOffset,
+        getNextPagerOffset: getNextPagerOffset,
+        setPreviousPagerOffset: setPreviousPagerOffset,
+        getPrevousPagerOffset: getPreviousPagerOffset
 
-      }
+      };
 
     }]);
 

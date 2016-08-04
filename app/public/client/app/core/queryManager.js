@@ -2,14 +2,13 @@
 
 /**
  * The query manager service is used to configure REST and solr
- * queries. 
+ * queries.
  */
 dspaceContext.service('QueryManager', [
   'QueryTypes',
   'QueryActions',
   'QuerySort',
   'QueryFields',
-  'AppContext',
 
   function (QueryTypes,
             QueryActions,
@@ -130,17 +129,6 @@ dspaceContext.service('QueryManager', [
       return _context.query.query.offset;
     }
 
-    function isAuthorListRequest() {
-      return (_context.query.query.qType === QueryTypes.AUTHOR_FACETS);
-    }
-
-    function isSubjectListRequest() {
-      return (_context.query.query.qType === QueryTypes.SUBJECT_FACETS);
-    }
-
-    function isDiscoveryListRequest() {
-      return (_context.query.query.qType === QueryTypes.DISCOVER);
-    }
 
     function setAssetType(type) {
       _context.query.asset.type = type;
@@ -216,6 +204,10 @@ dspaceContext.service('QueryManager', [
 
     }
 
+    function discoveryFilterCount() {
+      return _context.query.filters.length;
+    }
+
     function clearDiscoveryFilters() {
       _context.query.filters = [];
     }
@@ -235,9 +227,7 @@ dspaceContext.service('QueryManager', [
       getJumpType: getJumpType,
       setOffset: setOffset,
       getOffset: getOffset,
-      isAuthorListRequest: isAuthorListRequest,
-      isSubjectListRequest: isSubjectListRequest,
-      isDiscoveryListRequest: isDiscoveryListRequest,
+
       setAssetType: setAssetType,
       getAssetType: getAssetType,
       setAssetId: setAssetId,
@@ -256,7 +246,8 @@ dspaceContext.service('QueryManager', [
       getSort: getSort,
       addDiscoveryFilter: addDiscoveryFilter,
       removeDiscoveryFilter: removeDiscoveryFilter,
-      clearDiscoveryFilters: clearDiscoveryFilters
+      clearDiscoveryFilters: clearDiscoveryFilters,
+      discoveryFilterCount: discoveryFilterCount
 
     };
 

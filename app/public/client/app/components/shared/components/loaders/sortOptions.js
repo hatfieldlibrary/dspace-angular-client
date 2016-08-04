@@ -7,55 +7,46 @@
 (function () {
 
   /**
-   * Controller for the sort options component that is included in
-   * the parent itemList component.
-   * @param SolrQuery
-   * @param ListQueryFieldMap
+   * Controller for sort options.
+   * @param $scope
+   * @param $location
+   * @param $timeout
+   * @param $mdMedia
+   * @param CollectionQueryFieldMap
+   * @param BrowseQueryFieldMap
+   * @param ListSortOrderMap
    * @param Utils
+   * @param Messages
    * @param QuerySort
+   * @param QueryTypes
+   * @param AppContext
    * @param QueryManager
    * @constructor
    */
-  function SortOptionsCtrl($timeout,
+  function SortOptionsCtrl($scope,
+                           $location,
+                           $timeout,
                            $mdMedia,
-                           SolrQuery,
-                           SolrJumpToQuery,
                            CollectionQueryFieldMap,
                            BrowseQueryFieldMap,
                            ListSortOrderMap,
                            Utils,
                            Messages,
                            QuerySort,
-                           QueryFields,
                            QueryTypes,
                            AppContext,
+                           SolrDataLoader,
                            QueryManager) {
 
     var ctrl = this;
 
+    var defaultField;
+
+    var defaultOrder;
+
     ctrl.fieldLabel = Messages.SORT_BY_FIELD_LABEL;
 
     ctrl.orderLabel = Messages.SORT_ORDER_LABEL;
-
-    /**
-     * The start position for results returned by solr.
-     * @type {number}
-     */
-    var start = 0;
-    /**
-     * The end value is used to get a slice from the author array.
-     * @type {number}
-     */
-    var setSize = 20;
-
-
-    ctrl.filterTerms = '';
-
-    /**
-     * Set default display list type to TITLE.
-     * @type {string}
-     */
-    var displayListType = QueryFields.DATE;
 
     /**
      * The AssetType (collection)
@@ -67,28 +58,6 @@
     ctrl.id = QueryManager.getAssetId();
 
     /**
-     * Label/Value map for query fields (title, author, subject, date)
-     * @type {*[]}
-     */
-    if (ctrl.context === 'collection') {
-      ctrl.fields = CollectionQueryFieldMap.fields;
-      /**
-       * The selected field is initialized to title.
-       * @type {string}
-       */
-      ctrl.selectedField = QueryManager.getQueryType();
-
-    }
-    else if (ctrl.context === 'browse') {
-      ctrl.fields = BrowseQueryFieldMap.fields;
-      /**
-       * The selected field is initialized to title.
-       * @type {string}
-       */
-      ctrl.selectedField = BrowseQueryFieldMap.fields[0].value;
-    }
-
-    /**
      * Label/Value map for the sort order.
      * @type {Array}
      */
@@ -98,15 +67,12 @@
      * The current sort order.
      */
     ctrl.selectedOrder = QueryManager.getSort();
-
-
     /**
-     * The default placeholder message for the filter query.
-     * @type {string}
+     * The current query filter.
      */
-    ctrl.placeholder = Messages.SORT_JUMP_TO_YEAR_LABEL;
-
     ctrl.filterTerms = QueryManager.getFilter();
+
+    ctrl.selectedField = QueryTypes.DATES_LIST;
 
     if (($mdMedia('sm') || $mdMedia('xs'))) {
       ctrl.fieldSelectorWidth = '50';
@@ -118,251 +84,214 @@
 
     }
 
-
     /**
-     * Handle the result of field queries. This function exists
-     * to preprocess data from author and subject results before sending
-     * to the parent component.
-     * @param data
+     * Watch for changes to query type triggered by a
+     * query string update.
      */
-    function handleResult(data) {
-
-      var end;
-
-      if (QueryManager.isAuthorListRequest()) {
-
-        displayListType = QueryFields.AUTHOR;
-
-        /**
-         * Add the author array to shared context.
-         * @type {string|Array|*}
-         */
-        AppContext.setAuthorsList(data.facets);
-
-        /**
-         * Total item is authors list.
-         */
-        data.count = AppContext.getAuthorsCount();
-        /**
-         * The count of items remaining in list.
-         * @type {*}
-         */
-        end = Utils.getPageListCount(data.count, setSize);
-
-
-        /** Add authors to the current result set. */
-        data.results = Utils.authorArraySlice(start, start + end);
-
-
-      }
-
-      else if (QueryManager.isSubjectListRequest()) {
-
-        displayListType = QueryFields.SUBJECT;
-
-        /**
-         * Add the author array to shared context.
-         * @type {string|Array|*}
-         */
-        AppContext.setSubjectList(data.facets);
-
-        /**
-         * Total items in subject list.
-         */
-        data.count = AppContext.getSubjectsCount();
-
-        /**
-         * The count of items remaining in list.
-         * @type {*}
-         */
-        end = Utils.getPageListCount(data.count, setSize);
-
-        /** Add subjects to the current result set. */
-        data.results = Utils.subjectArraySlice(start, start + end);
-
-      }
-      else {
-        /**
-         * Fields other than author and subject use the title list type
-         * @type {string}
-         */
-        displayListType = QueryFields.TITLE;
-
-      }
-
-      AppContext.setCount(data.count);
-
-      /**
-       * Update parent component.
-       */
-      ctrl.onUpdate({
-        results: data.results,
-        count: data.count,
-        field: displayListType
+    $scope.$watch(function () {
+        return QueryManager.getQueryType();
+      },
+      function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+          ctrl.selectedField = newValue;
+          // Since we are not CURRENTLY tracking filter
+          // terms in history, reset the bound values
+          // to empty string.
+          ctrl.filterTerms = '';
+        }
       });
 
-      $timeout(function () {
-        /**
-         * Set pager in context.  (The pager component
-         * will show the pager button.)
-         */
-        AppContext.setPager(true);
-      }, 300);
+    /**
+     * Watch for changes to sort order triggered by a
+     * query string update.
+     */
+    $scope.$watch(function () {
+        return QueryManager.getSort();
+      },
+      function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+          ctrl.selectedOrder = newValue;
 
+          ctrl.filterTerms = '';
+        }
+      });
+
+    function init() {
+
+      /**
+       * Label/Value map for query fields (title, author, subject, date)
+       * @type {*[]}
+       */
+      if (ctrl.context === 'collection') {
+        ctrl.fields = CollectionQueryFieldMap.fields;
+        /**
+         * The selected field is initialized to title.
+         * @type {string}
+         */
+        ctrl.selectedField = QueryManager.getQueryType();
+
+        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
+
+      }
+      else if (ctrl.context === 'browse') {
+        ctrl.fields = BrowseQueryFieldMap.fields;
+        /**
+         * The selected field is initialized to title.
+         * @type {string}
+         */
+        ctrl.selectedField = BrowseQueryFieldMap.fields[0].value;
+
+        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
+
+      }
+
+      /**
+       * The search object will be empty on initial load.
+       */
+      if (Object.keys($location.search()).length === 0) {
+        /**
+         * The default placeholder message for the filter query.
+         * @type {string}
+         */
+        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
+      }
+
+      /**
+       * Author and subject facets execute a new search
+       */
+      if (ctrl.selectedField === QueryTypes.SUBJECT_FACETS ||
+        ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
+        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
+      }
     }
+
+    init();
+
 
     /**
      * Executes filter query.
      */
-    var doJump = function () {
+    var doJump = function (filterType) {
+
+      AppContext.setOpenItem(-1);
+
+
 
       /**
-       * Get promise.
-       * @type {*|{method}|Session}
+       * Set application context to expect a new set.
        */
-      var items = SolrJumpToQuery.save({
-        params: QueryManager.getQuery()
-      });
-      /**
-       * Handle the response.
-       */
-      items.$promise.then(function (data) {
+      AppContext.isNewSet(true);
 
-        ctrl.resetListView();
-        QueryManager.setOffset(data.offset);
-        /**
-         * Update parent component.
-         */
-        ctrl.onUpdate({
-          results: data.results,
-          count: data.count,
-          field: displayListType
-        });
-      });
+      AppContext.setOpenItem(-1);
+      AppContext.setSelectedItemId(-1);
+
+      var qs = $location.search();
+
+      qs.filter = filterType;
+      qs.terms = ctrl.filterTerms;
+      qs.new='true';
+     // if (ctrl.filterTerms.length === 0) {
+        qs.offset = 0;
+     // }
+      delete qs.pos;
+      delete qs.id;
+      delete qs.itype;
+      $location.search(qs);
 
     };
-
     /**
      * Executes query to retrieve a fresh result set.
      */
     var doSearch = function () {
-
-
       /**
-       * Set pager in context.  (The pager component will
-       * hide the pager button.)
+       * Tell the application to hide the pager.
        */
       AppContext.setPager(false);
+      /**
+       * Reset the application's start index back to
+       * beginning.
+       */
+      AppContext.setStartIndex(0);
 
       /**
-       * Get promise.
-       * @type {*|{method}|Session}
+       * Set application context to expect a new set.
        */
-      var items = SolrQuery.save({
-        params: QueryManager.getQuery()
+      AppContext.isNewSet(true);
 
-      });
       /**
-       * Handle the response.
+       * Using a hybrid approach here.  If an id exists
+       * in the query string, we just update the location
+       * search string and let pager do the work.
+       *
+       * If an id does not exist in the query string, then
+       * execute the search from here.
+       * @type {Number|*}
        */
-      items.$promise.then(function (data) {
-        ctrl.resetListView();
-        QueryManager.setOffset(data.offset);
-        handleResult(data);
-      });
+      var qs = $location.search();
+      qs.field = QueryManager.getQueryType();
+      qs.sort = QueryManager.getSort();
+      qs.terms = '';
+      qs.offset = 0;
+      qs.filter = 'none';
+      qs.new = 'true';
+      delete qs.pos;
+      delete qs.id;
+      delete qs.itype;
+
+      $location.search(qs);
+
     };
+
+    $scope.$on('$locationChangeSuccess', function () {
+
+      var qs = $location.search();
+
+      if (Object.keys(qs).length !== 0) {
+        if (qs.field === QueryTypes.SUBJECT_FACETS ||
+          qs.field === QueryTypes.AUTHOR_FACETS) {
+
+          defaultField = qs.field;
+          defaultOrder = qs.sort;
+
+          QueryManager.setQueryType(qs.field);
+          QueryManager.setSort(qs.sort);
+
+        }
+      }
+
+    });
+
 
     /**
      * Toggle the sort order (ASCENDING, DESCENDING)
      */
     ctrl.resetOrder = function () {
 
+      AppContext.isNewSet(true);
+
+      if (ctrl.selectedField === QueryTypes.SUBJECT_FACETS) {
+        AppContext.setSubjectsOrder(ctrl.selectedOrder);
+      } else if (ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
+      //  AppContext.setAuthorsOrder(ctrl.selectedOrder);
+      }  else {
+        AppContext.setListOrder(ctrl.selectedOrder);
+      }
+
       ctrl.resetListView();
 
       /**
        * Reset the selected item.
        */
-      AppContext.setCurrentIndex(-1);
+      AppContext.setSelectedPositionIndex(-1);
 
-      /**
-       * Set sort order to the new selected value.
-       */
-      QueryManager.setSort(ctrl.selectedOrder);
+      $location.search({
+        'field': ctrl.selectedField,
+        'sort': ctrl.selectedOrder,
+        'terms': ctrl.filterTerms,
+        'offset': 0,
+        'filter': 'none'
+      });
 
-      /**
-       * Set the offset to zero.
-       */
-      QueryManager.setOffset(0);
-
-      var arr = [];
-
-      var data = {};
-
-      /**
-       * Author sort.
-       */
-      if (QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS) {
-
-        QueryManager.setOffset(0);
-        arr = AppContext.getAuthors();
-        // Reverse the author array.
-        Utils.reverseArray(arr);
-        AppContext.setAuthorsList(arr);
-        data.results = Utils.authorArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + setSize);
-        data.count = AppContext.getAuthorsCount();
-
-
-        // QueryStack.replaceWith(QueryManager.context.query);
-        // QueryStack.print();
-
-        /**
-         * Update parent component.
-         */
-        ctrl.onUpdate({
-          results: data.results,
-          count: data.count,
-          field: QueryFields.AUTHOR
-        });
-
-      }
-      /**
-       * Subject sort.
-       */
-      else if (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS) {
-
-        QueryManager.setOffset(0);
-        arr = AppContext.getSubjects();
-        // Reverse the subject array.
-        Utils.reverseArray(arr);
-        AppContext.setSubjectList(arr);
-        data.results = Utils.subjectArraySlice(QueryManager.getOffset(), QueryManager.getOffset() + setSize);
-        data.count = AppContext.getSubjectsCount();
-
-
-        // QueryStack.replaceWith(QueryManager.context.query);
-        // QueryStack.print();
-
-        /**
-         * Update parent component.
-         */
-        ctrl.onUpdate({
-          results: data.results,
-          count: data.count,
-          field: QueryFields.SUBJECT
-        });
-
-      }
-      else {
-
-        // QueryStack.replaceWith(QueryManager.context.query);
-        // QueryStack.print();
-
-        /**
-         * Changing the sort order for other query types requires a
-         * new solr query.
-         */
-        doSearch();
-      }
 
     };
 
@@ -372,65 +301,29 @@
      */
     ctrl.getFilter = function () {
 
+      AppContext.isNewSet(false);
+
       /**
        * Reset the selected item.
        */
-      AppContext.setCurrentIndex(-1);
+      AppContext.setSelectedPositionIndex(-1);
 
       /**
-       * Get the current query type.
+       * Set the filter query type.
        */
-      var queryType = QueryManager.getQueryType();
-
-
-      /**
-       * When filtering for titles and dates, we use distinct solr queries
-       * (START_LETTER and START_DATE).
-       *
-       * For authors and subjects, we can use the same query type
-       * used elsewhere (AUTHOR_FACETS and SUBJECT_FACETS).
-       *
-       * Setting the filter search type in QueryManager.
-       */
-      if (queryType === QueryTypes.TITLES_LIST) {
-
-        QueryManager.setJumpType(QueryTypes.START_LETTER);
-
-      } else if (queryType === QueryTypes.DATES_LIST) {
-
-        QueryManager.setJumpType(QueryTypes.START_DATE);
-
-      } else if (queryType === QueryTypes.SUBJECT_SEARCH) {
-
-        QueryManager.setJumpType(QueryTypes.START_LETTER);
-
-      } else if (queryType === QueryTypes.AUTHOR_FACETS) {
-
-        QueryManager.setJumpType(QueryTypes.AUTHOR_FACETS);
-
-      } else if (queryType === QueryTypes.SUBJECT_FACETS) {
-
-        QueryManager.setJumpType(QueryTypes.SUBJECT_FACETS);
-
-      }
+      SolrDataLoader.setJumpType();
 
       /**
        * Slight delay before executing the search.
        */
       $timeout(function () {
 
-        var remaining;
-
-        var offset;
-
-
         if (QueryManager.getJumpType() === QueryTypes.START_LETTER) {
           /**
            * If we have a filter term, so filter query.
            */
           if (ctrl.filterTerms.length > 0) {
-            QueryManager.setFilter(ctrl.filterTerms);
-            doJump();
+            doJump('item');
 
           }
           /**
@@ -448,8 +341,8 @@
            * For dates, only filter on the year.
            */
           if (ctrl.filterTerms.length === 4) {
-            QueryManager.setFilter(ctrl.filterTerms);
-            doJump();
+            //   QueryManager.setFilter(ctrl.filterTerms);
+            doJump('item');
 
           }
           /**
@@ -463,44 +356,19 @@
         }
 
         else if (QueryManager.getQueryType() === QueryTypes.AUTHOR_FACETS) {
-          /**
-           * Find the index of the first matching item.
-           */
-          offset = Utils.findIndexInArray(AppContext.getAuthors(), ctrl.filterTerms);
-          QueryManager.setOffset(offset);
-          remaining = Utils.getPageListCount(AppContext.getAuthorsCount(), setSize);
-          /**
-           * Update view here.
-           */
-          ctrl.onUpdate({
-            results: Utils.authorArraySlice(offset, offset + remaining),
-            count: AppContext.getAuthorsCount(),
-            field: QueryFields.AUTHOR
-          });
+
+          doJump('author');
 
         }
         else if (QueryManager.getQueryType() === QueryTypes.SUBJECT_FACETS) {
-          /**
-           * Find the index of the first matching item.
-           */
-          offset = Utils.findIndexInArray(AppContext.getSubjects(), ctrl.filterTerms);
-          QueryManager.setOffset(offset);
-          remaining = Utils.getPageListCount(AppContext.getSubjectsCount(), setSize);
-          /**
-           * Update view here.
-           */
-          ctrl.onUpdate({
-            results: Utils.subjectArraySlice(offset, offset + remaining),
-            count: AppContext.getSubjectsCount(),
-            field: QueryFields.SUBJECT
-          });
+
+          doJump('subject');
+
 
         }
       }, 100);
 
 
-      // QueryStack.replaceWith(QueryManager.context.query);
-      // QueryStack.print();
     };
 
     /**
@@ -508,10 +376,19 @@
      */
     ctrl.resetField = function setField() {
 
+
+      AppContext.isNewSet(true);
+
+      AppContext.setOpenItem(-1);
+
+      AppContext.setNextPagerOffset(0);
+
+      AppContext.setPreviousPagerOffset(0);
+
       /**
        * Reset the selected item.
        */
-      AppContext.setCurrentIndex(-1);
+      AppContext.setSelectedPositionIndex(-1);
       /**
        * Reset the filter.
        * @type {string}
@@ -521,38 +398,57 @@
        * Set the QueryType (identifies the solr query to be used).
        */
       QueryManager.setQueryType(ctrl.selectedField);
+
+
       /**
        * Set the placeholder message based on query type.
        */
       ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
+
       /**
        * New offset should be 0.
        */
       QueryManager.setOffset(0);
       /**
-       * The intial sort order should be ASCENDING.
+       * The initial sort order should be ASCENDING.
        */
       QueryManager.setSort(QuerySort.ASCENDING);
-      ctrl.selectedOrder = QuerySort.ASCENDING;
-
-
-      // QueryStack.replaceWith(QueryManager.context.query);
-      // QueryStack.print();
+      /**
+       * Since subjects and authors toggle the array of facets, order
+       * is tracked separately for these fields.
+       */
+      if (ctrl.field === QueryTypes.AUTHOR_FACETS) {
+     //   AppContext.setAuthorsOrder(QuerySort.ASCENDING);
+      } else if (ctrl.field === QueryTypes.SUBJECT_FACETS) {
+        AppContext.setSubjectsOrder(QuerySort.ASCENDING);
+      } else {
+        AppContext.setListOrder(QuerySort.ASCENDING);
+      }
 
       /**
-       * Do a new search.
+       * Update the select option.
        */
-      doSearch();
+      ctrl.selectedOrder = QuerySort.ASCENDING;
+
+      /**
+       * Update query string.
+       */
+      $location.search({
+        'field': ctrl.selectedField,
+        'sort': ctrl.selectedOrder,
+        'terms': ctrl.filterTerms,
+        'offset': 0,
+        'filter': 'none',
+        'new': 'true'
+      });
 
     };
-
 
   }
 
   dspaceComponents.component('sortOptionsComponent', {
 
     bindings: {
-      onUpdate: '&',
       resetListView: '&',
       context: '@'
     },
@@ -561,5 +457,4 @@
 
   });
 
-})
-();
+})();

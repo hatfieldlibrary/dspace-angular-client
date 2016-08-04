@@ -15,6 +15,7 @@
         
       })
       .catch(function (err) {
+        console.log('DSpace returned an error.');
         console.log(err);
         res.statusCode = err.statusCode;
         res.end();
