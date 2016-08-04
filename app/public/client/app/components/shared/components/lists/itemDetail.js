@@ -18,7 +18,6 @@
   function ItemDetailController($scope,
                                 $location,
                                 $mdMedia,
-                                Utils,
                                 AppContext,
                                 ItemDialogFactory) {
 
@@ -53,6 +52,25 @@
 
     });
 
+    /**
+     * Click handler for item dialog.  This opens the dialog if
+     * the current position is reloaded.
+     * @param ev
+     * @param id
+     */
+    ctrl.reloadItem = function(ev, id) {
+      /**
+       * If the position has not changed, we need to show
+       * the dialog for the user.  New positions are handled
+       * by the $locationChangeSuccess function in pager.
+       */
+      if (AppContext.getOpenItem() === parseInt(ctrl.pos)) {
+
+        ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
+      }
+
+    };
+
     ctrl.getItemUrl = function() {
 
       var qs = $location.search();
@@ -70,10 +88,11 @@
       url += '&id=' + ctrl.id;
       url += '&pos=' + ctrl.pos;
       url += '&itype=i';
+
       return url;
 
     };
-    
+
 
   }
 
