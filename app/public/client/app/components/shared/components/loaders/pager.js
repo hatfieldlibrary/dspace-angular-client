@@ -754,6 +754,13 @@
     });
 
 
+    /**
+     * Generates and returns the url for the pager link. Also
+     * uses the SetNextLinkInHeader service to update the
+     * link rel="next" html header element for SEO.
+     *
+     * @returns {string}
+     */
     pager.nextUrl = function () {
 
       var offset = parseInt(AppContext.getNextPagerOffset(), 10);
@@ -769,7 +776,10 @@
       var arr = Object.keys(qs);
       for (var i = 0; i < arr.length; i++) {
         if (arr[i] !== 'offset' && arr[i] !== 'new' && arr[i] !== 'd' && arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype') {
-          url += '&' + arr[i] + '=' + qs[arr[i]];
+          if (i !== 0) {
+            url += '&';
+          }
+          url += arr[i] + '=' + qs[arr[i]];
         }
       }
       url += '&offset=' + offset;

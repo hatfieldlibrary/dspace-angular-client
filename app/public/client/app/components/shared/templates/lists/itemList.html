@@ -50,7 +50,8 @@
         handle="{{col.handle}}"
         abstract="{{col.abstract}}"
         id="{{col.id}}"
-        pos="{{$index}}">
+        pos="{{$index}}"
+      ng-class="{'set-divider': $ctrl.addBorder($index)}">
 
       </item-detail-component>
 
