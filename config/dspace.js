@@ -13,9 +13,10 @@ var config = {
     port: '8080',
     // Servlet API context.
     context: 'rest',
-    
+
     // Solr host (for development, this is localhost).
     solrHost: 'localhost',
+    solrProtocol: 'http',
     // Solr port. Use port forwarding for development on localhost if
     // not also running dspace on localhost, e.g.:
     // ssh -L 1234:127.0.0.1:8080 dspace.campus.edu.
@@ -29,6 +30,7 @@ var config = {
     port: '8080',
     context: 'rest',
     solrHost: 'dspace.willamette.edu',
+    solrProtocol: 'http',
     solrPort: '8080'
   }
 };

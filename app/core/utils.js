@@ -68,7 +68,7 @@
   };
 
  exports.getSolrUrl = function() {
-   return config.dspace.protocol + '://' + config.dspace.solrHost + ':' + config.dspace.solrPort;
+   return config.dspace.solrProtocol + '://' + config.dspace.solrHost + ':' + config.dspace.solrPort;
  };
 
 

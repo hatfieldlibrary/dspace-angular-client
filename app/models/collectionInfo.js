@@ -5,14 +5,14 @@ var utils = require('../core/utils');
 
 (function () {
   /**
-   * Model for collection information. 
+   * Model for collection information.
    */
   module.exports = function (id, session) {
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
     var dspaceContext = utils.getDspaceAppContext();
-    
+
     var collectionRequest =
       rp(
         {
@@ -23,6 +23,7 @@ var utils = require('../core/utils');
             'rest-dspace-token': dspaceTokenHeader
           },
           json: true,
+          rejectUnauthorized: false,
           transform: processResult
         }
       );
@@ -36,7 +37,7 @@ var utils = require('../core/utils');
    * @param json  the DSpace API response
    */
   function processResult(json) {
-                  
+
     var ret = {};
     ret.id = json.id;
     var parent = {};
