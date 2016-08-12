@@ -19,7 +19,7 @@
        setNextLink: function(link) {
          $rootScope.nextPage = link;
        }
-     }
+     };
   });
 
 

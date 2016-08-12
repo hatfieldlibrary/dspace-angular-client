@@ -71,6 +71,10 @@
 
     };
 
+    /**
+     * Constructs and returns the url used by the item list element.
+     * @returns {string}
+     */
     ctrl.getItemUrl = function() {
 
       var qs = $location.search();
@@ -78,8 +82,9 @@
       var url = $location.path() + '?';
       var arr = Object.keys(qs);
       for (var i = 0; i < arr.length; i++) {
+        // this assumes filter is the first query parameter
         if (arr[i] === 'filter') {
-          url += '&' + arr[i] + '=none';
+          url +=  arr[i] + '=none';
         }
         else if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype') {
           url += '&' + arr[i] + '=' + qs[arr[i]];
