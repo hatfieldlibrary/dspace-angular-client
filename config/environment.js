@@ -73,6 +73,8 @@ var config = {
        * DSpace rest port (8008)
        */
       port: dspace.dspaceDev.port,
+
+      rejectUnauthorized: dspace.dspaceDev.rejectUnauthorized,
       /**
        * DSpace REST servlet context ('rest' or alternate development servlet context).
        */
@@ -172,6 +174,7 @@ var config = {
     dspace: {
       host: dspace.dspaceProd.host,
       protocol: dspace.dspaceProd.protocol,
+      rejectUnauthorized: dspace.dspaceProd.rejectUnauthorized,
       port: dspace.dspaceProd.port,
       context: dspace.dspaceProd.context,
       solrHost: dspace.dspaceProd.solrHost,

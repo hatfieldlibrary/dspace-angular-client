@@ -36,7 +36,7 @@ var queryGenerator = require('../core/queryGenerator');
             'rest-dspace-token': dspaceTokenHeader
           },
           json: true,
-          rejectUnauthorized: false,
+          rejectUnauthorized: utils.rejectUnauthorized(),
           transform: processResult
         }
       );

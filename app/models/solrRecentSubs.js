@@ -19,7 +19,7 @@ var rp = require('request-promise');
           method: 'GET',
           headers: {'User-Agent': 'Request-Promise'},
           json: true,
-          rejectUnauthorized: false
+          rejectUnauthorized: utils.rejectUnauthorized()
         }
       ).then(function (json) {
           res.send(json);

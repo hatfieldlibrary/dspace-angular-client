@@ -27,7 +27,7 @@ var utils = require('../core/utils');
             'rest-dspace-token': dspaceTokenHeader
           },
           json: true,
-          rejectUnauthorized: false,
+          rejectUnauthorized: utils.rejectUnauthorized(),
           transform: processResult
         }
       );

@@ -77,7 +77,7 @@ var constants = require('../core/constants');
             'rest-dspace-token': dspaceTokenHeader
           },
           json: true,
-          rejectUnauthorized: false,
+          rejectUnauthorized: utils.rejectUnauthorized(),
           transform: processResult
         }
       ).then(function (json) {

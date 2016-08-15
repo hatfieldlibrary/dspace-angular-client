@@ -1,8 +1,13 @@
 'use strict';
 
 var utils = require('../core/utils');
-var http = require('http');
-//var request = require('request');
+
+if (utils.getDspaceRestProtocol() === 'https') {
+  var http = require('https');
+}
+else {
+  var http = require('http');
+}
 
 /**
  * Requests a bitstream from the DSpace host via REST API and
@@ -43,19 +48,8 @@ var http = require('http');
       headers: {
         'rest-dspace-token': dspaceTokenHeader
       },
-      rejectUnauthorized: false
+      rejectUnauthorized: utils.rejectUnauthorized()
     };
-
-    // var options = {
-    //   url: 'http://' + host + ':' + port + '/' + dspaceContext + '/bitstreams/' + id + '/retrieve',
-    //   // port: port,
-    //   // path: '/' + dspaceContext + '/bitstreams/' + id + '/retrieve',
-    //   // method: 'GET',
-    //   headers: {
-    //     'rest-dspace-token': dspaceTokenHeader
-    //   }
-    // };
-    // request(options).pipe(res);
 
     http.get(options, function (response) {
 

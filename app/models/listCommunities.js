@@ -16,6 +16,8 @@ var utils = require('../core/utils');
     var host = utils.getURL();
     var dspaceContext = utils.getDspaceAppContext();
 
+    console.log(host + '/' + dspaceContext  +  '/communities')
+
     var list =
       rp(
         {
@@ -26,7 +28,7 @@ var utils = require('../core/utils');
             'rest-dspace-token': dspaceTokenHeader
           },
           json: true,
-          rejectUnauthorized: false
+          rejectUnauthorized: utils.rejectUnauthorized()
 
         }
       );

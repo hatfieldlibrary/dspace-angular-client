@@ -88,6 +88,14 @@
     return config.dspace.context;
   };
 
+  exports.getDspaceRestProtocol = function() {
+    return config.dspace.protocol;
+  };
+
+  exports.rejectUnauthorized = function() {
+    return config.dspace.rejectUnauthorized;
+  };
+
   /**
    * Returns the host port from configuration.
    * @returns {number|*}

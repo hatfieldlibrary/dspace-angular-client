@@ -24,7 +24,7 @@ var utils = require('../core/utils');
           email: netid,
           password: config.secret
         },
-        rejectUnauthorized: false
+        rejectUnauthorized: utils.rejectUnauthorized()
 
 
       },

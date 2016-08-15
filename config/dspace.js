@@ -6,29 +6,45 @@
 
 var config = {
 
-  /** DSpace development context */
+  /**  development  */
   dspaceDev: {
+
+    // full host name (e.g. 'dspace.college.edu')
     host: 'dspace.willamette.edu',
+
+    // rest protocol can be http or https.
     protocol: 'http',
+
+    // rest port is either stanard port (e.g. 8080) or ssl port (e.g. 8443).
     port: '8080',
-    // Servlet API context.
+
+    // if using ssl and a self-signed certificate, this needs to be false. Otherwise, true.
+    rejectUnauthorized: true,
+
+    // the rest API servlet context.
     context: 'rest',
 
     // Solr host (for development, this is localhost).
     solrHost: 'localhost',
+
+    // protocol for solr connections
     solrProtocol: 'http',
+
     // Solr port. Use port forwarding for development on localhost if
     // not also running dspace on localhost, e.g.:
-    // ssh -L 1234:127.0.0.1:8080 dspace.campus.edu.
+    // ssh -L 1234:127.0.0.1:8080 dspace.college.edu.
     solrPort: '1234'
   },
 
-  /** DSpace production context */
+  /**  production  */
   dspaceProd: {
+
     host: 'dspace.willamette.edu',
     protocol: 'http',
     port: '8080',
+    rejectUnauthorized: true,
     context: 'rest',
+
     solrHost: 'dspace.willamette.edu',
     solrProtocol: 'http',
     solrPort: '8080'
