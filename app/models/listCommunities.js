@@ -16,8 +16,6 @@ var utils = require('../core/utils');
     var host = utils.getURL();
     var dspaceContext = utils.getDspaceAppContext();
 
-    console.log(host + '/' + dspaceContext  +  '/communities')
-
     var list =
       rp(
         {

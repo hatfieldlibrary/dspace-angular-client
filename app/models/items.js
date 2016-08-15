@@ -38,7 +38,6 @@ var utils = require('../core/utils');
    */
   function processResult(json) {
 
-    console.log(json);
     var ret = {};
     ret.id = json.id;
     var parent = {};
@@ -48,6 +47,7 @@ var utils = require('../core/utils');
     ret.parentCollection = parent;
     ret.name = json.name;
     ret.type = json.type;
+
     ret.handle = json.handle;
     ret.archived = json.archived;
     ret.withdrawn = json.withdrawn;
@@ -78,7 +78,7 @@ var utils = require('../core/utils');
         ret.description = ret.metadata[i].value;
       }
       if (ret.metadata[i].key === 'dc.type') {
-        ret.type = ret.metadata[i].value;
+        ret.jsonLdType = ret.metadata[i].value;
       }
     }
     var bits = [];
@@ -96,6 +96,7 @@ var utils = require('../core/utils');
       bits[i] = tmpItem;
     }
     ret.bitstreams = bits;
+
     return ret;
 
   }

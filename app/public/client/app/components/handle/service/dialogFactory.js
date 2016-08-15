@@ -102,8 +102,8 @@
 
           var json = '"@context": "http://schema.org/"';
 
-          if (typeof ctrl.data.type !== 'undefined') {
-            json += ',"@type":"' + ctrl.data.type + '"';
+          if (typeof ctrl.data.jsonLdType !== 'undefined') {
+            json += ',"@type":"' + ctrl.data.jsonLdType + '"';
           }
           if (typeof ctrl.data.name !== 'undefined') {
             json += ',"name":"' + ctrl.data.name.replace('\'', '\'').replace('"', '\"') + '"';

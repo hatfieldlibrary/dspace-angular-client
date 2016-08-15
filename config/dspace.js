@@ -15,7 +15,7 @@ var config = {
     // rest protocol can be http or https.
     protocol: 'http',
 
-    // rest port is either stanard port (e.g. 8080) or ssl port (e.g. 8443).
+    // rest port is either standard port (e.g. 8080) or ssl port (e.g. 8443).
     port: '8080',
 
     // if using ssl and a self-signed certificate, this needs to be false. Otherwise, true.
@@ -27,7 +27,7 @@ var config = {
     // Solr host (for development, this is localhost).
     solrHost: 'localhost',
 
-    // protocol for solr connections
+    // protocol for solr connections cd
     solrProtocol: 'http',
 
     // Solr port. Use port forwarding for development on localhost if
