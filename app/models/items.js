@@ -38,6 +38,7 @@ var utils = require('../core/utils');
    */
   function processResult(json) {
 
+    console.log(json);
     var ret = {};
     ret.id = json.id;
     var parent = {};
@@ -75,6 +76,9 @@ var utils = require('../core/utils');
       }
       if (ret.metadata[i].key === 'dc.description.abstract') {
         ret.description = ret.metadata[i].value;
+      }
+      if (ret.metadata[i].key === 'dc.type') {
+        ret.type = ret.metadata[i].value;
       }
     }
     var bits = [];

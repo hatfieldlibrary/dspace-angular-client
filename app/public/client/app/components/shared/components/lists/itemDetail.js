@@ -16,6 +16,7 @@
    * @constructor
    */
   function ItemDetailController($scope,
+                                $sce,
                                 $location,
                                 $mdMedia,
                                 AppContext,

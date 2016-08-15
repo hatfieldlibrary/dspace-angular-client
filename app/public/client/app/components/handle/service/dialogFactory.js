@@ -64,6 +64,7 @@
 
         ctrl.dspaceRoot = AppContext.getDspaceRoot();
 
+
         /**
          * Set screen size boolean.
          */
@@ -89,8 +90,42 @@
           ctrl.canWrite = AppContext.getWritePermission();
           ctrl.itemId = data.id;
           PageTitle.setTitle(data.name);
+          setJsonLd();
 
         });
+
+
+        /**
+         * Creates JSON-LD object from the returned item data.
+         */
+        var setJsonLd = function() {
+
+          var json = '"@context": "http://schema.org/"';
+
+          if (typeof ctrl.data.type !== 'undefined') {
+            json += ',"@type":"' + ctrl.data.type + '"';
+          }
+          if (typeof ctrl.data.name !== 'undefined') {
+            json += ',"name":"' + ctrl.data.name.replace('\'', '\'').replace('"', '\"') + '"';
+          }
+          if (typeof ctrl.data.author !== 'undefined') {
+            json += ',"author": "' + ctrl.data.author + '"';
+          }
+          if (typeof ctrl.data.description !== 'undefined') {
+            json += ',"description": "' + ctrl.data.description.replace('\'', '\'').replace('"', '\"') + '"';
+          }
+          if (typeof ctrl.data.publisher !== 'undefined') {
+            json += ',"publisher": "' + ctrl.data.publisher + '"';
+          }
+          if (typeof ctrl.data.date !== 'undefined') {
+            json += ',"date": "' + ctrl.data.date + '"';
+          }
+
+          var jsonld = '{' + json + '}';
+
+          ctrl.jsonLd = jsonld;
+
+        };
 
 
         /**
