@@ -73,6 +73,8 @@ var config = {
        * DSpace rest port (8008)
        */
       port: dspace.dspaceDev.port,
+
+      rejectUnauthorized: dspace.dspaceDev.rejectUnauthorized,
       /**
        * DSpace REST servlet context ('rest' or alternate development servlet context).
        */
@@ -83,6 +85,8 @@ var config = {
        * port forwarding: ssh -L 1234:127.0.0.1:8080 dspace.university.edu
        */
       solrHost: dspace.dspaceDev.solrHost,
+
+      solrProtocol: dspace.dspaceDev.solrProtocol,
       /**
        * Solr port.
        */
@@ -170,9 +174,11 @@ var config = {
     dspace: {
       host: dspace.dspaceProd.host,
       protocol: dspace.dspaceProd.protocol,
+      rejectUnauthorized: dspace.dspaceProd.rejectUnauthorized,
       port: dspace.dspaceProd.port,
       context: dspace.dspaceProd.context,
       solrHost: dspace.dspaceProd.solrHost,
+      solrProtocol: dspace.dspaceProd.solrProtocol,
       solrPort: dspace.dspaceProd.solrPort,
     },
     oauth: {

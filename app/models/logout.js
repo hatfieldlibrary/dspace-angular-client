@@ -36,7 +36,8 @@ var utils = require('../core/utils');
             'User-Agent': 'Request-Promise',
             'rest-dspace-token': dspaceTokenHeader
           },
-          json: true
+          json: true,
+          rejectUnauthorized: utils.rejectUnauthorized()
         },
         function (error, response, body) {
           if (error) {

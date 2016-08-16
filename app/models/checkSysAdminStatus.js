@@ -13,7 +13,7 @@ var utils = require('../core/utils');
 
     var host = utils.getURL();
     var dspaceContext = utils.getDspaceAppContext();
-    
+
     /** DSpace session status request-promise */
     var sessionStatus =
       rp(
@@ -24,7 +24,8 @@ var utils = require('../core/utils');
             'User-Agent': 'Request-Promise',
             'rest-dspace-token': dspaceTokenHeader
           },
-          json: true
+          json: true,
+          rejectUnauthorized: utils.rejectUnauthorized()
         }
       );
 

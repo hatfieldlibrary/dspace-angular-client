@@ -146,6 +146,7 @@
       if (json[i]['dateIssued.year'] !== undefined) {
         tmp.year = json[i]['dateIssued.year'][0];
       }
+
       tmp.id = json[i]['search.resourceid'];
       tmp.handle = json[i].handle;
       tmp.abstract = '';

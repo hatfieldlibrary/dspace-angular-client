@@ -23,7 +23,9 @@ var utils = require('../core/utils');
         json: {
           email: netid,
           password: config.secret
-        }
+        },
+        rejectUnauthorized: utils.rejectUnauthorized()
+
 
       },
 
@@ -44,7 +46,7 @@ var utils = require('../core/utils');
             session.save(function (err) {
               if (err === null) {
                 console.log('DSpace API token saved to session: ' + session.getDspaceToken);
-            
+
               } else {
                 console.log('Error saving DSpace token to session.')
               }

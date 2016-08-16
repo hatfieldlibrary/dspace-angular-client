@@ -68,7 +68,7 @@
   };
 
  exports.getSolrUrl = function() {
-   return config.dspace.protocol + '://' + config.dspace.solrHost + ':' + config.dspace.solrPort;
+   return config.dspace.solrProtocol + '://' + config.dspace.solrHost + ':' + config.dspace.solrPort;
  };
 
 
@@ -77,7 +77,13 @@
    * @returns {*}
    */
   exports.getHost = function () {
-    return config.dspace.host;
+
+    if (config.dspace.context.length > 0) {
+      return config.dspace.host;
+    } else {
+      console.log(new Error("The dspace host is missing from dspace config."));
+    }
+
   };
 
   /**
@@ -85,7 +91,35 @@
    * @returns {*}
    */
   exports.getDspaceAppContext = function() {
-    return config.dspace.context;
+
+    if (config.dspace.context.length > 0) {
+      return config.dspace.context;
+    } else {
+      console.log(new Error("Rest context missing from dspace config."));
+    }
+
+  };
+
+  exports.getDspaceRestProtocol = function() {
+
+    if (config.dspace.protocol === 'http' || config.dspace.protocol === 'https') {
+      return config.dspace.protocol;
+
+    } else {
+      console.log(new Error("Incorrect protocol in dspace config.  Defaulting to http."));
+      return 'http';
+    }
+  };
+
+  exports.rejectUnauthorized = function() {
+
+    if (typeof config.dspace.rejectUnauthorized === 'boolean') {
+      return config.dspace.rejectUnauthorized;
+
+    } else {
+      console.log(new Error("The rejectUnauthorized value in dspace config must be boolean.  Defaulting to true."));
+      return true;
+    }
   };
 
   /**
@@ -93,7 +127,13 @@
    * @returns {number|*}
    */
   exports.getPort = function () {
-    return config.dspace.port;
+
+    if (config.dspace.context.length > 0) {
+      return config.dspace.port;
+    } else {
+      console.log(new Error("The dspace port number is missing from dspace config."));
+    }
+
   };
 
   /**
