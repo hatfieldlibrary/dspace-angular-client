@@ -3,16 +3,18 @@
 
 ## General Overview
 
-This DSpace REST API/solr client project uses AngularJs 1.x (1.5) and NodeJs middleware.  The client supports login, logout, handle-based browsing of communities, collections and items, sorting and filtering, administration and submission options based on the user's authorization level, discovery, and retrieving bitstreams.   
+This DSpace REST API/solr client uses AngularJs 1.x (1.5) and NodeJs middleware.  
+
+The client supports login, logout, handle-based browsing of communities, collections and items, sorting and filtering, administration and submission options based on the user's authorization level, discovery, and retrieving bitstreams.   
 
 
 The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"). In production, [connect-redis](https://github.com/tj/connect-redis "connect-redis") is used as the session store.   
 
-The Node application retrieves data from DSpace via the [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace using the REST API") and solr.  In this version, it uses a revised copy of the DSpace 5.5 REST API that supports authentication plugins, special groups and access to user authorization levels.  
+The Node application queries DSpace via the [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace using the REST API") and solr.  In this version, it uses a revised copy of the DSpace 5.5 REST API that supports authentication plugins, special groups and access to user authorization levels.  
 
-REST authentication requires a custom DSpace authentication plugin that relies on a shared, secret application key (defined in the Node credentials file and in the REST servlet's web.xml file).  The secret key is used as the password in the REST authentication request.  Upon login, the assigned REST token is added to the Express session store. Communication between the NodeJs application and DSpace REST can use either https or http protocols. In a typical deployment, the Node Express server will run on the DSpace host.
+REST authentication requires a custom DSpace authentication plugin that uses a shared, secret application key (defined in the Node credentials file and in the REST servlet's web.xml file).  This secret key is used as the password in the REST authentication request.  Upon successful DSpace authentication, the assigned REST token is added to the Express session store. Communication between the NodeJs application and DSpace REST can use either https or http protocols. In a typical deployment, the Node Express server will run on the DSpace host.
 
-The browser client routes all API and solr requests through the NodeJs application layer. Written with Angular 1.5 and based on the new component model, the Angular application should port easily to Angular 2.0. [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material is based on CSS3 Flexbox layout. 
+The Angular client routes all API and solr requests through the NodeJs application layer. Based entirely on the new component model, the Angular application should port easily to Angular 2.0. [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material is based on CSS3 Flexbox layout. 
 
 
 ## Configuration
