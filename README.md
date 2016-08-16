@@ -45,7 +45,7 @@ Authentication is handled by the NodeJs Passport middleware.  This application c
 4. If the keys shared by the Nodejs application and DSpace match, DSpace authentication succeeds.  
 5. The REST API generates a DSpace REST token and returns it for use in subsequent API requests.
 
-#### REST API Updates
+#### REST 5.5 Updates
 
 The DSpace 5.5 REST API does not support special groups, so we updated the REST API to retrieve special groups at login and retain special group ID's in addition to the the `EPerson` ID in the REST API's `TokenHolder`. The DSpace REST API was also extended with a new `permissions` expand option that returns READ, WRITE, ADD and ADMIN authorizations on the object. This information is used in the AngularJs client to provide administrative and submit options when authorized.
 
