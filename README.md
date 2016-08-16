@@ -47,9 +47,9 @@ Authentication is handled by the NodeJs Passport middleware.  This application c
 
 #### REST 5.5 Updates
 
-The DSpace 5.5 REST API does not support special groups, so we updated the REST API to retrieve special groups at login and retain special group ID's in addition to the the `EPerson` ID in the REST API's `TokenHolder`. The DSpace REST API was also extended with a new `permissions` expand option that returns READ, WRITE, ADD and ADMIN authorizations on the object. This information is used in the AngularJs client to provide administrative and submit options when authorized.
+The DSpace 5.5 REST API does not support special groups, so we updated the REST API to retrieve special groups at login and retain special group IDs in the REST `TokenHolder` (in addition to the the `EPerson` ID). The DSpace REST API was also extended with a new `permissions` expand option that returns READ, WRITE, ADD and ADMIN authorizations on the object. This information is used in the AngularJs client to provide administrative and submit options.
 
-These modification to the 5.5 REST API are required to use this client. The REST API updates are not available in this repository.  
+These modifications to the 5.5 REST API are required to use this client. The REST API updates are not available in this repository.  
 
 
 ## Setting up the development environment
