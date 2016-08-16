@@ -3,22 +3,23 @@
 
 ## General Overview
 
-This DSpace REST API/solr client project uses AngularJs 1.x (1.5) and NodeJs middleware. 
+This DSpace REST API/solr client project uses AngularJs 1.x (1.5) and NodeJs middleware.  The client supports login, logout, handle-based browsing of communities, collections and items, sorting and filtering, administration and submission options based on the user's authorization level, discovery, and retrieving bitstreams.   
 
 
-The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"), and [connect-redis](https://github.com/tj/connect-redis "connect-redis") for the production session store. In general, we are betting that a robust middleware layer will be helpful and plan to channel all interactions through this layer.   The Node application 
-retrieves data from DSpace via solr and the [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace using the REST API").  We're currently using an updated version of the DSpace 5.5 REST API that supports additional authentication methods, special groups and access to user authorization levels.
+The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"). In production, [connect-redis](https://github.com/tj/connect-redis "connect-redis") is used as the session store.   
 
-The Angular 1.5 frontend is written with components. The goal is to make the browser application port easily to Angular 2.0. The frontend layout uses [Angular Material](https://material.angularjs.org/latest/), based on CSS3 Flexbox layout mode.
+The Node application retrieves data from DSpace via the [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace using the REST API") and solr.  In this version, it uses a revised copy of the DSpace 5.5 REST API that supports authentication plugins, special groups and access to user authorization levels.  
 
-This prototype supports login, logout, handle-based browsing of communities, collections and items and retrieving bitstreams.  The application provides search and browse options similar to those provided by the current DSpace XMLUI and JSPUI. 
+REST authentication requires a custom DSpace authentication plugin that relies on a shared, secret application key (defined in the Node credentials file and in the REST servlet's web.xml file).  The secret key is used as the password in the REST authentication request.  Upon login, the assigned REST token is added to the Express session store. Communication between the NodeJs application and DSpace REST can use either https or http protocols. In a typical deployment, the Node Express server will run on the DSpace host.
+
+The browser client routes all API and solr requests through the NodeJs application layer. Written with Angular 1.5 and based on the new component model, the Angular application should port easily to Angular 2.0. [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material is based on CSS3 Flexbox layout. 
 
 
 ## Configuration
 
-#### Middleware App Configuration
+#### NodeJs Application Configuration
 
-The primary configuration file for middleware is `config/environment.js`. This file defines environment settings for both development and production. Sensitive credentials like authentication secrets are placed in a separate file called `config/credentials.js`.  (A sample credentials file is provided.) The `config/dspace.js` file defines your routes to DSpace for both production and development.
+The main configuration file for the NodeJs middleware is `config/environment.js`. This file defines settings for both development and production environments. Sensitive information,  like the key shared between the NodeJs server and the DSpace RESTAuthentication plugin and Google OAUTH2 keys are placed in a separate file called `config/credentials.js`. This file is  not included in the Github repository for obvious reasons.  Instead, a sample file is provided, to which you can add your local credentials.  The `config/dspace.js` file defines   routes, protocols and options used by the NodeJs application models to communicate with the REST API and solr.
 
 Additional configuration files for express, routes and authentication are also located in the `config` directory.  These can be modified if needed.
 
@@ -32,11 +33,21 @@ You can modify color themes by changing the Material Design palettes defined in 
 
 ## DSpace Authentication
 
-Authentication is handled by the NodeJs Passport middleware, using CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
+Authentication is handled by the NodeJs Passport middleware.  This application currently supports CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
 
-First, the NodeJs Express application authenticates via CAS or OAUTH2. Next a DSpace REST authentication token is retrieved by passing a secret application key to the DSpace REST API authenticate service. The key is checked by a `RestAuthentication` DSpace plugin at the beginning of our plugin sequence.  If the keys shared by the Nodejs application and DSpace match, authentication succeeds.  The REST API generates a token and returns it for use in subsequent API requests.
+#### Authentication Steps
 
-Our local DSpace implementation uses special groups and automatically registers new users. The DSpace 5.5 REST API does not support special groups, so we updated the REST API to retrieve special groups at login and retain special group ID's in addition to the the `EPerson` ID in the REST API's `TokenHolder`. The Angular client needs to know the user's authorization level so the DSpace REST API was also extended with a new `permissions` expand option that provides information on READ, WRITE, ADD and ADMIN authorizations.
+1. The NodeJs Express application authenticates via CAS or OAUTH2 using Passport. 
+2. If Passport authentication succeeds, the secret application key is passed to the DSpace REST API authenticate service. 
+3. The secret key is verified by the `RestAuthentication`  plugin, configured to be at the beginning of DSpace authentication sequence.  
+4. If the keys shared by the Nodejs application and DSpace match, DSpace authentication succeeds.  
+5. The REST API generates a DSpace REST token and returns it for use in subsequent API requests.
+
+#### REST API Updates
+
+The DSpace 5.5 REST API does not support special groups, so we updated the REST API to retrieve special groups at login and retain special group ID's in addition to the the `EPerson` ID in the REST API's `TokenHolder`. The DSpace REST API was also extended with a new `permissions` expand option that returns READ, WRITE, ADD and ADMIN authorizations on the object. This information is used in the AngularJs client to provide administrative and submit options when authorized.
+
+These modification to the 5.5 REST API are required to use this client. The REST API updates are not available in this repository.  
 
 
 ## Setting up the development environment
@@ -85,7 +96,9 @@ This will create a zipped tar file for your project.
 
 First, the prerequisites. Make sure nodejs is installed on the server. It's wise to use the same nodejs version as you are using in your development environment. Also, you need to install [redis](http://redis.io/ "redis") on your system.  It will be used as the production server's session store.
 
-You need to decide how to start and manage the application on your server. Currently, we use the [forever](https://github.com/foreverjs/forever "forever") CLI to launch the Express application using an init.d script. `forever` ensures that the Express application runs continuously. 
+From this point forward, there are several good ways to deploy the application. Currently, we use the [forever](https://github.com/foreverjs/forever "forever") CLI to launch the Express application using an init.d script. `forever` ensures that the Express application runs continuously. 
+
+#### Steps if using forever
 
 Install forever globally as follows:
 `sudo npm install forever -g `
