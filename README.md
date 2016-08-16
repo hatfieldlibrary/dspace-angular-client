@@ -21,16 +21,20 @@ The Angular client routes all API and solr requests through the NodeJs applicati
 
 #### NodeJs Application Configuration
 
-The main configuration file for the NodeJs middleware is `config/environment.js`. This file defines settings for both development and production environments. Sensitive information,  like the key shared between the NodeJs server and the DSpace RESTAuthentication plugin and Google OAUTH2 keys are placed in a separate file called `config/credentials.js`. This file is  not included in the Github repository for obvious reasons.  Instead, a sample file is provided, to which you can add your local credentials.  The `config/dspace.js` file defines   routes, protocols and options used by the NodeJs application models to communicate with the REST API and solr.
+The main configuration file for the NodeJs middleware is `config/environment.js`. This file defines settings for both development and production environments. 
+
+Sensitive information like shared DSpace authentication secret and Google OAUTH2 keys are placed in a separate file called `config/credentials.js`. This file is  not included in the Github repository for obvious reasons.  Instead, a sample file is provided, to which you can add your local credentials.  
+
+The `config/dspace.js` file defines routes, protocols and options used in the NodeJs application models to communicate with the REST API and solr.
 
 Additional configuration files for express, routes and authentication are also located in the `config` directory.  These can be modified if needed.
 
 
 #### Client Configuration
 
-You can customize the AngularJs UI via `app/config/messages.js` and `app/config/appConfig.js`.  
+Text values and other configuration options in Angular UI can be changed by modifying the constants defined in `app/config/messages.js` and `app/config/appConfig.js`.  
 
-You can modify color themes by changing the Material Design palettes defined in the AngularJs `app.js` file.  Here's an example of [a handy Material Design palette generator](http://mcg.mbitson.com/#/). The `public/client/app/ds/css/styles.css` file may also need to be modified to your specifications.
+You can also modify color themes by changing the Material Design palettes defined in the Angular `app.js` file.  Here's an example of [a handy Material Design palette generator](http://mcg.mbitson.com/#/). The `public/client/app/ds/css/styles.css` file may also need to be modified to your specifications.
 
 
 ## DSpace Authentication
