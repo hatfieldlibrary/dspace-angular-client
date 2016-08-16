@@ -16,6 +16,12 @@ REST authentication requires a custom DSpace authentication plugin that uses a s
 
 The Angular client routes all API and solr requests through the NodeJs application layer. Based entirely on the new component model, the Angular application should port easily to Angular 2.0. [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material is based on CSS3 Flexbox layout. 
 
+#### Examples 
+
+[Public Site](http://libmedia.willamette.edu/ds/communities)
+
+[Public Collection - Willamette Sports Law Journal](http://libmedia.willamette.edu/ds/handle/10177/5561)
+
 
 ## Configuration
 
