@@ -16,9 +16,9 @@
    * @constructor
    */
   function ItemDetailController($scope,
+                                $sce,
                                 $location,
                                 $mdMedia,
-                                Utils,
                                 AppContext,
                                 ItemDialogFactory) {
 
@@ -53,6 +53,29 @@
 
     });
 
+    /**
+     * Click handler for item dialog.  This opens the dialog if
+     * the current position is reloaded.
+     * @param ev
+     * @param id
+     */
+    ctrl.reloadItem = function(ev, id) {
+      /**
+       * If the position has not changed, we need to show
+       * the dialog for the user.  New positions are handled
+       * by the $locationChangeSuccess function in pager.
+       */
+      if (AppContext.getOpenItem() === parseInt(ctrl.pos)) {
+
+        ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
+      }
+
+    };
+
+    /**
+     * Constructs and returns the url used by the item list element.
+     * @returns {string}
+     */
     ctrl.getItemUrl = function() {
 
       var qs = $location.search();
@@ -60,8 +83,9 @@
       var url = $location.path() + '?';
       var arr = Object.keys(qs);
       for (var i = 0; i < arr.length; i++) {
+        // this assumes filter is the first query parameter
         if (arr[i] === 'filter') {
-          url += '&' + arr[i] + '=none';
+          url +=  arr[i] + '=none';
         }
         else if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype') {
           url += '&' + arr[i] + '=' + qs[arr[i]];
@@ -70,10 +94,11 @@
       url += '&id=' + ctrl.id;
       url += '&pos=' + ctrl.pos;
       url += '&itype=i';
+
       return url;
 
     };
-    
+
 
   }
 

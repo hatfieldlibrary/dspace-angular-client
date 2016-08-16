@@ -15,7 +15,7 @@ var queryGenerator = require('../core/queryGenerator');
   module.exports = function (query, res, session) {
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
-    
+
 
     /**
      * Get the solr URL.
@@ -36,6 +36,7 @@ var queryGenerator = require('../core/queryGenerator');
             'rest-dspace-token': dspaceTokenHeader
           },
           json: true,
+          rejectUnauthorized: utils.rejectUnauthorized(),
           transform: processResult
         }
       );

@@ -23,6 +23,7 @@ var utils = require('../core/utils');
             'rest-dspace-token': dspaceTokenHeader
           },
           json: true,
+          rejectUnauthorized: utils.rejectUnauthorized(),
           transform: processResult
         }
       );
@@ -46,6 +47,7 @@ var utils = require('../core/utils');
     ret.parentCollection = parent;
     ret.name = json.name;
     ret.type = json.type;
+
     ret.handle = json.handle;
     ret.archived = json.archived;
     ret.withdrawn = json.withdrawn;
@@ -75,6 +77,9 @@ var utils = require('../core/utils');
       if (ret.metadata[i].key === 'dc.description.abstract') {
         ret.description = ret.metadata[i].value;
       }
+      if (ret.metadata[i].key === 'dc.type') {
+        ret.jsonLdType = ret.metadata[i].value;
+      }
     }
     var bits = [];
     for (var i = 0; i < json.bitstreams.length; i++) {
@@ -91,6 +96,7 @@ var utils = require('../core/utils');
       bits[i] = tmpItem;
     }
     ret.bitstreams = bits;
+
     return ret;
 
   }

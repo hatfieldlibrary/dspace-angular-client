@@ -70,6 +70,12 @@
 
     };
 
+    ctrl.addBorder = function(index) {
+      if (index === 0) { return false; }
+
+      return (index + 1) % AppContext.getSetSize() === 0;
+    };
+
 
     /**
      * Adds new results to current items.

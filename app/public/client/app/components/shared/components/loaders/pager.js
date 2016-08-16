@@ -33,7 +33,8 @@
                      QueryActions,
                      QueryTypes,
                      FacetHandler,
-                     $mdDialog) {
+                     $mdDialog,
+                     SetNextLinkInHeader) {
 
 
     var pager = this;
@@ -67,15 +68,15 @@
      */
     var count = 0;
 
-   // pager.more = false;
+    // pager.more = false;
 
     /**
      * Check to see if more search results are available.
      * @returns {boolean}
      */
-    pager.moreItems = function() {
+    pager.moreItems = function () {
       return AppContext.getCount() > QueryManager.getOffset() + set;
-    } ;
+    };
 
     pager.showPager = true;
 
@@ -183,7 +184,7 @@
 
 
         QueryManager.setOffset(offset);
-       // AppContext.setNextPagerOffset(offset);
+        // AppContext.setNextPagerOffset(offset);
 
 
         if (AppContext.isNewSet()) {
@@ -286,8 +287,6 @@
 
       if (typeof qs.pos !== 'undefined') {
 
-
-
         /**
          * The position is lower than the current offset.
          */
@@ -352,9 +351,10 @@
                 AppContext.setSelectedPositionIndex(qs.pos);
               }
             }
+          } else {
+             AppContext.setOpenItem(qs.pos);
+             AppContext.setSelectedPositionIndex(qs.pos);
           }
-          // AppContext.setOpenItem(qs.pos);
-          // AppContext.setSelectedPositionIndex(qs.pos);
 
         }
       }
@@ -400,7 +400,7 @@
       /** Return new set to true */
       AppContext.isNewSet(true);
 
-   //   pager.more = _moreItems();
+      //   pager.more = _moreItems();
 
 
     }
@@ -429,7 +429,7 @@
       }
 
 
-     // pager.more = _moreItems();
+      // pager.more = _moreItems();
     }
 
 
@@ -685,7 +685,7 @@
            * list using the field and sort order provided in
            * the query string.
            */
-          if (qs.filter === 'item' && qs.itype !=='i') {
+          if (qs.filter === 'item' && qs.itype !== 'i') {
             currentFilter = qs.filter;
             _itemFilter(qs.offset);
 
@@ -754,6 +754,13 @@
     });
 
 
+    /**
+     * Generates and returns the url for the pager link. Also
+     * uses the SetNextLinkInHeader service to update the
+     * link rel="next" html header element for SEO.
+     *
+     * @returns {string}
+     */
     pager.nextUrl = function () {
 
       var offset = parseInt(AppContext.getNextPagerOffset(), 10);
@@ -769,11 +776,16 @@
       var arr = Object.keys(qs);
       for (var i = 0; i < arr.length; i++) {
         if (arr[i] !== 'offset' && arr[i] !== 'new' && arr[i] !== 'd' && arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype') {
-          url += '&' + arr[i] + '=' + qs[arr[i]];
+          if (i !== 0) {
+            url += '&';
+          }
+          url += arr[i] + '=' + qs[arr[i]];
         }
       }
       url += '&offset=' + offset;
       url += '&new=false';
+
+      SetNextLinkInHeader.setNextLink(url);
 
       return url;
 
@@ -812,7 +824,6 @@
           QueryManager.setOffset(0);
           AppContext.setStartIndex(0);
         }
-
 
 
       }

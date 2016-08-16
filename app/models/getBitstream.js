@@ -1,8 +1,13 @@
 'use strict';
 
 var utils = require('../core/utils');
-var http = require('http');
-var request = require('request');
+
+if (utils.getDspaceRestProtocol() === 'https') {
+  var http = require('https');
+}
+else {
+  var http = require('http');
+}
 
 /**
  * Requests a bitstream from the DSpace host via REST API and
@@ -10,11 +15,15 @@ var request = require('request');
  * The proxy request includes the dspace REST token is one is
  * provided. This allows access to restricted bitstreams.
  *
- * This proxy does no additional work. The only additional benefit 
+ * This proxy does no additional work. The only additional benefit
  * is that we consolidate all requests to this host/port.  Alternatively,
  * the browser client could be configured to request bitstream
  * data directly from the DSpace REST servlet -- if authentication
  * is not an issue.
+ *
+ * NOTE: Uses the http module. For communicating with the REST API over
+ * SSL, you need the https module. Also add 'rejectUnauthorized: false' to
+ * the options.
  */
 (function () {
 
@@ -38,24 +47,14 @@ var request = require('request');
       method: 'GET',
       headers: {
         'rest-dspace-token': dspaceTokenHeader
-      }
+      },
+      rejectUnauthorized: utils.rejectUnauthorized()
     };
-
-    // var options = {
-    //   url: 'http://' + host + ':' + port + '/' + dspaceContext + '/bitstreams/' + id + '/retrieve',
-    //   // port: port,
-    //   // path: '/' + dspaceContext + '/bitstreams/' + id + '/retrieve',
-    //   // method: 'GET',
-    //   headers: {
-    //     'rest-dspace-token': dspaceTokenHeader
-    //   }
-    // };
-    // request(options).pipe(res);
 
     http.get(options, function (response) {
 
       /**
-       * Setting the response header. 
+       * Setting the response header.
        */
       try {
         /**
@@ -64,8 +63,8 @@ var request = require('request');
          */
         var mimeType = response.headers['content-type'];
         /**
-         * Internet Explorer resists displaying images without a proper 
-         * mime type. This fix, which is hopefully temporary, assumes 
+         * Internet Explorer resists displaying images without a proper
+         * mime type. This fix, which is hopefully temporary, assumes
          * the mime type for logos will be image/jpg.
          */
         if (file === 'logo') {

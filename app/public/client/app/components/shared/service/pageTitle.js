@@ -14,5 +14,13 @@
     };
   });
 
+  dspaceServices.service('SetNextLinkInHeader', function($rootScope) {
+     return {
+       setNextLink: function(link) {
+         $rootScope.nextPage = link;
+       }
+     };
+  });
+
 
 })();

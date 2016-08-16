@@ -35,6 +35,10 @@ a, a:visited {
 
 }
 
+.set-divider {
+  border-bottom: 14px solid #dad8d0;
+}
+
 img {
   -ms-interpolation-mode: bicubic;
 }

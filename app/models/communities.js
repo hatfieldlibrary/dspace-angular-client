@@ -25,6 +25,7 @@ var utils = require('../core/utils');
             'rest-dspace-token': dspaceTokenHeader
           },
           json: true,
+          rejectUnauthorized: utils.rejectUnauthorized(),
           transform: processResult
         }
       );
@@ -61,7 +62,7 @@ var utils = require('../core/utils');
 
     }
     ret.logo = logo;
-  
+
     var collections = [];
     var itemTotal = 0;
     for (var i = 0; i < json.collections.length; i++) {
