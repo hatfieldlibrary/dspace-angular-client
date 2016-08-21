@@ -1,9 +1,11 @@
 /**
- * This component controller responds to location changes and
- * page initialization.  As the controller for the pager component,
- * is sets paging URLs and maintains offset values.  Methods for
- * updating the item lists are defined in the parent component:
- * item-list-component.
+ * The controller for the pager component. Sets paging URLs and
+ * maintains offset values.  Methods for updating the item lists are
+ * defined in the parent component (item-list-component) and bound
+ * during pager component initialization.
+ *
+ * This controller responds to location changes and page initialization
+ * by invoking services that return data via solr queries.
  *
  * Created by mspalti on 2/23/16.
  */
