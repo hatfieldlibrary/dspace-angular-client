@@ -2,7 +2,7 @@
  * Created by mspalti on 8/20/16.
  */
 /**
- * Called on component initialization.  This service provides
+ * Called on pager component initialization.  This service provides
  * functionality for evaluating query parameters, executing solr
  * queries, and calling the pager controller's update methods.
  * Created by mspalti on 8/17/2016.
@@ -33,9 +33,17 @@
       var currentOrder = '';
       var currentOffset = 0;
 
+      /**
+       * Retrieve the default field from the app configuration.
+       */
       var defaultField = AppContext.getDefaultItemListField();
+      /**
+       * Retrieve the default sort order from the app configuration.
+       */
       var defaultOrder = AppContext.getDefaultSortOrder();
-
+      /**
+       * Retrieve the set size from the app configuration.
+       */
       var setSize = AppContext.getSetSize();
 
       function _setIndex(qs) {
@@ -50,6 +58,12 @@
         }
       }
 
+      /**
+       * The init method.
+       * @param pager - reference to the pager controller
+       * @param qs - the current query string
+       * @private
+       */
       function _onInit(pager, qs) {
 
         AppContext.isNewSet(true);

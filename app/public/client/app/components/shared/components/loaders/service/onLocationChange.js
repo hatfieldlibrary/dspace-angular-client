@@ -39,9 +39,22 @@
 
       var currentFilter;
 
+      /**
+       * Retrieve the default field from the app configuration.
+       */
       var defaultField = AppContext.getDefaultItemListField();
+      /**
+       * Retrieve the default sort order from the app configuration.
+       */
       var defaultOrder = AppContext.getDefaultSortOrder();
 
+      /**
+       * The location change method.
+       * @param pager - reference to the pager controller.
+       * @param qs - the current query string.
+       * @param context - indicates the context of the pager's parent controller.
+       * @private
+       */
       function _onLocationChange(pager, qs, context) {
 
         /**
@@ -168,7 +181,7 @@
             }
           }
           /**
-           * Set the new sort order in application context.
+           * Set the new sort order in the application's context.
            */
           if (context === 'collection') {
             AppContext.setListOrder(qs.sort);

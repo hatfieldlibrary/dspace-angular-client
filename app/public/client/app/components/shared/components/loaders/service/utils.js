@@ -34,12 +34,17 @@
               FacetHandler) {
 
 
-    /** Angular services are singletons, so we can keep references here. */
+      /**
+       * Angular services are singletons, so we can keep references here.
+       */
       var currentField = '';
       var currentOrder = '';
       var currentOffset = 0;
       var currentFilter;
 
+      /**
+       * Retrieve the set size from the app configuration.
+       */
       var set = AppContext.getSetSize();
 
 
@@ -63,7 +68,7 @@
           AppContext.setSelectedItemId(-1);
         }
 
-       _setOpenItemPosition(qs);
+        _setOpenItemPosition(qs);
 
       }
 
@@ -166,7 +171,7 @@
        * @param offset the offset for the current state.
        * @returns {boolean}
        */
-      function _hasNewParams (field, order, offset, filter) {
+      function _hasNewParams(field, order, offset, filter) {
 
         var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset || filter !== currentFilter);
 
@@ -179,6 +184,12 @@
 
       }
 
+      /**
+       * Generates the url string for the next pager request.
+       * @param offset
+       * @returns {string}
+       * @private
+       */
       function _nextUrl(offset) {
 
         var qs = $location.search();
@@ -201,13 +212,14 @@
       }
 
       /**
-       * Updates the component with new data.
-       * @param field
-       * @param sort
-       * @param isNewRequest
-       * @param direction
+       * Updates the pager controller with new data retrieved by solr query.
+       * @param pager  - reference to the pager controller
+       * @param field - search field
+       * @param sort  - sort order
+       * @param direction - paging direction (next, prev)
+       * @private
        */
-      function _updateList(pager,field, sort, direction) {
+      function _updateList(pager, field, sort, direction) {
 
         var isNewRequest = AppContext.isNewSet();
 
@@ -347,6 +359,13 @@
 
       }
 
+      /**
+       * Replace or append to result set based on context.
+       * @param pager  - reference to the pager controller.
+       * @param direction - direction of current pager (next,prev).
+       * @param data - the results.
+       * @private
+       */
       function _addResult(pager, direction, data) {
         if (AppContext.isNewSet()) {
           /**
