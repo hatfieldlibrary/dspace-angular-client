@@ -119,7 +119,6 @@
       ctrl.ready = true;
 
       ctrl.jump = jump;
-
       ctrl.items = results;
       ctrl.field = field;
       ctrl.count = count;

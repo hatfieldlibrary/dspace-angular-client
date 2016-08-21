@@ -30,6 +30,10 @@
 
       var _context = {
 
+        defaultItemsField: QueryTypes.DATES_LIST,
+
+        defaultItemsSort: QuerySort.DESCENDING,
+
         isFilter: false,
 
         /**
@@ -388,6 +392,13 @@
         return _context.previousPagerOffset;
       }
 
+      function getDefaultItemListField() {
+         return _context.defaultItemsField;
+      }
+
+      function getDefaultSortOrder() {
+        return _context.defaultItemsSort;
+      }
 
       return {
 
@@ -452,7 +463,9 @@
         setNextPagerOffset: setNextPagerOffset,
         getNextPagerOffset: getNextPagerOffset,
         setPreviousPagerOffset: setPreviousPagerOffset,
-        getPrevousPagerOffset: getPreviousPagerOffset
+        getPrevousPagerOffset: getPreviousPagerOffset,
+        getDefaultItemListField: getDefaultItemListField,
+        getDefaultSortOrder: getDefaultSortOrder
 
       };
 
