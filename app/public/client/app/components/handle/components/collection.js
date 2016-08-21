@@ -53,7 +53,7 @@
         /**
          * Default sort order.
          */
-        QueryManager.setSort(QuerySort.DESCENDING);
+       // QueryManager.setSort(QuerySort.DESCENDING);
 
       /**
        * Set query action to retrieve list.
