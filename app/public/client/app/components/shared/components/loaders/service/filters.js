@@ -12,11 +12,13 @@
 (function () {
 
   dspaceServices.factory('PagerFilters', [
-    'QueryManager', 'QueryActions', 'QuerySort','QueryTypes', 'AppContext','PagerUtils',
-    function (QueryManager, QueryActions, QuerySort, QueryTypes, AppContext, PagerUtils) {
+    '$location', 'QueryManager', 'QueryActions', 'QuerySort', 'QueryTypes', 'AppContext', 'PagerUtils', 'SolrDataLoader', 'FacetHandler',
+    function ($location, QueryManager, QueryActions, QuerySort, QueryTypes, AppContext, PagerUtils, SolrDataLoader, FacetHandler) {
 
 
-      function _itemFilter(pager, offset) {
+      var setSize = AppContext.getSetSize();
+
+      function itemFilter(pager, offset) {
 
         AppContext.isFilter(true);
         var items;
@@ -27,7 +29,7 @@
           items.$promise.then(function (data) {
             AppContext.setNextPagerOffset(data.offset);
             AppContext.setStartIndex(data.offset);
-            PagerUtils.addResult(pager,'next', data);
+            PagerUtils.addResult(pager, 'next', data);
           });
         }
 
@@ -40,7 +42,7 @@
             // We need to update the query object!
             var qs = $location.search();
             qs.offset = data.offset;
-            PagerUtils.addResult(pager,'next', data);
+            PagerUtils.addResult(pager, 'next', data);
 
           });
         }
@@ -62,9 +64,10 @@
 
           // Call the filter method.
 
-          _authorFilter(terms, sort, direction, initOffset);
+          authorFilter(terms, sort, direction, initOffset);
         });
       }
+
 
       function _findOffset(initOffset, terms, type) {
 
@@ -77,12 +80,13 @@
 
       }
 
+
       /**
        * Authors filter.
        * @param terms
        */
 
-      function _authorFilter(pager, terms, sort, direction, initOffset) {
+      function authorFilter(pager, terms, sort, direction, initOffset) {
 
         AppContext.isFilter(true);
         // Author array exists. We can run filter.
@@ -101,10 +105,10 @@
             // Set the context start index to the matching offset.
             AppContext.setStartIndex(offset);
 
-            pager.updateParentNewSet(FacetHandler.getAuthorListSlice(set));
+            pager.updateParentNewSet(FacetHandler.getAuthorListSlice(setSize));
 
           } else {
-            pager.updateParent(FacetHandler.getAuthorListSlice(set), direction);
+            pager.updateParent(FacetHandler.getAuthorListSlice(setSize), direction);
           }
 
         }
@@ -129,11 +133,12 @@
           AppContext.setSubjectList(data.facets);
           AppContext.setNextPagerOffset(data.offset);
           // Call the filter method.
-          _subjectFilter(terms, sort, direction, initOffset);
+          subjectFilter(terms, sort, direction, initOffset);
         });
       }
 
-      function _subjectFilter(pager, terms, sort, direction, initOffset) {
+
+      function subjectFilter(pager, terms, sort, direction, initOffset) {
 
         AppContext.isFilter(true);
 
@@ -168,9 +173,9 @@
 
       return {
 
-        itemFilter: _itemFilter,
-        authorFilter: _authorFilter,
-        subjectFilter: _subjectFilter
+        itemFilter: itemFilter,
+        authorFilter: authorFilter,
+        subjectFilter: subjectFilter
 
       };
 

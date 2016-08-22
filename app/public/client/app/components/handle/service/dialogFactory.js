@@ -98,7 +98,7 @@
         /**
          * Creates JSON-LD object from the returned item data.
          */
-        var setJsonLd = function() {
+        function setJsonLd() {
 
           var json = '"@context": "http://schema.org/"';
 
@@ -125,7 +125,7 @@
 
           ctrl.jsonLd = jsonld;
 
-        };
+        }
 
 
         /**

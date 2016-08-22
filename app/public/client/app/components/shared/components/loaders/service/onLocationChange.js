@@ -198,7 +198,7 @@
 
         onLocationChange: _onLocationChange
 
-      }
+      };
 
     }]);
 })();

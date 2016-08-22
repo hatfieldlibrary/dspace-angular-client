@@ -20,13 +20,16 @@
     'AppContext',
     'PagerFilters',
     'PagerUtils',
+    'SolrDataLoader',
+
     function (QueryManager,
               QueryActions,
               QuerySort,
               QueryTypes,
               AppContext,
               PagerFilters,
-              PagerUtils) {
+              PagerUtils,
+              SolrDataLoader) {
 
 
       var currentField = '';
@@ -41,22 +44,7 @@
        * Retrieve the default sort order from the app configuration.
        */
       var defaultOrder = AppContext.getDefaultSortOrder();
-      /**
-       * Retrieve the set size from the app configuration.
-       */
-      var setSize = AppContext.getSetSize();
 
-      function _setIndex(qs) {
-        if (typeof qs.offset !== 'undefined') {
-          if (qs.d !== 'prev') {
-            AppContext.setNextPagerOffset(+qs.offset + setSize);
-          }
-          else {
-            AppContext.setStartIndex(qs.offset);
-          }
-
-        }
-      }
 
       /**
        * The init method.
@@ -64,7 +52,7 @@
        * @param qs - the current query string
        * @private
        */
-      function _onInit(pager, qs) {
+      function onInit(pager, qs) {
 
         AppContext.isNewSet(true);
 
@@ -125,6 +113,9 @@
         currentField = QueryManager.getQueryType();
         currentOrder = QueryManager.getSort();
 
+        /**
+         * Filtering on a (title, author, or subject)
+         */
         if (qs.filter !== 'none') {
           /**
            * Set the filter query type.
@@ -135,6 +126,9 @@
            */
           SolrDataLoader.setOffset(qs);
 
+          /**
+           * Title filter.
+           */
           if (qs.filter === 'item' && AppContext.isNewSet()) {
 
             /**
@@ -142,25 +136,37 @@
              */
             PagerFilters.itemFilter(pager, qs.offset);
 
-          } else if (qs.filter === 'author') {
+          }
+          /**
+           * Author filter.
+           */
+          else if (qs.filter === 'author') {
 
             AppContext.setAuthorsOrder(qs.sort);
 
+            AppContext.isNewSet(true);
             /**
-             * Execute author filter.
+             * Make sure we have filter terms.
              */
             if (typeof qs.terms !== 'undefined' && qs.terms.length === 0) {
               QueryManager.setOffset(0);
               AppContext.setStartIndex(0);
             }
+
             PagerFilters.authorFilter(pager, qs.terms, qs.sort, qs.d, qs.offset);
 
-          } else if (qs.filter === 'subject') {
+          }
+          /**
+           * Subject filter.
+           */
+          else if (qs.filter === 'subject') {
 
             AppContext.setSubjectsOrder(qs.sort);
 
             AppContext.isNewSet(true);
-
+            /**
+             * Make sure we have filter terms.
+             */
             if (typeof qs.terms !== 'undefined' && qs.terms.length === 0) {
               QueryManager.setOffset(0);
               AppContext.setStartIndex(0);
@@ -173,9 +179,12 @@
 
           }
         }
-        else if (PagerUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter)) {
+        /**
+         * No filter (none) or filter parameter was absent.  Update without applying filter.
+         */
+        else {
 
-          _setIndex(qs);
+          PagerUtils.setIndex(qs);
 
           PagerUtils.updateList(pager, QueryManager.getQueryType(), QueryManager.getSort(), qs.d);
         }
@@ -183,9 +192,10 @@
       }
 
 
+
       return {
 
-        onInit: _onInit
+        onInit: onInit
 
       };
 

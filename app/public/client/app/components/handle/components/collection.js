@@ -10,11 +10,13 @@
    * Component controller.
    */
   function CollectionCtrl(
+                          $mdMedia,
+                          $location,
                           QueryManager,
                           QueryActions,
                           QueryTypes,
-                          QuerySort,
                           PageTitle,
+                          ItemById,
                           Utils) {
 
     var ctrl = this;
@@ -34,6 +36,10 @@
       return false;
     }
 
+    ctrl.mobileItemRequest = false;
+
+    ctrl.itemData = {};
+
     /**
      * Returns the url for a logo.  This method can be called
      * for communities and collections.
@@ -43,31 +49,39 @@
 
     ctrl.hasLogo = hasLogo;
 
-    function doInitialization() {
 
-        /**
-         * Default field.
-         */
-        QueryManager.setQueryType(QueryTypes.DATES_LIST);
+    function init() {
 
-        /**
-         * Default sort order.
-         */
-       // QueryManager.setSort(QuerySort.DESCENDING);
+      PageTitle.setTitle(ctrl.data.name);
+
+      /**
+       * Default field.
+       */
+      QueryManager.setQueryType(QueryTypes.DATES_LIST);
+
+      /**
+       * Default sort order.
+       */
+      // QueryManager.setSort(QuerySort.DESCENDING);
 
       /**
        * Set query action to retrieve list.
        */
       QueryManager.setAction(QueryActions.LIST);
 
+      if ($mdMedia('gt-md')) {
+        ctrl.mobileItemRequest = false;
+      } else {
 
-    }
+        var qs = $location.search();
+        if (typeof qs.id !== 'undefined') {
+          ctrl.mobileItemRequest = true;
+          ctrl.collectionItem = qs.id;
+          ctrl.collectionHandle = ctrl.data.handle;
 
-    function init() {
+        }
 
-      PageTitle.setTitle(ctrl.data.name);
-
-        doInitialization();
+      }
 
     }
 

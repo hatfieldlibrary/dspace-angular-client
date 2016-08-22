@@ -45,32 +45,8 @@
       /**
        * Retrieve the set size from the app configuration.
        */
-      var set = AppContext.getSetSize();
+      var setSize = AppContext.getSetSize();
 
-
-      /**
-       * Sets the query offset, the selected item id, and item index position
-       * as provided in the query string..
-       * @param qs
-       */
-      function _initializePositions(qs) {
-
-        if (typeof qs.offset !== 'undefined') {
-          QueryManager.setOffset(qs.offset);
-
-        } else {
-          QueryManager.setOffset(0);
-        }
-
-        if (typeof qs.id !== 'undefined') {
-          AppContext.setSelectedItemId(qs.id);
-        } else {
-          AppContext.setSelectedItemId(-1);
-        }
-
-        _setOpenItemPosition(qs);
-
-      }
 
       /**
        * Sets the position of the currently open item on
@@ -165,13 +141,57 @@
       }
 
       /**
+       * Sets the query offset, the selected item id, and item index position
+       * as provided in the query string..
+       * @param qs
+       */
+      function initializePositions(qs) {
+
+        if (typeof qs.offset !== 'undefined') {
+          QueryManager.setOffset(qs.offset);
+
+        } else {
+          QueryManager.setOffset(0);
+        }
+
+        if (typeof qs.id !== 'undefined') {
+          AppContext.setSelectedItemId(qs.id);
+        } else {
+          AppContext.setSelectedItemId(-1);
+        }
+
+        _setOpenItemPosition(qs);
+
+      }
+
+
+      /**
+       * Sets pager offset in application context.
+       * @param qs   query string from location
+       */
+      function setIndex(qs) {
+
+        var setSize = AppContext.getSetSize();
+
+        if (typeof qs.offset !== 'undefined') {
+          if (qs.d !== 'prev') {
+            AppContext.setNextPagerOffset(+qs.offset + setSize);
+          }
+          else {
+            AppContext.setStartIndex(qs.offset);
+          }
+
+        }
+      }
+
+      /**
        * Tests to see if the current state requires a new solr query.
        * @param field field for the current state
        * @param order the sort order for the current state
        * @param offset the offset for the current state.
        * @returns {boolean}
        */
-      function _hasNewParams(field, order, offset, filter) {
+      function hasNewParams(field, order, offset, filter) {
 
         var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset || filter !== currentFilter);
 
@@ -190,7 +210,7 @@
        * @returns {string}
        * @private
        */
-      function _nextUrl(offset) {
+      function nextUrl(offset) {
 
         var qs = $location.search();
         var url = $location.path() + '?';
@@ -219,7 +239,7 @@
        * @param direction - paging direction (next, prev)
        * @private
        */
-      function _updateList(pager, field, sort, direction) {
+      function updateList(pager, field, sort, direction) {
 
         var isNewRequest = AppContext.isNewSet();
 
@@ -270,7 +290,7 @@
                 pager.updateParent(data, direction);
               }
 
-              _initializePositions(qs);
+              initializePositions(qs);
             });
           }
         }
@@ -304,9 +324,9 @@
 
                 FacetHandler.setAuthorListOrder(qs.sort);
 
-                pager.updateParentNewSet(FacetHandler.getAuthorListSlice(set));
+                pager.updateParentNewSet(FacetHandler.getAuthorListSlice(setSize));
 
-                _initializePositions(qs);
+                initializePositions(qs);
 
               });
             } else {
@@ -315,7 +335,7 @@
                * If not a new request, use the existing author
                * facets.
                */
-              pager.updateParent(FacetHandler.getAuthorListSlice(set), direction);
+              pager.updateParent(FacetHandler.getAuthorListSlice(setSize), direction);
 
             }
 
@@ -340,9 +360,9 @@
 
                 FacetHandler.setSubjectListOrder(qs.sort);
 
-                pager.updateParentNewSet(FacetHandler.getSubjectListSlice(set));
+                pager.updateParentNewSet(FacetHandler.getSubjectListSlice(setSize));
 
-                _initializePositions(qs);
+                initializePositions(qs);
 
 
               });
@@ -350,7 +370,7 @@
             } else {
 
               /** Updating parent with current facets */
-              pager.updateParent(FacetHandler.getSubjectListSlice(set), direction);
+              pager.updateParent(FacetHandler.getSubjectListSlice(setSize), direction);
             }
           }
         }
@@ -366,7 +386,7 @@
        * @param data - the results.
        * @private
        */
-      function _addResult(pager, direction, data) {
+      function addResult(pager, direction, data) {
         if (AppContext.isNewSet()) {
           /**
            * If not a new request, swap in the new data.
@@ -383,11 +403,12 @@
 
       return {
 
-        initializePositions: _initializePositions,
-        hasNewParams: _hasNewParams,
-        nextUrl: _nextUrl,
-        updateList: _updateList,
-        addResult: _addResult
+        initializePositions: initializePositions,
+        hasNewParams: hasNewParams,
+        nextUrl: nextUrl,
+        updateList: updateList,
+        addResult: addResult,
+        setIndex: setIndex
 
       };
 
