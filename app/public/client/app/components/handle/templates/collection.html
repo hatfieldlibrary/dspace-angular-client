@@ -1,46 +1,40 @@
 <div layout="column" layout-fill layout-align="start start" style="max-width: 100%;height:100%;box-sizing:border-box;"
      layout-padding ng-if="!$ctrl.mobileItemRequest">
 
-  <div >
 
-    <div class="page-title">
-      <div class="md-subhead parent-title"><a ng-href="/ds/handle/{{$ctrl.data.parentCommunity.handle}}">{{$ctrl.data.parentCommunity.name}}</a>
-      </div>
-      <div class="md-display-1 item-title">{{$ctrl.data.name}}</div>
-
+  <div class="page-title">
+    <div class="md-subhead parent-title"><a ng-href="/ds/handle/{{$ctrl.data.parentCommunity.handle}}">{{$ctrl.data.parentCommunity.name}}</a>
     </div>
-
-    <md-card class="main-card md-hue-1" style="max-width:100%;min-width:90%;">
-
-      <img ng-if="$ctrl.hasLogo()" ng-src="{{$ctrl.getLogo()}}" class="md-card-image opaque-img" alt="image caption">
-
-      <md-card-content style="max-width:100%;">
-
-        <div layout="column" layout-align="center left">
-
-          <div class="md-subhead intro" ng-bind-html="$ctrl.data.introductoryText"></div>
-
-          <md-content>
-            <item-list-component flex="100" layout-fill class="list-width" context="collection"></item-list-component>
-          </md-content>
-
-        </div>
-
-      </md-card-content>
-
-    </md-card>
-
-
+    <div class="md-display-1 item-title">{{$ctrl.data.name}}</div>
   </div>
 
+  <md-card class="main-card md-hue-1" style="max-width:100%;min-width:90%;">
 
+    <img ng-if="$ctrl.hasLogo()" ng-src="{{$ctrl.getLogo()}}" class="md-card-image opaque-img" alt="image caption">
+
+    <md-card-content style="max-width:100%;">
+
+      <div layout="column" layout-align="center left">
+
+        <div class="md-subhead intro" ng-bind-html="$ctrl.data.introductoryText"></div>
+
+        <md-content>
+          <item-list-component flex="100" layout-fill class="list-width" context="collection"></item-list-component>
+        </md-content>
+
+      </div>
+
+    </md-card-content>
+
+  </md-card>
 
 
 </div>
 
-<div layout-fill layout-align="start start"  ng-if="$ctrl.mobileItemRequest" style="margin-top: -10px">
+<div layout-fill layout-align="start start" ng-if="$ctrl.mobileItemRequest" style="margin-top: -10px">
 
-  <mobile-item-component layout-fill layout-align="start start" collection-item="{{$ctrl.collectionItem}}" collection-handle="{{$ctrl.collectionHandle}}"></mobile-item-component>
+  <mobile-item-component layout-fill layout-align="start start" collection-item="{{$ctrl.collectionItem}}"
+                         collection-handle="{{$ctrl.collectionHandle}}"></mobile-item-component>
 
 </div>
 

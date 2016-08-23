@@ -195,6 +195,8 @@
 
         var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset || filter !== currentFilter);
 
+        console.log(filter)
+        console.log(currentFilter)
         currentField = field;
         currentOrder = order;
         currentOffset = offset;
