@@ -93,7 +93,6 @@
             qs.filter = 'none';
           }
 
-          console.log(qs.filter)
           if (typeof qs.terms !== 'undefined') {
             QueryManager.setFilter(qs.terms);
           }

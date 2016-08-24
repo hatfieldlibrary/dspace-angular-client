@@ -89,6 +89,10 @@ md-sidenav.md-locked-open {
   max-width: 265px;
 }
 
+community-item-component md-list-item .md-no-style.md-button, md-list-item.md-no-proxy.md-button   {
+  min-height: 60px;
+}
+
 .md-sidenav-right .icon-list p,
 .md-sidenav-right .icon-list a,
 .md-sidenav-right .icon-list a:visited {
