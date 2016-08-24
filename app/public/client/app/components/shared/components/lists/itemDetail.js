@@ -82,14 +82,11 @@
       var url = $location.path() + '?';
       var arr = Object.keys(qs);
       for (var i = 0; i < arr.length; i++) {
-        // this assumes filter is the first query parameter
-        if (arr[i] === 'filter') {
-          url +=  arr[i] + '=none';
-        }
-        else if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype') {
+         if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype' && arr[i] !== 'filter') {
           url += '&' + arr[i] + '=' + qs[arr[i]];
         }
       }
+      url += '&filter=none';
       url += '&id=' + ctrl.id;
       url += '&pos=' + ctrl.pos;
       url += '&itype=i';

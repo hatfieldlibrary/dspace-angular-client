@@ -196,6 +196,7 @@
       delete qs.pos;
       delete qs.id;
       delete qs.itype;
+console.log(qs)
       $location.search(qs);
 
     };

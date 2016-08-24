@@ -162,7 +162,7 @@ md-dialog.item-details {
   background-image: url('/ds/images/masthead-bottom-img.jpg'), url('/ds/images/background-grain.jpg');
   background-repeat: no-repeat, repeat-x;
   background-position: top center, top center;
-
+  min-height: 200px;
 }
 
 .top-offset {

@@ -12,8 +12,25 @@
 (function () {
 
   dspaceServices.factory('PagerFilters', [
-    '$location', 'QueryManager', 'QueryActions', 'QuerySort', 'QueryTypes', 'AppContext', 'PagerUtils', 'SolrDataLoader', 'FacetHandler',
-    function ($location, QueryManager, QueryActions, QuerySort, QueryTypes, AppContext, PagerUtils, SolrDataLoader, FacetHandler) {
+    '$location',
+    'QueryManager',
+    'QueryActions',
+    'QuerySort',
+    'QueryTypes',
+    'AppContext',
+    'PagerUtils',
+    'SolrDataLoader',
+    'FacetHandler',
+
+    function ($location,
+              QueryManager,
+              QueryActions,
+              QuerySort,
+              QueryTypes,
+              AppContext,
+              PagerUtils,
+              SolrDataLoader,
+              FacetHandler) {
 
 
       var setSize = AppContext.getSetSize();

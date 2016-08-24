@@ -8,8 +8,20 @@
 (function () {
 
   dspaceServices.factory('FacetHandler', [
-    'QueryManager', 'QueryActions', 'QuerySort','QueryTypes', 'AppContext', 'Utils',
-    function (QueryManager, QueryActions, QuerySort, QueryTypes, AppContext, Utils) {
+
+    'QueryManager',
+    'QueryActions',
+    'QuerySort',
+    'QueryTypes',
+    'AppContext',
+    'Utils',
+
+    function (QueryManager,
+              QueryActions,
+              QuerySort,
+              QueryTypes,
+              AppContext,
+              Utils) {
 
 
       /**
@@ -51,7 +63,7 @@
         setAuthorListOrder: function (order) {
           if (order !== AppContext.getAuthorsOrder()) {
             AppContext.reverseAuthorList();
-          
+
           }
         },
         /**
@@ -109,12 +121,12 @@
           }
           return 0;
         },
-        getFilterOffset: function(initOffset, terms, type) {
+        getFilterOffset: function (initOffset, terms, type) {
 
           var offset;
           var arr = [];
           if (type === 'subject') {
-             arr = AppContext.getSubjects();
+            arr = AppContext.getSubjects();
           } else if (type === 'author') {
             arr = AppContext.getAuthors();
           }

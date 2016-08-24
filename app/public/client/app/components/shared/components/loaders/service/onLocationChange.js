@@ -86,6 +86,8 @@
 
         else {
 
+          console.log(qs)
+
           AppContext.isFilter(false);
 
 
@@ -120,9 +122,10 @@
              * Item dialog might be open.  Close it.
              */
             $mdDialog.cancel();
+
             /**
              * If item filter, always request new list using the field and sort order provided in
-             * the query string. The itype parameter indicates a request for individual item view.
+             * the query string. The itype parameter indicates an item request.
              */
             if (qs.filter === 'item' && qs.itype !== 'i') {
               currentFilter = qs.filter;
@@ -134,11 +137,11 @@
              * If there is change in fields, update.
              */
             else if (PagerUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter) && qs.itype !== 'i') {
-
               PagerUtils.updateList(pager, qs.field, qs.sort, qs.d);
 
             }
             else {
+              console.log(qs)
               PagerUtils.initializePositions(qs);
             }
 

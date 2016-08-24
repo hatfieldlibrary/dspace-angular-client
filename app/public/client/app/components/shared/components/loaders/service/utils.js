@@ -22,6 +22,7 @@
     'DiscoveryContext',
     'SolrDataLoader',
     'FacetHandler',
+
     function (QueryManager,
               QueryActions,
               QuerySort,
@@ -31,7 +32,7 @@
               $location,
               DiscoveryContext,
               SolrDataLoader,
-              FacetHandler) {
+              FacetHandler ) {
 
 
       /**
@@ -138,6 +139,7 @@
           AppContext.setOpenItem(-1);
           AppContext.setSelectedPositionIndex(-1);
         }
+
       }
 
       /**
@@ -193,7 +195,7 @@
        */
       function hasNewParams(field, order, offset, filter) {
 
-        var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset || filter !== currentFilter);
+        var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset || filter !== currentFilter );
 
         currentField = field;
         currentOrder = order;
