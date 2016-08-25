@@ -10,20 +10,22 @@
    * Item component controller.
    */
 
-  function FilesController(Messages) {
+  function FilesController($mdMedia, Messages) {
 
     var ctrl = this;
 
     ctrl.downloadLabel = Messages.FILE_DOWNLOAD;
 
-   ctrl.setTarget = function(type) {
+    ctrl.isDesktop = $mdMedia('gt-sm');
 
-     if (type === 'application/pdf') {
-       return '_blank';
-     } else if (type === 'text/plain') {
-       return '_blank';
-     }
-     return '_top';
+    ctrl.setTarget = function (type) {
+
+      if (type === 'application/pdf') {
+        return '_blank';
+      } else if (type === 'text/plain') {
+        return '_blank';
+      }
+      return '_top';
     };
 
 

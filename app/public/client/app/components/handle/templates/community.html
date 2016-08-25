@@ -1,15 +1,16 @@
-<div layout="column" layout-fill layout-margin layout-align="start start" style="max-width: 100%;height:100%;box-sizing:border-box;" layout-padding>
+<div layout="column" layout-fill layout-margin layout-align="start start"
+     style="max-width: 100%;height:100%;box-sizing:border-box;" layout-padding ng-class="{'is-mobile': $ctrl.isMobile}">
 
 
   <div class="page-title">
+
     <div class="md-subhead parent-title"><a ng-href="/ds/communities">{{$ctrl.homeLinkLabel}}</a>
     </div>
     <div class="md-display-1 item-title">{{$ctrl.data.name}}</div>
 
   </div>
 
-  <md-card class="main-card md-hue-2" style=" max-width: 100%;min-width:90%;" >
-
+  <md-card class="main-card md-hue-2" style=" max-width: 100%;min-width:90%;">
 
 
     <img ng-if="$ctrl.hasLogo()" ng-src="{{$ctrl.getLogo()}}" class="md-card-image" alt="image caption"/>
@@ -18,7 +19,8 @@
 
       <div layout="column" layout-align="center left">
 
-        <md-content class="md-hue-2" style="margin-bottom: 10px;border: 1px solid #ccc; border-radius: 4px;" layout-padding layout="row" layout-align="left center" ng-hide="$ctrl.hideLoginMessage">
+        <md-content class="md-hue-2" style="margin-bottom: 10px;border: 1px solid #ccc; border-radius: 4px;"
+                    layout-padding layout="row" layout-align="left center" ng-hide="$ctrl.hideLoginMessage">
           <div class="md-subhead" layout-fill>{{$ctrl.loginMessage}}</div>
           <login-component raised="true"></login-component>
         </md-content>
@@ -43,9 +45,9 @@
 
 
   </md-card>
-
-
 </div>
+
+
 
 
 

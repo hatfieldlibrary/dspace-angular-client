@@ -1,4 +1,4 @@
-<div layout="column" layout-fill>
+<div layout="column" layout-fill ng-class="{'is-mobile': !$ctrl.isDesktop }">
   <div class="file-info" layout="column" layout-align="start start" layout-align-xs="start"
        ng-repeat="stream in $ctrl.streams"
        ng-if="stream.bundleName==='ORIGINAL'">
