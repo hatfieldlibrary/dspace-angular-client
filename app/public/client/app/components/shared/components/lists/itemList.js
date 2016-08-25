@@ -116,7 +116,7 @@
      */
     ctrl.onUpdate = function (results, count, field, offset, jump) {
 
-
+      ctrl.ready = true;
 
       offset++;
       var end = '';
@@ -141,7 +141,7 @@
       ctrl.count = count;
       ctrl.items = results;
 
-      ctrl.ready = true;
+
 
     };
 
