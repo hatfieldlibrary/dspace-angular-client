@@ -196,7 +196,7 @@
     '<login-required-component></login-required-component> ' +
     '</div> ' +
     '<div layout-fill class="spinner" ng-hide="$ctrl.ready" >' +
-    '<div layout="row" layout-fill layout-sm="column" layout-align="space-around">' +
+    '<div layout="row" layout-fill layout-sm="column" layout-md="column" layout-align="space-around">' +
     '<md-progress-circular class="md-warn" md-mode="indeterminate" md-diameter="90"></md-progress-circular>' +
     '</div>' +
     '</div>' +

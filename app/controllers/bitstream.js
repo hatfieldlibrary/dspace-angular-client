@@ -17,11 +17,10 @@ var request = require('request');
     var session = req.session;
 
     var file = req.params.file;
-    
-    
+
 
     models.getBitstream(req, res, id, session, file);
-    
+
   };
 
 })();
