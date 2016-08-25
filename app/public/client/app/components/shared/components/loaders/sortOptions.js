@@ -111,7 +111,6 @@
       function (newValue, oldValue) {
         if (newValue !== oldValue) {
           ctrl.selectedOrder = newValue;
-
           ctrl.filterTerms = '';
         }
       });
@@ -174,9 +173,6 @@
     var doJump = function (filterType) {
 
       AppContext.setOpenItem(-1);
-
-
-
       /**
        * Set application context to expect a new set.
        */
@@ -189,10 +185,10 @@
 
       qs.filter = filterType;
       qs.terms = ctrl.filterTerms;
-      qs.new='true';
-     // if (ctrl.filterTerms.length === 0) {
-        qs.offset = 0;
-     // }
+      qs.new = 'true';
+      // if (ctrl.filterTerms.length === 0) {
+      qs.offset = 0;
+      // }
       delete qs.pos;
       delete qs.id;
       delete qs.itype;
@@ -203,6 +199,7 @@
      * Executes query to retrieve a fresh result set.
      */
     var doSearch = function () {
+
       /**
        * Tell the application to hide the pager.
        */
@@ -267,17 +264,17 @@
      */
     ctrl.resetOrder = function () {
 
+      ctrl.resetListView();
+
       AppContext.isNewSet(true);
 
       if (ctrl.selectedField === QueryTypes.SUBJECT_FACETS) {
         AppContext.setSubjectsOrder(ctrl.selectedOrder);
       } else if (ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
-      //  AppContext.setAuthorsOrder(ctrl.selectedOrder);
-      }  else {
+        //  AppContext.setAuthorsOrder(ctrl.selectedOrder);
+      } else {
         AppContext.setListOrder(ctrl.selectedOrder);
       }
-
-      ctrl.resetListView();
 
       /**
        * Reset the selected item.
@@ -375,7 +372,10 @@
      * Set search results to a new field (title, author, date, subject).
      */
     ctrl.resetField = function setField() {
-
+      /**
+       * Reset list view.  Assures repeat-animation execution.
+       */
+      ctrl.resetListView();
 
       AppContext.isNewSet(true);
 
@@ -418,7 +418,7 @@
        * is tracked separately for these fields.
        */
       if (ctrl.field === QueryTypes.AUTHOR_FACETS) {
-     //   AppContext.setAuthorsOrder(QuerySort.ASCENDING);
+        //   AppContext.setAuthorsOrder(QuerySort.ASCENDING);
       } else if (ctrl.field === QueryTypes.SUBJECT_FACETS) {
         AppContext.setSubjectsOrder(QuerySort.ASCENDING);
       } else {
@@ -429,11 +429,6 @@
        * Update the select option.
        */
       ctrl.selectedOrder = QuerySort.ASCENDING;
-
-      /**
-       * Reset list view.  Assures repeat-animation execution.
-       */
-      ctrl.resetListView();
 
       /**
        * Update query string.

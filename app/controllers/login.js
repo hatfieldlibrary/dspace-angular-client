@@ -7,6 +7,34 @@ var utils = require('../core/utils');
 
   var config;
 
+  function loginToDspace(netid, config, req, res) {
+
+    var session = req.session;
+
+    models.login(
+      netid,
+      config,
+      req)
+      .then(function () {
+        console.log('login succeeded')
+        // If successful, redirect to session.url or to home page.
+        if (session.url !== 'undefined') {
+          res.redirect(session.url);
+
+        } else {
+          res.redirect('/ds/communities');
+        }
+
+      })
+      .catch(function (err) {
+        console.log('DSpace login error.');
+        console.log(err);
+        res.statusCode = err.statusCode;
+        res.end();
+      });
+
+  }
+
   /**
    * Checks for DSpace REST API key in current session.  If not available,
    * logs into DSpace.
@@ -26,32 +54,37 @@ var utils = require('../core/utils');
 
     var session = req.session;
 
-    // If session does not already have DSpace token, login
-    // to the DSpace REST API.
+    /** If session does not already have DSpace token, login to DSpace.  */
     if (!session.getDspaceToken) {
-      models.login(
-        netid,
-        config,
-        req)
-        .then(function () {
-          console.log('login succeeded')
-          // If successful, redirect to session.url or to home page.
-          if (session.url !== 'undefined') {
-            res.redirect(session.url);
 
-          } else {
-            res.redirect('/ds/communities');
-          }
+      loginToDspace(netid, config, req, res);
 
-        })
-        .catch(function (err) {
-          console.log('DSpace login error.');
-          console.log(err);
-          res.statusCode = err.statusCode;
-          res.end();
-        });
     } else {
-      res.end();
+      /** Check validity of token. */
+      models
+        .checkDspaceSession(session.getDspaceToken)
+        .then(
+          function (response) {
+            // DSpace API REST status check will return a boolean
+            // value for authenticated.
+            if (!response.authenticated) {
+              console.log('This dspace token is no longer valid: ' + session.getDspaceToken);
+              // If not authenticated, remove the stale token.
+              utils.removeDspaceSession(session);
+              console.log("Retrieving new Dspace token.");
+              loginToDspace(netid, config, req, res);
+            }
+
+          })
+        .catch(function (err) {
+            // If status request returned an error, remove dspace token.
+            utils.removeDspaceSession(session);
+            console.log(err.message);
+            //utils.jsonResponse(res, {status: 'denied'});
+
+          }
+        );
+
     }
 
   };
@@ -167,8 +200,9 @@ var utils = require('../core/utils');
         res.redirect('http://libmedia.willamette.edu/commons');
       })
       .catch(function (err) {
-        res.redirect('http://libmedia.willamette.edu/commons');
         console.log(err.message);
+        res.redirect('http://libmedia.willamette.edu/commons');
+
       });
 
   };

@@ -50,7 +50,7 @@
   exports.removeDspaceSession = function (session) {
 
     try {
-      if ('dspaceToken' in session) {
+      if ('getDspaceToken' in session) {
         delete session.getDspaceToken;
 
       }
