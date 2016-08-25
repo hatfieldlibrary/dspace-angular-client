@@ -196,7 +196,6 @@
       delete qs.pos;
       delete qs.id;
       delete qs.itype;
-console.log(qs)
       $location.search(qs);
 
     };
@@ -430,6 +429,11 @@ console.log(qs)
        * Update the select option.
        */
       ctrl.selectedOrder = QuerySort.ASCENDING;
+
+      /**
+       * Reset list view.  Assures repeat-animation execution.
+       */
+      ctrl.resetListView();
 
       /**
        * Update query string.

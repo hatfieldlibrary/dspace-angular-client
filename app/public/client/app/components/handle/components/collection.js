@@ -16,10 +16,14 @@
                           QueryActions,
                           QueryTypes,
                           PageTitle,
-                          ItemById,
                           Utils) {
 
     var ctrl = this;
+
+    ctrl.isMobile = true;
+    if ($mdMedia('gt-md')) {
+      ctrl.isMobile = false;
+    }
 
     function getLogo() {
 

@@ -116,12 +116,8 @@
      */
     ctrl.onUpdate = function (results, count, field, offset, jump) {
 
-      ctrl.ready = true;
 
-      ctrl.jump = jump;
-      ctrl.items = results;
-      ctrl.field = field;
-      ctrl.count = count;
+
       offset++;
       var end = '';
       if (count < endIncrement) {
@@ -139,6 +135,13 @@
         ctrl.resultMessage = Messages.NO_RESULTS_LABEL;
       }
       ctrl.showDiscoverContainer = ctrl.context === 'discover' || ( ctrl.context !== 'advanced');
+
+      ctrl.jump = jump;
+      ctrl.field = field;
+      ctrl.count = count;
+      ctrl.items = results;
+
+      ctrl.ready = true;
 
     };
 
@@ -188,6 +191,7 @@
 
     function init() {
 
+      ctrl.ready = true;
       /**
        * The array containing the items to present in the view.
        * @type {Array}
@@ -214,9 +218,6 @@
           ctrl.jump = true;
         }
       }
-
-      // This assures that aminmation runs.
-      ctrl.ready = true;
 
     }
 

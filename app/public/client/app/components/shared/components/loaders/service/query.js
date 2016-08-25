@@ -108,7 +108,7 @@
        * @param qs query string
        * @returns {number}
        */
-      function verifyOffset() {
+      function verifyOffset(qs) {
 
         var offset = 0;
         if (qs.pos < qs.offset) {
@@ -130,24 +130,24 @@
        * @param newSortOrder the new sort order
        * @returns {*}
        */
-      function getSortOrder() {
-        var order;
-        if (field === QueryTypes.SUBJECT_FACETS) {
-          order = AppContext.getSubjectsOrder();
-        } else if (field === QueryTypes.AUTHOR_FACETS) {
-          order = AppContext.getAuthorsOrder();
-        } else {
-          order = AppContext.getListOrder();
-        }
-        return order;
-      }
+      // function getSortOrder() {
+      //   var order;
+      //   if (field === QueryTypes.SUBJECT_FACETS) {
+      //     order = AppContext.getSubjectsOrder();
+      //   } else if (field === QueryTypes.AUTHOR_FACETS) {
+      //     order = AppContext.getAuthorsOrder();
+      //   } else {
+      //     order = AppContext.getListOrder();
+      //   }
+      //   return order;
+      // }
 
       /**
        * Sets the offset value based on provided query
        * @param qs  the query string
        */
       function setOffset(qs) {
-        offset = this.verifyOffset(qs);
+        offset = verifyOffset(qs);
         if (typeof qs.offset !== 'undefined') {
           QueryManager.setOffset(offset);
         }
@@ -206,7 +206,7 @@
 
         invokeQuery: invokeQuery,
         filterQuery: filterQuery,
-        getSortOrder: getSortOrder,
+       // getSortOrder: getSortOrder,
         verifyOffset: verifyOffset,
         setOffset: setOffset,
         getOffset: function () {

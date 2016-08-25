@@ -86,8 +86,6 @@
 
         else {
 
-          console.log(qs)
-
           AppContext.isFilter(false);
 
 
@@ -141,7 +139,6 @@
 
             }
             else {
-              console.log(qs)
               PagerUtils.initializePositions(qs);
             }
 

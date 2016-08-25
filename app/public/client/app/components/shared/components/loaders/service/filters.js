@@ -69,7 +69,7 @@
        * Fetches the authors array.
        * @param terms
        */
-      function _fetchAuthors(terms, sort, direction, initOffset) {
+      function _fetchAuthors(pager, terms, sort, direction, initOffset) {
         // Fetch authors.
         var result = SolrDataLoader.invokeQuery();
         result.$promise.then(function (data) {
@@ -81,7 +81,7 @@
 
           // Call the filter method.
 
-          authorFilter(terms, sort, direction, initOffset);
+          authorFilter(pager, terms, sort, direction, initOffset);
         });
       }
 
@@ -132,7 +132,7 @@
         else {
           // No author array is available.
           // Fetch it.
-          _fetchAuthors(terms, sort, direction, initOffset);
+          _fetchAuthors(pager, terms, sort, direction, initOffset);
         }
 
       }
@@ -142,7 +142,7 @@
        * Fetches the subjects array.
        * @param terms
        */
-      function _fetchSubjects(terms, sort, direction, initOffset) {
+      function _fetchSubjects(pager, terms, sort, direction, initOffset) {
         // Fetch subjects.
         var result = SolrDataLoader.invokeQuery();
         result.$promise.then(function (data) {
@@ -150,7 +150,7 @@
           AppContext.setSubjectList(data.facets);
           AppContext.setNextPagerOffset(data.offset);
           // Call the filter method.
-          subjectFilter(terms, sort, direction, initOffset);
+          subjectFilter(pager, terms, sort, direction, initOffset);
         });
       }
 
@@ -183,7 +183,7 @@
         }
         else {
 
-          _fetchSubjects(terms, sort, direction, initOffset);
+          _fetchSubjects(pager, terms, sort, direction, initOffset);
         }
       }
 

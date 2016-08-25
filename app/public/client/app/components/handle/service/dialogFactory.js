@@ -64,6 +64,7 @@
 
         ctrl.dspaceRoot = AppContext.getDspaceRoot();
 
+        ctrl.isMobile = $mdMedia('sm') || $mdMedia('md');
 
         /**
          * Set screen size boolean.
