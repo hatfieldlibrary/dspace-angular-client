@@ -8,7 +8,8 @@
 (function () {
 
 
-  function ItemCtrl(GetCollectionInfo,
+  function ItemCtrl(
+                    GetCollectionInfo,
                     Utils,
                     Messages,
                     AppContext,

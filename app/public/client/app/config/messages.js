@@ -78,11 +78,11 @@
 
     ITEM_PUBLICATION_DATE_LABEL: 'Publication Date',
 
-    ITEM_CITATION_LABEL: 'Link Citation',
+    ITEM_CITATION_LABEL: 'Citation',
 
     ITEM_ABSTRACT_LABEL: 'Abstract / Description',
 
-    ITEM_METADATA_LABEL: 'Metadata',
+    ITEM_METADATA_LABEL: 'More Information',
 
     FILE_DOWNLOAD: 'Download File',
 

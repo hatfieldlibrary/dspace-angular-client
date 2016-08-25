@@ -38,7 +38,7 @@ module.exports = function (app, config, passport) {
 
     app.use(session({
         secret: 'rice paddy',
-        saveUninitialized: true,
+        saveUninitialized: false,
         resave: true
       })
     );

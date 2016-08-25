@@ -43,15 +43,6 @@ var utils = require('../core/utils');
             // Add DSpace token to session.
             session.getDspaceToken = body;
 
-            session.save(function (err) {
-              if (err === null) {
-                console.log('DSpace API token saved to session: ' + session.getDspaceToken);
-
-              } else {
-                console.log('Error saving DSpace token to session.')
-              }
-            });
-
           } else if (response.statusCode === 403) {   // forbidden
             console.log('DSpace access forbidden.');
 

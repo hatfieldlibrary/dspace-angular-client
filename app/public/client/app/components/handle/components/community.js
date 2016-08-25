@@ -10,13 +10,19 @@
    * Community view controller.
    */
 
-  function CommunityCtrl(Messages,
+  function CommunityCtrl($mdMedia,
+                         Messages,
                          Utils,
                          AppContext,
                          PageTitle,
                          $scope) {
 
     var ctrl = this;
+
+    ctrl.isMobile = true;
+    if ($mdMedia('gt-md')) {
+      ctrl.isMobile = false;
+    }
 
     function hasLogo() {
       if (typeof ctrl.data.logo.retrieveLink !== 'undefined') {

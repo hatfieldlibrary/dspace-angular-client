@@ -120,19 +120,23 @@
              * Item dialog might be open.  Close it.
              */
             $mdDialog.cancel();
+
             /**
-             * If not subject or author, always request new
-             * list using the field and sort order provided in
-             * the query string.
+             * If item filter, always request new list using the field and sort order provided in
+             * the query string. The itype parameter indicates an item request.
              */
             if (qs.filter === 'item' && qs.itype !== 'i') {
               currentFilter = qs.filter;
-              PagerFilters.itemFilter(qs.offset);
+              PagerUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter);
+              PagerFilters.itemFilter(pager, qs.offset);
 
             }
-
+            /**
+             * If there is change in fields, update.
+             */
             else if (PagerUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter) && qs.itype !== 'i') {
               PagerUtils.updateList(pager, qs.field, qs.sort, qs.d);
+
             }
             else {
               PagerUtils.initializePositions(qs);
@@ -149,10 +153,10 @@
 
               currentFilter = qs.filter;
               if (AppContext.isNewSet()) {
-                PagerFilters.authorFilter(qs.terms, qs.sort, qs.d);
+                PagerFilters.authorFilter(pager, qs.terms, qs.sort, qs.d);
               }
               else {
-                PagerFilters.authorFilter(qs.terms, qs.sort, qs.d, qs.offset);
+                PagerFilters.authorFilter(pager, qs.terms, qs.sort, qs.d, qs.offset);
               }
 
             }
@@ -160,10 +164,10 @@
 
               currentFilter = qs.filter;
               if (AppContext.isNewSet()) {
-                PagerFilters.subjectFilter(qs.terms, qs.sort, qs.d);
+                PagerFilters.subjectFilter(pager, qs.terms, qs.sort, qs.d);
               }
               else {
-                PagerFilters.subjectFilter(qs.terms, qs.sort, qs.d, qs.offset);
+                PagerFilters.subjectFilter(pager, qs.terms, qs.sort, qs.d, qs.offset);
               }
 
             }
@@ -198,7 +202,7 @@
 
         onLocationChange: _onLocationChange
 
-      }
+      };
 
     }]);
 })();
