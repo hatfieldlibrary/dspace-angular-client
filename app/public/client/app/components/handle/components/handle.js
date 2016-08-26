@@ -1,6 +1,6 @@
 /**
  * The component for handle queries. Chooses the sub-component type (community,
- * collection, or item) based on the data type returned by the query.
+ * collection, or item) based on response the data type.
  * Created by mspalti on 2/26/16.
  */
 
@@ -42,16 +42,18 @@
     ctrl.ready = false;
 
     /**
-     * Indicates whether user can access this item. The presumed
-     * reason is that they do not have permission. At the moment, its
-     * not possible to determine the precise reason from the DSpace
-     * API response.
+     * Indicates whether user can access this item. If true, the
+     * no access component will appear. At the moment, it is
+     * not possible to determine the precise reason for denial,
+     * but the presumption is that the authenticated user is not
+     * authorized to view this item.
      * @type {boolean}
      */
     ctrl.accessNotAllowed = false;
+
     /**
-     * Indicates whether login is required to access this item. If redirection
-     * has been enabled in AppContext, this will not be used. Instead, the
+     * Indicates whether to show the login component. If redirection
+     * has been enabled, this component will not be used. Instead, the
      * user will be redirected immediately to the authentication service.
      * @type {boolean}
      */
@@ -80,7 +82,8 @@
             ctrl.data = data;
 
             /**
-             * Set user permissions.
+             * Set user permissions in context. These values
+             * will be used in the side panel component.
              */
             if (typeof data.canSubmit !== 'undefined') {
               AppContext.setSubmitPermission(data.canSubmit);
@@ -94,13 +97,18 @@
               AppContext.setWritePermission(data.canWrite);
             }
 
-            ctrl.nType = Utils.getNormalizedType(data.type);
+            /**
+             * Get the result type and dspace ID. These values are
+             * then set in context and used in handle sub-components.
+             */
 
             /**
-             * Set result type and dspace ID on the view model. These
-             * values will be passed to the selected component and used by
-             * sub-components like the search box.
-             *
+             * String nType is obtained by truncating the DSpace data type.
+             * @type {string}
+             */
+            ctrl.nType = Utils.getLocalType(data.type);
+
+             /**
              * Utils.getType() returns AssetTypes.COLLECTION if the nType of
              * the current object is an AssetTypes.ITEM. Otherwise, the
              * nType of the current object is returned.
@@ -167,7 +175,7 @@
 
         } else {
           /**
-           * If the user has a Dspace session, assume that the user is
+           * If the user has authenticated and received a Dspace , assume that the user is
            * not authorized to access the resource.
            * @type {boolean}
            */
