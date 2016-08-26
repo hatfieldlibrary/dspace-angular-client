@@ -22,7 +22,6 @@
     'DiscoveryContext',
     'SolrDataLoader',
     'FacetHandler',
-
     function (QueryManager,
               QueryActions,
               QuerySort,
@@ -32,7 +31,7 @@
               $location,
               DiscoveryContext,
               SolrDataLoader,
-              FacetHandler ) {
+              FacetHandler) {
 
 
       /**
@@ -50,10 +49,9 @@
 
 
       /**
-       * Sets the position of the currently open item on
-       * page load. This is to be used with full items and inline
-       * author and subject lists. The detail components watch
-       * for changes in the context.
+       * Sets the position of the currently open item in the app
+       * context. The item-detail-component controller watches
+       * for changes in context.
        * @param qs
        */
       function _setOpenItemPosition(qs) {
@@ -139,7 +137,6 @@
           AppContext.setOpenItem(-1);
           AppContext.setSelectedPositionIndex(-1);
         }
-
       }
 
       /**
@@ -195,7 +192,7 @@
        */
       function hasNewParams(field, order, offset, filter) {
 
-        var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset || filter !== currentFilter );
+        var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset || filter !== currentFilter);
 
         currentField = field;
         currentOrder = order;
