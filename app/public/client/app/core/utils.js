@@ -42,7 +42,7 @@
        * @param type value returned by DSpace API.
        * @returns {string}  truncated string
        */
-      utils.getNormalizedType = function (type) {
+      utils.getLocalType = function (type) {
 
         return type.substring(0, 4);
 

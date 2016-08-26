@@ -80,16 +80,17 @@
       var qs = $location.search();
 
       var url = $location.path() + '?';
+      url += 'id=' + ctrl.id;
+      url += '&filter=none';
+      url += '&pos=' + ctrl.pos;
+      url += '&itype=i';
+
       var arr = Object.keys(qs);
       for (var i = 0; i < arr.length; i++) {
          if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype' && arr[i] !== 'filter') {
           url += '&' + arr[i] + '=' + qs[arr[i]];
         }
       }
-      url += '&filter=none';
-      url += '&id=' + ctrl.id;
-      url += '&pos=' + ctrl.pos;
-      url += '&itype=i';
 
       return url;
 
