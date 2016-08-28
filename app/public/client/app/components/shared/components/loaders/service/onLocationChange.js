@@ -13,6 +13,7 @@
 (function () {
 
   dspaceServices.factory('OnPagerLocationChange', [
+    '$mdDialog',
     'QueryManager',
     'QueryActions',
     'QuerySort',
@@ -21,10 +22,10 @@
     'Utils',
     'PagerFilters',
     'SolrDataLoader',
-    '$mdDialog',
     'PagerUtils',
     'FacetHandler',
-    function (QueryManager,
+    function ($mdDialog,
+              QueryManager,
               QueryActions,
               QuerySort,
               QueryTypes,
@@ -32,7 +33,6 @@
               Utils,
               PagerFilters,
               SolrDataLoader,
-              $mdDialog,
               PagerUtils,
               FacetHandler) {
 
@@ -68,6 +68,7 @@
            * Browse and Search actions do not use query string.
            */
           if (QueryManager.getAction() !== QueryActions.BROWSE && QueryManager.getAction() !== QueryActions.SEARCH) {
+
             QueryManager.setOffset(0);
             QueryManager.setFilter('');
             AppContext.setStartIndex(0);
@@ -126,6 +127,7 @@
              * the query string. The itype parameter indicates an item request.
              */
             if (qs.filter === 'item' && qs.itype !== 'i') {
+
               currentFilter = qs.filter;
               PagerUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter);
               PagerFilters.itemFilter(pager, qs.offset);
@@ -135,6 +137,7 @@
              * If there is change in fields, update.
              */
             else if (PagerUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter) && qs.itype !== 'i') {
+
               PagerUtils.updateList(pager, qs.field, qs.sort, qs.d);
 
             }

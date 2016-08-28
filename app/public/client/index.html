@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
   <title ng-bind="title">DSpace</title>
-  <link rel="next" href="{{nextPage}}"/>
+  <link rel="{{relValue}}" href="{{nextPage}}"/>
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <base href="/">
   <meta charset="utf-8"/>
@@ -19,8 +19,7 @@
   <!-- endbuild -->
 
 
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
   <!-- If you want to use Roboto as the default font, uncomment this stylesheet link.  If Roboto
         is not available, Angular Material defaults to Helvetica Neue and sans serif.-->

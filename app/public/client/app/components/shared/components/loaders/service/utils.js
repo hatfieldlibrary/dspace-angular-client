@@ -225,7 +225,22 @@
         url += '&offset=' + offset;
         url += '&new=false';
 
-        SetNextLinkInHeader.setNextLink(url);
+        /**
+         * If there are more items, set the next link for seo paging optimization.
+         * If at the end of the set, tell the Google search spider not follow link.
+         * Let's hope other search engines implement the same rules.
+         *
+         */
+        if (offset + AppContext.getSetSize() < AppContext.getItemsCount()) {
+
+          SetNextLinkInHeader.setNextLink('next', url);
+
+        } else {
+
+          SetNextLinkInHeader.setNextLink('nofollow', url);
+
+        }
+
         return url;
 
       }

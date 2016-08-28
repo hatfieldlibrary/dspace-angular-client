@@ -56,7 +56,7 @@
      * @returns {boolean}
      */
      pager.moreItems = function () {
-       return AppContext.getCount() > QueryManager.getOffset() + setSize;
+       return AppContext.getItemsCount() > QueryManager.getOffset() + setSize;
      };
 
     /**
@@ -78,7 +78,7 @@
      */
     this.updateParent = function (data, direction) {
 
-      AppContext.setCount(data.count);
+      AppContext.setItemsCount(data.count);
       // Leave jump value undefined in pager updates.
       if (direction === 'prev') {
         pager.onPrevUpdate({
@@ -113,7 +113,7 @@
       AppContext.setStartIndex(QueryManager.getOffset());
 
       if (data) {
-        AppContext.setCount(data.count);
+        AppContext.setItemsCount(data.count);
         pager.onNewSet({
           results: data.results,
           count: data.count,

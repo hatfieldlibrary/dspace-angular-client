@@ -236,11 +236,11 @@
         return 0;
       }
 
-      function setCount(count) {
+      function setItemsCount(count) {
         _context.count = count;
       }
 
-      function getCount() {
+      function getItemsCount() {
         return _context.count;
       }
 
@@ -426,8 +426,8 @@
         getSubjects: getSubjects,
         getAuthorsCount: getAuthorsCount,
         getSubjectsCount: getSubjectsCount,
-        setCount: setCount,
-        getCount: getCount,
+        setItemsCount: setItemsCount,
+        getItemsCount: getItemsCount,
         setMenu: setMenu,
         getMenuState: getMenuState,
         setPager: setPager,
