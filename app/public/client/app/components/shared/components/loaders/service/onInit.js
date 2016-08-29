@@ -56,6 +56,10 @@
 
         AppContext.isNewSet(true);
 
+        QueryManager.setOffset(0);
+
+        AppContext.setNextPagerOffset(0);
+
         /**
          * If a query string is provided, update the query type,
          * sort order, and offset.

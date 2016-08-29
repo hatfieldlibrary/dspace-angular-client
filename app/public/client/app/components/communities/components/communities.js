@@ -12,13 +12,15 @@
                            QueryManager,
                            AssetTypes,
                            Messages,
-                           PageTitle) {
+                           PageTitle,
+                           SetPagingLinksInHeader) {
 
     var ctrl = this;
 
     ctrl.intro = Messages.COMMUNITIES_LIST_INTRO;
 
     ctrl.heading = Messages.COMMUNITIES_LIST_HEADING;
+
 
     /**
      * Indicates when data has been returned.
@@ -31,6 +33,9 @@
      * @type {{}}
      */
     ctrl.communities = {};
+
+    SetPagingLinksInHeader.setNextLink('nofollow','');
+    SetPagingLinksInHeader.setPrevLink('nofollow','');
 
     PageTitle.setTitle(Messages.COMMUNITIES_LIST_HEADING);
 

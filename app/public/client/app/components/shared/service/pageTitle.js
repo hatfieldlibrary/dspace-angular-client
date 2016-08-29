@@ -15,17 +15,23 @@
   });
 
   /**
-   * Sets the next link for continuous paging and Google crawler.
+   * Sets the next/prev links for continuous paging and Google crawler.
    * https://webmasters.googleblog.com/2014/02/infinite-scroll-search-friendly.html
    */
-  dspaceServices.service('SetNextLinkInHeader', function($rootScope) {
+  dspaceServices.service('SetPagingLinksInHeader', function($rootScope) {
      return {
        setNextLink: function(type, link) {
          $rootScope.relValue  = type;
          $rootScope.nextPage = link;
+       },
+       setPrevLink: function(type, link) {
+         $rootScope.prevValue  = type;
+         $rootScope.prevPage = link;
        }
      };
   });
+
+
 
 
 })();

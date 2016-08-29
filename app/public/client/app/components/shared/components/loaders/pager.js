@@ -78,7 +78,7 @@
      */
     this.updateParent = function (data, direction) {
 
-      AppContext.setItemsCount(data.count);
+
       // Leave jump value undefined in pager updates.
       if (direction === 'prev') {
         pager.onPrevUpdate({
@@ -113,7 +113,9 @@
       AppContext.setStartIndex(QueryManager.getOffset());
 
       if (data) {
+
         AppContext.setItemsCount(data.count);
+
         pager.onNewSet({
           results: data.results,
           count: data.count,

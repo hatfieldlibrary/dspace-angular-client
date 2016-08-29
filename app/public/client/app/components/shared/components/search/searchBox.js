@@ -34,11 +34,11 @@
 
     sb.searchHeaderLabel = Messages.SEARCHBOX_OPTIONS_HEADER_LABEL;
 
-    sb.showOptionsForCollection = function() {
+    sb.showOptionsForCollection = function () {
       return QueryManager.getAssetType() === AssetTypes.COLLECTION;
     };
 
-    sb.showOptionsForCommunity = function() {
+    sb.showOptionsForCommunity = function () {
       return QueryManager.getAssetType() === AssetTypes.COMMUNITY;
     };
 
@@ -52,8 +52,10 @@
 
       QueryManager.setAction(QueryActions.SEARCH);
 
+      QueryManager.setOffset(0);
+
       $location.search({});
-      
+
       $location.path('/ds/discover/' + sb.type + '/' + sb.id + '/' + terms);
 
     };
@@ -63,13 +65,15 @@
      * can change after this component has been added to
      * the parent.
      */
-    $scope.$watch(function() { return QueryManager.getAssetId();},
-    function(newValue, oldValue) {
-          if (newValue !== oldValue) {
-            sb.id = QueryManager.getAssetId();
-            sb.currentCollectionId = newValue;
-          }
-    });
+    $scope.$watch(function () {
+        return QueryManager.getAssetId();
+      },
+      function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+          sb.id = QueryManager.getAssetId();
+          sb.currentCollectionId = newValue;
+        }
+      });
 
   }
 

@@ -17,7 +17,7 @@
     'QuerySort',
     'QueryTypes',
     'AppContext',
-    'SetNextLinkInHeader',
+    'SetPagingLinksInHeader',
     '$location',
     'DiscoveryContext',
     'SolrDataLoader',
@@ -27,7 +27,7 @@
               QuerySort,
               QueryTypes,
               AppContext,
-              SetNextLinkInHeader,
+              SetPagingLinksInHeader,
               $location,
               DiscoveryContext,
               SolrDataLoader,
@@ -204,8 +204,8 @@
       }
 
       /**
-       * Generates the url string for the next pager request.
-       * @param offset
+       * Generates the relative url string for the next pager request.
+       * @param offset the current offset value.
        * @returns {string}
        * @private
        */
@@ -222,27 +222,76 @@
             url += arr[i] + '=' + qs[arr[i]];
           }
         }
-        url += '&offset=' + offset;
         url += '&new=false';
 
+        return _getPagerUrls(url, offset);
+
+      }
+
+      /**
+       * Returns the completed url after passing partial url and
+       * current offset to methods for updating the header link.
+       * @param url  partial url missing the offset parameter.
+       * @param offset current offset value.
+       * @returns {string}  complete url.
+       * @private
+       */
+      function _getPagerUrls(url, offset) {
         /**
-         * If there are more items, set the next link for seo paging optimization.
-         * If at the end of the set, tell the Google search spider not follow link.
-         * Let's hope other search engines implement the same rules.
-         *
+         * Set search links in page header for search engine crawler.
          */
-        if (offset + AppContext.getSetSize() < AppContext.getItemsCount()) {
+        _updateNextHeaderLink(url, offset);
 
-          SetNextLinkInHeader.setNextLink('next', url);
+        _updatePrevHeaderLink(url, offset);
 
-        } else {
-
-          SetNextLinkInHeader.setNextLink('nofollow', url);
-
-        }
+        url += '&offset=' + offset;
 
         return url;
 
+      }
+
+      /**
+       * If there are more items, sets the next link in header for seo. If at the end of
+       * the set, tells the search spider not follow link using 'nofollow' rel value.
+       * Let's hope other search engines other than google implement the same rules.
+       * @param url the partial url with missing offset parameter.
+       * @param offset   the current offset value.
+       * @private
+       */
+      function _updateNextHeaderLink(url, offset) {
+
+        if (offset < AppContext.getItemsCount()) {
+
+          url += '&offset=' + offset;
+
+          SetPagingLinksInHeader.setNextLink('next', url);
+
+        } else {
+
+          SetPagingLinksInHeader.setNextLink('nofollow', '');
+
+        }
+
+      }
+
+      /**
+       * Sets previous page link in header.  Sets link to 'nofollow'
+       * if on first page.
+       */
+      function _updatePrevHeaderLink(url, offset) {
+
+        if (offset !== AppContext.getSetSize() && offset !== 0) {
+
+          var prevOffset = offset - (AppContext.getSetSize() * 2);
+          url += '&offset=' + prevOffset;
+
+          SetPagingLinksInHeader.setPrevLink('prev', url);
+
+        } else {
+
+          SetPagingLinksInHeader.setPrevLink('nofollow', '');
+
+        }
       }
 
       /**
@@ -291,6 +340,8 @@
           if (items !== undefined) {
             items.$promise.then(function (data) {
 
+             // AppContext.setItemsCount(data.count);
+
               if (isNewRequest) {
                 /**
                  * If not a new request, swap in the new data.
@@ -326,6 +377,8 @@
               /** Retrieving new author facet list */
               result = SolrDataLoader.invokeQuery();
               result.$promise.then(function (data) {
+
+
                 /**
                  * Add the author array to shared context.
                  * @type {string|Array|*}
