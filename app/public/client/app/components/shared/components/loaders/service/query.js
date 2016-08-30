@@ -147,6 +147,7 @@
        * @param qs  the query string
        */
       function setOffset(qs) {
+
         offset = verifyOffset(qs);
         if (typeof qs.offset !== 'undefined') {
           QueryManager.setOffset(offset);

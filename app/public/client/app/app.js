@@ -37,6 +37,9 @@ var dspaceApp = angular.module('dspaceApp', [
         .when('/ds/handle/:site/:id/:field/:sort', {
           templateUrl: '/ds/partials/handle'
         })
+        .when('/ds/paging/:site/:item', {
+          templateUrl: '/ds/partials/continuousPaging'
+        })
         .when('/ds/communities', {
           templateUrl: '/ds/partials/communities'
         })

@@ -79,9 +79,12 @@
 
       var qs = $location.search();
 
-      var url = $location.path() + '?';
-      url += 'id=' + ctrl.id;
-      url += '&filter=none';
+      var fullUrl = $location.path() ;
+      var urlArr = fullUrl.split('/');
+      var url = '/ds/handle/' + urlArr[3] + '/' + urlArr[4] + '?';
+
+      url += 'filter=none';
+      url += '&id=' + ctrl.id;
       url += '&pos=' + ctrl.pos;
       url += '&itype=i';
 

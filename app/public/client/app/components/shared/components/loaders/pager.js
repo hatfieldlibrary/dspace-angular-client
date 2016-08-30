@@ -134,7 +134,6 @@
      */
     $scope.$on('$locationChangeSuccess', function () {
 
-      AppContext.isFilter(false);
       var qs = $location.search();
       OnPagerLocationChange.onLocationChange(pager, qs, pager.context);
 
@@ -161,9 +160,12 @@
 
 
     /**
-     * Generates and returns the url for the pager link. Also
-     * uses the SetNextLinkInHeader service to update the
-     * link rel="next" html header element for SEO.
+     * Generates and returns the url for the pager link. Also,
+     * the PagerUtils method will update the link rel="next" and rel="prev"
+     * html header elements to assist search engines, per google recommendation
+     * for infinite scroll (The full recommendation is not followed since
+     * this component provides a click-able link for the crawler to follow. Only
+     * the header links are implemented.)
      *
      * @returns {string}
      */
@@ -171,7 +173,6 @@
 
       var offset = parseInt(AppContext.getNextPagerOffset(), 10);
       offset += setSize;
-
       _setOffset(offset);
       return PagerUtils.nextUrl(offset);
 

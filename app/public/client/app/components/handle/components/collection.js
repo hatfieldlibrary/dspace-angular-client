@@ -61,7 +61,7 @@
       /**
        * Default field.
        */
-      QueryManager.setQueryType(QueryTypes.DATES_LIST);
+      //QueryManager.setQueryType(QueryTypes.DATES_LIST);
 
       /**
        * Default sort order.

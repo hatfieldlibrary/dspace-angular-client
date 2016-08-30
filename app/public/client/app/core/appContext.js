@@ -377,7 +377,7 @@
       }
 
       function setNextPagerOffset(offset) {
-        console.log('app ' + offset);
+        console.log('GOT OFFSET ' + offset)
         _context.nextPagerOffset = offset;
       }
 

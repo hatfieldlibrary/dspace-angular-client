@@ -11,7 +11,8 @@
   function PagerCtrl($scope,
                      $location,
                      QueryManager,
-                     AppContext) {
+                     AppContext,
+                     PagerUtils) {
 
 
     var backPager = this;
@@ -32,6 +33,8 @@
      * @returns {boolean}
      */
     function more(offset) {
+      console.log(offset)
+      console.log(AppContext.isFilter())
       return offset !== 0 && !AppContext.isFilter();
     }
 
@@ -47,9 +50,57 @@
 
       });
 
+    /**
+     * Count must be initialized to 0.
+     * @type {number}
+     */
+    var count = 0;
+
+    /**
+     * Updates the values for start and end  positions.
+     * These are used in the view to provide the user with
+     * position information.
+     * @param offset
+     * @private
+     */
+    function _setOffset(offset) {
+
+      pager.start = offset + 1;
+
+      if (pager.end + setSize <= count) {
+        pager.end += setSize;
+      } else {
+        pager.end = count;
+      }
+    }
+
+    /**
+     * Generates and returns the url for the pager link. Also,
+     * the PagerUtils method will update the link rel="next" and rel="prev"
+     * html header elements to assist search engines, per google recommendation
+     * for infinite scroll (The full recommendation is not followed since
+     * this component provides a click-able link for the crawler to follow. Only
+     * the header links are implemented.)
+     *
+     * @returns {string}
+     */
+    backPager.prevUrl = function () {
+
+      var offset = parseInt(AppContext.getPrevousPagerOffset(), 10);
+      console.log('previous offset ' + offset)
+      console.log('set size')
+
+      console.log('new offset ' + offset)
+      _setOffset(offset );
+      return PagerUtils.prevUrl(offset);
+
+    };
+
     function init() {
 
       var offset = QueryManager.getOffset();
+      AppContext.setStartIndex(offset);
+      console.log('init')
 
       /**
        * Current start position for view model.
@@ -70,8 +121,25 @@
       /**
        * Show/hide the pager based on the query offset.
        */
-      backPager.more = more(offset);
+      var offset = AppContext.getPrevousPagerOffset();
 
+      console.log(offset);
+      backPager.more = more(offset);
+      console.log(backPager.more = more(offset))
+
+      if (offset < setSize) {
+        offset = 0;
+        AppContext.setStartIndex(0);
+      }
+      // else if (offset >= setSize) {
+      //   offset -= setSize;
+      //
+      // }
+
+      console.log('PREV ' + offset)
+      AppContext.setPreviousPagerOffset(offset);
+      console.log(PagerUtils.prevUrl(offset))
+      backPager.url = PagerUtils.prevUrl(offset);
 
     }
 
@@ -82,39 +150,45 @@
      * Method for retrieving the previous result set.
      */
     backPager.previous = function () {
+      console.log('previous')
+  //    backPager.url = PagerUtils.prevUrl(AppContext.getPrevousPagerOffset() - AppContext.getSetSize());
 
-      /**
-       * Set the start value to the current lowest start index.
-       */
-      var offset = AppContext.getStartIndex();
-
-      if (offset < setSize) {
-        offset = 0;
-        AppContext.setStartIndex(0);
-      }
-      else if (offset >= setSize) {
-        offset -= setSize;
-        AppContext.setStartIndex(offset);
-      }
-
-      AppContext.setPreviousPagerOffset(offset);
-
-      AppContext.setOpenItem(-1);
-      AppContext.setSelectedPositionIndex(-1);
-
-      backPager.more = more(offset);
-      // Set the lowest start index to the new, decremented value.
-      AppContext.isNewSet(false);
-      var qs = $location.search();
-      qs.field = QueryManager.getQueryType();
-      qs.sort = QueryManager.getSort();
-      qs.terms = '';
-      qs.offset = offset;
-      qs.d = 'prev';
-      delete qs.id;
-      delete qs.pos;
-      delete qs.itype;
-      $location.search(qs);
+   //    /**
+   //     * Set the start value to the current lowest start index.
+   //     */
+   //    var offset = AppContext.getPrevousPagerOffset();
+   //
+   //    if (offset < setSize) {
+   //      offset = 0;
+   //      AppContext.setStartIndex(0);
+   //    }
+   //    else if (offset >= setSize) {
+   //      AppContext.setStartIndex(offset);
+   //    }
+   //
+   //
+   //    console.log('PREV '+offset)
+   //    console.log(PagerUtils.prevUrl(offset))
+   //    backPager.url = PagerUtils.prevUrl(offset);
+   //
+   //    // AppContext.setPreviousPagerOffset(offset - setSize);
+   //
+   //    AppContext.setOpenItem(-1);
+   //    AppContext.setSelectedPositionIndex(-1);
+   //
+   // //   backPager.more = more(offset);
+   //
+   //    AppContext.isNewSet(false);
+      // var qs = $location.search();
+      // qs.field = QueryManager.getQueryType();
+      // qs.sort = QueryManager.getSort();
+      // qs.terms = '';
+      // qs.offset = offset;
+      // qs.d = 'prev';
+      // delete qs.id;
+      // delete qs.pos;
+      // delete qs.itype;
+      // $location.search(qs);
 
 
 
@@ -126,7 +200,7 @@
 
   dspaceComponents.component('pagerBackComponent', {
 
-    template: '<div layout="row" layout-align="center center" ><a href ng-click="backPager.previous()"><md-button class="md-raised md-accent md-fab md-mini" ng-if="backPager.more"><md-icon md-font-library="material-icons" class="md-light" aria-label="Previous Results">expand_less</md-icon></md-button></a></div>',
+    template: '<div layout="row" layout-align="center center" ><a ng-click="backPager.previous()" href="{{backPager.prevUrl()}}"><md-button class="md-raised md-accent md-fab md-mini" ng-if="backPager.more"><md-icon md-font-library="material-icons" class="md-light" aria-label="Previous Results">expand_less</md-icon></md-button></a></div>',
 
     bindings: {
       context: '@'

@@ -32,19 +32,7 @@
               SolrDataLoader) {
 
 
-      var currentField = '';
-      var currentOrder = '';
-      var currentOffset = 0;
-
-      /**
-       * Retrieve the default field from the app configuration.
-       */
-      var defaultField = AppContext.getDefaultItemListField();
-      /**
-       * Retrieve the default sort order from the app configuration.
-       */
-      var defaultOrder = AppContext.getDefaultSortOrder();
-
+      //  var currentOffset = 0;
 
       /**
        * The init method.
@@ -56,42 +44,7 @@
 
         AppContext.isNewSet(true);
 
-        QueryManager.setOffset(0);
-
-        AppContext.setNextPagerOffset(0);
-
-        /**
-         * If a query string is provided, update the query type,
-         * sort order, and offset.
-         */
-        if (Object.keys(qs).length !== 0) {
-
-          if (typeof qs.field !== 'undefined') {
-            QueryManager.setQueryType(qs.field);
-            QueryManager.setSort(qs.sort);
-            QueryManager.setOffset(qs.offset);
-
-          } else {
-            QueryManager.setQueryType(defaultField);
-            QueryManager.setSort(defaultOrder);
-            QueryManager.setOffset(0);
-            AppContext.setStartIndex(0);
-          }
-
-
-        }
-        /**
-         * If no query string is provided, set defaults.
-         */
-        else {
-          if (QueryManager.getQueryType() !== QueryTypes.DISCOVER) {
-            QueryManager.setQueryType(defaultField);
-            QueryManager.setSort(defaultOrder);
-            QueryManager.setOffset(0);
-            AppContext.setStartIndex(0);
-
-          }
-        }
+        PagerUtils.setQueryComponents(qs);
 
         if (typeof qs.filter === 'undefined') {
           qs.filter = 'none';
@@ -102,20 +55,20 @@
           QueryManager.setFilter(qs.terms);
         }
 
-        if (typeof qs.offset !== 'undefined') {
-          currentOffset = qs.offset;
-        }
+        // if (typeof qs.offset !== 'undefined') {
+        //   currentOffset = qs.offset;
+        // }
 
         /**
          * Sets the open position or item id for the current state.
          */
-        PagerUtils.initializePositions(qs);
+        PagerUtils.initializePositions();
 
         AppContext.setPager(false);
 
 
-        currentField = QueryManager.getQueryType();
-        currentOrder = QueryManager.getSort();
+        //   currentField = QueryManager.getQueryType();
+        //  currentOrder = QueryManager.getSort();
 
         /**
          * Filtering on a (title, author, or subject)
@@ -189,12 +142,15 @@
         else {
 
           PagerUtils.setIndex(qs);
-
-          PagerUtils.updateList(pager, QueryManager.getQueryType(), QueryManager.getSort(), qs.d);
+          /**
+           * Use QueryManager values.  On initialization of item list view, there is no guarantee we
+           * have a query string. This has been accounted for by the keys check earlier in this method,
+           * and in the default values set in QueryManager when no query string exists.
+           */
+          PagerUtils.updateList(pager, QueryManager.getSort(), qs.d);
         }
 
       }
-
 
 
       return {
@@ -203,6 +159,8 @@
 
       };
 
-    }]);
+    }
+
+  ]);
 })();
 

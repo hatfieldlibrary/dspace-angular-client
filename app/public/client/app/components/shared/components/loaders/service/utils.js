@@ -58,22 +58,14 @@
 
         if (typeof qs.pos !== 'undefined') {
 
+          _setOffset(qs)
+
           /**
            * The position is lower than the current offset.
            */
           if (AppContext.getStartIndex() > 0) {
             if (qs.pos < QueryManager.getOffset()) {
-              /**
-               * New offset.
-               * @type {number}
-               */
 
-              var newOffset = SolrDataLoader.verifyOffset(qs);
-
-              /**
-               * Update the query with the new offset value.
-               */
-              QueryManager.setOffset(newOffset);
               /**
                * Use the new offset to determine the item position.
                */
@@ -139,12 +131,30 @@
         }
       }
 
+
+      function _setOffset(qs) {
+        /**
+         * New offset.
+         * @type {number}
+         */
+        var newOffset = SolrDataLoader.verifyOffset(qs);
+
+        /**
+         * Update the query with the new offset value.
+         */
+        QueryManager.setOffset(newOffset);
+
+      }
+
+
       /**
        * Sets the query offset, the selected item id, and item index position
        * as provided in the query string..
        * @param qs
        */
-      function initializePositions(qs) {
+      function initializePositions() {
+
+        var qs = $location.search();
 
         if (typeof qs.offset !== 'undefined') {
           QueryManager.setOffset(qs.offset);
@@ -174,7 +184,11 @@
 
         if (typeof qs.offset !== 'undefined') {
           if (qs.d !== 'prev') {
-            AppContext.setNextPagerOffset(+qs.offset + setSize);
+            console.log('uh oh')
+            console.log('next offset')
+            if (+qs.offset + setSize <= AppContext.getItemsCount()) {
+              AppContext.setNextPagerOffset(+qs.offset + setSize);
+            }
           }
           else {
             AppContext.setStartIndex(qs.offset);
@@ -211,10 +225,31 @@
        */
       function nextUrl(offset) {
 
+        var url = _getPartialUrl();
+
+        return _getPagerUrls(url, offset);
+
+      }
+
+      function prevUrl(offset) {
+
+        console.log(offset)
+
+        var url = _getPartialUrl();
+
+        url += '&d=prev';
+
+        return _getPagerUrls(url, offset);
+
+      }
+
+      function _getPartialUrl() {
+
         var qs = $location.search();
         var url = $location.path() + '?';
         var arr = Object.keys(qs);
         for (var i = 0; i < arr.length; i++) {
+
           if (arr[i] !== 'offset' && arr[i] !== 'new' && arr[i] !== 'd' && arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype') {
             if (i !== 0) {
               url += '&';
@@ -224,8 +259,7 @@
         }
         url += '&new=false';
 
-        return _getPagerUrls(url, offset);
-
+        return url;
       }
 
       /**
@@ -258,7 +292,9 @@
        * @param offset   the current offset value.
        * @private
        */
-      function _updateNextHeaderLink(url, offset) {
+      function _updateNextHeaderLink(fullUrl, offset) {
+
+        var url = _transformPath(fullUrl);
 
         if (offset < AppContext.getItemsCount()) {
 
@@ -278,7 +314,9 @@
        * Sets previous page link in header.  Sets link to 'nofollow'
        * if on first page.
        */
-      function _updatePrevHeaderLink(url, offset) {
+      function _updatePrevHeaderLink(fullUrl, offset) {
+
+        var url = _transformPath(fullUrl);
 
         if (offset !== AppContext.getSetSize() && offset !== 0) {
 
@@ -294,35 +332,66 @@
         }
       }
 
+      function _transformPath(fullUrl) {
+
+        var urlComponents = fullUrl.split('?');
+        console.log(urlComponents[1])
+        var urlArr = urlComponents[0].split('/');
+        var url = '/ds/paging/' + urlArr[3] + '/' + urlArr[4] + '?' + urlComponents[1];
+        return url;
+
+      }
+
+      function setQueryComponents(qs) {
+        /**
+         * If qs object has keys, then update the query type,
+         * sort order, and offset with provided parameters.
+         */
+        if (Object.keys(qs).length !== 0) {
+
+          if (typeof qs.field !== 'undefined') {
+            QueryManager.setQueryType(qs.field);
+            QueryManager.setSort(qs.sort);
+
+          }
+          /**
+           * Otherwise use default values.
+           */
+          else {
+            QueryManager.setQueryType(AppContext.getDefaultItemListField());
+            QueryManager.setSort(AppContext.getDefaultSortOrder());
+            AppContext.setStartIndex(0);
+          }
+        }
+        /**
+         * If no query string is provided, set defaults.
+         */
+        else {
+          if (QueryManager.getQueryType() !== QueryTypes.DISCOVER) {
+
+            QueryManager.setQueryType(AppContext.getDefaultItemListField());
+            QueryManager.setSort(AppContext.getDefaultSortOrder());
+            AppContext.setStartIndex(0);
+
+          }
+        }
+      }
+
       /**
-       * Updates the pager controller with new data retrieved by solr query.
+       * Updates the pager controller with new data retrieved by solr query. Input
+       * parameters for field and sort may be new values originating from a sort options
+       * action by the user.
        * @param pager  - reference to the pager controller
        * @param field - search field
        * @param sort  - sort order
        * @param direction - paging direction (next, prev)
        * @private
        */
-      function updateList(pager, field, sort, direction) {
+      function updateList(pager, sort, direction) {
 
-        var isNewRequest = AppContext.isNewSet();
+       var isNewRequest = _isNewRequest(direction);
 
-        if (!isNewRequest) {
-          if (direction === 'prev') {
-            QueryManager.setOffset(AppContext.getPrevousPagerOffset());
-          } else {
-            QueryManager.setOffset(AppContext.getNextPagerOffset());
-          }
-        }
-
-        if (typeof field !== 'undefined') {
-          QueryManager.setQueryType(field);
-        }
-        if (typeof sort !== 'undefined') {
-          QueryManager.setSort(sort);
-        }
-
-        var qs = $location.search();
-
+        console.log(QueryManager.getSort())
 
         /**
          * If advanced search, do nothing here.
@@ -336,6 +405,8 @@
          */
         if (AppContext.isNotFacetQueryType()) {
 
+          console.log(QueryManager.getQuery())
+
           var items = SolrDataLoader.invokeQuery();
           if (items !== undefined) {
             items.$promise.then(function (data) {
@@ -347,6 +418,7 @@
                  * If not a new request, swap in the new data.
                  */
                 pager.updateParentNewSet(data);
+
               } else {
 
                 /**
@@ -355,7 +427,7 @@
                 pager.updateParent(data, direction);
               }
 
-              initializePositions(qs);
+              initializePositions();
             });
           }
         }
@@ -389,11 +461,11 @@
                  * update parent.
                  */
 
-                FacetHandler.setAuthorListOrder(qs.sort);
+                FacetHandler.setAuthorListOrder(sort);
 
                 pager.updateParentNewSet(FacetHandler.getAuthorListSlice(setSize));
 
-                initializePositions(qs);
+                initializePositions();
 
               });
             } else {
@@ -425,11 +497,11 @@
                  */
                 AppContext.setSubjectList(data.facets);
 
-                FacetHandler.setSubjectListOrder(qs.sort);
+                FacetHandler.setSubjectListOrder(sort);
 
                 pager.updateParentNewSet(FacetHandler.getSubjectListSlice(setSize));
 
-                initializePositions(qs);
+                initializePositions();
 
 
               });
@@ -443,6 +515,22 @@
         }
 
         AppContext.setPager(true);
+
+      }
+
+      function _isNewRequest(direction) {
+
+        var isNewRequest = AppContext.isNewSet();
+
+        if (!isNewRequest) {
+          if (direction === 'prev') {
+            QueryManager.setOffset(AppContext.getPrevousPagerOffset());
+          } else {
+            QueryManager.setOffset(AppContext.getNextPagerOffset());
+          }
+        }
+
+        return isNewRequest;
 
       }
 
@@ -473,9 +561,12 @@
         initializePositions: initializePositions,
         hasNewParams: hasNewParams,
         nextUrl: nextUrl,
+        prevUrl: prevUrl,
         updateList: updateList,
         addResult: addResult,
-        setIndex: setIndex
+        setIndex: setIndex,
+        setQueryComponents: setQueryComponents
+
 
       };
 

@@ -3,8 +3,8 @@
  */
 /**
  * Called in response to a location change.  This service provides
- * functionality for evaluating query parameters, executing solr
- * queries, and calling the pager controller's update methods.
+ * evaluates query parameters, initiates solr
+ * queries, and calls the pager controller's update methods.
  * Created by mspalti on 6/29/16.
  */
 
@@ -13,6 +13,7 @@
 (function () {
 
   dspaceServices.factory('OnPagerLocationChange', [
+
     '$mdDialog',
     'QueryManager',
     'QueryActions',
@@ -24,6 +25,7 @@
     'SolrDataLoader',
     'PagerUtils',
     'FacetHandler',
+
     function ($mdDialog,
               QueryManager,
               QueryActions,
@@ -37,17 +39,6 @@
               FacetHandler) {
 
 
-      var currentFilter;
-
-      /**
-       * Retrieve the default field from the app configuration.
-       */
-      var defaultField = AppContext.getDefaultItemListField();
-      /**
-       * Retrieve the default sort order from the app configuration.
-       */
-      var defaultOrder = AppContext.getDefaultSortOrder();
-
       /**
        * The location change method.
        * @param pager - reference to the pager controller.
@@ -55,20 +46,26 @@
        * @param context - indicates the context of the pager's parent controller.
        * @private
        */
-      function _onLocationChange(pager, qs, context) {
+      function onLocationChange(pager, qs, context) {
+
+
+        PagerUtils.setQueryComponents(qs);
 
         /**
-         * Empty query string.  Use default field and sort order.
+         * Empty query string.
          */
         if (Object.keys(qs).length === 0) {
 
           AppContext.isNewSet(true);
 
           /**
-           * Browse and Search actions do not use query string.
+           * Ignore browse and search actions.  They should not appear in any case,
+           * since they do not use $location and query strings to update. This is just
+           * a check.
            */
           if (QueryManager.getAction() !== QueryActions.BROWSE && QueryManager.getAction() !== QueryActions.SEARCH) {
 
+            /** Set default in query object. */
             QueryManager.setOffset(0);
             QueryManager.setFilter('');
             AppContext.setStartIndex(0);
@@ -82,9 +79,12 @@
 
           }
 
-          PagerUtils.updateList(pager, defaultField, defaultOrder, 'next');
+          PagerUtils.updateList(pager, QueryManager.getSort(), 'next');
         }
 
+        /**
+         * We have a query string.
+         */
         else {
 
           AppContext.isFilter(false);
@@ -113,7 +113,8 @@
 
             if (qs.d !== 'prev') {
               if (typeof qs.offset !== 'undefined') {
-                AppContext.setNextPagerOffset(qs.offset);
+                console.log('next offset')
+                //AppContext.setNextPagerOffset(qs.offset);
               }
             }
 
@@ -128,7 +129,6 @@
              */
             if (qs.filter === 'item' && qs.itype !== 'i') {
 
-              currentFilter = qs.filter;
               PagerUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter);
               PagerFilters.itemFilter(pager, qs.offset);
 
@@ -138,7 +138,7 @@
              */
             else if (PagerUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter) && qs.itype !== 'i') {
 
-              PagerUtils.updateList(pager, qs.field, qs.sort, qs.d);
+              PagerUtils.updateList(pager, qs.sort, qs.d);
 
             }
             else {
@@ -154,7 +154,6 @@
 
             if (qs.filter === 'author') {
 
-              currentFilter = qs.filter;
               if (AppContext.isNewSet()) {
                 PagerFilters.authorFilter(pager, qs.terms, qs.sort, qs.d);
               }
@@ -165,7 +164,6 @@
             }
             else if (qs.filter === 'subject') {
 
-              currentFilter = qs.filter;
               if (AppContext.isNewSet()) {
                 PagerFilters.subjectFilter(pager, qs.terms, qs.sort, qs.d);
               }
@@ -177,10 +175,11 @@
             else if (PagerUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter)) {
               if (qs.d !== 'prev') {
                 if (typeof qs.offset !== 'undefined') {
+                  console.log('next offset')
                   AppContext.setNextPagerOffset(qs.offset);
                 }
               }
-              PagerUtils.updateList(pager, qs.field, qs.sort, qs.d);
+              PagerUtils.updateList(pager,  qs.sort, qs.d);
 
             }
             else {
@@ -203,7 +202,7 @@
 
       return {
 
-        onLocationChange: _onLocationChange
+        onLocationChange: onLocationChange
 
       };
 

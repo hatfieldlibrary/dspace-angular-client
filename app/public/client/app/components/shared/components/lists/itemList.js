@@ -7,6 +7,7 @@
 (function () {
 
   function ItemListCtrl($location,
+                        $scope,
                         QueryManager,
                         QueryActions,
                         AppContext,
@@ -107,6 +108,29 @@
 
     };
 
+    $scope.$on('$locationChangeSuccess', function () {
+
+      var qs = $location.search();
+      var checkOffset;
+      if (typeof qs.offset === 'string') {
+        checkOffset =  parseInt(qs.offset);
+      } else {
+        checkOffset = 0;
+      }
+      if (qs.d === 'prev') {
+
+        AppContext.setPreviousPagerOffset(checkOffset);
+        AppContext.setNextPagerOffset(checkOffset + AppContext.getSetSize());
+
+      } else {
+
+        AppContext.setNextPagerOffset(parseInt(checkOffset));
+        AppContext.setPreviousPagerOffset(checkOffset - AppContext.getSetSize());
+      }
+
+    });
+
+
 
     /**
      * Non-pager updates.
@@ -170,12 +194,15 @@
     };
 
     ctrl.onPreviousUpdate = function (results, count, field) {
+      console.log('prev update')
 
       ctrl.ready = true;
       addPreviousResults(results);
       ctrl.field = field;
       ctrl.count = count;
-      var end = parseInt(AppContext.getNextPagerOffset(), 10) + endIncrement + 1;
+
+      console.log(AppContext.getNextPagerOffset())
+      var end = parseInt(AppContext.getNextPagerOffset(), 10) ;
       var start = AppContext.getStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
 
@@ -218,6 +245,23 @@
           ctrl.jump = true;
         }
       }
+      var checkOffset;
+      if (typeof qs.offset === 'string') {
+        checkOffset =  parseInt(qs.offset);
+      } else {
+        checkOffset = 0;
+      }
+
+      if (qs.d === 'prev') {
+
+          AppContext.setPreviousPagerOffset(checkOffset);
+          AppContext.setNextPagerOffset(checkOffset + AppContext.getSetSize());
+
+      } else {
+
+          AppContext.setNextPagerOffset(parseInt(checkOffset));
+          AppContext.setPreviousPagerOffset(checkOffset - AppContext.getSetSize());
+        }
 
     }
 
