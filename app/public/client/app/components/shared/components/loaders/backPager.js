@@ -43,9 +43,11 @@
      * query string update.   Probably UNNECESSARY.
      */
     $scope.$watch(function () {
-        return AppContext.getStartIndex();
+      console.log('in back pager, start index ' + AppContext.getStartIndex())
+        return QueryManager.getOffset();
       },
       function (newValue) {
+        AppContext.setStartIndex(newValue);
         backPager.more = more(newValue);
 
       });
@@ -86,11 +88,14 @@
      */
     backPager.prevUrl = function () {
 
-      var offset = parseInt(AppContext.getPrevousPagerOffset(), 10);
+      //var offset = parseInt(AppContext.getPrevousPagerOffset(), 10);
+      var offset = QueryManager.getOffset();
       console.log('previous offset ' + offset)
       console.log('set size')
 
-      console.log('new offset ' + offset)
+      if (offset == setSize) {
+        offset -= setSize;
+      }
       _setOffset(offset );
       return PagerUtils.prevUrl(offset);
 
@@ -131,15 +136,14 @@
         offset = 0;
         AppContext.setStartIndex(0);
       }
-      // else if (offset >= setSize) {
-      //   offset -= setSize;
-      //
-      // }
+
 
       console.log('PREV ' + offset)
-      AppContext.setPreviousPagerOffset(offset);
+
       console.log(PagerUtils.prevUrl(offset))
       backPager.url = PagerUtils.prevUrl(offset);
+
+
 
     }
 
@@ -150,7 +154,9 @@
      * Method for retrieving the previous result set.
      */
     backPager.previous = function () {
-      console.log('previous')
+
+
+
   //    backPager.url = PagerUtils.prevUrl(AppContext.getPrevousPagerOffset() - AppContext.getSetSize());
 
    //    /**

@@ -56,6 +56,7 @@
      * @returns {boolean}
      */
      pager.moreItems = function () {
+       console.log('new offset ' + QueryManager.getOffset())
        return AppContext.getItemsCount() > QueryManager.getOffset() + setSize;
      };
 
@@ -171,10 +172,11 @@
      */
     pager.nextUrl = function () {
 
-      var offset = parseInt(AppContext.getNextPagerOffset(), 10);
+      var offset = QueryManager.getOffset();
       offset += setSize;
       _setOffset(offset);
       return PagerUtils.nextUrl(offset);
+
 
     };
 

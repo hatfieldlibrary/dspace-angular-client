@@ -44,7 +44,7 @@
           QueryManager.setOffset(offset);
           items = SolrDataLoader.invokeQuery();
           items.$promise.then(function (data) {
-            AppContext.setNextPagerOffset(data.offset);
+           // AppContext.setNextPagerOffset(data.offset);
             AppContext.setStartIndex(data.offset);
             PagerUtils.addResult(pager, 'next', data);
           });
@@ -54,7 +54,7 @@
           items = SolrDataLoader.filterQuery();
           items.$promise.then(function (data) {
             QueryManager.setOffset(data.offset);
-            AppContext.setNextPagerOffset(data.offset);
+           // AppContext.setNextPagerOffset(data.offset);
             AppContext.setStartIndex(data.offset);
             // We need to update the query object!
             var qs = $location.search();
@@ -77,7 +77,7 @@
           AppContext.setAuthorsList(data.facets);
           // Initialize author sort order.
           // AppContext.setAuthorsOrder(sort);
-          AppContext.setNextPagerOffset(data.offset);
+          //AppContext.setNextPagerOffset(data.offset);
 
           // Call the filter method.
 
@@ -90,8 +90,8 @@
 
         var offset;
         offset = FacetHandler.getFilterOffset(initOffset, terms, type);
-        AppContext.setNextPagerOffset(offset);
-        AppContext.setPreviousPagerOffset(offset);
+        //AppContext.setNextPagerOffset(offset);
+        //AppContext.setPreviousPagerOffset(offset);
 
         return offset;
 
@@ -148,7 +148,7 @@
         result.$promise.then(function (data) {
           // Add the subject array to context.
           AppContext.setSubjectList(data.facets);
-          AppContext.setNextPagerOffset(data.offset);
+         // AppContext.setNextPagerOffset(data.offset);
           // Call the filter method.
           subjectFilter(pager, terms, sort, direction, initOffset);
         });
@@ -166,7 +166,7 @@
           var offset = _findOffset(initOffset, terms, 'subject');
 
           QueryManager.setOffset(offset);
-          AppContext.setNextPagerOffset(offset);
+       //   AppContext.setNextPagerOffset(offset);
 
           if (AppContext.isNewSet()) {
             // Set the context start index to the matching offset.

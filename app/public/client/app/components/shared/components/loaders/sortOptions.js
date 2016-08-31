@@ -381,9 +381,6 @@
 
       AppContext.setOpenItem(-1);
 
-      AppContext.setNextPagerOffset(0);
-
-      AppContext.setPreviousPagerOffset(0);
 
       /**
        * Reset the selected item.

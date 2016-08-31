@@ -108,27 +108,27 @@
 
     };
 
-    $scope.$on('$locationChangeSuccess', function () {
-
-      var qs = $location.search();
-      var checkOffset;
-      if (typeof qs.offset === 'string') {
-        checkOffset =  parseInt(qs.offset);
-      } else {
-        checkOffset = 0;
-      }
-      if (qs.d === 'prev') {
-
-        AppContext.setPreviousPagerOffset(checkOffset);
-        AppContext.setNextPagerOffset(checkOffset + AppContext.getSetSize());
-
-      } else {
-
-        AppContext.setNextPagerOffset(parseInt(checkOffset));
-        AppContext.setPreviousPagerOffset(checkOffset - AppContext.getSetSize());
-      }
-
-    });
+    // $scope.$on('$locationChangeSuccess', function () {
+    //
+    //   var qs = $location.search();
+    //   var checkOffset;
+    //   // if (typeof qs.offset === 'string') {
+    //   //   checkOffset =  parseInt(qs.offset);
+    //   // } else {
+    //   //   checkOffset = 0;
+    //   // }
+    //   // if (qs.d === 'prev') {
+    //   //
+    //   //   AppContext.setPreviousPagerOffset(checkOffset);
+    //   //   AppContext.setNextPagerOffset(checkOffset + AppContext.getSetSize());
+    //   //
+    //   // } else {
+    //   //
+    //   //   AppContext.setNextPagerOffset(parseInt(checkOffset));
+    //   //   AppContext.setPreviousPagerOffset(checkOffset - AppContext.getSetSize());
+    //   // }
+    //
+    // });
 
 
 
@@ -181,7 +181,7 @@
       addResults(results);
       ctrl.field = field;
       ctrl.count = count;
-      var off = parseInt(AppContext.getNextPagerOffset(), 10);
+      var off = QueryManager.getOffset();
       off++;
       var end = off + endIncrement;
       if (end > count) {
@@ -201,8 +201,8 @@
       ctrl.field = field;
       ctrl.count = count;
 
-      console.log(AppContext.getNextPagerOffset())
-      var end = parseInt(AppContext.getNextPagerOffset(), 10) ;
+
+      var end = QueryManager.getOffset();
       var start = AppContext.getStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
 
@@ -219,6 +219,7 @@
     function init() {
 
       ctrl.ready = true;
+
       /**
        * The array containing the items to present in the view.
        * @type {Array}
@@ -252,16 +253,16 @@
         checkOffset = 0;
       }
 
-      if (qs.d === 'prev') {
-
-          AppContext.setPreviousPagerOffset(checkOffset);
-          AppContext.setNextPagerOffset(checkOffset + AppContext.getSetSize());
-
-      } else {
-
-          AppContext.setNextPagerOffset(parseInt(checkOffset));
-          AppContext.setPreviousPagerOffset(checkOffset - AppContext.getSetSize());
-        }
+      // if (qs.d === 'prev') {
+      //
+      //     AppContext.setPreviousPagerOffset(checkOffset);
+      //     AppContext.setNextPagerOffset(checkOffset + AppContext.getSetSize());
+      //
+      // } else {
+      //
+      //     AppContext.setNextPagerOffset(parseInt(checkOffset));
+      //     AppContext.setPreviousPagerOffset(checkOffset - AppContext.getSetSize());
+      //   }
 
     }
 

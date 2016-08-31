@@ -110,6 +110,8 @@
        */
       function verifyOffset(qs) {
 
+        console.log(qs);
+
         var offset = 0;
         if (qs.pos < qs.offset) {
           offset = Math.floor(qs.pos / setSize) * setSize;
@@ -117,6 +119,7 @@
           offset = qs.offset;
         }
 
+        console.log('verify offset returning ' + offset)
         return offset;
       }
 
@@ -148,20 +151,25 @@
        */
       function setOffset(qs) {
 
-        offset = verifyOffset(qs);
-        if (typeof qs.offset !== 'undefined') {
+
+
+        console.log('set offset in utils ' + offset)
+        if (typeof qs.offset !== 'undefined' && typeof qs.pos !== 'undefined') {
+          offset = verifyOffset(qs);
           QueryManager.setOffset(offset);
+          if (qs.d === 'prev') {
+            // When backward paging, the new offset is
+            // always tne new low index.
+            AppContext.setStartIndex(qs.offset);
+          }
+          // unary operator
+          else if (+qs.offset === 0) {
+            AppContext.setStartIndex(0);
+          }
         }
 
-        if (qs.d === 'prev') {
-          // When backward paging, the new offset is
-          // always tne new low index.
-          AppContext.setStartIndex(qs.offset);
-        }
-        // unary operator
-        else if (+qs.offset === 0) {
-          AppContext.setStartIndex(0);
-        }
+
+
       }
 
       function setJumpType() {

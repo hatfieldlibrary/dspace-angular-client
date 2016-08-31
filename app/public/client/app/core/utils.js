@@ -335,7 +335,7 @@
        * @param id the item id
        * @param pos the position in itemList
        */
-      utils.setLocationForItem = function (id, pos) {
+      utils.setLocationSearchStringForItem = function (id, pos) {
 
         var qs = $location.search();
         /**

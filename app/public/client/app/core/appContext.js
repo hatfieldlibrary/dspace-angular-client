@@ -376,14 +376,14 @@
         return _context.selectedItemId;
       }
 
-      function setNextPagerOffset(offset) {
-        console.log('GOT OFFSET ' + offset)
-        _context.nextPagerOffset = offset;
-      }
+      // function setNextPagerOffset(offset) {
+      //   console.log('GOT OFFSET ' + offset)
+      //   _context.nextPagerOffset = offset;
+      // }
 
-      function getNextPagerOffset() {
-        return _context.nextPagerOffset;
-      }
+      // function getNextPagerOffset() {
+      //   return _context.nextPagerOffset;
+      // }
 
       function setPreviousPagerOffset(offset) {
         _context.previousPagerOffset = offset;
@@ -461,8 +461,8 @@
         getOpenItem: getOpenItem,
         setSelectedItemId: setSelectedItemId,
         getSelectedItemId: getSelectedItemId,
-        setNextPagerOffset: setNextPagerOffset,
-        getNextPagerOffset: getNextPagerOffset,
+       // setNextPagerOffset: setNextPagerOffset,
+      //  getNextPagerOffset: getNextPagerOffset,
         setPreviousPagerOffset: setPreviousPagerOffset,
         getPrevousPagerOffset: getPreviousPagerOffset,
         getDefaultItemListField: getDefaultItemListField,

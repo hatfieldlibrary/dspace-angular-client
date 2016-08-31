@@ -106,6 +106,10 @@
             }
           }
 
+          if (typeof qs.offset !== 'undefined') {
+            QueryManager.setOffset(qs.offset);
+          }
+
 
           SolrDataLoader.setOffset(qs);
 
@@ -176,7 +180,7 @@
               if (qs.d !== 'prev') {
                 if (typeof qs.offset !== 'undefined') {
                   console.log('next offset')
-                  AppContext.setNextPagerOffset(qs.offset);
+                 // AppContext.setNextPagerOffset(qs.offset);
                 }
               }
               PagerUtils.updateList(pager,  qs.sort, qs.d);

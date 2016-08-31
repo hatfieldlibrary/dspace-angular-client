@@ -56,14 +56,14 @@
        */
       function _setOpenItemPosition(qs) {
 
-        if (typeof qs.pos !== 'undefined') {
+        if (typeof qs.pos !== 'undefined' && typeof qs.offset !== 'undefined') {
 
           _setOffset(qs)
 
           /**
            * The position is lower than the current offset.
            */
-          if (AppContext.getStartIndex() > 0) {
+          if (QueryManager.getOffset() > 0) {
             if (qs.pos < QueryManager.getOffset()) {
 
               /**
@@ -142,6 +142,7 @@
         /**
          * Update the query with the new offset value.
          */
+        console.log('new offset ' + newOffset)
         QueryManager.setOffset(newOffset);
 
       }
@@ -187,7 +188,7 @@
             console.log('uh oh')
             console.log('next offset')
             if (+qs.offset + setSize <= AppContext.getItemsCount()) {
-              AppContext.setNextPagerOffset(+qs.offset + setSize);
+              //AppContext.setNextPagerOffset(+qs.offset + setSize);
             }
           }
           else {
@@ -344,8 +345,8 @@
 
       function setQueryComponents(qs) {
         /**
-         * If qs object has keys, then update the query type,
-         * sort order, and offset with provided parameters.
+         * If qs object has keys, then update the query type and
+         * sort order with provided parameters.
          */
         if (Object.keys(qs).length !== 0) {
 
@@ -522,13 +523,13 @@
 
         var isNewRequest = AppContext.isNewSet();
 
-        if (!isNewRequest) {
-          if (direction === 'prev') {
-            QueryManager.setOffset(AppContext.getPrevousPagerOffset());
-          } else {
-            QueryManager.setOffset(AppContext.getNextPagerOffset());
-          }
-        }
+        // if (!isNewRequest) {
+        //   if (direction === 'prev') {
+        //     QueryManager.setOffset(QueryManager.getOffset() - setSize);
+        //   } else {
+        //     QueryManager.setOffset(QueryManager.getOffset() + setSize);
+        //   }
+        // }
 
         return isNewRequest;
 
