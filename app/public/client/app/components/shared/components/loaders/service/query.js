@@ -110,40 +110,19 @@
        */
       function verifyOffset(qs) {
 
-        console.log(qs);
-
         var offset = 0;
-        if (qs.pos < qs.offset) {
-          offset = Math.floor(qs.pos / setSize) * setSize;
-        } else {
+
+        if (typeof qs.offset !== 'undefined') {
           offset = qs.offset;
         }
-
-        console.log('verify offset returning ' + offset)
+        if (typeof qs.pos !== 'undefined') {
+          if (qs.pos < qs.offset) {
+            offset = Math.floor(qs.pos / setSize) * setSize;
+          }
+        }
         return offset;
-      }
 
-      /**
-       * Returns the previous sort order after updating
-       * context with the new provided sort order.  Order
-       * is independently tracked for subject, author
-       * and item lists. This allows them to be toggled
-       * (reversing the order) needed.
-       * @param field  the current field
-       * @param newSortOrder the new sort order
-       * @returns {*}
-       */
-      // function getSortOrder() {
-      //   var order;
-      //   if (field === QueryTypes.SUBJECT_FACETS) {
-      //     order = AppContext.getSubjectsOrder();
-      //   } else if (field === QueryTypes.AUTHOR_FACETS) {
-      //     order = AppContext.getAuthorsOrder();
-      //   } else {
-      //     order = AppContext.getListOrder();
-      //   }
-      //   return order;
-      // }
+      }
 
       /**
        * Sets the offset value based on provided query
@@ -151,24 +130,9 @@
        */
       function setOffset(qs) {
 
-
-
-        console.log('set offset in utils ' + offset)
-        if (typeof qs.offset !== 'undefined' && typeof qs.pos !== 'undefined') {
           offset = verifyOffset(qs);
+
           QueryManager.setOffset(offset);
-          if (qs.d === 'prev') {
-            // When backward paging, the new offset is
-            // always tne new low index.
-            AppContext.setStartIndex(qs.offset);
-          }
-          // unary operator
-          else if (+qs.offset === 0) {
-            AppContext.setStartIndex(0);
-          }
-        }
-
-
 
       }
 
@@ -215,7 +179,7 @@
 
         invokeQuery: invokeQuery,
         filterQuery: filterQuery,
-       // getSortOrder: getSortOrder,
+        // getSortOrder: getSortOrder,
         verifyOffset: verifyOffset,
         setOffset: setOffset,
         getOffset: function () {
@@ -226,7 +190,9 @@
       };
 
 
-    }]);
+    }
+
+  ]);
 
 
 })();

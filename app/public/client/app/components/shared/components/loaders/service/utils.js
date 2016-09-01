@@ -12,6 +12,7 @@
 (function () {
 
   dspaceServices.factory('PagerUtils', [
+
     'QueryManager',
     'QueryActions',
     'QuerySort',
@@ -22,6 +23,7 @@
     'DiscoveryContext',
     'SolrDataLoader',
     'FacetHandler',
+
     function (QueryManager,
               QueryActions,
               QuerySort,
@@ -58,7 +60,7 @@
 
         if (typeof qs.pos !== 'undefined' && typeof qs.offset !== 'undefined') {
 
-          _setOffset(qs)
+          _setOffset(qs);
 
           /**
            * The position is lower than the current offset.
@@ -69,6 +71,7 @@
               /**
                * Use the new offset to determine the item position.
                */
+              var newOffset = SolrDataLoader.verifyOffset(qs);
 
               AppContext.setOpenItem(qs.pos - newOffset);
               AppContext.setSelectedPositionIndex(qs.pos - newOffset);
@@ -142,7 +145,6 @@
         /**
          * Update the query with the new offset value.
          */
-        console.log('new offset ' + newOffset)
         QueryManager.setOffset(newOffset);
 
       }
@@ -174,35 +176,54 @@
 
       }
 
+      function updatePagerOffsets(direction, offset) {
+
+        if (direction === 'prev') {
+
+          AppContext.setPreviousPagerOffset(offset - AppContext.getSetSize());
+          AppContext.setStartIndex(offset);
+
+        } else {
+          offset += 20;
+          AppContext.setNextPagerOffset(offset);
+
+        }
+
+      }
+
 
       /**
-       * Sets pager offset in application context.
-       * @param qs   query string from location
+       * Sets the start index in the app context. The direction param
+       * can be null.
+       * @param direction paging direction from query string.
+       * @param offset  the offset form query string.
        */
-      function setIndex(qs) {
-
-        var setSize = AppContext.getSetSize();
-
-        if (typeof qs.offset !== 'undefined') {
-          if (qs.d !== 'prev') {
-            console.log('uh oh')
-            console.log('next offset')
-            if (+qs.offset + setSize <= AppContext.getItemsCount()) {
-              //AppContext.setNextPagerOffset(+qs.offset + setSize);
-            }
-          }
-          else {
-            AppContext.setStartIndex(qs.offset);
+      function setStartIndex(direction, offset) {
+        // If direction is defined and equal to prev, we will also
+        // have an offset value.
+        if (direction === 'prev') {
+          // When backward paging, the new offset is
+          // always tne new low index.
+          AppContext.setStartIndex(offset);
+        }
+        else {
+          // Start index should be set to zero unless
+          // the offset was greater than zero at initialization.
+          if (AppContext.getInitOffset() === 0) {
+            AppContext.setStartIndex(0);
           }
 
         }
+
       }
+
 
       /**
        * Tests to see if the current state requires a new solr query.
-       * @param field field for the current state
-       * @param order the sort order for the current state
-       * @param offset the offset for the current state.
+       * @param field  field pf the current state
+       * @param order  he sort order of the current state
+       * @param offset  the offset of the current state.
+       * @param filter   the filter value of the current state.
        * @returns {boolean}
        */
       function hasNewParams(field, order, offset, filter) {
@@ -219,32 +240,48 @@
       }
 
       /**
+       * Updates the current parameters.
+       * @param field  field pf the current state
+       * @param order  he sort order of the current state
+       * @param offset  the offset of the current state.
+       * @param filter   the filter value of the current state.
+       */
+      function setCurrentParmsState(field, order, offset, filter) {
+
+        currentField = field;
+        currentOrder = order;
+        currentOffset = offset;
+        currentFilter = filter;
+
+      }
+
+      /**
        * Generates the relative url string for the next pager request.
        * @param offset the current offset value.
        * @returns {string}
-       * @private
        */
       function nextUrl(offset) {
-
-        var url = _getPartialUrl();
-
-        return _getPagerUrls(url, offset);
+        var url = _getBaseUrl(offset);
+        url += '&offset=' + offset;
+        return url;
 
       }
 
+      /**
+       * Generates the relative url string for the previous pager request.
+       * @param offset the current offset value.
+       * @returns {string}
+       */
       function prevUrl(offset) {
-
-        console.log(offset)
-
-        var url = _getPartialUrl();
-
+        var url = _getBaseUrl(offset);
         url += '&d=prev';
+        url += '&offset=' + offset;
 
-        return _getPagerUrls(url, offset);
+        return url;
 
       }
 
-      function _getPartialUrl() {
+      function _getBaseUrl(offset) {
 
         var qs = $location.search();
         var url = $location.path() + '?';
@@ -260,30 +297,10 @@
         }
         url += '&new=false';
 
+
         return url;
       }
 
-      /**
-       * Returns the completed url after passing partial url and
-       * current offset to methods for updating the header link.
-       * @param url  partial url missing the offset parameter.
-       * @param offset current offset value.
-       * @returns {string}  complete url.
-       * @private
-       */
-      function _getPagerUrls(url, offset) {
-        /**
-         * Set search links in page header for search engine crawler.
-         */
-        _updateNextHeaderLink(url, offset);
-
-        _updatePrevHeaderLink(url, offset);
-
-        url += '&offset=' + offset;
-
-        return url;
-
-      }
 
       /**
        * If there are more items, sets the next link in header for seo. If at the end of
@@ -293,13 +310,13 @@
        * @param offset   the current offset value.
        * @private
        */
-      function _updateNextHeaderLink(fullUrl, offset) {
+      function _updateNextHeaderLink(offset) {
 
+        var fullUrl = _getBaseUrl(offset);
         var url = _transformPath(fullUrl);
-
-        if (offset < AppContext.getItemsCount()) {
-
-          url += '&offset=' + offset;
+        var newOffset = offset + AppContext.getSetSize();
+        url += '&offset=' + newOffset;
+        if (newOffset < AppContext.getItemsCount()) {
 
           SetPagingLinksInHeader.setNextLink('next', url);
 
@@ -315,19 +332,18 @@
        * Sets previous page link in header.  Sets link to 'nofollow'
        * if on first page.
        */
-      function _updatePrevHeaderLink(fullUrl, offset) {
+      function _updatePrevHeaderLink(offset) {
 
+        var fullUrl = _getBaseUrl(offset);
+        var prevOffset = offset - AppContext.getSetSize();
+        fullUrl += '&offset=' + prevOffset;
+        fullUrl += '&d=prev';
         var url = _transformPath(fullUrl);
 
-        if (offset !== AppContext.getSetSize() && offset !== 0) {
-
-          var prevOffset = offset - (AppContext.getSetSize() * 2);
-          url += '&offset=' + prevOffset;
-
+        if (prevOffset >= 0) {
           SetPagingLinksInHeader.setPrevLink('prev', url);
 
         } else {
-
           SetPagingLinksInHeader.setPrevLink('nofollow', '');
 
         }
@@ -336,7 +352,6 @@
       function _transformPath(fullUrl) {
 
         var urlComponents = fullUrl.split('?');
-        console.log(urlComponents[1])
         var urlArr = urlComponents[0].split('/');
         var url = '/ds/paging/' + urlArr[3] + '/' + urlArr[4] + '?' + urlComponents[1];
         return url;
@@ -361,7 +376,6 @@
           else {
             QueryManager.setQueryType(AppContext.getDefaultItemListField());
             QueryManager.setSort(AppContext.getDefaultSortOrder());
-            AppContext.setStartIndex(0);
           }
         }
         /**
@@ -372,7 +386,6 @@
 
             QueryManager.setQueryType(AppContext.getDefaultItemListField());
             QueryManager.setSort(AppContext.getDefaultSortOrder());
-            AppContext.setStartIndex(0);
 
           }
         }
@@ -390,9 +403,7 @@
        */
       function updateList(pager, sort, direction) {
 
-       var isNewRequest = _isNewRequest(direction);
-
-        console.log(QueryManager.getSort())
+        var isNewRequest = AppContext.isNewSet();
 
         /**
          * If advanced search, do nothing here.
@@ -406,13 +417,15 @@
          */
         if (AppContext.isNotFacetQueryType()) {
 
-          console.log(QueryManager.getQuery())
-
           var items = SolrDataLoader.invokeQuery();
           if (items !== undefined) {
             items.$promise.then(function (data) {
 
-             // AppContext.setItemsCount(data.count);
+              AppContext.setItemsCount(data.count);
+
+              updatePagerOffsets(direction, QueryManager.getOffset());
+
+              _updatePagingHeaders();
 
               if (isNewRequest) {
                 /**
@@ -451,7 +464,11 @@
               result = SolrDataLoader.invokeQuery();
               result.$promise.then(function (data) {
 
+                AppContext.setItemsCount(data.count);
 
+                updatePagerOffsets(direction, QueryManager.getOffset());
+
+                _updatePagingHeaders();
                 /**
                  * Add the author array to shared context.
                  * @type {string|Array|*}
@@ -471,6 +488,9 @@
               });
             } else {
 
+              updatePagerOffsets(direction, QueryManager.getOffset());
+
+              _updatePagingHeaders();
               /**
                * If not a new request, use the existing author
                * facets.
@@ -492,6 +512,12 @@
                */
               result = SolrDataLoader.invokeQuery();
               result.$promise.then(function (data) {
+
+                AppContext.setItemsCount(data.count);
+
+                updatePagerOffsets(direction, QueryManager.getOffset());
+                _updatePagingHeaders();
+
                 /**
                  * Add the subject array to context.
                  * @type {string|Array|*}
@@ -509,6 +535,8 @@
 
             } else {
 
+              updatePagerOffsets(direction, QueryManager.getOffset());
+              _updatePagingHeaders();
               /** Updating parent with current facets */
               pager.updateParent(FacetHandler.getSubjectListSlice(setSize), direction);
             }
@@ -517,21 +545,23 @@
 
         AppContext.setPager(true);
 
+        /* Set the start index. Will be zero if pager direction is not 'prev'
+         * and the query offset at initialization was zero. Otherwise, paging
+         * backward to previous pages will reset the start index to the new
+         * offset. */
+        setStartIndex(direction, QueryManager.getOffset());
+
+
       }
 
-      function _isNewRequest(direction) {
+      /**
+       * Sets links for search engines paging in the page header.
+       * Previous and next headers are managed separately.
+       */
+      function _updatePagingHeaders() {
 
-        var isNewRequest = AppContext.isNewSet();
-
-        // if (!isNewRequest) {
-        //   if (direction === 'prev') {
-        //     QueryManager.setOffset(QueryManager.getOffset() - setSize);
-        //   } else {
-        //     QueryManager.setOffset(QueryManager.getOffset() + setSize);
-        //   }
-        // }
-
-        return isNewRequest;
+        _updateNextHeaderLink(QueryManager.getOffset());
+        _updatePrevHeaderLink(QueryManager.getOffset());
 
       }
 
@@ -561,13 +591,14 @@
 
         initializePositions: initializePositions,
         hasNewParams: hasNewParams,
+        setCurrentParmsState: setCurrentParmsState,
         nextUrl: nextUrl,
         prevUrl: prevUrl,
         updateList: updateList,
         addResult: addResult,
-        setIndex: setIndex,
-        setQueryComponents: setQueryComponents
-
+        setQueryComponents: setQueryComponents,
+        setStartIndex: setStartIndex,
+        updatePagerOffsets: updatePagerOffsets
 
       };
 

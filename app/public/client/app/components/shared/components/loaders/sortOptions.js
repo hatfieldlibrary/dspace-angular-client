@@ -35,6 +35,7 @@
                            QuerySort,
                            QueryTypes,
                            AppContext,
+                           PagerUtils,
                            SolrDataLoader,
                            QueryManager) {
 
@@ -162,7 +163,12 @@
         ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
         ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
       }
+
+
+
     }
+
+
 
     init();
 
@@ -186,9 +192,7 @@
       qs.filter = filterType;
       qs.terms = ctrl.filterTerms;
       qs.new = 'true';
-      // if (ctrl.filterTerms.length === 0) {
       qs.offset = 0;
-      // }
       delete qs.pos;
       delete qs.id;
       delete qs.itype;
@@ -268,13 +272,6 @@
 
       AppContext.isNewSet(true);
 
-      if (ctrl.selectedField === QueryTypes.SUBJECT_FACETS) {
-        AppContext.setSubjectsOrder(ctrl.selectedOrder);
-      } else if (ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
-        //  AppContext.setAuthorsOrder(ctrl.selectedOrder);
-      } else {
-        AppContext.setListOrder(ctrl.selectedOrder);
-      }
 
       /**
        * Reset the selected item.
@@ -328,6 +325,9 @@
            * and return the values to update the view
            */
           else {
+            AppContext.setStartIndex(0);
+            // AppContext.setNextPagerOffset(+offset + setSize);
+            PagerUtils.updatePagerOffsets('next',0);
             QueryManager.setOffset(0);
             doSearch();
           }
@@ -396,6 +396,10 @@
        */
       QueryManager.setQueryType(ctrl.selectedField);
 
+      AppContext.setPreviousPagerOffset(-1);
+
+      AppContext.setStartIndex(0);
+
 
       /**
        * Set the placeholder message based on query type.
@@ -410,17 +414,6 @@
        * The initial sort order should be ASCENDING.
        */
       QueryManager.setSort(QuerySort.ASCENDING);
-      /**
-       * Since subjects and authors toggle the array of facets, order
-       * is tracked separately for these fields.
-       */
-      if (ctrl.field === QueryTypes.AUTHOR_FACETS) {
-        //   AppContext.setAuthorsOrder(QuerySort.ASCENDING);
-      } else if (ctrl.field === QueryTypes.SUBJECT_FACETS) {
-        AppContext.setSubjectsOrder(QuerySort.ASCENDING);
-      } else {
-        AppContext.setListOrder(QuerySort.ASCENDING);
-      }
 
       /**
        * Update the select option.

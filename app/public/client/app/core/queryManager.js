@@ -163,7 +163,6 @@ dspaceContext.service('QueryManager', [
     }
 
     function setQueryType(type) {
-      console.log('setting type to ' + type)
       _context.query.query.qType = type;
     }
 

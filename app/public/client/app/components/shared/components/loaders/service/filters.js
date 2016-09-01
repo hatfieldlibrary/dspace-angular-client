@@ -109,18 +109,19 @@
         // Author array exists. We can run filter.
         if (AppContext.getAuthors().length > 0) {
 
-          // Get the offset.
+          AppContext.setItemsCount(AppContext.getAuthors().length);
 
+          // Get the offset.
           var offset = _findOffset(initOffset, terms, 'author');
 
-
           QueryManager.setOffset(offset);
-          // AppContext.setNextPagerOffset(offset);
-
+          AppContext.setStartIndex(offset);
+          //AppContext.setNextPagerOffset(+offset + setSize);
+          PagerUtils.updatePagerOffsets(direction, parseInt(offset));
 
           if (AppContext.isNewSet()) {
             // Set the context start index to the matching offset.
-            AppContext.setStartIndex(offset);
+           // AppContext.setStartIndex(offset);
 
             pager.updateParentNewSet(FacetHandler.getAuthorListSlice(setSize));
 
@@ -160,13 +161,19 @@
         AppContext.isFilter(true);
 
         if (AppContext.getSubjects().length > 0) {
+
+          AppContext.setItemsCount(AppContext.getSubjects().length);
+
           // Set the subject facet list order.
           // FacetHandler.setSubjectListOrder(sort);
           // Get the offset.
           var offset = _findOffset(initOffset, terms, 'subject');
 
           QueryManager.setOffset(offset);
-       //   AppContext.setNextPagerOffset(offset);
+
+          AppContext.setStartIndex(offset);
+         // AppContext.setNextPagerOffset(+offset + setSize);
+          PagerUtils.updatePagerOffsets(direction, parseInt(offset));
 
           if (AppContext.isNewSet()) {
             // Set the context start index to the matching offset.
@@ -176,6 +183,7 @@
           } else {
 
             pager.updateParent(FacetHandler.getSubjectListSlice(setSize), direction);
+
           }
 
           AppContext.setSubjectsOrder(sort);

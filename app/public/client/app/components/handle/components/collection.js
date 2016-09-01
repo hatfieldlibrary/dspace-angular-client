@@ -59,16 +59,6 @@
       PageTitle.setTitle(ctrl.data.name);
 
       /**
-       * Default field.
-       */
-      //QueryManager.setQueryType(QueryTypes.DATES_LIST);
-
-      /**
-       * Default sort order.
-       */
-      // QueryManager.setSort(QuerySort.DESCENDING);
-
-      /**
        * Set query action to retrieve list.
        */
       QueryManager.setAction(QueryActions.LIST);

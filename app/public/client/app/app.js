@@ -43,6 +43,10 @@ var dspaceApp = angular.module('dspaceApp', [
         .when('/ds/communities', {
           templateUrl: '/ds/partials/communities'
         })
+        .when('/ds/browse/:site/:item', {
+          templateUrl: '/ds/partials/handle',
+          reloadOnSearch: false
+        })
         .when('/ds/browse/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', {
           templateUrl: '/ds/partials/browse',
           reloadOnSearch: false

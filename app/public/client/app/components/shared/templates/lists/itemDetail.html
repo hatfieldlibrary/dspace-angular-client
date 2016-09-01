@@ -1,4 +1,22 @@
-<md-list-item flex ng-href="{{$ctrl.getItemUrl()}}"  ng-click="$ctrl.reloadItem($event, $ctrl.id)">
+<!-- Normal item -->
+<md-list-item ng-if="$ctrl.queryAction != 'browse'" flex ng-href="{{$ctrl.getItemUrl()}}" ng-click="$ctrl.reloadItem($event, $ctrl.id)">
+  <div class="md-list-item-text" style="padding: 10px 5px">
+    <div layout="column" flex="100" style="max-width: 100%;" class="md-list-item-text" layout-fill>
+      <div class="md-subhead"><span class="list-highlight">
+        {{$ctrl.title}}
+      </span>
+        <br>
+        <span ng-repeat="au in $ctrl.author" class="md-caption">{{au}}; </span> <span class="md-caption"
+                                                                                      ng-if="$ctrl.publisher">{{$ctrl.publisher}}; </span>
+        <span class="md-caption" ng-if="$ctrl.year">{{$ctrl.year}}</span></div>
+      <div class="md-body-1 item-block-ellipsis">{{$ctrl.abstract}}</div>
+    </div>
+  </div>
+  <md-divider ng-if="!$ctrl.last"></md-divider>
+</md-list-item>
+
+<!-- The browse item does not use location.  Show dialog using controller function. -->
+<md-list-item ng-if="$ctrl.queryAction == 'browse'" flex ng-click="$ctrl.showItem($event, $ctrl.id)">
   <div class="md-list-item-text" style="padding: 10px 5px">
     <div layout="column" flex="100" style="max-width: 100%;" class="md-list-item-text" layout-fill>
       <div class="md-subhead"><span class="list-highlight">

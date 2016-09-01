@@ -7,14 +7,9 @@
 
 (function () {
 
-  function SeoPagingCtrl($routeParams, $location, QueryManager, QueryTypes, QueryActions, ItemByHandle, Utils, PagerUtils) {
+  function SeoPagingCtrl($routeParams, QueryManager, QueryTypes, QueryActions, ItemByHandle, Utils) {
 
     var ctrl = this;
-
-    var qs = $location.search();
-    if (typeof qs.offset !== 'undefined') {
-      PagerUtils.setIndex(qs);
-    }
 
 
     var site = $routeParams.site;

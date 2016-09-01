@@ -7,15 +7,12 @@
 (function () {
 
   function ItemListCtrl($location,
-                        $scope,
                         QueryManager,
                         QueryActions,
                         AppContext,
                         Messages) {
 
     var ctrl = this;
-
-    ctrl.ready = false;
 
     ctrl.showPager = false;
 
@@ -71,8 +68,10 @@
 
     };
 
-    ctrl.addBorder = function(index) {
-      if (index === 0) { return false; }
+    ctrl.addBorder = function (index) {
+      if (index === 0) {
+        return false;
+      }
 
       return (index + 1) % AppContext.getSetSize() === 0;
     };
@@ -108,30 +107,6 @@
 
     };
 
-    // $scope.$on('$locationChangeSuccess', function () {
-    //
-    //   var qs = $location.search();
-    //   var checkOffset;
-    //   // if (typeof qs.offset === 'string') {
-    //   //   checkOffset =  parseInt(qs.offset);
-    //   // } else {
-    //   //   checkOffset = 0;
-    //   // }
-    //   // if (qs.d === 'prev') {
-    //   //
-    //   //   AppContext.setPreviousPagerOffset(checkOffset);
-    //   //   AppContext.setNextPagerOffset(checkOffset + AppContext.getSetSize());
-    //   //
-    //   // } else {
-    //   //
-    //   //   AppContext.setNextPagerOffset(parseInt(checkOffset));
-    //   //   AppContext.setPreviousPagerOffset(checkOffset - AppContext.getSetSize());
-    //   // }
-    //
-    // });
-
-
-
     /**
      * Non-pager updates.
      * @param results  items in result
@@ -140,7 +115,6 @@
      */
     ctrl.onUpdate = function (results, count, field, offset, jump) {
 
-      ctrl.ready = true;
 
       offset++;
       var end = '';
@@ -164,7 +138,7 @@
       ctrl.field = field;
       ctrl.count = count;
       ctrl.items = results;
-
+      ctrl.ready = true;
 
 
     };
@@ -177,7 +151,7 @@
      */
     ctrl.onPagerUpdate = function (results, count, field) {
 
-      ctrl.ready = true;
+
       addResults(results);
       ctrl.field = field;
       ctrl.count = count;
@@ -189,23 +163,27 @@
       }
       var start = AppContext.getStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
+      ctrl.ready = true;
 
 
     };
 
     ctrl.onPreviousUpdate = function (results, count, field) {
-      console.log('prev update')
 
-      ctrl.ready = true;
+
       addPreviousResults(results);
       ctrl.field = field;
       ctrl.count = count;
+      var end;
+      if (AppContext.getNextPagerOffset() <= AppContext.getItemsCount()) {
+        end = AppContext.getNextPagerOffset();
+      } else {
+        end = AppContext.getItemsCount();
+      }
 
-
-      var end = QueryManager.getOffset();
       var start = AppContext.getStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
-
+      ctrl.ready = true;
 
     };
 
@@ -247,22 +225,25 @@
         }
       }
       var checkOffset;
-      if (typeof qs.offset === 'string') {
-        checkOffset =  parseInt(qs.offset);
+      if (typeof qs.offset !== 'undefined') {
+        checkOffset = parseInt(qs.offset);
       } else {
         checkOffset = 0;
       }
 
-      // if (qs.d === 'prev') {
-      //
-      //     AppContext.setPreviousPagerOffset(checkOffset);
-      //     AppContext.setNextPagerOffset(checkOffset + AppContext.getSetSize());
-      //
-      // } else {
-      //
-      //     AppContext.setNextPagerOffset(parseInt(checkOffset));
-      //     AppContext.setPreviousPagerOffset(checkOffset - AppContext.getSetSize());
-      //   }
+      /* Set the pager and backPager offsets on init.  These are both
+       * children of the item-list-component.  Their values should be based
+       * on increments or decrements of the initial offset.
+       */
+      AppContext.setNextPagerOffset(checkOffset + AppContext.getSetSize());
+
+      if (checkOffset !== 0) {
+        AppContext.setPreviousPagerOffset(checkOffset - AppContext.getSetSize());
+      } else {
+        AppContext.setPreviousPagerOffset(-1);
+      }
+
+
 
     }
 

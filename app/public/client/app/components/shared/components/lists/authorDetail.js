@@ -88,12 +88,6 @@
     ctrl.getItems = function () {
 
       /**
-       * Add item id and position to the query string.
-       */
-      Utils.setLocationForItem(ctrl.id, ctrl.pos);
-
-
-      /**
        * Tell the app not to load a new set of results.
        */
       AppContext.isNewSet(false);

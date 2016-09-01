@@ -19,9 +19,13 @@
                                 $location,
                                 $mdMedia,
                                 AppContext,
+                                QueryManager,
+                                QueryActions,
                                 ItemDialogFactory) {
 
     var ctrl = this;
+
+    ctrl.queryAction = QueryManager.getAction();
 
     /**
      * Sets fullscreen view via media query.
@@ -71,6 +75,12 @@
 
     };
 
+    ctrl.showItem = function (ev, id) {
+
+      ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
+
+    };
+
     /**
      * Constructs and returns the url used by the item list element.
      * @returns {string}
@@ -79,23 +89,26 @@
 
       var qs = $location.search();
 
-      var fullUrl = $location.path() ;
-      var urlArr = fullUrl.split('/');
-      var url = '/ds/handle/' + urlArr[3] + '/' + urlArr[4] + '?';
+      if (QueryManager.getAction() !== QueryActions.BROWSE) {
 
-      url += 'filter=none';
-      url += '&id=' + ctrl.id;
-      url += '&pos=' + ctrl.pos;
-      url += '&itype=i';
+        var url = '/ds/handle/' + QueryManager.getHandle() + '?';
 
-      var arr = Object.keys(qs);
-      for (var i = 0; i < arr.length; i++) {
-         if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype' && arr[i] !== 'filter') {
-          url += '&' + arr[i] + '=' + qs[arr[i]];
+        url += 'filter=none';
+        url += '&id=' + ctrl.id;
+        url += '&pos=' + ctrl.pos;
+        url += '&itype=i';
+
+        var arr = Object.keys(qs);
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype' && arr[i] !== 'filter') {
+            url += '&' + arr[i] + '=' + qs[arr[i]];
+          }
         }
+
+        return url;
       }
 
-      return url;
+      return '#';
 
     };
 

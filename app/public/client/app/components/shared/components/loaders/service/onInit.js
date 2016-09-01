@@ -32,8 +32,6 @@
               SolrDataLoader) {
 
 
-      //  var currentOffset = 0;
-
       /**
        * The init method.
        * @param pager - reference to the pager controller
@@ -50,14 +48,20 @@
           qs.filter = 'none';
         }
 
+        if (typeof qs.offset === 'undefined') {
+          AppContext.setInitOffset(0);
+          AppContext.setStartIndex(0);
+        } else {
+          AppContext.setInitOffset(qs.offset);
+          AppContext.setStartIndex(qs.offset);
+        }
+
+
+
 
         if (typeof qs.terms !== 'undefined') {
           QueryManager.setFilter(qs.terms);
         }
-
-        // if (typeof qs.offset !== 'undefined') {
-        //   currentOffset = qs.offset;
-        // }
 
         /**
          * Sets the open position or item id for the current state.
@@ -66,9 +70,6 @@
 
         AppContext.setPager(false);
 
-
-        //   currentField = QueryManager.getQueryType();
-        //  currentOrder = QueryManager.getSort();
 
         /**
          * Filtering on a (title, author, or subject)
@@ -141,7 +142,7 @@
          */
         else {
 
-          PagerUtils.setIndex(qs);
+         // PagerUtils.setIndex(qs);
           /**
            * Use QueryManager values.  On initialization of item list view, there is no guarantee we
            * have a query string. This has been accounted for by the keys check earlier in this method,

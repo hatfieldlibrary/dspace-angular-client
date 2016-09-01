@@ -45,19 +45,12 @@
     var setSize = AppContext.getSetSize();
 
     /**
-     * Count must be initialized to 0.
-     * @type {number}
-     */
-    var count = 0;
-
-    /**
      * Check to see if more search results are available. Pager template
      * will show/hide the pager button based on return value.
      * @returns {boolean}
      */
      pager.moreItems = function () {
-       console.log('new offset ' + QueryManager.getOffset())
-       return AppContext.getItemsCount() > QueryManager.getOffset() + setSize;
+       return AppContext.getItemsCount() > AppContext.getNextPagerOffset();
      };
 
     /**
@@ -72,7 +65,6 @@
      */
     pager.end = QueryManager.getOffset() + setSize;
 
-
     /**
      * Updates the parent component with additional items.
      * @param data the next set of items.
@@ -82,6 +74,7 @@
 
       // Leave jump value undefined in pager updates.
       if (direction === 'prev') {
+
         pager.onPrevUpdate({
           results: data.results,
           count: data.count,
@@ -89,6 +82,7 @@
         });
 
       } else {
+
         pager.onPagerUpdate({
           results: data.results,
           count: data.count,
@@ -111,11 +105,9 @@
       /**
        * For new sets, always update the start index.
        */
-      AppContext.setStartIndex(QueryManager.getOffset());
+    //  AppContext.setStartIndex(QueryManager.getOffset());
 
       if (data) {
-
-        AppContext.setItemsCount(data.count);
 
         pager.onNewSet({
           results: data.results,
@@ -140,26 +132,6 @@
 
     });
 
-
-    /**
-     * Updates the values for start and end  positions.
-     * These are used in the view to provide the user with
-     * position information.
-     * @param offset
-     * @private
-     */
-    function _setOffset(offset) {
-
-      pager.start = offset + 1;
-
-      if (pager.end + setSize <= count) {
-        pager.end += setSize;
-      } else {
-        pager.end = count;
-      }
-    }
-
-
     /**
      * Generates and returns the url for the pager link. Also,
      * the PagerUtils method will update the link rel="next" and rel="prev"
@@ -172,11 +144,8 @@
      */
     pager.nextUrl = function () {
 
-      var offset = QueryManager.getOffset();
-      offset += setSize;
-      _setOffset(offset);
+      var offset = AppContext.getNextPagerOffset();
       return PagerUtils.nextUrl(offset);
-
 
     };
 
