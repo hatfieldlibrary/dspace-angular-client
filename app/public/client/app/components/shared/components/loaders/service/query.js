@@ -127,7 +127,7 @@
       /**
        * Sets the offset value based on provided query
        * @param qs  the query string
-       */
+      //  */
       function setOffset(qs) {
 
           offset = verifyOffset(qs);
@@ -179,9 +179,8 @@
 
         invokeQuery: invokeQuery,
         filterQuery: filterQuery,
-        // getSortOrder: getSortOrder,
         verifyOffset: verifyOffset,
-        setOffset: setOffset,
+       setOffset: setOffset,
         getOffset: function () {
           return offset;
         },

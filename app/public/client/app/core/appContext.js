@@ -328,11 +328,11 @@
         }
       }
 
-      function setStartIndex(index) {
+      function setViewStartIndex(index) {
         _context.startIndex = +index;
       }
 
-      function getStartIndex() {
+      function getViewStartIndex() {
         return _context.startIndex;
       }
 
@@ -453,8 +453,8 @@
         isDiscoveryListRequest: isDiscoveryListRequest,
         isNotFacetQueryType: isNotFacetQueryType,
         isNewSet: isNewSet,
-        setStartIndex: setStartIndex,
-        getStartIndex: getStartIndex,
+        setViewStartIndex: setViewStartIndex,
+        getViewStartIndex: getViewStartIndex,
         setOpenItem: setOpenItem,
         getOpenItem: getOpenItem,
         setSelectedItemId: setSelectedItemId,

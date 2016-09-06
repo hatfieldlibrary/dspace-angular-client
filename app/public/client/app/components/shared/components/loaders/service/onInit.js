@@ -48,16 +48,6 @@
           qs.filter = 'none';
         }
 
-        if (typeof qs.offset === 'undefined') {
-          AppContext.setInitOffset(0);
-          AppContext.setStartIndex(0);
-        } else {
-          AppContext.setInitOffset(qs.offset);
-          AppContext.setStartIndex(qs.offset);
-        }
-
-
-
 
         if (typeof qs.terms !== 'undefined') {
           QueryManager.setFilter(qs.terms);
@@ -70,7 +60,6 @@
 
         AppContext.setPager(false);
 
-
         /**
          * Filtering on a (title, author, or subject)
          */
@@ -79,10 +68,7 @@
            * Set the filter query type.
            */
           SolrDataLoader.setJumpType();
-          /**
-           * Set offset.
-           */
-          SolrDataLoader.setOffset(qs);
+
 
           /**
            * Title filter.
@@ -108,7 +94,7 @@
              */
             if (typeof qs.terms !== 'undefined' && qs.terms.length === 0) {
               QueryManager.setOffset(0);
-              AppContext.setStartIndex(0);
+              AppContext.setViewStartIndex(0);
             }
 
             PagerFilters.authorFilter(pager, qs.terms, qs.sort, qs.d, qs.offset);
@@ -127,7 +113,7 @@
              */
             if (typeof qs.terms !== 'undefined' && qs.terms.length === 0) {
               QueryManager.setOffset(0);
-              AppContext.setStartIndex(0);
+              AppContext.setViewStartIndex(0);
             }
             /**
              * Execute subject filter.

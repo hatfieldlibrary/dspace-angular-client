@@ -126,7 +126,7 @@
           end = count;
         }
       }
-      var start = AppContext.getStartIndex() + 1;
+      var start = AppContext.getViewStartIndex() + 1;
       if (count > 0) {
         ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
       } else {
@@ -161,7 +161,7 @@
       if (end > count) {
         end = count;
       }
-      var start = AppContext.getStartIndex() + 1;
+      var start = AppContext.getViewStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
       ctrl.ready = true;
 
@@ -181,7 +181,7 @@
         end = AppContext.getItemsCount();
       }
 
-      var start = AppContext.getStartIndex() + 1;
+      var start = AppContext.getViewStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
       ctrl.ready = true;
 

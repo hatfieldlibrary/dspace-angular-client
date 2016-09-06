@@ -60,12 +60,11 @@
 
         if (typeof qs.pos !== 'undefined' && typeof qs.offset !== 'undefined') {
 
-          _setOffset(qs);
-
           /**
            * The position is lower than the current offset.
            */
           if (QueryManager.getOffset() > 0) {
+
             if (qs.pos < QueryManager.getOffset()) {
 
               /**
@@ -134,20 +133,21 @@
         }
       }
 
-
-      function _setOffset(qs) {
-        /**
-         * New offset.
-         * @type {number}
-         */
-        var newOffset = SolrDataLoader.verifyOffset(qs);
-
-        /**
-         * Update the query with the new offset value.
-         */
-        QueryManager.setOffset(newOffset);
-
-      }
+      //
+      // function _setOffset(qs) {
+      //   /**
+      //    * New offset.
+      //    * @type {number}
+      //    */
+      //   var newOffset = SolrDataLoader.verifyOffset(qs);
+      //   console.log('new offset ' + newOffset)
+      //
+      //   /**
+      //    * Update the query with the new offset value.
+      //    */
+      //   QueryManager.setOffset(newOffset);
+      //
+      // }
 
 
       /**
@@ -159,11 +159,14 @@
 
         var qs = $location.search();
 
-        if (typeof qs.offset !== 'undefined') {
-          QueryManager.setOffset(qs.offset);
-
-        } else {
+        if (typeof qs.offset === 'undefined') {
           QueryManager.setOffset(0);
+          AppContext.setInitOffset(0);
+          AppContext.setViewStartIndex(0);
+        } else {
+          QueryManager.setOffset(qs.offset);
+          AppContext.setInitOffset(qs.offset);
+          AppContext.setViewStartIndex(qs.offset);
         }
 
         if (typeof qs.id !== 'undefined') {
@@ -181,7 +184,7 @@
         if (direction === 'prev') {
 
           AppContext.setPreviousPagerOffset(offset - AppContext.getSetSize());
-          AppContext.setStartIndex(offset);
+          AppContext.setViewStartIndex(offset);
 
         } else {
           offset += 20;
@@ -204,13 +207,13 @@
         if (direction === 'prev') {
           // When backward paging, the new offset is
           // always tne new low index.
-          AppContext.setStartIndex(offset);
+          AppContext.setViewStartIndex(offset);
         }
         else {
           // Start index should be set to zero unless
           // the offset was greater than zero at initialization.
           if (AppContext.getInitOffset() === 0) {
-            AppContext.setStartIndex(0);
+            AppContext.setViewStartIndex(0);
           }
 
         }
@@ -261,7 +264,7 @@
        * @returns {string}
        */
       function nextUrl(offset) {
-        var url = _getBaseUrl(offset);
+        var url = _getBaseUrl();
         url += '&offset=' + offset;
         return url;
 
@@ -273,7 +276,7 @@
        * @returns {string}
        */
       function prevUrl(offset) {
-        var url = _getBaseUrl(offset);
+        var url = _getBaseUrl();
         url += '&d=prev';
         url += '&offset=' + offset;
 
@@ -281,7 +284,7 @@
 
       }
 
-      function _getBaseUrl(offset) {
+      function _getBaseUrl() {
 
         var qs = $location.search();
         var url = $location.path() + '?';

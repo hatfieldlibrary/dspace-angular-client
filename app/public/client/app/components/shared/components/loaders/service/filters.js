@@ -45,7 +45,7 @@
           items = SolrDataLoader.invokeQuery();
           items.$promise.then(function (data) {
            // AppContext.setNextPagerOffset(data.offset);
-            AppContext.setStartIndex(data.offset);
+            AppContext.setViewStartIndex(data.offset);
             PagerUtils.addResult(pager, 'next', data);
           });
         }
@@ -55,7 +55,7 @@
           items.$promise.then(function (data) {
             QueryManager.setOffset(data.offset);
            // AppContext.setNextPagerOffset(data.offset);
-            AppContext.setStartIndex(data.offset);
+            AppContext.setViewStartIndex(data.offset);
             // We need to update the query object!
             var qs = $location.search();
             qs.offset = data.offset;
@@ -115,7 +115,7 @@
           var offset = _findOffset(initOffset, terms, 'author');
 
           QueryManager.setOffset(offset);
-          AppContext.setStartIndex(offset);
+          AppContext.setViewStartIndex(offset);
           //AppContext.setNextPagerOffset(+offset + setSize);
           PagerUtils.updatePagerOffsets(direction, parseInt(offset));
 
@@ -171,13 +171,13 @@
 
           QueryManager.setOffset(offset);
 
-          AppContext.setStartIndex(offset);
+          AppContext.setViewStartIndex(offset);
          // AppContext.setNextPagerOffset(+offset + setSize);
           PagerUtils.updatePagerOffsets(direction, parseInt(offset));
 
           if (AppContext.isNewSet()) {
             // Set the context start index to the matching offset.
-            AppContext.setStartIndex(offset);
+            AppContext.setViewStartIndex(offset);
             pager.updateParentNewSet(FacetHandler.getSubjectListSlice(setSize));
 
           } else {

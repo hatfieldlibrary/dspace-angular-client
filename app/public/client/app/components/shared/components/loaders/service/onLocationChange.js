@@ -69,7 +69,7 @@
             /* Set default in query object. */
             QueryManager.setOffset(0);
             QueryManager.setFilter('');
-            AppContext.setStartIndex(0);
+            AppContext.setViewStartIndex(0);
             AppContext.setOpenItem(-1);
             AppContext.setSelectedPositionIndex(-1);
             AppContext.setSelectedItemId(-1);
@@ -119,15 +119,8 @@
             }
           }
 
-          //PagerUtils.updatePagerOffsets(qs.d, qs.offset);
 
-          /* Update the pager and backpager offsets. */
-          //PagerUtils.updateHeaderPagingOffsets(qs.direction, qs.offset);
-
-          // PagerUtils.updateNextHeaderLink(AppContext.getNextPagerOffset());
-          // PagerUtils.updatePrevHeaderLink(AppContext.getPrevousPagerOffset());
-
-          /* Update the query offset and start index. */
+          /* Update the query offset. */
           SolrDataLoader.setOffset(qs);
 
           /* Subject and author query types use DSpace facet lists. Other query types

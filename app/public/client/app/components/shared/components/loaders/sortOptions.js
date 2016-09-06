@@ -212,7 +212,7 @@
        * Reset the application's start index back to
        * beginning.
        */
-      AppContext.setStartIndex(0);
+      AppContext.setViewStartIndex(0);
 
       /**
        * Set application context to expect a new set.
@@ -325,7 +325,7 @@
            * and return the values to update the view
            */
           else {
-            AppContext.setStartIndex(0);
+            AppContext.setViewStartIndex(0);
             // AppContext.setNextPagerOffset(+offset + setSize);
             PagerUtils.updatePagerOffsets('next',0);
             QueryManager.setOffset(0);
@@ -398,7 +398,7 @@
 
       AppContext.setPreviousPagerOffset(-1);
 
-      AppContext.setStartIndex(0);
+      AppContext.setViewStartIndex(0);
 
 
       /**
