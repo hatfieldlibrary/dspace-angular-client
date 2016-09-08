@@ -87,6 +87,12 @@
      */
     ctrl.getItemUrl = function() {
 
+      if (ctrl.context === 'seo') {
+
+         return  '/ds/handle/' + ctrl.handle;
+
+      }
+
       var qs = $location.search();
 
       if (QueryManager.getAction() !== QueryActions.BROWSE) {
@@ -127,7 +133,8 @@
       pos: '@',
       type: '@',
       last: '<',
-      abstract: '@'
+      abstract: '@',
+      context: '@'
 
     },
     controller: ItemDetailController,

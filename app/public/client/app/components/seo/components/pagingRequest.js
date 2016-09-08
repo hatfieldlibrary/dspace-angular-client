@@ -17,6 +17,8 @@
 
      ctrl.ready = false;
 
+    ctrl.context = 'seo';
+
     QueryManager.setQueryType(QueryTypes.DATES_LIST);
 
     /**
