@@ -42,16 +42,11 @@
 
         AppContext.isNewSet(true);
 
-        PagerUtils.setQueryComponents(qs);
+        PagerUtils.setQueryComponents(qs, pager.context);
 
-        if (typeof qs.filter === 'undefined') {
-          qs.filter = 'none';
-        }
-
-
-        if (typeof qs.terms !== 'undefined') {
-          QueryManager.setFilter(qs.terms);
-        }
+        // if (typeof qs.filter === 'undefined') {
+        //   qs.filter = 'none';
+        // }
 
         /**
          * Sets the open position or item id for the current state.
@@ -63,7 +58,12 @@
         /**
          * Filtering on a (title, author, or subject)
          */
-        if (qs.filter !== 'none') {
+        if (qs.filter !== 'none' && typeof qs.filter !== 'undefined') {
+
+          if (typeof qs.terms !== 'undefined') {
+            QueryManager.setFilter(qs.terms);
+          }
+
           /**
            * Set the filter query type.
            */
@@ -127,6 +127,8 @@
          * No filter (none) or filter parameter was absent.  Update without applying filter.
          */
         else {
+
+          console.log(QueryManager.getQuery());
 
          // PagerUtils.setIndex(qs);
           /**

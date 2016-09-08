@@ -361,7 +361,8 @@
 
       }
 
-      function setQueryComponents(qs) {
+      function setQueryComponents(qs, context) {
+
         /**
          * If qs object has keys, then update the query type and
          * sort order with provided parameters.
@@ -385,10 +386,11 @@
          * If no query string is provided, set defaults.
          */
         else {
-          if (QueryManager.getQueryType() !== QueryTypes.DISCOVER) {
+          if (context !== QueryActions.SEARCH) {
 
             QueryManager.setQueryType(AppContext.getDefaultItemListField());
             QueryManager.setSort(AppContext.getDefaultSortOrder());
+
 
           }
         }

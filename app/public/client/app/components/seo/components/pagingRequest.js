@@ -15,9 +15,9 @@
     var site = $routeParams.site;
     var item = $routeParams.item;
 
-     ctrl.ready = false;
+    ctrl.ready = false;
 
-    ctrl.context = 'seo';
+    ctrl.context = QueryActions.SEO;
 
     QueryManager.setQueryType(QueryTypes.DATES_LIST);
 

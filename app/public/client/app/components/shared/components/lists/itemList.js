@@ -244,6 +244,7 @@
       }
 
 
+      console.log('list context ' + ctrl.context)
 
     }
 

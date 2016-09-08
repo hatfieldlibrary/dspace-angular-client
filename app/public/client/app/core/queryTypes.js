@@ -34,7 +34,8 @@
   appConstants.constant('QueryActions', {
     LIST: 'list',
     BROWSE: 'browse',
-    SEARCH: 'search'
+    SEARCH: 'search',
+    SEO: 'seo'
   });
 
   appConstants.constant('DiscoveryContext', {

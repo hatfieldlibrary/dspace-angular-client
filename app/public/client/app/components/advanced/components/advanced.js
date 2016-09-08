@@ -153,6 +153,8 @@
      */
     adv.hideComponents = true;
 
+    adv.context = QueryActions.SEARCH;
+
     /**
      * Handles search form submission.
      * @param terms  the query terms

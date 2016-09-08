@@ -19,7 +19,7 @@
         <div class="md-subhead intro" ng-bind-html="$ctrl.data.introductoryText"></div>
 
         <md-content>
-          <item-list-component flex="100" layout-fill class="list-width" context="collection"></item-list-component>
+          <item-list-component flex="100" layout-fill class="list-width" context="{{$ctrl.context}}"></item-list-component>
         </md-content>
 
       </div>

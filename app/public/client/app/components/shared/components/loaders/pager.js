@@ -156,6 +156,7 @@
 
       AppContext.isFilter(false);
       var qs = $location.search();
+      console.log('pager context ' + pager.context);
       OnPagerInit.onInit(pager, qs);
 
     }

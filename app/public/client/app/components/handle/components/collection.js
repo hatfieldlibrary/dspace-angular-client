@@ -14,11 +14,12 @@
                           $location,
                           QueryManager,
                           QueryActions,
-                          QueryTypes,
                           PageTitle,
                           Utils) {
 
     var ctrl = this;
+
+    ctrl.context = QueryActions.LIST;
 
     ctrl.isMobile = true;
     if ($mdMedia('gt-md')) {
