@@ -35,6 +35,7 @@
     LIST: 'list',
     BROWSE: 'browse',
     SEARCH: 'search',
+    ADVANCED: 'advanced',
     SEO: 'seo'
   });
 

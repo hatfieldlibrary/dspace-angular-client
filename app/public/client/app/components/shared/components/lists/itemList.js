@@ -18,11 +18,9 @@
 
     ctrl.items = [];
 
-    ctrl.offset = 0;
-
     ctrl.jump = false;
 
-    ctrl.showOptions = ctrl.context !== 'advanced' && ctrl.context !== 'discover';
+    ctrl.showOptions = ctrl.context !== QueryActions.SEARCH;
 
     ctrl.showDiscoverContainer = false;
 
@@ -34,7 +32,7 @@
       });
     }
 
-    if (ctrl.context === 'browse') {
+    if (ctrl.context === QueryActions.BROWSE) {
       ctrl.browseTerms = QueryManager.getSearchTerms();
     }
 
@@ -64,7 +62,7 @@
     var endIncrement = AppContext.getSetSize() - 1;
 
     ctrl.isBrowseContext = function () {
-      return ctrl.context === 'browse';
+      return ctrl.context === QueryActions.BROWSE;
 
     };
 
@@ -132,8 +130,7 @@
       } else {
         ctrl.resultMessage = Messages.NO_RESULTS_LABEL;
       }
-      ctrl.showDiscoverContainer = ctrl.context === 'discover' || ( ctrl.context !== 'advanced');
-
+      ctrl.showDiscoverContainer = ctrl.context === QueryActions.SEARCH;
       ctrl.jump = jump;
       ctrl.field = field;
       ctrl.count = count;
@@ -213,7 +210,7 @@
         ctrl.showPager = QueryManager.getOffset() > 1;
       }
 
-      if (QueryManager.getAction === QueryActions.SEARCH) {
+      if (ctrl.context === QueryActions.SEARCH) {
         ctrl.showOptions = false;
       }
 
@@ -243,8 +240,6 @@
         AppContext.setPreviousPagerOffset(-1);
       }
 
-
-      console.log('list context ' + ctrl.context)
 
     }
 

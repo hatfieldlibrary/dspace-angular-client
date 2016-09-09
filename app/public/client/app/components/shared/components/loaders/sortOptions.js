@@ -36,6 +36,7 @@
                            QueryTypes,
                            AppContext,
                            PagerUtils,
+                           QueryActions,
                            SolrDataLoader,
                            QueryManager) {
 
@@ -122,8 +123,10 @@
        * Label/Value map for query fields (title, author, subject, date)
        * @type {*[]}
        */
-      if (ctrl.context === 'collection') {
+      if (ctrl.context === QueryActions.LIST ) {
+
         ctrl.fields = CollectionQueryFieldMap.fields;
+
         /**
          * The selected field is initialized to title.
          * @type {string}
@@ -133,7 +136,7 @@
         ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
 
       }
-      else if (ctrl.context === 'browse') {
+      else if (ctrl.context === QueryActions.BROWSE) {
         ctrl.fields = BrowseQueryFieldMap.fields;
         /**
          * The selected field is initialized to title.

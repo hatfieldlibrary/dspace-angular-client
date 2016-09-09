@@ -14,7 +14,6 @@
 
   dspaceServices.factory('OnPagerInit', [
     'QueryManager',
-    'QueryActions',
     'QuerySort',
     'QueryTypes',
     'AppContext',
@@ -23,7 +22,6 @@
     'SolrDataLoader',
 
     function (QueryManager,
-              QueryActions,
               QuerySort,
               QueryTypes,
               AppContext,
@@ -127,8 +125,6 @@
          * No filter (none) or filter parameter was absent.  Update without applying filter.
          */
         else {
-
-          console.log(QueryManager.getQuery());
 
          // PagerUtils.setIndex(qs);
           /**

@@ -153,7 +153,7 @@
      */
     adv.hideComponents = true;
 
-    adv.context = QueryActions.SEARCH;
+    adv.context = QueryActions.ADVANCED;
 
     /**
      * Handles search form submission.
@@ -206,7 +206,7 @@
 
       QueryManager.setQueryType(QueryTypes.DISCOVER);
 
-      QueryManager.setAction(QueryActions.SEARCH);
+      QueryManager.setAction(QueryActions.ADVANCED);
 
       QueryManager.setSort(QuerySort.ASCENDING);
 

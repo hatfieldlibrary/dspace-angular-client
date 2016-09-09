@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-  
+
   AssetTypes: {
     COLLECTION: 'coll',
     COMMUNITY: 'comm',
@@ -13,7 +13,8 @@ module.exports = {
   QueryActions: {
     LIST: 'list',
     BROWSE: 'browse',
-    SEARCH: 'search'
+    SEARCH: 'search',
+    ADVANCED: 'advanced'
   },
 
   QueryModes: {
@@ -46,12 +47,12 @@ module.exports = {
     DISCOVER: 'discover'
 
   },
-  
+
   DiscoveryMode: {
     CONTAINS: 'contains',
     NOT_CONTAINS: 'notContains'
   }
-  
+
 
 };
 

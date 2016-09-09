@@ -47,10 +47,10 @@
        * @param context - indicates the context of the pager's parent controller.
        * @private
        */
-      function onLocationChange(pager, qs, context) {
+      function onLocationChange(pager, qs) {
 
         /* Set the query type and sort order. */
-        PagerUtils.setQueryComponents(qs);
+        PagerUtils.setQueryComponents(qs, pager.context);
 
         /*
          * If query string is empty.
@@ -64,7 +64,7 @@
            * since they do not use $location and query strings to update. This is just
            * a check.
            */
-          if (QueryManager.getAction() !== QueryActions.BROWSE && QueryManager.getAction() !== QueryActions.SEARCH) {
+          if (pager.context !== QueryActions.BROWSE && pager.context !== QueryActions.SEARCH && pager.context !== QueryActions.ADVANCED) {
 
             /* Set default in query object. */
             QueryManager.setOffset(0);
@@ -78,14 +78,16 @@
              */
             $mdDialog.cancel();
 
+            /* Initialize the pager offsets. */
+            AppContext.setNextPagerOffset(AppContext.getSetSize());
+            AppContext.setPreviousPagerOffset(0);
+
+            /* Do query. */
+            PagerUtils.updateList(pager, QueryManager.getSort(), 'next');
+
           }
 
-          /* Initialize the pager offsets. */
-          AppContext.setNextPagerOffset(AppContext.getSetSize());
-          AppContext.setPreviousPagerOffset(0);
 
-          /* Do query. */
-          PagerUtils.updateList(pager, QueryManager.getSort(), 'next');
 
         }
 
@@ -139,7 +141,7 @@
              */
             if (qs.filter === 'item' && qs.itype !== 'i') {
 
-              /* We do not need to call hasNewParams for an item filter, but we still need to update the parameter state
+              /* We do not need to call hasNewParams for an item filter, but we still need to update state
                * in PagerUtils */
               PagerUtils.setCurrentParmsState(qs.field, qs.sort, qs.offset, qs.filter);
               PagerFilters.itemFilter(pager, qs.offset);
@@ -148,12 +150,13 @@
             /*
              * If there is change in fields, update.
              */
-            else if (PagerUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter) && qs.itype !== 'i') {
+            else if (PagerUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter, qs.filters, qs.comm, qs.coll) && qs.itype !== 'i') {
 
               PagerUtils.updateList(pager, qs.sort, qs.d);
 
             }
             else {
+
               PagerUtils.initializePositions(qs);
             }
 

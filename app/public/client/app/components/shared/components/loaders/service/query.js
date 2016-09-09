@@ -50,6 +50,7 @@
          * List query: POST.
          */
         if (action === QueryActions.LIST) {
+
           items = SolrQuery.save({
             params: params
           });
@@ -58,7 +59,7 @@
         /**
          * Discovery or advanced search query: POST.
          */
-        else if ((action === QueryActions.SEARCH ) && QueryManager.getSearchTerms() !== undefined) {
+        else if ((action === QueryActions.SEARCH || action === QueryActions.ADVANCED) && QueryManager.getSearchTerms() !== undefined) {
 
           items = SolrQuery.save({
             params: params

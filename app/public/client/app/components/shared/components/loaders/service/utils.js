@@ -42,7 +42,10 @@
       var currentField = '';
       var currentOrder = '';
       var currentOffset = 0;
+      var currentFilterCount;
       var currentFilter;
+      var currentCommunity;
+      var currentCollection;
 
       /**
        * Retrieve the set size from the app configuration.
@@ -229,14 +232,17 @@
        * @param filter   the filter value of the current state.
        * @returns {boolean}
        */
-      function hasNewParams(field, order, offset, filter) {
+      function hasNewParams(field, order, offset, filter, filters, community, collection) {
 
-        var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset || filter !== currentFilter);
+        var check = (currentField !== field) || (currentOrder !== order) || (currentOffset !== offset || filter !== currentFilter || currentFilterCount !== filters || currentCommunity !== community || currentCollection !== collection);
 
         currentField = field;
         currentOrder = order;
         currentOffset = offset;
         currentFilter = filter;
+        currentFilterCount = filters;
+        currentCommunity = community;
+        currentCollection = collection;
 
         return check;
 
@@ -361,6 +367,17 @@
 
       }
 
+      function _setDefaultType(context) {
+
+        if (context !== QueryActions.SEARCH && context !== QueryActions.ADVANCED) {
+
+          QueryManager.setQueryType(AppContext.getDefaultItemListField());
+          QueryManager.setSort(AppContext.getDefaultSortOrder());
+
+
+        }
+      }
+
       function setQueryComponents(qs, context) {
 
         /**
@@ -378,23 +395,17 @@
            * Otherwise use default values.
            */
           else {
-            QueryManager.setQueryType(AppContext.getDefaultItemListField());
-            QueryManager.setSort(AppContext.getDefaultSortOrder());
+            _setDefaultType(context);
           }
         }
         /**
          * If no query string is provided, set defaults.
          */
         else {
-          if (context !== QueryActions.SEARCH) {
-
-            QueryManager.setQueryType(AppContext.getDefaultItemListField());
-            QueryManager.setSort(AppContext.getDefaultSortOrder());
-
-
-          }
+          _setDefaultType(context);
         }
       }
+
 
       /**
        * Updates the pager controller with new data retrieved by solr query. Input
@@ -414,6 +425,7 @@
          * If advanced search, do nothing here.
          */
         if (AppContext.getDiscoveryContext() === DiscoveryContext.ADVANCED_SEARCH) {
+
           return;
         }
         /**
@@ -423,6 +435,7 @@
         if (AppContext.isNotFacetQueryType()) {
 
           var items = SolrDataLoader.invokeQuery();
+
           if (items !== undefined) {
             items.$promise.then(function (data) {
 
@@ -542,6 +555,7 @@
 
               updatePagerOffsets(direction, QueryManager.getOffset());
               _updatePagingHeaders();
+
               /** Updating parent with current facets */
               pager.updateParent(FacetHandler.getSubjectListSlice(setSize), direction);
             }

@@ -3,7 +3,7 @@
  */
 /**
  * Functions for item, author and subject filtering. These functions
- * executes solr queries and and calling the pager controller's update methods.
+ * execute solr queries and call the pager controller's update methods.
  * Created by mspalti on 6/29/16.
  */
 

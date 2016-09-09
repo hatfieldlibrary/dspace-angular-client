@@ -21,10 +21,7 @@
 
     ctrl.context = QueryActions.LIST;
 
-    ctrl.isMobile = true;
-    if ($mdMedia('gt-md')) {
-      ctrl.isMobile = false;
-    }
+    ctrl.isMobileListView = true;
 
     function getLogo() {
 
@@ -54,29 +51,39 @@
 
     ctrl.hasLogo = hasLogo;
 
-
-    function init() {
-
-      PageTitle.setTitle(ctrl.data.name);
-
-      /**
-       * Set query action to retrieve list.
-       */
-      QueryManager.setAction(QueryActions.LIST);
+    function setFormFactor() {
 
       if ($mdMedia('gt-md')) {
+        // hides the style for mobile list view
+        ctrl.isMobileListView = false;
+        // shows the item list on init
         ctrl.mobileItemRequest = false;
       } else {
 
         var qs = $location.search();
+
         if (typeof qs.id !== 'undefined') {
+          // Shows the requested item on init, not the list view.
+          // This may not be needed in future, depending on the result
+          // of google tests.
           ctrl.mobileItemRequest = true;
           ctrl.collectionItem = qs.id;
           ctrl.collectionHandle = ctrl.data.handle;
 
         }
-
       }
+    }
+
+
+    function init() {
+
+      PageTitle.setTitle(ctrl.data.name);
+      /**
+       * Set query action to retrieve list.
+       */
+      QueryManager.setAction(QueryActions.LIST);
+
+      setFormFactor();
 
     }
 
