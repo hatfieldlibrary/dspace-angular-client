@@ -130,7 +130,7 @@
       } else {
         ctrl.resultMessage = Messages.NO_RESULTS_LABEL;
       }
-      ctrl.showDiscoverContainer = ctrl.context === QueryActions.SEARCH;
+      ctrl.showDiscoverContainer = ctrl.context !== QueryActions.ADVANCED;
       ctrl.jump = jump;
       ctrl.field = field;
       ctrl.count = count;
