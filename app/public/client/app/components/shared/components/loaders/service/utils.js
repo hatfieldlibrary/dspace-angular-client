@@ -18,22 +18,24 @@
     'QuerySort',
     'QueryTypes',
     'AppContext',
-    'SetPagingLinksInHeader',
     '$location',
     'DiscoveryContext',
     'SolrDataLoader',
     'FacetHandler',
+    'SeoPaging',
+    'Utils',
 
     function (QueryManager,
               QueryActions,
               QuerySort,
               QueryTypes,
               AppContext,
-              SetPagingLinksInHeader,
               $location,
               DiscoveryContext,
               SolrDataLoader,
-              FacetHandler) {
+              FacetHandler,
+              SeoPaging,
+              Utils) {
 
 
       /**
@@ -270,7 +272,7 @@
        * @returns {string}
        */
       function nextUrl(offset) {
-        var url = _getBaseUrl();
+        var url = Utils.getBaseUrl();
         url += '&offset=' + offset;
         return url;
 
@@ -282,7 +284,7 @@
        * @returns {string}
        */
       function prevUrl(offset) {
-        var url = _getBaseUrl();
+        var url = Utils.getBaseUrl();
         url += '&d=prev';
         url += '&offset=' + offset;
 
@@ -290,25 +292,26 @@
 
       }
 
-      function _getBaseUrl() {
-
-        var qs = $location.search();
-        var url = $location.path() + '?';
-        var arr = Object.keys(qs);
-        for (var i = 0; i < arr.length; i++) {
-
-          if (arr[i] !== 'offset' && arr[i] !== 'new' && arr[i] !== 'd' && arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype') {
-            if (i !== 0) {
-              url += '&';
-            }
-            url += arr[i] + '=' + qs[arr[i]];
-          }
-        }
-        url += '&new=false';
-
-
-        return url;
-      }
+      //
+      // function getBaseUrl() {
+      //
+      //   var qs = $location.search();
+      //   var url = $location.path() + '?';
+      //   var arr = Object.keys(qs);
+      //   for (var i = 0; i < arr.length; i++) {
+      //
+      //     if (arr[i] !== 'offset' && arr[i] !== 'new' && arr[i] !== 'd' && arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype') {
+      //       if (i !== 0) {
+      //         url += '&';
+      //       }
+      //       url += arr[i] + '=' + qs[arr[i]];
+      //     }
+      //   }
+      //   url += '&new=false';
+      //
+      //
+      //   return url;
+      // }
 
 
       /**
@@ -319,53 +322,53 @@
        * @param offset   the current offset value.
        * @private
        */
-      function _updateNextHeaderLink(offset) {
-
-        var fullUrl = _getBaseUrl(offset);
-        var url = _transformPath(fullUrl);
-        var newOffset = offset + AppContext.getSetSize();
-        url += '&offset=' + newOffset;
-        if (newOffset < AppContext.getItemsCount()) {
-
-          SetPagingLinksInHeader.setNextLink('next', url);
-
-        } else {
-
-          SetPagingLinksInHeader.setNextLink('nofollow', '');
-
-        }
-
-      }
+      // function _updateNextHeaderLink(offset) {
+      //
+      //   var fullUrl = _getBaseUrl(offset);
+      //   var url = _transformPath(fullUrl);
+      //   var newOffset = offset + AppContext.getSetSize();
+      //   url += '&offset=' + newOffset;
+      //   if (newOffset < AppContext.getItemsCount()) {
+      //
+      //     SetPagingLinksInHeader.setNextLink('next', url);
+      //
+      //   } else {
+      //
+      //     SetPagingLinksInHeader.setNextLink('nofollow', '');
+      //
+      //   }
+      //
+      // }
 
       /**
        * Sets previous page link in header.  Sets link to 'nofollow'
        * if on first page.
        */
-      function _updatePrevHeaderLink(offset) {
+      // function _updatePrevHeaderLink(offset) {
+      //
+      //   var fullUrl = _getBaseUrl(offset);
+      //   var prevOffset = offset - AppContext.getSetSize();
+      //   fullUrl += '&offset=' + prevOffset;
+      //   fullUrl += '&d=prev';
+      //   var url = _transformPath(fullUrl);
+      //
+      //   if (prevOffset >= 0) {
+      //     SetPagingLinksInHeader.setPrevLink('prev', url);
+      //
+      //   } else {
+      //     SetPagingLinksInHeader.setPrevLink('nofollow', '');
+      //
+      //   }
+      // }
 
-        var fullUrl = _getBaseUrl(offset);
-        var prevOffset = offset - AppContext.getSetSize();
-        fullUrl += '&offset=' + prevOffset;
-        fullUrl += '&d=prev';
-        var url = _transformPath(fullUrl);
-
-        if (prevOffset >= 0) {
-          SetPagingLinksInHeader.setPrevLink('prev', url);
-
-        } else {
-          SetPagingLinksInHeader.setPrevLink('nofollow', '');
-
-        }
-      }
-
-      function _transformPath(fullUrl) {
-
-        var urlComponents = fullUrl.split('?');
-        var urlArr = urlComponents[0].split('/');
-        var url = '/ds/paging/' + urlArr[3] + '/' + urlArr[4] + '?' + urlComponents[1];
-        return url;
-
-      }
+      // function _transformPath(fullUrl) {
+      //
+      //   var urlComponents = fullUrl.split('?');
+      //   var urlArr = urlComponents[0].split('/');
+      //   var url = '/ds/paging/' + urlArr[3] + '/' + urlArr[4] + '?' + urlComponents[1];
+      //   return url;
+      //
+      // }
 
       function _setDefaultType(context) {
 
@@ -579,8 +582,8 @@
        */
       function _updatePagingHeaders() {
 
-        _updateNextHeaderLink(QueryManager.getOffset());
-        _updatePrevHeaderLink(QueryManager.getOffset());
+        SeoPaging.updateNextHeaderLink(QueryManager.getOffset());
+        SeoPaging.updatePrevHeaderLink(QueryManager.getOffset());
 
       }
 

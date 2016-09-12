@@ -13,7 +13,7 @@
                            AssetTypes,
                            Messages,
                            PageTitle,
-                           SetPagingLinksInHeader) {
+                           SeoPaging) {
 
     var ctrl = this;
 
@@ -34,8 +34,8 @@
      */
     ctrl.communities = {};
 
-    SetPagingLinksInHeader.setNextLink('nofollow','');
-    SetPagingLinksInHeader.setPrevLink('nofollow','');
+    SeoPaging.setNextLink('nofollow','');
+    SeoPaging.setPrevLink('nofollow','');
 
     PageTitle.setTitle(Messages.COMMUNITIES_LIST_HEADING);
 

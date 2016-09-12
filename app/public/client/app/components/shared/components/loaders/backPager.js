@@ -100,7 +100,7 @@
 
   dspaceComponents.component('pagerBackComponent', {
 
-    template: '<div layout="row" layout-align="center center" ><a href="{{backPager.prevUrl()}}"><md-button class="md-raised md-accent md-fab md-mini" ng-if="backPager.more"><md-icon md-font-library="material-icons" class="md-light" aria-label="Previous Results">expand_less</md-icon></md-button></a></div>',
+    template: '<div layout="row" layout-align="center center" ><a rel="nofollow" ng-href="{{backPager.prevUrl()}}"><md-button class="md-raised md-accent md-fab md-mini" ng-if="backPager.more"><md-icon md-font-library="material-icons" class="md-light" aria-label="Previous Results">expand_less</md-icon></md-button></a></div>',
 
     bindings: {
       context: '@'

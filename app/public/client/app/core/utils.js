@@ -373,6 +373,29 @@
       };
 
 
+      /**
+       * Gets the base url query string required by the paging and seo components.
+       * @returns {string}
+       */
+      utils.getBaseUrl = function() {
+
+        var qs = $location.search();
+        var url = $location.path() + '?';
+        var arr = Object.keys(qs);
+        for (var i = 0; i < arr.length; i++) {
+
+          if (arr[i] !== 'offset' && arr[i] !== 'new' && arr[i] !== 'd' && arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype') {
+            if (i !== 0) {
+              url += '&';
+            }
+            url += arr[i] + '=' + qs[arr[i]];
+          }
+        }
+        url += '&new=false';
+        return url;
+      };
+
+
       return utils;
 
     }
