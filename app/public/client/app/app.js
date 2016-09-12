@@ -37,8 +37,15 @@ var dspaceApp = angular.module('dspaceApp', [
         .when('/ds/handle/:site/:id/:field/:sort', {
           templateUrl: '/ds/partials/handle'
         })
+        .when('/ds/paging/:site/:item', {
+          templateUrl: '/ds/partials/continuousPaging'
+        })
         .when('/ds/communities', {
           templateUrl: '/ds/partials/communities'
+        })
+        .when('/ds/browse/:site/:item', {
+          templateUrl: '/ds/partials/handle',
+          reloadOnSearch: false
         })
         .when('/ds/browse/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', {
           templateUrl: '/ds/partials/browse',

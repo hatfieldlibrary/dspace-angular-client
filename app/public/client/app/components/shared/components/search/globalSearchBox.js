@@ -46,6 +46,8 @@
 
       QueryManager.setAction(QueryActions.SEARCH);
 
+      QueryManager.setOffset(0);
+
       $location.search({});
 
 
