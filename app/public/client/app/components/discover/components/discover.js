@@ -31,6 +31,7 @@
     disc.type = $routeParams.type;
     var id = $routeParams.id;
     disc.terms = $routeParams.terms;
+    disc.context = QueryActions.SEARCH;
 
     /**
      * Pass the controller to discovery extensions.
@@ -112,6 +113,8 @@
      */
     disc.submit = function () {
 
+      QueryManager.setOffset(0);
+
       $location.search({});
       /**
        * If search terms are provided, execute the search. Discovery searches
@@ -147,6 +150,8 @@
       QueryManager.setSort(QuerySort.ASCENDING);
 
       QueryManager.setSearchTerms(disc.terms);
+
+      QueryManager.setOffset(0);
 
       AppContext.setDiscoveryContext(DiscoveryContext.BASIC_SEARCH);
 

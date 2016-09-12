@@ -36,6 +36,8 @@
 
         isFilter: false,
 
+        initOffset: 0,
+
         /**
          * The array of authors returned by browse/sort by author query. This is
          * cached so that the array (which can be large) isn't returned with every
@@ -70,10 +72,8 @@
          * That is determined by comparing the query string's sort order with the one
          * tracked here.  Default to ascending.
          */
-        listOrder: QuerySort.ASCENDING,
-
         authorOrder: QuerySort.ASCENDING,
-
+        //
         subjectOrder: QuerySort.ASCENDING,
 
         nextPagerOffset: 0,
@@ -169,7 +169,7 @@
         _context.canWrite = permission;
       }
 
-      function getWritePermission () {
+      function getWritePermission() {
         return _context.canWrite;
       }
 
@@ -214,7 +214,7 @@
         _context.subjectArray = list;
       }
 
-      function getAuthors () {
+      function getAuthors() {
         return _context.authorArray;
       }
 
@@ -236,11 +236,11 @@
         return 0;
       }
 
-      function setCount(count) {
+      function setItemsCount(count) {
         _context.count = count;
       }
 
-      function getCount() {
+      function getItemsCount() {
         return _context.count;
       }
 
@@ -304,14 +304,6 @@
         return _context.listOffset;
       }
 
-      function setListOrder(order) {
-        _context.listOrder = order;
-      }
-
-      function getListOrder() {
-        return _context.listOrder;
-      }
-
       function setAuthorsOrder(order) {
         _context.authorOrder = order;
       }
@@ -336,11 +328,11 @@
         }
       }
 
-      function setStartIndex(index) {
+      function setViewStartIndex(index) {
         _context.startIndex = +index;
       }
 
-      function getStartIndex() {
+      function getViewStartIndex() {
         return _context.startIndex;
       }
 
@@ -364,7 +356,7 @@
         _context.openItem = +itemPosition;
       }
 
-      function getOpenItem () {
+      function getOpenItem() {
         return _context.openItem;
       }
 
@@ -393,12 +385,21 @@
       }
 
       function getDefaultItemListField() {
-         return _context.defaultItemsField;
+        return _context.defaultItemsField;
       }
 
       function getDefaultSortOrder() {
         return _context.defaultItemsSort;
       }
+
+      function setInitOffset(offset) {
+        _context.initOffset = offset;
+      }
+
+      function getInitOffset() {
+        return _context.initOffset;
+      }
+
 
       return {
 
@@ -426,8 +427,8 @@
         getSubjects: getSubjects,
         getAuthorsCount: getAuthorsCount,
         getSubjectsCount: getSubjectsCount,
-        setCount: setCount,
-        getCount: getCount,
+        setItemsCount: setItemsCount,
+        getItemsCount: getItemsCount,
         setMenu: setMenu,
         getMenuState: getMenuState,
         setPager: setPager,
@@ -443,8 +444,6 @@
         updateDspaceSession: updateDspaceSession,
         setListOffset: setListOffset,
         getListOffset: getListOffset,
-        setListOrder: setListOrder,
-        getListOrder: getListOrder,
         setAuthorsOrder: setAuthorsOrder,
         getAuthorsOrder: getAuthorsOrder,
         setSubjectsOrder: setSubjectsOrder,
@@ -454,8 +453,8 @@
         isDiscoveryListRequest: isDiscoveryListRequest,
         isNotFacetQueryType: isNotFacetQueryType,
         isNewSet: isNewSet,
-        setStartIndex: setStartIndex,
-        getStartIndex: getStartIndex,
+        setViewStartIndex: setViewStartIndex,
+        getViewStartIndex: getViewStartIndex,
         setOpenItem: setOpenItem,
         getOpenItem: getOpenItem,
         setSelectedItemId: setSelectedItemId,
@@ -465,7 +464,9 @@
         setPreviousPagerOffset: setPreviousPagerOffset,
         getPrevousPagerOffset: getPreviousPagerOffset,
         getDefaultItemListField: getDefaultItemListField,
-        getDefaultSortOrder: getDefaultSortOrder
+        getDefaultSortOrder: getDefaultSortOrder,
+        setInitOffset: setInitOffset,
+        getInitOffset: getInitOffset
 
       };
 

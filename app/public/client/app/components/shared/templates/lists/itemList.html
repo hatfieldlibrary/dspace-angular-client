@@ -1,16 +1,16 @@
 <div style="min-height: 800px;">
 
-  <h2 class="md-title" ng-if="$ctrl.isBrowseContext()">Browsing: {{$ctrl.browseTerms}}</h2>
+  <h2 class="md-title" ng-if="$ctrl.isBrowseContext() && $ctrl.context!='seo'">Browsing: {{$ctrl.browseTerms}}</h2>
 
-  <div class="filter-container intro" ng-if="$ctrl.showDiscoverContainer">
+  <div class="filter-container intro" ng-if="$ctrl.showDiscoverContainer  && $ctrl.context!='seo'">
 
-    <sort-options-component ng-if="$ctrl.showOptions"
+    <sort-options-component ng-if="$ctrl.showOptions && $ctrl.context!='seo'"
                             context="{{$ctrl.context}}"
                             reset-list-view="$ctrl.resetListView()">
     </sort-options-component>
 
 
-    <discover-filter-container ng-if="$ctrl.context=='discover'"
+    <discover-filter-container ng-if="$ctrl.context=='search'"
                                on-update="$ctrl.onUpdate(results, count, field)">
     </discover-filter-container>
 
@@ -28,7 +28,7 @@
 
   <div flex="100" layout-fill layout="column" style="height: 100%;margin-top: -12px;">
 
-    <pager-back-component ng-if="$ctrl.jump"
+    <pager-back-component ng-if="$ctrl.jump && $ctrl.context!='seo'"
                           context="$ctrl.context">
 
     </pager-back-component>
@@ -37,9 +37,8 @@
 
     <md-list ng-show="$ctrl.ready">
 
-
+      <!-- item query results and search crawler paging -->
       <item-detail-component
-
         ng-if="$ctrl.field!='author' && $ctrl.field!='subject' && $ctrl.field!='discover'"
         ng-repeat="col in $ctrl.items"
         class="repeat-animation"
@@ -51,6 +50,7 @@
         abstract="{{col.abstract}}"
         id="{{col.id}}"
         pos="{{$index}}"
+        context="{{$ctrl.context}}"
       ng-class="{'set-divider': $ctrl.addBorder($index)}">
 
       </item-detail-component>
@@ -107,7 +107,7 @@
 
     </md-list>
 
-    <pager-component ng-show="$ctrl.ready"
+    <pager-component ng-show="$ctrl.ready && $ctrl.context!='seo'"
 
       on-pager-update="$ctrl.onPagerUpdate(results, count, field)"
       on-prev-update="$ctrl.onPreviousUpdate(results, count, field)"
@@ -116,7 +116,7 @@
 
     </pager-component>
 
-    <div ng-if="$ctrl.count > 10" class="md-body-1 md-accent layout-padding">{{$ctrl.resultMessage}}
+    <div ng-if="$ctrl.count > 10 && $ctrl.context!='seo'" class="md-body-1 md-accent layout-padding">{{$ctrl.resultMessage}}
     </div>
 
     <p>&nbsp;</p>

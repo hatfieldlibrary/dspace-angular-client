@@ -121,6 +121,7 @@
           }
           return 0;
         },
+
         getFilterOffset: function (initOffset, terms, type) {
 
           var offset;

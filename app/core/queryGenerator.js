@@ -108,10 +108,14 @@
     /**
      * Get the URL for a SEARCH (discovery) query.
      */
-    else if (query.params.query.action === constants.QueryActions.SEARCH
+    else if ((query.params.query.action === constants.QueryActions.SEARCH || query.params.query.action === constants.QueryActions.ADVANCED)
       && query.params.query.terms.length > 0) {
 
+      console.log('got query action ' + query.params.query.action)
+      console.log('got query type ' + query.params.query.qType)
+
       if (query.params.query.qType === constants.QueryType.DISCOVER) {
+        console.log('got qtype discover')
         solrUrl = discovery(query, dspaceToken);   // discovery
 
       }

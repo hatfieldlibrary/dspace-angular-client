@@ -14,17 +14,13 @@
 
     var ctrl = this;
 
-    ctrl.ready = false;
-
     ctrl.showPager = false;
 
     ctrl.items = [];
 
-    ctrl.offset = 0;
-
     ctrl.jump = false;
 
-    ctrl.showOptions = ctrl.context !== 'advanced' && ctrl.context !== 'discover';
+    ctrl.showOptions = ctrl.context !== QueryActions.SEARCH;
 
     ctrl.showDiscoverContainer = false;
 
@@ -36,7 +32,7 @@
       });
     }
 
-    if (ctrl.context === 'browse') {
+    if (ctrl.context === QueryActions.BROWSE) {
       ctrl.browseTerms = QueryManager.getSearchTerms();
     }
 
@@ -66,12 +62,14 @@
     var endIncrement = AppContext.getSetSize() - 1;
 
     ctrl.isBrowseContext = function () {
-      return ctrl.context === 'browse';
+      return ctrl.context === QueryActions.BROWSE;
 
     };
 
-    ctrl.addBorder = function(index) {
-      if (index === 0) { return false; }
+    ctrl.addBorder = function (index) {
+      if (index === 0) {
+        return false;
+      }
 
       return (index + 1) % AppContext.getSetSize() === 0;
     };
@@ -107,7 +105,6 @@
 
     };
 
-
     /**
      * Non-pager updates.
      * @param results  items in result
@@ -116,7 +113,6 @@
      */
     ctrl.onUpdate = function (results, count, field, offset, jump) {
 
-      ctrl.ready = true;
 
       offset++;
       var end = '';
@@ -128,19 +124,18 @@
           end = count;
         }
       }
-      var start = AppContext.getStartIndex() + 1;
+      var start = AppContext.getViewStartIndex() + 1;
       if (count > 0) {
         ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
       } else {
         ctrl.resultMessage = Messages.NO_RESULTS_LABEL;
       }
-      ctrl.showDiscoverContainer = ctrl.context === 'discover' || ( ctrl.context !== 'advanced');
-
+      ctrl.showDiscoverContainer = ctrl.context !== QueryActions.ADVANCED;
       ctrl.jump = jump;
       ctrl.field = field;
       ctrl.count = count;
       ctrl.items = results;
-
+      ctrl.ready = true;
 
 
     };
@@ -153,32 +148,39 @@
      */
     ctrl.onPagerUpdate = function (results, count, field) {
 
-      ctrl.ready = true;
+
       addResults(results);
       ctrl.field = field;
       ctrl.count = count;
-      var off = parseInt(AppContext.getNextPagerOffset(), 10);
+      var off = QueryManager.getOffset();
       off++;
       var end = off + endIncrement;
       if (end > count) {
         end = count;
       }
-      var start = AppContext.getStartIndex() + 1;
+      var start = AppContext.getViewStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
+      ctrl.ready = true;
 
 
     };
 
     ctrl.onPreviousUpdate = function (results, count, field) {
 
-      ctrl.ready = true;
+
       addPreviousResults(results);
       ctrl.field = field;
       ctrl.count = count;
-      var end = parseInt(AppContext.getNextPagerOffset(), 10) + endIncrement + 1;
-      var start = AppContext.getStartIndex() + 1;
-      ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
+      var end;
+      if (AppContext.getNextPagerOffset() <= AppContext.getItemsCount()) {
+        end = AppContext.getNextPagerOffset();
+      } else {
+        end = AppContext.getItemsCount();
+      }
 
+      var start = AppContext.getViewStartIndex() + 1;
+      ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
+      ctrl.ready = true;
 
     };
 
@@ -192,6 +194,7 @@
     function init() {
 
       ctrl.ready = true;
+
       /**
        * The array containing the items to present in the view.
        * @type {Array}
@@ -207,7 +210,7 @@
         ctrl.showPager = QueryManager.getOffset() > 1;
       }
 
-      if (QueryManager.getAction === QueryActions.SEARCH) {
+      if (ctrl.context === QueryActions.SEARCH) {
         ctrl.showOptions = false;
       }
 
@@ -218,6 +221,25 @@
           ctrl.jump = true;
         }
       }
+      var checkOffset;
+      if (typeof qs.offset !== 'undefined') {
+        checkOffset = parseInt(qs.offset);
+      } else {
+        checkOffset = 0;
+      }
+
+      /* Set the pager and backPager offsets on init.  These are both
+       * children of the item-list-component.  Their values should be based
+       * on increments or decrements of the initial offset.
+       */
+      AppContext.setNextPagerOffset(checkOffset + AppContext.getSetSize());
+
+      if (checkOffset !== 0) {
+        AppContext.setPreviousPagerOffset(checkOffset - AppContext.getSetSize());
+      } else {
+        AppContext.setPreviousPagerOffset(-1);
+      }
+
 
     }
 
