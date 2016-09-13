@@ -19,9 +19,13 @@
                                 $location,
                                 $mdMedia,
                                 AppContext,
+                                QueryManager,
+                                QueryActions,
                                 ItemDialogFactory) {
 
     var ctrl = this;
+
+    ctrl.queryAction = QueryManager.getAction();
 
     /**
      * Sets fullscreen view via media query.
@@ -64,10 +68,16 @@
        * the dialog for the user.  New positions are handled
        * by the $locationChangeSuccess function in pager.
        */
-      if (AppContext.getOpenItem() === parseInt(ctrl.pos)) {
+      if (AppContext.getSelectedItemId() === ctrl.id) {
 
         ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
       }
+
+    };
+
+    ctrl.showItem = function (ev, id) {
+
+      ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
 
     };
 
@@ -77,22 +87,34 @@
      */
     ctrl.getItemUrl = function() {
 
-      var qs = $location.search();
+      if (ctrl.context === 'seo') {
 
-      var url = $location.path() + '?';
-      url += 'id=' + ctrl.id;
-      url += '&filter=none';
-      url += '&pos=' + ctrl.pos;
-      url += '&itype=i';
+         return  '/ds/handle/' + ctrl.handle;
 
-      var arr = Object.keys(qs);
-      for (var i = 0; i < arr.length; i++) {
-         if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype' && arr[i] !== 'filter') {
-          url += '&' + arr[i] + '=' + qs[arr[i]];
-        }
       }
 
-      return url;
+      var qs = $location.search();
+
+      if (QueryManager.getAction() !== QueryActions.BROWSE) {
+
+        var url = '/ds/handle/' + QueryManager.getHandle() + '?';
+
+        url += 'filter=none';
+        url += '&id=' + ctrl.id;
+        url += '&pos=' + ctrl.pos;
+        url += '&itype=i';
+
+        var arr = Object.keys(qs);
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype' && arr[i] !== 'filter') {
+            url += '&' + arr[i] + '=' + qs[arr[i]];
+          }
+        }
+
+        return url;
+      }
+
+      return '#';
 
     };
 
@@ -111,7 +133,8 @@
       pos: '@',
       type: '@',
       last: '<',
-      abstract: '@'
+      abstract: '@',
+      context: '@'
 
     },
     controller: ItemDetailController,

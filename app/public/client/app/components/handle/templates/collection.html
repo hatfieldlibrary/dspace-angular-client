@@ -1,5 +1,5 @@
 <div layout="column" layout-fill layout-align="start start" style="max-width: 100%;height:100%;box-sizing:border-box;"
-     layout-padding ng-if="!$ctrl.mobileItemRequest" ng-class="{'is-mobile': $ctrl.isMobile}">
+     layout-padding ng-if="!$ctrl.mobileItemRequest" ng-class="{'is-mobile': $ctrl.isMobileListView}">
 
 
   <div class="page-title">
@@ -19,7 +19,7 @@
         <div class="md-subhead intro" ng-bind-html="$ctrl.data.introductoryText"></div>
 
         <md-content>
-          <item-list-component flex="100" layout-fill class="list-width" context="collection"></item-list-component>
+          <item-list-component flex="100" layout-fill class="list-width" context="{{$ctrl.context}}"></item-list-component>
         </md-content>
 
       </div>

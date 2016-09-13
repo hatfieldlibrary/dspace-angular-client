@@ -35,6 +35,8 @@
                            QuerySort,
                            QueryTypes,
                            AppContext,
+                           PagerUtils,
+                           QueryActions,
                            SolrDataLoader,
                            QueryManager) {
 
@@ -121,8 +123,10 @@
        * Label/Value map for query fields (title, author, subject, date)
        * @type {*[]}
        */
-      if (ctrl.context === 'collection') {
+      if (ctrl.context === QueryActions.LIST ) {
+
         ctrl.fields = CollectionQueryFieldMap.fields;
+
         /**
          * The selected field is initialized to title.
          * @type {string}
@@ -132,7 +136,7 @@
         ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
 
       }
-      else if (ctrl.context === 'browse') {
+      else if (ctrl.context === QueryActions.BROWSE) {
         ctrl.fields = BrowseQueryFieldMap.fields;
         /**
          * The selected field is initialized to title.
@@ -162,7 +166,12 @@
         ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
         ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
       }
+
+
+
     }
+
+
 
     init();
 
@@ -186,9 +195,7 @@
       qs.filter = filterType;
       qs.terms = ctrl.filterTerms;
       qs.new = 'true';
-      // if (ctrl.filterTerms.length === 0) {
       qs.offset = 0;
-      // }
       delete qs.pos;
       delete qs.id;
       delete qs.itype;
@@ -208,7 +215,7 @@
        * Reset the application's start index back to
        * beginning.
        */
-      AppContext.setStartIndex(0);
+      AppContext.setViewStartIndex(0);
 
       /**
        * Set application context to expect a new set.
@@ -268,13 +275,6 @@
 
       AppContext.isNewSet(true);
 
-      if (ctrl.selectedField === QueryTypes.SUBJECT_FACETS) {
-        AppContext.setSubjectsOrder(ctrl.selectedOrder);
-      } else if (ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
-        //  AppContext.setAuthorsOrder(ctrl.selectedOrder);
-      } else {
-        AppContext.setListOrder(ctrl.selectedOrder);
-      }
 
       /**
        * Reset the selected item.
@@ -328,6 +328,9 @@
            * and return the values to update the view
            */
           else {
+            AppContext.setViewStartIndex(0);
+            // AppContext.setNextPagerOffset(+offset + setSize);
+            PagerUtils.updatePagerOffsets('next',0);
             QueryManager.setOffset(0);
             doSearch();
           }
@@ -381,9 +384,6 @@
 
       AppContext.setOpenItem(-1);
 
-      AppContext.setNextPagerOffset(0);
-
-      AppContext.setPreviousPagerOffset(0);
 
       /**
        * Reset the selected item.
@@ -399,6 +399,10 @@
        */
       QueryManager.setQueryType(ctrl.selectedField);
 
+      AppContext.setPreviousPagerOffset(-1);
+
+      AppContext.setViewStartIndex(0);
+
 
       /**
        * Set the placeholder message based on query type.
@@ -413,17 +417,6 @@
        * The initial sort order should be ASCENDING.
        */
       QueryManager.setSort(QuerySort.ASCENDING);
-      /**
-       * Since subjects and authors toggle the array of facets, order
-       * is tracked separately for these fields.
-       */
-      if (ctrl.field === QueryTypes.AUTHOR_FACETS) {
-        //   AppContext.setAuthorsOrder(QuerySort.ASCENDING);
-      } else if (ctrl.field === QueryTypes.SUBJECT_FACETS) {
-        AppContext.setSubjectsOrder(QuerySort.ASCENDING);
-      } else {
-        AppContext.setListOrder(QuerySort.ASCENDING);
-      }
 
       /**
        * Update the select option.

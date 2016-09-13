@@ -97,12 +97,6 @@
       if (ctrl.count <= 10) {
 
         /**
-         * Add item id and position to the query string.
-         */
-        Utils.setLocationForItem(ctrl.id, ctrl.pos);
-
-
-        /**
          * Tell the app not to load a new set of results.
          */
         AppContext.isNewSet(false);
@@ -110,10 +104,11 @@
 
       } else {
         /**
-         * To many results to show inline.  Switch to
+         * Too many results to show inline.  Switch to
          * browse view.
          */
         QueryManager.setAction(QueryActions.BROWSE);
+
         var qs = $location.search();
 
         var setSize = AppContext.getSetSize();
@@ -123,7 +118,7 @@
         if (qs.pos > 20) {
           newOffset =  parseInt(qs.offset, 10) - ((Math.floor(ctrl.pos / setSize) * setSize) + 20);
         }
-        
+
         var query = $window.location.search.toString();
 
         var newQs = query.replace(/offset=([^&]*)/, 'offset=' + newOffset);

@@ -11,7 +11,7 @@ var constants = require('../core/constants');
   var processType = '';
 
   /**
-   * Method that handles the request-promise transform.
+   * Callback method for the request-promise transform.
    *
    * @param solrResponse  the response form the solr query
    * @returns {{}}
@@ -81,8 +81,15 @@ var constants = require('../core/constants');
           transform: processResult
         }
       ).then(function (json) {
+                                console.log(json)
+        if (json.results.length === 0 && json.facets.length === 0) {
+          res.status(404);
           res.send(json);
           res.end();
+        } else {
+          res.send(json);
+          res.end();
+        }
         })
         .catch(function (err) {
           console.log(err);

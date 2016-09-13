@@ -2,22 +2,26 @@
 <header-component></header-component>
 
 <!-- Without explicit height, Firefox (44.0.1) does not calculate the height of the flex container. -->
-<div style="height: 100%;">
+<div style="height: 100%;max-width: 100%;">
 
-  <md-content class="main-content" flex="100">
+  <md-content class="main-content" style="max-width: 100%;">
 
-    <div layout="column" flex="100" layout-fill layout-align="top" class="top-highlight">
+    <div layout="row" layout-fill class="top-highlight" flex="100" layout-align="center center">
 
-      <div layout-xs="column" flex layout-fill layout-gt-xs="row" layout-align="center">
+      <div style="max-width:980px">
 
-        <div layout="row" class="content-width">
+        <div layout="row" flex="100" layout-align="left center">
+
+          <div column layout="row" flex="100" layout-align="start start">
 
           <browse-component flex-gt-md=="90" flex="100" layout-fill></browse-component>
           <side-nav-component type="browse" flex></side-nav-component>
 
+          </div>
         </div>
       </div>
     </div>
+
 
     <ng-include src="'/ds/partials/footer'">
     </ng-include>
@@ -25,7 +29,6 @@
   </md-content>
 
 </div>
-
 
 
 
