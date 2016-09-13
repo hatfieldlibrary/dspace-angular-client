@@ -26,6 +26,7 @@
     ctrl.rows = $routeParams.rows;
     ctrl.action = QueryActions.BROWSE;
     ctrl.offset = $routeParams.offset;
+    ctrl.context = QueryActions.SEARCH;
 
 
     function init() {
@@ -71,6 +72,8 @@
         ctrl.parentName = data.parentCommunity.name;
         ctrl.parentHandle = data.parentCommunity.handle;
       });
+
+
 
 
     }

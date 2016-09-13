@@ -5,8 +5,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
   <title ng-bind="title">DSpace</title>
-  <link rel="{{relValue}}" href="{{nextPage}}"/>
-  <link rel="{{prevValue}}" href="{{prevPage}}"/>
+  <link rel="{{relValue}}" ng-href="{{nextPage}}"/>
+  <link rel="{{prevValue}}" ng-href="{{prevPage}}"/>
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <base href="/">
   <meta charset="utf-8"/>
@@ -111,6 +111,7 @@
 
 
 <script src="app/components/shared/service/pageTitle.js"></script>
+<script src="app/components/shared/service/seo.js"></script>
 <script src="app/components/shared/components/loaders/service/facets.js"></script>
 <script src="app/components/shared/components/loaders/service/query.js"></script>
 <script src="app/components/shared/components/loaders/service/onInit.js"></script>
@@ -148,6 +149,8 @@
 <script src="app/components/handle/components/item/item.js"></script>
 <script src="app/components/handle/components/item/mobileItemPage.js"></script>
 <script src="app/components/handle/service/dialogFactory.js"></script>
+
+<script src="app/components/seo/components/pagingRequest.js"></script>
 
 <script src="app/components/advanced/components/advanced.js"></script>
 <script src="app/components/advanced/components/filters/advancedFilterContainer.js"></script>

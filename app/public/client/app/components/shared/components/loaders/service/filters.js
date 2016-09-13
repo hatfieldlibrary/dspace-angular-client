@@ -3,7 +3,7 @@
  */
 /**
  * Functions for item, author and subject filtering. These functions
- * executes solr queries and and calling the pager controller's update methods.
+ * execute solr queries and call the pager controller's update methods.
  * Created by mspalti on 6/29/16.
  */
 
@@ -44,8 +44,8 @@
           QueryManager.setOffset(offset);
           items = SolrDataLoader.invokeQuery();
           items.$promise.then(function (data) {
-            AppContext.setNextPagerOffset(data.offset);
-            AppContext.setStartIndex(data.offset);
+           // AppContext.setNextPagerOffset(data.offset);
+            AppContext.setViewStartIndex(data.offset);
             PagerUtils.addResult(pager, 'next', data);
           });
         }
@@ -54,8 +54,8 @@
           items = SolrDataLoader.filterQuery();
           items.$promise.then(function (data) {
             QueryManager.setOffset(data.offset);
-            AppContext.setNextPagerOffset(data.offset);
-            AppContext.setStartIndex(data.offset);
+           // AppContext.setNextPagerOffset(data.offset);
+            AppContext.setViewStartIndex(data.offset);
             // We need to update the query object!
             var qs = $location.search();
             qs.offset = data.offset;
@@ -77,7 +77,7 @@
           AppContext.setAuthorsList(data.facets);
           // Initialize author sort order.
           // AppContext.setAuthorsOrder(sort);
-          AppContext.setNextPagerOffset(data.offset);
+          //AppContext.setNextPagerOffset(data.offset);
 
           // Call the filter method.
 
@@ -90,8 +90,8 @@
 
         var offset;
         offset = FacetHandler.getFilterOffset(initOffset, terms, type);
-        AppContext.setNextPagerOffset(offset);
-        AppContext.setPreviousPagerOffset(offset);
+        //AppContext.setNextPagerOffset(offset);
+        //AppContext.setPreviousPagerOffset(offset);
 
         return offset;
 
@@ -109,18 +109,19 @@
         // Author array exists. We can run filter.
         if (AppContext.getAuthors().length > 0) {
 
-          // Get the offset.
+          AppContext.setItemsCount(AppContext.getAuthors().length);
 
+          // Get the offset.
           var offset = _findOffset(initOffset, terms, 'author');
 
-
           QueryManager.setOffset(offset);
-          // AppContext.setNextPagerOffset(offset);
-
+          AppContext.setViewStartIndex(offset);
+          //AppContext.setNextPagerOffset(+offset + setSize);
+          PagerUtils.updatePagerOffsets(direction, parseInt(offset));
 
           if (AppContext.isNewSet()) {
             // Set the context start index to the matching offset.
-            AppContext.setStartIndex(offset);
+           // AppContext.setStartIndex(offset);
 
             pager.updateParentNewSet(FacetHandler.getAuthorListSlice(setSize));
 
@@ -148,7 +149,7 @@
         result.$promise.then(function (data) {
           // Add the subject array to context.
           AppContext.setSubjectList(data.facets);
-          AppContext.setNextPagerOffset(data.offset);
+         // AppContext.setNextPagerOffset(data.offset);
           // Call the filter method.
           subjectFilter(pager, terms, sort, direction, initOffset);
         });
@@ -160,22 +161,29 @@
         AppContext.isFilter(true);
 
         if (AppContext.getSubjects().length > 0) {
+
+          AppContext.setItemsCount(AppContext.getSubjects().length);
+
           // Set the subject facet list order.
           // FacetHandler.setSubjectListOrder(sort);
           // Get the offset.
           var offset = _findOffset(initOffset, terms, 'subject');
 
           QueryManager.setOffset(offset);
-          AppContext.setNextPagerOffset(offset);
+
+          AppContext.setViewStartIndex(offset);
+         // AppContext.setNextPagerOffset(+offset + setSize);
+          PagerUtils.updatePagerOffsets(direction, parseInt(offset));
 
           if (AppContext.isNewSet()) {
             // Set the context start index to the matching offset.
-            AppContext.setStartIndex(offset);
+            AppContext.setViewStartIndex(offset);
             pager.updateParentNewSet(FacetHandler.getSubjectListSlice(setSize));
 
           } else {
 
             pager.updateParent(FacetHandler.getSubjectListSlice(setSize), direction);
+
           }
 
           AppContext.setSubjectsOrder(sort);

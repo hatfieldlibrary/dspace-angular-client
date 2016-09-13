@@ -91,7 +91,7 @@ module.exports = function (app, config, passport) {
   app.use('/ds/getItem/:item', item.getItem);
 
   app.get('/ds/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', solr.browse);
-  
+
   app.get('/ds/solrQuery/:site/:item/:field/:mode', solr.sortOptions);
 
   app.post('/ds/solrQuery', solr.query);
@@ -151,6 +151,17 @@ module.exports = function (app, config, passport) {
     res.sendFile(
       app.get('appPath') +
       '/app/components/shared/templates/loaders/' +
+      name
+    );
+  });
+
+  app.get('/ds/seo/templates/:name', function (req, res) {
+
+    var name = req.params.name;
+
+    res.sendFile(
+      app.get('appPath') +
+      '/app/components/seo/templates/' +
       name
     );
   });

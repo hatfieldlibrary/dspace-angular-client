@@ -31,6 +31,7 @@
     disc.type = $routeParams.type;
     var id = $routeParams.id;
     disc.terms = $routeParams.terms;
+    disc.context = QueryActions.SEARCH;
 
     /**
      * Pass the controller to discovery extensions.
