@@ -68,7 +68,7 @@
        * the dialog for the user.  New positions are handled
        * by the $locationChangeSuccess function in pager.
        */
-      if (AppContext.getSelectedItemId() === parseInt(ctrl.id)) {
+      if (AppContext.getSelectedItemId() === ctrl.id) {
 
         ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
       }

@@ -81,8 +81,8 @@ var constants = require('../core/constants');
           transform: processResult
         }
       ).then(function (json) {
-
-        if (json.results.length === 0) {
+                                console.log(json)
+        if (json.results.length === 0 && json.facets.length === 0) {
           res.status(404);
           res.send(json);
           res.end();
