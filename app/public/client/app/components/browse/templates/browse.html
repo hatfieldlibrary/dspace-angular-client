@@ -1,4 +1,4 @@
-<div class="layout-padding">
+<div layout-padding layout="column" layout-fill layout-align="start start" style="max-width: 100%;height:100%;box-sizing:border-box;">
 
   <div class="page-title">
 
@@ -27,7 +27,7 @@
 
     <md-card-content>
 
-      <item-list-component context="{{$ctrl.context}}"></item-list-component>
+      <item-list-component flex="100" layout-fill class="list-width" context="{{$ctrl.context}}"></item-list-component>
 
     </md-card-content>
 

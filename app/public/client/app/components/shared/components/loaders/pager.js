@@ -145,7 +145,11 @@
     pager.nextUrl = function () {
 
       var offset = AppContext.getNextPagerOffset();
-      return PagerUtils.nextUrl(offset);
+      if (offset < AppContext.getItemsCount()) {
+        return PagerUtils.nextUrl(offset);
+      } else {
+        return '#';
+      }
 
     };
 
