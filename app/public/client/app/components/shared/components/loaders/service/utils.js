@@ -138,22 +138,6 @@
         }
       }
 
-      //
-      // function _setOffset(qs) {
-      //   /**
-      //    * New offset.
-      //    * @type {number}
-      //    */
-      //   var newOffset = SolrDataLoader.verifyOffset(qs);
-      //   console.log('new offset ' + newOffset)
-      //
-      //   /**
-      //    * Update the query with the new offset value.
-      //    */
-      //   QueryManager.setOffset(newOffset);
-      //
-      // }
-
 
       /**
        * Sets the query offset, the selected item id, and item index position
@@ -292,83 +276,6 @@
 
       }
 
-      //
-      // function getBaseUrl() {
-      //
-      //   var qs = $location.search();
-      //   var url = $location.path() + '?';
-      //   var arr = Object.keys(qs);
-      //   for (var i = 0; i < arr.length; i++) {
-      //
-      //     if (arr[i] !== 'offset' && arr[i] !== 'new' && arr[i] !== 'd' && arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype') {
-      //       if (i !== 0) {
-      //         url += '&';
-      //       }
-      //       url += arr[i] + '=' + qs[arr[i]];
-      //     }
-      //   }
-      //   url += '&new=false';
-      //
-      //
-      //   return url;
-      // }
-
-
-      /**
-       * If there are more items, sets the next link in header for seo. If at the end of
-       * the set, tells the search spider not follow link using 'nofollow' rel value.
-       * Let's hope other search engines other than google implement the same rules.
-       * @param url the partial url with missing offset parameter.
-       * @param offset   the current offset value.
-       * @private
-       */
-      // function _updateNextHeaderLink(offset) {
-      //
-      //   var fullUrl = _getBaseUrl(offset);
-      //   var url = _transformPath(fullUrl);
-      //   var newOffset = offset + AppContext.getSetSize();
-      //   url += '&offset=' + newOffset;
-      //   if (newOffset < AppContext.getItemsCount()) {
-      //
-      //     SetPagingLinksInHeader.setNextLink('next', url);
-      //
-      //   } else {
-      //
-      //     SetPagingLinksInHeader.setNextLink('nofollow', '');
-      //
-      //   }
-      //
-      // }
-
-      /**
-       * Sets previous page link in header.  Sets link to 'nofollow'
-       * if on first page.
-       */
-      // function _updatePrevHeaderLink(offset) {
-      //
-      //   var fullUrl = _getBaseUrl(offset);
-      //   var prevOffset = offset - AppContext.getSetSize();
-      //   fullUrl += '&offset=' + prevOffset;
-      //   fullUrl += '&d=prev';
-      //   var url = _transformPath(fullUrl);
-      //
-      //   if (prevOffset >= 0) {
-      //     SetPagingLinksInHeader.setPrevLink('prev', url);
-      //
-      //   } else {
-      //     SetPagingLinksInHeader.setPrevLink('nofollow', '');
-      //
-      //   }
-      // }
-
-      // function _transformPath(fullUrl) {
-      //
-      //   var urlComponents = fullUrl.split('?');
-      //   var urlArr = urlComponents[0].split('/');
-      //   var url = '/ds/paging/' + urlArr[3] + '/' + urlArr[4] + '?' + urlComponents[1];
-      //   return url;
-      //
-      // }
 
       function _setDefaultType(context) {
 
@@ -442,28 +349,60 @@
           if (items !== undefined) {
             items.$promise.then(function (data) {
 
-              AppContext.setItemsCount(data.count);
 
-              updatePagerOffsets(direction, QueryManager.getOffset());
+                AppContext.setItemsCount(data.count);
 
-              _updatePagingHeaders();
+                updatePagerOffsets(direction, QueryManager.getOffset());
 
-              if (isNewRequest) {
-                /**
-                 * If not a new request, swap in the new data.
-                 */
-                pager.updateParentNewSet(data);
+                _updatePagingHeaders();
 
-              } else {
+                if (isNewRequest) {
+                  /**
+                   * If not a new request, swap in the new data.
+                   */
+                  pager.updateParentNewSet(data);
 
-                /**
-                 * If paging, add the new data to the view.
-                 */
-                pager.updateParent(data, direction);
-              }
+                } else {
 
-              initializePositions();
-            });
+                  /**
+                   * If paging, add the new data to the view.
+                   */
+                  pager.updateParent(data, direction);
+                }
+
+                initializePositions();
+
+              },
+              function (errResponse) {
+                // API will return 404 if the query request returned
+                // zero results. We need to update the view with an
+                // empty result array. This will cause the no results
+                // message to display.
+                if (errResponse.status === 404) {
+
+                  console.log('Error 404 is returned for queries that produce no data.');
+
+                  AppContext.setItemsCount(0);
+
+                  var emptyReponse = {results: []};
+
+                  if (isNewRequest) {
+                    /**
+                     * If not a new request, swap in the new data.
+                     */
+                    pager.updateParentNewSet(emptyReponse);
+
+                  } else {
+
+                    /**
+                     * If paging, add the new data to the view.
+                     */
+                    pager.updateParent(emptyReponse, direction);
+                  }
+
+                }
+
+              });
           }
         }
         else {
