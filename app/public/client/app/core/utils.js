@@ -414,8 +414,41 @@
 
       };
 
+      /**
+       * Creates JSON-LD object from the item data.
+       */
 
-      return utils;
+      utils.setJsonLd = function(data) {
+
+          var json = '"@context": "http://schema.org/"';
+
+          if (typeof data.jsonLdType !== 'undefined') {
+            json += ',"@type":"' + data.jsonLdType + '"';
+          }
+          if (typeof data.name !== 'undefined') {
+            json += ',"name":"' + data.name.replace('\'', '\'').replace('"', '\"') + '"';
+          }
+          if (typeof data.author !== 'undefined') {
+            json += ',"author": "' + data.author + '"';
+          }
+          if (typeof data.description !== 'undefined') {
+            json += ',"description": "' + data.description.replace('\'', '\'').replace('"', '\"') + '"';
+          }
+          if (typeof data.publisher !== 'undefined') {
+            json += ',"publisher": "' + data.publisher + '"';
+          }
+          if (typeof data.date !== 'undefined') {
+            json += ',"date": "' + data.date + '"';
+          }
+
+          var jsonld = '{' + json + '}';
+
+          return jsonld;
+
+        };
+
+
+        return utils;
 
     }
 

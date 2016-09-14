@@ -61,6 +61,8 @@
       PageAuthor.setAuthor(data.author);
       PageDescription.setDescription(data.description);
 
+      ctrl.jsonLd = Utils.setJsonLd(data);
+
     });
 
     /**
