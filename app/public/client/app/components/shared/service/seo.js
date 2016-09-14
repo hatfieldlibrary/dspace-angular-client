@@ -36,8 +36,7 @@
        */
       function updateNextHeaderLink(offset) {
 
-        var fullUrl = Utils.getBaseUrl(offset);
-        var url = _transformPath(fullUrl);
+        var url = Utils.getBaseUrl(offset);
         var newOffset = offset + AppContext.getSetSize();
         url += '&offset=' + newOffset;
         if (newOffset < AppContext.getItemsCount()) {
@@ -58,11 +57,11 @@
        */
       function updatePrevHeaderLink(offset) {
 
-        var fullUrl = Utils.getBaseUrl(offset);
+        var url = Utils.getBaseUrl(offset);
         var prevOffset = offset - AppContext.getSetSize();
-        fullUrl += '&offset=' + prevOffset;
-        fullUrl += '&d=prev';
-        var url = _transformPath(fullUrl);
+        url += '&offset=' + prevOffset;
+        url += '&d=prev';
+
 
         if (prevOffset >= 0) {
           setPrevLink('prev', url);
@@ -84,14 +83,14 @@
         $rootScope.prevPage = link;
       }
 
-      function _transformPath(fullUrl) {
-
-        var urlComponents = fullUrl.split('?');
-        var urlArr = urlComponents[0].split('/');
-        var url = '/ds/paging/' + urlArr[3] + '/' + urlArr[4] + '?' + urlComponents[1];
-        return url;
-
-      }
+      // function _transformPath(fullUrl) {
+      //
+      //   var urlComponents = fullUrl.split('?');
+      //   var urlArr = urlComponents[0].split('/');
+      //   var url = '/ds/paging/' + urlArr[3] + '/' + urlArr[4] + '?' + urlComponents[1];
+      //   return url;
+      //
+      // }
 
       return {
 

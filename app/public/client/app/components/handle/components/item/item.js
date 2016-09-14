@@ -8,12 +8,14 @@
 (function () {
 
 
-  function ItemCtrl(
-                    GetCollectionInfo,
+  function ItemCtrl(GetCollectionInfo,
                     Utils,
                     Messages,
                     AppContext,
-                    PageTitle) {
+                    PageTitle,
+                    PageDescription,
+                    PageAuthor,
+                    SeoPaging) {
 
     var ctrl = this;
 
@@ -47,10 +49,19 @@
      * Get information about the item.
      */
     ctrl.data.$promise.then(function (data) {
+
       ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
       ctrl.canWrite = AppContext.getWritePermission();
       ctrl.itemId = data.id;
+
+      SeoPaging.setNextLink('nofollow', '');
+      SeoPaging.setPrevLink('nofollow', '');
+
       PageTitle.setTitle(data.name);
+      PageAuthor.setAuthor(data.author);
+      PageDescription.setDescription(data.description);
+
+      ctrl.jsonLd = Utils.setJsonLd(data);
 
     });
 
