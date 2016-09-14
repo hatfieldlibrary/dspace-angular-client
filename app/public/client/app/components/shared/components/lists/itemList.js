@@ -113,7 +113,6 @@
      */
     ctrl.onUpdate = function (results, count, field, offset, jump) {
 
-
       offset++;
       var end = '';
       if (count < endIncrement) {
@@ -136,7 +135,6 @@
       ctrl.count = count;
       ctrl.items = results;
       ctrl.ready = true;
-
 
     };
 

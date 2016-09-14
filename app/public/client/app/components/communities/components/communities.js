@@ -13,6 +13,8 @@
                            AssetTypes,
                            Messages,
                            PageTitle,
+                           PageDescription,
+                           PageAuthor,
                            SeoPaging) {
 
     var ctrl = this;
@@ -20,7 +22,6 @@
     ctrl.intro = Messages.COMMUNITIES_LIST_INTRO;
 
     ctrl.heading = Messages.COMMUNITIES_LIST_HEADING;
-
 
     /**
      * Indicates when data has been returned.
@@ -34,21 +35,29 @@
      */
     ctrl.communities = {};
 
-    SeoPaging.setNextLink('nofollow','');
-    SeoPaging.setPrevLink('nofollow','');
+    function _init() {
 
-    PageTitle.setTitle(Messages.COMMUNITIES_LIST_HEADING);
+      SeoPaging.setNextLink('nofollow','');
+      SeoPaging.setPrevLink('nofollow','');
 
+      PageAuthor.setAuthor('');
+      PageDescription.setDescription(Messages.COMMUNITIES_META_DESCRIPTION);
+      PageTitle.setTitle(Messages.COMMUNITIES_META_TITLE);
 
-    QueryManager.setAssetType(AssetTypes.COMMUNITY_LIST);
+      QueryManager.setAssetType(AssetTypes.COMMUNITY_LIST);
 
-    var fetch = GetCommunities.query();
-    fetch.$promise.then(function (data) {
-      ctrl.ready = true;
-      ctrl.communities = data;
-    }, function (err) {
-      console.log('Error status: ' + err.status + ' - ' + err.statusText);
-    });
+      var fetch = GetCommunities.query();
+
+      fetch.$promise.then(function (data) {
+        ctrl.ready = true;
+        ctrl.communities = data;
+      }, function (err) {
+        console.log('Error status: ' + err.status + ' - ' + err.statusText);
+      });
+
+    }
+
+    _init();
 
   }
 

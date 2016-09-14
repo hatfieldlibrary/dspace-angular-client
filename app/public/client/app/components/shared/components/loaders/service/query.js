@@ -30,9 +30,8 @@
        * Number of items to return in pager.
        * @type {number}
        */
-      var setSize = AppContext.getSetSize();
+      //var setSize = AppContext.getSetSize();
 
-      var offset = 0;
 
       /**
        * Invokes query for LIST, SEARCH, or BROWSE action and
@@ -105,40 +104,7 @@
 
       }
 
-      /**
-       * Recalculates the offset if the item position
-       * provided in the query is less than the provided
-       * offset value.
-       * @param qs query string
-       * @returns {number}
-       */
-      function verifyOffset(qs) {
 
-        var offset = 0;
-
-        if (typeof qs.offset !== 'undefined') {
-          offset = qs.offset;
-        }
-        if (typeof qs.pos !== 'undefined') {
-          if (qs.pos < qs.offset) {
-            offset = Math.floor(qs.pos / setSize) * setSize;
-          }
-        }
-        return offset;
-
-      }
-
-      /**
-       * Sets the offset value based on provided query
-       * @param qs  the query string
-      //  */
-      function setOffset(qs) {
-
-          offset = verifyOffset(qs);
-
-          QueryManager.setOffset(offset);
-
-      }
 
       function setJumpType() {
         /**
@@ -183,11 +149,9 @@
 
         invokeQuery: invokeQuery,
         filterQuery: filterQuery,
-        verifyOffset: verifyOffset,
-       setOffset: setOffset,
-        getOffset: function () {
-          return offset;
-        },
+        // getOffset: function () {
+        //   return offset;
+        // },
         setJumpType: setJumpType
 
       };
