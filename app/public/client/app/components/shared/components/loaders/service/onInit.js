@@ -38,6 +38,8 @@
        */
       function onInit(pager, qs) {
 
+        PagerUtils.setOffset(qs);
+
         AppContext.isNewSet(true);
 
         PagerUtils.setQueryComponents(qs, pager.context);
@@ -66,6 +68,8 @@
            * Set the filter query type.
            */
           SolrDataLoader.setJumpType();
+
+
 
 
           /**

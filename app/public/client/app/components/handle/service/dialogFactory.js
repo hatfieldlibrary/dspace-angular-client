@@ -14,14 +14,16 @@
     '$mdMedia',
     'ItemById',
     'PageTitle',
-    'AppContext',
+    'PageDescription',
+    'PageAuthor',
 
-    function (
-              $mdDialog,
+    function ($mdDialog,
               $mdMedia,
               /*jshint unused:false */
               ItemById,
-              PageTitle) {
+              PageTitle,
+              PageDescription,
+              PageAuthor) {
 
       /**
        * Dialog controller.
@@ -91,42 +93,11 @@
           ctrl.canWrite = AppContext.getWritePermission();
           ctrl.itemId = data.id;
           PageTitle.setTitle(data.name);
-          setJsonLd();
+          PageAuthor.setAuthor(data.author);
+          PageDescription.setDescription(data.description);
+          ctrl.jsonLd = Utils.setJsonLd(ctrl.data);
 
         });
-
-
-        /**
-         * Creates JSON-LD object from the returned item data.
-         */
-        function setJsonLd() {
-
-          var json = '"@context": "http://schema.org/"';
-
-          if (typeof ctrl.data.jsonLdType !== 'undefined') {
-            json += ',"@type":"' + ctrl.data.jsonLdType + '"';
-          }
-          if (typeof ctrl.data.name !== 'undefined') {
-            json += ',"name":"' + ctrl.data.name.replace('\'', '\'').replace('"', '\"') + '"';
-          }
-          if (typeof ctrl.data.author !== 'undefined') {
-            json += ',"author": "' + ctrl.data.author + '"';
-          }
-          if (typeof ctrl.data.description !== 'undefined') {
-            json += ',"description": "' + ctrl.data.description.replace('\'', '\'').replace('"', '\"') + '"';
-          }
-          if (typeof ctrl.data.publisher !== 'undefined') {
-            json += ',"publisher": "' + ctrl.data.publisher + '"';
-          }
-          if (typeof ctrl.data.date !== 'undefined') {
-            json += ',"date": "' + ctrl.data.date + '"';
-          }
-
-          var jsonld = '{' + json + '}';
-
-          ctrl.jsonLd = jsonld;
-
-        }
 
 
         /**
@@ -183,6 +154,7 @@
 
     }
 
-  ]);
+  ])
+  ;
 
 })();

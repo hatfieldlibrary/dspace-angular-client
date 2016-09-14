@@ -1,6 +1,5 @@
 /**
- * This module defines text strings used throughout the application view.  Changes to
- * these values will change the corresponding UI elements.
+ * This module defines text strings used in application components.
  */
 
 'use strict';
@@ -8,6 +7,10 @@
 (function () {
 
   appConstants.constant('Messages', {
+
+    COMMUNITIES_META_TITLE: 'University Departments',
+
+    COMMUNITIES_META_DESCRIPTION: 'Willamette University Departments',
 
     COMMUNITIES_LIST_INTRO: 'Willamette University departmental collections are listed below. Each department should have one or more collections.  Senior thesis and many other collections will be visible only after you log in with your Willamette University credentials.',
 
@@ -44,8 +47,6 @@
     ADVANCED_SEARCH_SUBMIT_LABEL: 'Submit',
 
     ADVANCED_SEARCH_FILTER_LABEL: 'Add Optional Filters',
-
-    COMMUNITIES_LIST_HEADING: 'University Departments',
 
     DISCOVERY_PAGE_HEADER: 'Search Departmental Collections',
 

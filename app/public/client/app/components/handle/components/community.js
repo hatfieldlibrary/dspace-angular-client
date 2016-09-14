@@ -15,6 +15,9 @@
                          Utils,
                          AppContext,
                          PageTitle,
+                         PageDescription,
+                         PageAuthor,
+                         SeoPaging,
                          $scope) {
 
     var ctrl = this;
@@ -52,14 +55,12 @@
 
     ctrl.hasLogo = hasLogo;
 
-    PageTitle.setTitle(ctrl.data.name);
 
     /**
      * Initialize login message to be hidden.
      * @type {boolean}
-       */
+     */
     ctrl.hideLoginMessage = true;
-
 
 
     /**
@@ -70,8 +71,10 @@
      * that the user does not have access to collections still
      * hidden behind DSpace authorizations.
      */
-    $scope.$watch(function() { return AppContext.hasDspaceSession(); },
-      function(newValue, oldValue) {
+    $scope.$watch(function () {
+        return AppContext.hasDspaceSession();
+      },
+      function (newValue, oldValue) {
         if (newValue !== oldValue) {
           ctrl.hideLoginMessage = newValue;
         }
@@ -94,7 +97,15 @@
 
     function init() {
 
-         Utils.checkStatus(showLoginMessage);
+      PageTitle.setTitle(ctrl.data.name);
+      PageDescription.setDescription(ctrl.data.introductoryText);
+      PageAuthor.setAuthor('');
+
+
+      SeoPaging.setNextLink('nofollow', '');
+      SeoPaging.setPrevLink('nofollow', '');
+
+      Utils.checkStatus(showLoginMessage);
 
     }
 

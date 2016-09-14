@@ -149,11 +149,11 @@
         var qs = $location.search();
 
         if (typeof qs.offset === 'undefined') {
-          QueryManager.setOffset(0);
+          //  QueryManager.setOffset(0);
           AppContext.setInitOffset(0);
           AppContext.setViewStartIndex(0);
         } else {
-          QueryManager.setOffset(qs.offset);
+          //  QueryManager.setOffset(qs.offset);
           AppContext.setInitOffset(qs.offset);
           AppContext.setViewStartIndex(qs.offset);
         }
@@ -167,6 +167,43 @@
         _setOpenItemPosition(qs);
 
       }
+
+
+      /**
+       * Recalculates the offset if the item position
+       * provided in the query is less than the provided
+       * offset value.
+       * @param qs query string
+       * @returns {number}
+       */
+      function _verifyOffset(qs) {
+
+        var offset = 0;
+
+        if (typeof qs.offset !== 'undefined') {
+          offset = qs.offset;
+        }
+        if (typeof qs.pos !== 'undefined') {
+          if (qs.pos < qs.offset) {
+            offset = Math.floor(qs.pos / setSize) * setSize;
+          }
+        }
+        return offset;
+
+      }
+
+      /**
+       * Sets the offset value based on provided query
+       * @param qs  the query string
+       //  */
+      function setOffset(qs) {
+
+        var offset = _verifyOffset(qs);
+
+        QueryManager.setOffset(offset);
+
+      }
+
 
       function updatePagerOffsets(direction, offset) {
 
@@ -374,33 +411,7 @@
 
               },
               function (errResponse) {
-                // API will return 404 if the query request returned
-                // zero results. We need to update the view with an
-                // empty result array. This will cause the no results
-                // message to display.
-                if (errResponse.status === 404) {
-
-                  console.log('Error 404 is returned for queries that produce no data.');
-
-                  AppContext.setItemsCount(0);
-
-                  var emptyReponse = {results: []};
-
-                  if (isNewRequest) {
-                    /**
-                     * If not a new request, swap in the new data.
-                     */
-                    pager.updateParentNewSet(emptyReponse);
-
-                  } else {
-
-                    /**
-                     * If paging, add the new data to the view.
-                     */
-                    pager.updateParent(emptyReponse, direction);
-                  }
-
-                }
+                _handleError(pager, errResponse);
 
               });
           }
@@ -424,28 +435,32 @@
               result = SolrDataLoader.invokeQuery();
               result.$promise.then(function (data) {
 
-                AppContext.setItemsCount(data.count);
+                  AppContext.setItemsCount(data.count);
 
-                updatePagerOffsets(direction, QueryManager.getOffset());
+                  updatePagerOffsets(direction, QueryManager.getOffset());
 
-                _updatePagingHeaders();
-                /**
-                 * Add the author array to shared context.
-                 * @type {string|Array|*}
-                 */
-                AppContext.setAuthorsList(data.facets);
-                /**
-                 * If the sort order is desc, reverse the author list and
-                 * update parent.
-                 */
+                  _updatePagingHeaders();
+                  /**
+                   * Add the author array to shared context.
+                   * @type {string|Array|*}
+                   */
+                  AppContext.setAuthorsList(data.facets);
+                  /**
+                   * If the sort order is desc, reverse the author list and
+                   * update parent.
+                   */
 
-                FacetHandler.setAuthorListOrder(sort);
+                  FacetHandler.setAuthorListOrder(sort);
 
-                pager.updateParentNewSet(FacetHandler.getAuthorListSlice(setSize));
+                  pager.updateParentNewSet(FacetHandler.getAuthorListSlice(setSize));
 
-                initializePositions();
+                  initializePositions();
 
-              });
+                },
+                function (errResponse) {
+                  _handleError(pager, errResponse);
+
+                });
             } else {
 
               updatePagerOffsets(direction, QueryManager.getOffset());
@@ -473,25 +488,29 @@
               result = SolrDataLoader.invokeQuery();
               result.$promise.then(function (data) {
 
-                AppContext.setItemsCount(data.count);
+                  AppContext.setItemsCount(data.count);
 
-                updatePagerOffsets(direction, QueryManager.getOffset());
-                _updatePagingHeaders();
+                  updatePagerOffsets(direction, QueryManager.getOffset());
+                  _updatePagingHeaders();
 
-                /**
-                 * Add the subject array to context.
-                 * @type {string|Array|*}
-                 */
-                AppContext.setSubjectList(data.facets);
+                  /**
+                   * Add the subject array to context.
+                   * @type {string|Array|*}
+                   */
+                  AppContext.setSubjectList(data.facets);
 
-                FacetHandler.setSubjectListOrder(sort);
+                  FacetHandler.setSubjectListOrder(sort);
 
-                pager.updateParentNewSet(FacetHandler.getSubjectListSlice(setSize));
+                  pager.updateParentNewSet(FacetHandler.getSubjectListSlice(setSize));
 
-                initializePositions();
+                  initializePositions();
 
 
-              });
+                },
+                function (errResponse) {
+                  _handleError(pager, errResponse);
+
+                });
 
             } else {
 
@@ -514,6 +533,31 @@
 
 
       }
+
+      /**
+       * Handles 404 errors by updating the parent with empty result.
+       * @param pager reference to the loader
+       * @param errResponse http error
+       * @private
+       */
+      function _handleError(pager, errResponse) {
+        // API will return 404 if the query request returned
+        // zero results. We need to update the view with an
+        // empty result array. This will cause the no results
+        // message to display.
+        if (errResponse.status === 404) {
+
+          console.log('Error 404 is returned for queries that produce no data.');
+
+          AppContext.setItemsCount(0);
+
+          var emptyResponse = {results: [], facets: [], count: 0};
+
+          pager.updateParentNewSet(emptyResponse);
+
+        }
+      }
+
 
       /**
        * Sets links for search engines paging in the page header.
@@ -559,7 +603,8 @@
         addResult: addResult,
         setQueryComponents: setQueryComponents,
         setStartIndex: setStartIndex,
-        updatePagerOffsets: updatePagerOffsets
+        updatePagerOffsets: updatePagerOffsets,
+        setOffset: setOffset
 
       };
 

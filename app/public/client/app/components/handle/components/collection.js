@@ -9,12 +9,15 @@
   /**
    * Component controller.
    */
-  function CollectionCtrl(
+  function CollectionCtrl($window,
                           $mdMedia,
                           $location,
                           QueryManager,
                           QueryActions,
                           PageTitle,
+                          PageDescription,
+                          PageAuthor,
+                          SeoPaging,
                           Utils) {
 
     var ctrl = this;
@@ -77,7 +80,18 @@
 
     function init() {
 
+      console.log(Utils.isSearchEngine());
+      if (Utils.isSearchEngine()) {
+        ctrl.context = QueryActions.SEO;
+      }
+
+      SeoPaging.setNextLink('nofollow', '');
+      SeoPaging.setPrevLink('nofollow', '');
+
+      PageAuthor.setAuthor('');
       PageTitle.setTitle(ctrl.data.name);
+      PageDescription.setDescription(ctrl.data.introductoryText);
+
       /**
        * Set query action to retrieve list.
        */

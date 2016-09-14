@@ -8,6 +8,7 @@
 
 
   dspaceServices.factory('Utils', [
+    '$window',
     '$location',
     '$timeout',
     'QueryManager',
@@ -20,7 +21,8 @@
     'QuerySort',
     'QueryTypes',
 
-    function ($location,
+    function ($window,
+              $location,
               $timeout,
               QueryManager,
               AppContext,
@@ -395,10 +397,62 @@
         return url;
       };
 
+      /**
+       * Detect search engine user agent.
+       * @returns {boolean}
+       */
+      utils.isSearchEngine = function () {
 
-      return utils;
+        var userAgent = $window.navigator.userAgent;
+        // user agents (google, bing, yahoo)
+        var regex = /GoogleBot|BingBot|Slurp/;
+
+        if (userAgent.match(regex)) {
+          return true;
+        }
+        return false;
+
+      };
+
+      /**
+       * Creates JSON-LD object from the item data.
+       */
+
+      utils.setJsonLd = function(data) {
+
+          var json = '"@context": "http://schema.org/"';
+
+          if (typeof data.jsonLdType !== 'undefined') {
+            json += ',"@type":"' + data.jsonLdType + '"';
+          }
+          if (typeof data.name !== 'undefined') {
+            json += ',"name":"' + data.name.replace('\'', '\'').replace('"', '\"') + '"';
+          }
+          if (typeof data.author !== 'undefined') {
+            json += ',"author": "' + data.author + '"';
+          }
+          if (typeof data.description !== 'undefined') {
+            json += ',"description": "' + data.description.replace('\'', '\'').replace('"', '\"') + '"';
+          }
+          if (typeof data.publisher !== 'undefined') {
+            json += ',"publisher": "' + data.publisher + '"';
+          }
+          if (typeof data.date !== 'undefined') {
+            json += ',"date": "' + data.date + '"';
+          }
+
+          var jsonld = '{' + json + '}';
+
+          return jsonld;
+
+        };
+
+
+        return utils;
 
     }
+
+
 
 
   ]);
