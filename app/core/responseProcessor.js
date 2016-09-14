@@ -50,14 +50,7 @@
 
     }
 
-    var docsArr = [];
-
-    for (var i = 0; i < solrResponse.response.docs.length; i++) {
-      docsArr[i] = solrResponse.response.docs[i];
-    }
-
     ret.offset = solrResponse.response.start;
-    ret.results = docsArr;
     ret.facets = authorArr;
     ret.count = authorArr.length;
 
@@ -101,13 +94,7 @@
 
     }
 
-    var docsArr = [];
-
-    for (var i = 0; i < solrResponse.response.docs.length; i++) {
-      docsArr[i] = solrResponse.response.docs[i];
-    }
     ret.offset = solrResponse.response.start;
-    ret.results = docsArr;
     ret.facets = subjectArr;
     ret.count = subjectArr.length;
 
