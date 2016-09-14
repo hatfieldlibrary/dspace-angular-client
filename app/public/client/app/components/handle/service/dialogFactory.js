@@ -14,14 +14,16 @@
     '$mdMedia',
     'ItemById',
     'PageTitle',
-    'AppContext',
+    'PageDescription',
+    'PageAuthor',
 
-    function (
-              $mdDialog,
+    function ($mdDialog,
               $mdMedia,
               /*jshint unused:false */
               ItemById,
-              PageTitle) {
+              PageTitle,
+              PageDescription,
+              PageAuthor) {
 
       /**
        * Dialog controller.
@@ -91,6 +93,8 @@
           ctrl.canWrite = AppContext.getWritePermission();
           ctrl.itemId = data.id;
           PageTitle.setTitle(data.name);
+          PageAuthor.setAuthor(data.author);
+          PageDescription.setDescription(data.description);
           setJsonLd();
 
         });
@@ -183,6 +187,7 @@
 
     }
 
-  ]);
+  ])
+  ;
 
 })();

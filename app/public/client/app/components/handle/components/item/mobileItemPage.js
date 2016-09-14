@@ -12,7 +12,10 @@
                           ItemById,
                           Messages,
                           AppContext,
-                          PageTitle) {
+                          PageTitle,
+                          PageDescription,
+                          PageAuthor,
+                          SeoPaging) {
 
     var ctrl = this;
 
@@ -54,20 +57,18 @@
     };
 
     var itemInfo = ItemById.query({item: ctrl.collectionItem});
+
     itemInfo.$promise.then(function (data) {
+
       ctrl.data = data;
       PageTitle.setTitle(data.name);
+      PageAuthor.setAuthor(data.author);
+      PageDescription.setDescription(data.description);
+
+      SeoPaging.setNextLink('nofollow', '');
+      SeoPaging.setPrevLink('nofollow', '');
+
     });
-
-
-    /**
-     * Retrieve parent collection name and handle.
-     */
-    // var parent = GetCollectionInfo.query({item: ctrl.data.parentCollection.id});
-    // parent.$promise.then(function (data) {
-    //   ctrl.parentName = data.parentCommunity.name;
-    //   ctrl.parentHandle = data.parentCommunity.handle;
-    // });
 
   }
 

@@ -122,11 +122,11 @@
           }
 
 
-          /* Update the query offset. */
-          SolrDataLoader.setOffset(qs);
+          // Update the query offset.
+          PagerUtils.setOffset(qs);
 
-          /* Subject and author query types use DSpace facet lists. Other query types
-           * are not facets. They retrieve complete item results.*/
+          // Subject and author query types use DSpace facet lists. Other query types
+          // are not facets. They retrieve complete item results.*/
 
           if (AppContext.isNotFacetQueryType()) {
 
@@ -135,21 +135,18 @@
              */
             $mdDialog.cancel();
 
-            /*
-             * If item filter, always request new list. The itype parameter indicates an item request.
-             * If itype is set to 'i', no filter action is required.
-             */
+             // If item filter, always request new list. The itype parameter indicates an item request.
+             // If itype is set to 'i', no filter action is required.
             if (qs.filter === 'item' && qs.itype !== 'i') {
 
-              /* We do not need to call hasNewParams for an item filter, but we still need to update state
-               * in PagerUtils */
+              // We do not need to call hasNewParams for an item filter, but we still need to update state
+              //in PagerUtils
               PagerUtils.setCurrentParmsState(qs.field, qs.sort, qs.offset, qs.filter);
               PagerFilters.itemFilter(pager, qs.offset);
 
             }
-            /*
-             * If there is change in fields, update.
-             */
+
+            //If there is change in fields, update.
             else if (PagerUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter, qs.filters, qs.comm, qs.coll) && qs.itype !== 'i') {
 
               PagerUtils.updateList(pager, qs.sort, qs.d);

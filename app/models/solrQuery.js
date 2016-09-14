@@ -81,7 +81,13 @@ var constants = require('../core/constants');
           transform: processResult
         }
       ).then(function (json) {
-        // check results
+        console.log(json)
+        // This warrants a bit of review!  We need
+        // to check for an empty results array and
+        // return 404 if empty.  However, the facets
+        // array can also be a return value, and it
+        // looks like solr returns facets and an empty
+        // results array.
         if (json.results) {
           if (json.results.length === 0) {
             res.status(404);
@@ -92,7 +98,6 @@ var constants = require('../core/constants');
             res.end();
           }
         }
-        // check facets
         else if (json.facets) {
           if (json.facets.length === 0) {
             res.status(404);
@@ -114,7 +119,9 @@ var constants = require('../core/constants');
 
     return solr;
 
-  };
+  }
+  ;
 
 
-})();
+})
+();

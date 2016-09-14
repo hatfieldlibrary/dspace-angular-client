@@ -8,6 +8,7 @@
 
 
   dspaceServices.factory('Utils', [
+    '$window',
     '$location',
     '$timeout',
     'QueryManager',
@@ -20,7 +21,8 @@
     'QuerySort',
     'QueryTypes',
 
-    function ($location,
+    function ($window,
+              $location,
               $timeout,
               QueryManager,
               AppContext,
@@ -395,10 +397,29 @@
         return url;
       };
 
+      /**
+       * Detect search engine user agent.
+       * @returns {boolean}
+       */
+      utils.isSearchEngine = function () {
+
+        var userAgent = $window.navigator.userAgent;
+        // user agents (google, bing, yahoo)
+        var regex = /GoogleBot|BingBot|Slurp/;
+
+        if (userAgent.match(regex)) {
+          return true;
+        }
+        return false;
+
+      };
+
 
       return utils;
 
     }
+
+
 
 
   ]);

@@ -31,6 +31,7 @@
 
     function init() {
 
+
       Utils.resetQuerySettings();
 
       QueryManager.setAction(QueryActions.BROWSE);
@@ -42,7 +43,6 @@
       QueryManager.setOffset(ctrl.offset);
 
       QueryManager.setRows(ctrl.rows);
-
 
 
       if (ctrl.field === QueryFields.SUBJECT) {
@@ -74,13 +74,11 @@
       });
 
 
-
-
     }
 
     init();
 
-    ctrl.back = function() {
+    ctrl.back = function () {
       var backPath = QueryStack.pop();
       $window.location = backPath;
     };
