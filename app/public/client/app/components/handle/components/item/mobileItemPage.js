@@ -72,7 +72,7 @@
 
   }
 
-  dspaceComponents.component('mobileItemComponent', {
+  dspaceComponents.component('mobileCollectionItemComponent', {
 
     bindings: {
       collectionItem: '@',

@@ -13,7 +13,7 @@
 
   <md-card class="main-card md-hue-1" flex>
 
-    <md-card-content>
+    <md-card-content class="handle-item">
       <div id="dialog-top" style="height: 0px; padding:0;"></div>
 
       <div layout-fill>
@@ -34,7 +34,7 @@
         <div layout="row" layout-align="start start" style="height:100%">
 
           <!-- Files, gt-md -->
-          <div hide show-gt-md flex="20" class="item-left-col-position">
+          <div hide show-gt-md flex="20" class="item-left-col-position file-info">
 
             <div ng-if="$ctrl.data.bitstreams.length > 0">
               <div class="md-caption" style="padding-left: 12px;">{{$ctrl.filesLabel}} ({{$ctrl.fileCount}})</div>

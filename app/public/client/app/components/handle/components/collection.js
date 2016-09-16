@@ -80,7 +80,6 @@
 
     function init() {
 
-      console.log(Utils.isSearchEngine());
       if (Utils.isSearchEngine()) {
         ctrl.context = QueryActions.SEO;
       }

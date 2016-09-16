@@ -6,14 +6,14 @@
 
 function SideNavCtrl($scope,
                      $window,
-                     $mdSidenav,
                      $mdMedia,
+                     $mdSidenav,
                      Messages,
                      AssetTypes,
                      QueryTypes,
                      QueryManager,
-                     CheckSysAdmin,
-                     AppContext) {
+                     AppContext,
+                     Utils) {
 
   var ctrl = this;
 
@@ -23,18 +23,9 @@ function SideNavCtrl($scope,
 
   function init() {
 
-    ctrl.isSmallScreen = $mdMedia('sm') || $mdMedia('xs');
+    Utils.setSysAdminStatus();
 
-    /**
-     * Check system administrator status.
-     */
-    var admin = CheckSysAdmin.query();
-    admin.$promise.then(function (data) {
-      AppContext.setSystemAdminPermission(data.isSysAdmin);
-      if (QueryManager.getAssetType() === AssetTypes.COMMUNITY_LIST) {
-        ctrl.isSystemAdmin = data.isSysAdmin;
-      }
-    });
+    ctrl.isSmallScreen = Utils.isSmallScreen();
 
     ctrl.canWrite = false;
 
@@ -84,6 +75,16 @@ function SideNavCtrl($scope,
         buildToggler('right');
       }
     });
+
+
+  // using a watch for this, although the method could be moved
+  // into this controller and the watch avoided.
+  $scope.$watch(function() {return AppContext.getSystemAdminPermission();},
+    function(newValue) {
+
+      ctrl.isSystemAdmin = newValue;
+    }
+  );
 
 
   $scope.$watch(function () {
@@ -153,7 +154,7 @@ function SideNavCtrl($scope,
   $scope.$watch(function () {
       return QueryManager.getQueryType();
     },
-    function(newValue, oldValue) {
+    function (newValue, oldValue) {
       if (newValue !== oldValue) {
         if (newValue === QueryTypes.DISCOVER) {
           ctrl.canAdminister = false; // not needed
@@ -165,7 +166,8 @@ function SideNavCtrl($scope,
     });
 
   ctrl.greaterThanMd = function () {
-    return $window.innerWidth >= 1200;
+    return $mdMedia('gt-md');
+    //return $window.innerWidth >= 1200;
   };
 
   ctrl.close = function () {

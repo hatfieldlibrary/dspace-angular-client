@@ -54,17 +54,10 @@
     $scope.context = AppContext.getContext();
 
     /**
-     * Offset position on the controller.
-     * @type {string}
-     */
-    //ctrl.offset = QueryManager.getOffset();
-
-    /**
      * The selected index. This will be set by the $watch.
      * @type {number}
      */
     ctrl.selectedIndex = -1;
-   // AppContext.setCurrentIndex(-1);
 
     ctrl.xsSelectedIndex = -1;
 
