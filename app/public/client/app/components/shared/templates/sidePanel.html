@@ -18,30 +18,8 @@
       </div>
     </md-toolbar>
 
-    <!--<div layout="column" class="icon-list" layout-padding layout-align="center left">-->
-    <!--&lt;!&ndash;<md-divider></md-divider>&ndash;&gt;-->
-    <!--<md-list-item ng-href="/communities" ng-if="$ctrl.type!='global'">-->
-    <!--<md-icon md-font-set="material-icons">subject</md-icon>-->
-    <!--<p class="md-body-1">{{$ctrl.allCommunitiesLink}} </p>-->
-    <!--</md-list-item>-->
-
-    <!--</div>-->
-
-
-    <!--<div layout="column" layout-padding style="margin-top: 22px;" layout-align="center left">-->
-    <!--<md-divider></md-divider>-->
-    <!--</div>-->
 
     <div class="userOptions" layout="column" layout-padding layout-align="center left">
-      <!--<md-divider></md-divider>-->
-      <!--<md-input-container ng-show="$ctrl.canSubmit">-->
-
-      <!--<md-button class="md-accent md-raised"-->
-      <!--href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/handle/{{$ctrl.itemHandle}}/submit" target="_blank">-->
-      <!--<md-icon md-font-set="material-icons" class="md-light">file_upload</md-icon>-->
-      <!--{{$ctrl.submitButtonLabel}}-->
-      <!--</md-button>-->
-      <!--</md-input-container>-->
 
       <md-list-item class="icon-list" ng-if="$ctrl.type!='global'"
                     ng-href="/ds/communities">
@@ -73,7 +51,6 @@
 
       <md-list-item class="icon-list" ng-show="$ctrl.canAdminister"  target="_top"
                     href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/{{$ctrl.service}}?{{$ctrl.service}}ID={{$ctrl.itemId}}">
-        <!--<md-icon md-font-icon="group" />-->
         <md-icon> group </md-icon>
         <p class="md-body-1">Administer {{$ctrl.actionType}} </p>
       </md-list-item>
@@ -93,20 +70,7 @@
 
     <global-search-box-component ng-if="$ctrl.type=='global'"></global-search-box-component>
 
-    <!--<div class="userOptions" layout="column" layout-padding layout-align="center left">-->
 
-    <!--<md-input-container ng-show="$ctrl.canSubmit">-->
-    <!--<md-button class="md-accent md-raised" href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/handle/{{$ctrl.itemHandle}}/submit" target="_blank" >{{$ctrl.submitButtonLabel}}</md-button>-->
-    <!--</md-input-container>-->
-    <!--<div ng-show="$ctrl.showSubmitInstuctions">-->
-    <!--<a href="{{$ctrl.submitInstructionsLink}}" target="_blank">{{$ctrl.submitInstructions}}</a></div>-->
-
-    <!--<div ng-show="$ctrl.canAdminister">-->
-    <!--<a href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/collection?collectionID={{$ctrl.itemId}}" target="_blank">Administer {{$ctrl.actionType}}</a></div>-->
-
-    <!--<div ng-show="$ctrl.isSystemAdmin">-->
-    <!--<a href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/panel" target="_blank">Administer {{$ctrl.actionType}}</a></div>-->
-    <!--</div>-->
 
   </div>
 </md-sidenav>

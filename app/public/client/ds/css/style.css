@@ -305,7 +305,8 @@ md-input-container.halfer {
   margin: 8px 0;
 }
 
-.is-mobile .file-info .md-button {
+.is-mobile .file-info .md-button,
+.handle-item .file-info .md-button{
   margin: 0 0 -4px;
 }
 

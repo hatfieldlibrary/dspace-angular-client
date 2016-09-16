@@ -1,5 +1,5 @@
 /**
- * Factory for utility methods.
+ * Factory for app utility methods.
  */
 
 'use strict';
@@ -11,10 +11,12 @@
     '$window',
     '$location',
     '$timeout',
+    '$mdMedia',
     'QueryManager',
     'AppContext',
     'Messages',
     'CheckSession',
+    'CheckSysAdmin',
     'QueryActions',
     'QueryFields',
     'AssetTypes',
@@ -24,10 +26,12 @@
     function ($window,
               $location,
               $timeout,
+              $mdMedia,
               QueryManager,
               AppContext,
               Messages,
               CheckSession,
+              CheckSysAdmin,
               QueryActions,
               QueryFields,
               AssetTypes,
@@ -37,6 +41,23 @@
       var utils = {};
 
       var setSize = AppContext.getSetSize();
+
+
+      /**
+       * Check system administrator status.
+       */
+      utils.setSysAdminStatus = function() {
+
+        var admin = CheckSysAdmin.query();
+        admin.$promise.then(function (data) {
+
+          // only community list gets the dspace admin option...
+          if (QueryManager.getAssetType() === AssetTypes.COMMUNITY_LIST) {
+            AppContext.setSystemAdminPermission(data.isSysAdmin);
+          }
+
+        });
+      };
 
       /**
        * Returns a truncated copy of the type.
@@ -325,9 +346,6 @@
 
         var path = '/ds/bitstream/' + logoId + '/logo';
 
-        // Use to request from xmlui; prior authentication not guaranteed!
-        // var path = AppContext.getDspaceHost() + AppContext.getDspaceRoot() + '/bitstream/id/' + logoId + '/?sequence=-1';
-
         return path;
       };
 
@@ -379,7 +397,7 @@
        * Gets the base url query string required by the paging and seo components.
        * @returns {string}
        */
-      utils.getBaseUrl = function() {
+      utils.getBaseUrl = function(offset, direction) {
 
         var qs = $location.search();
         var url = $location.path() + '?';
@@ -394,7 +412,20 @@
           }
         }
         url += '&new=false';
+
+        url += '&offset=' + offset;
+        if (direction === 'prev') {
+          url += '&d=prev';
+        }
+
         return url;
+      };
+
+
+      utils.isSmallScreen = function() {
+
+        return $mdMedia('sm') || $mdMedia('xs');
+
       };
 
       /**
@@ -405,7 +436,7 @@
 
         var userAgent = $window.navigator.userAgent;
         // user agents (google, bing, yahoo)
-        var regex = /GoogleBot|BingBot|Slurp/;
+        var regex = /Googlebot|Bingbot|Slurp/i;
 
         if (userAgent.match(regex)) {
           return true;

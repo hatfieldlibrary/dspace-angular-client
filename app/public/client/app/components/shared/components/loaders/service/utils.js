@@ -54,6 +54,18 @@
        */
       var setSize = AppContext.getSetSize();
 
+      /**
+       * Initialize for init and location change.
+       * @param qs
+       * @param context
+       */
+      function initialize(qs, context) {
+
+        _setOffset(qs);
+        _setQueryComponents(qs, context);
+
+      }
+
 
       /**
        * Sets the position of the currently open item in the app
@@ -75,7 +87,7 @@
               /**
                * Use the new offset to determine the item position.
                */
-              var newOffset = SolrDataLoader.verifyOffset(qs);
+              var newOffset = _verifyOffset(qs);
 
               AppContext.setOpenItem(qs.pos - newOffset);
               AppContext.setSelectedPositionIndex(qs.pos - newOffset);
@@ -196,7 +208,7 @@
        * Sets the offset value based on provided query
        * @param qs  the query string
        //  */
-      function setOffset(qs) {
+      function _setOffset(qs) {
 
         var offset = _verifyOffset(qs);
 
@@ -293,8 +305,8 @@
        * @returns {string}
        */
       function nextUrl(offset) {
-        var url = Utils.getBaseUrl();
-        url += '&offset=' + offset;
+
+        var url = Utils.getBaseUrl(offset, 'next');
         return url;
 
       }
@@ -305,10 +317,8 @@
        * @returns {string}
        */
       function prevUrl(offset) {
-        var url = Utils.getBaseUrl();
-        url += '&d=prev';
-        url += '&offset=' + offset;
 
+        var url = Utils.getBaseUrl(offset, 'prev');
         return url;
 
       }
@@ -325,7 +335,7 @@
         }
       }
 
-      function setQueryComponents(qs, context) {
+      function _setQueryComponents(qs, context) {
 
         /**
          * If qs object has keys, then update the query type and
@@ -601,10 +611,9 @@
         prevUrl: prevUrl,
         updateList: updateList,
         addResult: addResult,
-        setQueryComponents: setQueryComponents,
+        initialize: initialize,
         setStartIndex: setStartIndex,
         updatePagerOffsets: updatePagerOffsets,
-        setOffset: setOffset
 
       };
 

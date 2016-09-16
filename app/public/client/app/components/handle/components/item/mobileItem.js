@@ -8,7 +8,8 @@
 (function () {
 
 
-  function ItemCtrl(GetCollectionInfo,
+  function ItemCtrl($window,
+                    GetCollectionInfo,
                     Utils,
                     Messages,
                     AppContext,
@@ -45,6 +46,14 @@
       ctrl.showMetadata = !ctrl.showMetadata;
 
     };
+
+    ctrl.openCollection = function () {
+
+      var collection = '/ds/handle/' + ctrl.data.parentCollection.handle;
+      $window.location.href = collection;
+
+    };
+
     /**
      * Get information about the item.
      */
@@ -76,12 +85,12 @@
 
   }
 
-  dspaceComponents.component('desktopItemComponent', {
+  dspaceComponents.component('mobileItemComponent', {
 
     bindings: {
       data: '<'
     },
-    templateUrl: '/ds/handle/templates/item/item.html',
+    templateUrl: '/ds/handle/templates/item/mobileItem.html',
     controller: ItemCtrl
 
   });
