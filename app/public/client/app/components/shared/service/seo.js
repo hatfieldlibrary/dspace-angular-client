@@ -36,9 +36,11 @@
        */
       function updateNextHeaderLink(offset) {
 
-        var url = Utils.getBaseUrl(offset);
         var newOffset = offset + AppContext.getSetSize();
-        url += '&offset=' + newOffset;
+        var url = Utils.getBaseUrl(newOffset, 'next');
+
+        //url += '&offset=' + newOffset;
+
         if (newOffset < AppContext.getItemsCount()) {
 
           setNextLink('next', url);
@@ -57,10 +59,10 @@
        */
       function updatePrevHeaderLink(offset) {
 
-        var url = Utils.getBaseUrl(offset);
         var prevOffset = offset - AppContext.getSetSize();
-        url += '&offset=' + prevOffset;
-        url += '&d=prev';
+        var url = Utils.getBaseUrl(prevOffset, 'prev');
+      //  url += '&offset=' + prevOffset;
+     //   url += '&d=prev';
 
 
         if (prevOffset >= 0) {

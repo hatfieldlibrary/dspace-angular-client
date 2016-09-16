@@ -38,15 +38,10 @@
        */
       function onInit(pager, qs) {
 
-        PagerUtils.setOffset(qs);
 
         AppContext.isNewSet(true);
 
-        PagerUtils.setQueryComponents(qs, pager.context);
-
-        // if (typeof qs.filter === 'undefined') {
-        //   qs.filter = 'none';
-        // }
+        PagerUtils.initialize(qs, pager.context);
 
         /**
          * Sets the open position or item id for the current state.

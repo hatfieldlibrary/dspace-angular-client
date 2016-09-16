@@ -127,11 +127,10 @@
      */
     $scope.$on('$locationChangeSuccess', function () {
 
-
       var qs = $location.search();
 
-      // only act on location changes for handle requests
-      var re = /^\/ds\/handle/;
+      // only act on location changes for paging requests
+      var re = /^\/ds\/handle|^\/ds\/discover|^\/ds\/advanced/;
       var path =  $location.path();
       if (path.match(re)) {
         OnPagerLocationChange.onLocationChange(pager, qs, pager.context);
