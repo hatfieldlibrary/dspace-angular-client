@@ -152,11 +152,11 @@
 
 
       /**
-       * Sets the query offset, the selected item id, and item index position
+       * Sets the selected item id and item index position
        * as provided in the query string..
        * @param qs
        */
-      function initializePositions() {
+      function initializePositions(pager) {
 
         var qs = $location.search();
 
@@ -171,9 +171,11 @@
         }
 
         if (typeof qs.id !== 'undefined') {
-          AppContext.setSelectedItemId(qs.id);
+          pager.setSelectedItem(qs.id);
+          //AppContext.setSelectedItemId(qs.id);
         } else {
-          AppContext.setSelectedItemId(-1);
+          pager.setSelectedItem(-1);
+         // AppContext.setSelectedItemId(-1);
         }
 
         _setOpenItemPosition(qs);
@@ -183,8 +185,16 @@
 
       /**
        * Recalculates the offset if the item position
-       * provided in the query is less than the provided
-       * offset value.
+       * provided in the query (qs.pos) is less than the provided
+       * offset value (qs.offset) and the start index value is zero.
+       * The start index will be greater than zero if the page
+       * is *initialized* with qs.offset greater than zero. In that
+       * case, the item at qs.pos is within the current set and there's
+       * no need to update qs.offset.
+       *
+       * All of this matters for navigating modal dialogs using the
+       * browser's back history.
+       *
        * @param qs query string
        * @returns {number}
        */
@@ -195,11 +205,16 @@
         if (typeof qs.offset !== 'undefined') {
           offset = qs.offset;
         }
+
         if (typeof qs.pos !== 'undefined') {
-          if (qs.pos < qs.offset) {
-            offset = Math.floor(qs.pos / setSize) * setSize;
+          // context start index is zero.
+          if (AppContext.getViewStartIndex() === 0) {
+            if (qs.pos < qs.offset) {
+              offset = Math.floor(qs.pos / setSize) * setSize;
+            }
           }
         }
+
         return offset;
 
       }
@@ -417,7 +432,7 @@
                   pager.updateParent(data, direction);
                 }
 
-                initializePositions();
+                initializePositions(pager);
 
               },
               function (errResponse) {
@@ -464,7 +479,7 @@
 
                   pager.updateParentNewSet(FacetHandler.getAuthorListSlice(setSize));
 
-                  initializePositions();
+                  initializePositions(pager);
 
                 },
                 function (errResponse) {
@@ -513,7 +528,7 @@
 
                   pager.updateParentNewSet(FacetHandler.getSubjectListSlice(setSize));
 
-                  initializePositions();
+                  initializePositions(pager);
 
 
                 },

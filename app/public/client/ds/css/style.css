@@ -314,8 +314,14 @@ md-input-container.halfer {
   margin: 24px 0 -4px;
 }
 
+
+
 .file-name {
   line-height: 18px;
+}
+
+md-card.item {
+  background: #fff;
 }
 
 .file-info .md-button,

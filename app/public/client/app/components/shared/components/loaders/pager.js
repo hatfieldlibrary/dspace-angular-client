@@ -49,9 +49,9 @@
      * will show/hide the pager button based on return value.
      * @returns {boolean}
      */
-     pager.moreItems = function () {
-       return AppContext.getItemsCount() > AppContext.getNextPagerOffset();
-     };
+    pager.moreItems = function () {
+      return AppContext.getItemsCount() > AppContext.getNextPagerOffset();
+    };
 
     /**
      * Current start position for view.
@@ -105,7 +105,7 @@
       /**
        * For new sets, always update the start index.
        */
-    //  AppContext.setStartIndex(QueryManager.getOffset());
+      //  AppContext.setStartIndex(QueryManager.getOffset());
 
       if (data) {
 
@@ -131,7 +131,9 @@
 
       // only act on location changes for paging requests
       var re = /^\/ds\/handle|^\/ds\/discover|^\/ds\/advanced/;
-      var path =  $location.path();
+
+
+      var path = $location.path();
       if (path.match(re)) {
         OnPagerLocationChange.onLocationChange(pager, qs, pager.context);
       }
@@ -162,15 +164,18 @@
     /**
      * Initialize the result set.
      */
-    function _init() {
+    pager.$onInit = function () {
+
+      // Set the setSelectedItem method to use parent.
+      pager.setSelectedItem = pager.parent.setSelectedItem;
 
       AppContext.isFilter(false);
       var qs = $location.search();
       OnPagerInit.onInit(pager, qs);
 
-    }
 
-    _init();
+    };
+
 
   }
 
@@ -178,6 +183,9 @@
   dspaceComponents.component('pagerComponent', {
 
     templateUrl: '/ds/shared/templates/loaders/pager.html',
+    require: {
+      parent: '^itemListComponent'
+    },
     bindings: {
       onPagerUpdate: '&',
       onPrevUpdate: '&',

@@ -41,14 +41,16 @@
 
         AppContext.isNewSet(true);
 
-        PagerUtils.initialize(qs, pager.context);
+
 
         /**
          * Sets the open position or item id for the current state.
          */
-        PagerUtils.initializePositions();
+        PagerUtils.initializePositions(pager);
 
         AppContext.setPager(false);
+
+        PagerUtils.initialize(qs, pager.context);
 
         /**
          * Filtering on a (title, author, or subject)

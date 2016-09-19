@@ -12,7 +12,10 @@
 
     COMMUNITIES_META_DESCRIPTION: 'Willamette University Departments',
 
-    COMMUNITIES_LIST_INTRO: 'Willamette University departmental collections are listed below. Each department should have one or more collections.  Senior thesis and many other collections will be visible only after you log in with your Willamette University credentials.',
+    COMMUNITIES_LIST_INTRO: 'Willamette University departmental collections are listed below. Each department will have one or more collections.  Many collections will be visible only after you log in with your Willamette University credentials.',
+
+    // Relative path to the image used with collection list view.  Can be empty string.
+    COMMUNITIES_HEADER_IMAGE: '/ds/images/collections-list.png',
 
     VIEW_ALL_COMMUNITIES: 'View Departments',
 
@@ -103,7 +106,7 @@
 
     FILE_ACCESS_RESTRICTED_LABEL: 'File access requires login.',
 
-    PARENT_COLLECTION_LABEL: 'Parent Collection',
+    PARENT_COLLECTION_LABEL: 'Source',
 
     SORT_BY_FIELD_LABEL: 'Sort items by',
 

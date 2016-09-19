@@ -36,7 +36,7 @@
     <small-spinner ng-hide="$ctrl.ready"></small-spinner>
 
     <md-list ng-show="$ctrl.ready">
-
+                            HEY {{$ctrl.selectedItem}}
       <!-- item query results and search crawler paging -->
       <item-detail-component
         rel="nofollow"
@@ -50,8 +50,10 @@
         handle="{{col.handle}}"
         abstract="{{col.abstract}}"
         id="{{col.id}}"
+        selected-id="{{$ctrl.selectedItem}}"
         pos="{{$index}}"
         context="{{$ctrl.context}}"
+        selected-item="{{$ctrl.selectedItem}}"
       ng-class="{'set-divider': $ctrl.addBorder($index)}">
 
       </item-detail-component>

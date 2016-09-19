@@ -1,5 +1,5 @@
 <!-- Normal item -->
-<md-list-item ng-if="$ctrl.queryAction != 'browse'" flex ng-href="{{$ctrl.getItemUrl()}}" ng-click="$ctrl.reloadItem($event, $ctrl.id)">
+<md-list-item ng-if="$ctrl.queryAction != 'browse'" flex ng-href="{{$ctrl.getItemUrl()}}" ng-click="$ctrl.setEvent($event);$ctrl.reloadItem($event, $ctrl.id)">
   <div class="md-list-item-text" style="padding: 10px 5px">
     <div layout="column" flex="100" style="max-width: 100%;" class="md-list-item-text" layout-fill>
       <div class="md-subhead"><span class="list-highlight">

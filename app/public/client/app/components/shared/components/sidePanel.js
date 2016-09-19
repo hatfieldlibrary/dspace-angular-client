@@ -5,7 +5,6 @@
 'use strict';
 
 function SideNavCtrl($scope,
-                     $window,
                      $mdMedia,
                      $mdSidenav,
                      Messages,
@@ -21,9 +20,14 @@ function SideNavCtrl($scope,
   ctrl.allCommunitiesLink = Messages.VIEW_ALL_COMMUNITIES;
 
 
+  function _setSysAdminStatus(canAdmin) {
+    ctrl.isSystemAdmin = canAdmin;
+  }
+
+
   function init() {
 
-    Utils.setSysAdminStatus();
+    Utils.setSysAdminStatus(_setSysAdminStatus);
 
     ctrl.isSmallScreen = Utils.isSmallScreen();
 
@@ -32,8 +36,6 @@ function SideNavCtrl($scope,
     ctrl.canSubmit = false;
 
     ctrl.canAdminister = false;
-
-    ctrl.isSystemAdmin = false;
 
     ctrl.dspaceHost = AppContext.getDspaceHost();
 
@@ -77,16 +79,6 @@ function SideNavCtrl($scope,
     });
 
 
-  // using a watch for this, although the method could be moved
-  // into this controller and the watch avoided.
-  $scope.$watch(function() {return AppContext.getSystemAdminPermission();},
-    function(newValue) {
-
-      ctrl.isSystemAdmin = newValue;
-    }
-  );
-
-
   $scope.$watch(function () {
       return AppContext.getWritePermission();
     },
@@ -116,7 +108,6 @@ function SideNavCtrl($scope,
           ctrl.itemHandle = QueryManager.getHandle();
           ctrl.itemId = QueryManager.getAssetId();
           ctrl.canSubmit = AppContext.getSubmitPermission();
-          ctrl.isSystemAdmin = false; // not needed
           ctrl.canAdminister = AppContext.getAdministerPermission();
           ctrl.showSubmitInstuctions = ctrl.canSubmit;
 
@@ -126,12 +117,12 @@ function SideNavCtrl($scope,
           ctrl.service = 'community';
           ctrl.itemId = QueryManager.getAssetId();
           ctrl.canSubmit = false;
-          ctrl.isSystemAdmin = false; // not needed
           ctrl.canAdminister = AppContext.getAdministerPermission();
           ctrl.showSubmitInstuctions = false;
 
         }
         else if (newValue === AssetTypes.ITEM) {
+
           ctrl.canAdminister = AppContext.getAdministerPermission();
           ctrl.canWrite = AppContext.getWritePermission();
 
@@ -139,7 +130,7 @@ function SideNavCtrl($scope,
           ctrl.actionType = 'DSpace';
           ctrl.canAdminister = false; // not needed
           ctrl.canWrite = false; // not needed
-          ctrl.isSystemAdmin = AppContext.getSystemAdminPermission();
+
 
         }
       }
@@ -159,7 +150,6 @@ function SideNavCtrl($scope,
         if (newValue === QueryTypes.DISCOVER) {
           ctrl.canAdminister = false; // not needed
           ctrl.canWrite = false; // not needed
-          ctrl.isSystemAdmin = AppContext.getSystemAdminPermission();
         }
       }
 
@@ -167,7 +157,6 @@ function SideNavCtrl($scope,
 
   ctrl.greaterThanMd = function () {
     return $mdMedia('gt-md');
-    //return $window.innerWidth >= 1200;
   };
 
   ctrl.close = function () {

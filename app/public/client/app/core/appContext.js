@@ -34,6 +34,8 @@
 
         defaultItemsSort: QuerySort.DESCENDING,
 
+        communitiesList: {},
+
         isFilter: false,
 
         initOffset: 0,
@@ -120,9 +122,6 @@
 
         /** Permission to administer current object. */
         canAdminister: false,
-
-        /** Permission to administer DSpace */
-        canSysAdmin: false,
 
         /** Permission to write */
         canWrite: false
@@ -400,6 +399,14 @@
         return _context.initOffset;
       }
 
+      function setCommunitiesList(list) {
+        _context.communitiesList = list;
+      }
+
+      function getCommunitiesList() {
+        return _context.communitiesList;
+      }
+
 
       return {
 
@@ -409,8 +416,6 @@
         getDspaceRoot: getDspaceRoot,
         getHandlePrefix: getHandlePrefix,
         useRedirect: useRedirect,
-        setSystemAdminPermission: setSystemAdminPermission,
-        getSystemAdminPermission: getSystemAdminPermission,
         setAdministerPermission: setAdministerPermission,
         getAdministerPermission: getAdministerPermission,
         setWritePermission: setWritePermission,
@@ -466,7 +471,9 @@
         getDefaultItemListField: getDefaultItemListField,
         getDefaultSortOrder: getDefaultSortOrder,
         setInitOffset: setInitOffset,
-        getInitOffset: getInitOffset
+        getInitOffset: getInitOffset,
+        setCommunitiesList: setCommunitiesList,
+        getCommunitiesList: getCommunitiesList
 
       };
 

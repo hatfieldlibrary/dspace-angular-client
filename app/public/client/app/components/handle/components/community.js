@@ -11,6 +11,7 @@
    */
 
   function CommunityCtrl($mdMedia,
+                         $anchorScroll,
                          Messages,
                          Utils,
                          AppContext,
@@ -96,6 +97,8 @@
     }
 
     function init() {
+
+      $anchorScroll();
 
       PageTitle.setTitle(ctrl.data.name);
       PageDescription.setDescription(ctrl.data.introductoryText);

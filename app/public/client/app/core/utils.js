@@ -32,6 +32,7 @@
               Messages,
               CheckSession,
               CheckSysAdmin,
+
               QueryActions,
               QueryFields,
               AssetTypes,
@@ -42,22 +43,30 @@
 
       var setSize = AppContext.getSetSize();
 
+      var sysAdminStatus;
+
 
       /**
        * Check system administrator status.
        */
-      utils.setSysAdminStatus = function() {
+      utils.setSysAdminStatus = function(callback) {
 
-        var admin = CheckSysAdmin.query();
-        admin.$promise.then(function (data) {
+        if (typeof sysAdminStatus === 'undefined') {
 
-          // only community list gets the dspace admin option...
-          if (QueryManager.getAssetType() === AssetTypes.COMMUNITY_LIST) {
-            AppContext.setSystemAdminPermission(data.isSysAdmin);
-          }
+          var admin = CheckSysAdmin.query();
+          admin.$promise.then(function (data) {
 
-        });
+            sysAdminStatus = data.isSysAdmin;
+            callback(data.isSysAdmin);
+
+          });
+        } else {
+          console.log(sysAdminStatus)
+          return callback(sysAdminStatus);
+
+        }
       };
+
 
       /**
        * Returns a truncated copy of the type.

@@ -26,6 +26,8 @@
 
     ctrl.resultMessage = '';
 
+    ctrl.selectedItem = -1;
+
     function _format(str, arr) {
       return str.replace(/{(\d+)}/g, function (match, number) {
         return typeof arr[number] !== 'undefined' ? arr[number] : match;
@@ -100,8 +102,9 @@
      * @param index
      */
     ctrl.setSelected = function (index) {
+
       ctrl.selectedIndex = index;
-      AppContext.setSelectedPositionIndex(index);
+      // AppContext.setSelectedPositionIndex(index);
 
     };
 
@@ -188,8 +191,16 @@
 
     };
 
+    /**
+     * Updates the currently selected item id.
+     * @param id
+     */
+    ctrl.setSelectedItem = function (id) {
+      ctrl.selectedItem = id;
 
-    function init() {
+    };
+
+    ctrl.$onInit = function () {
 
       ctrl.ready = true;
 
@@ -239,9 +250,7 @@
       }
 
 
-    }
-
-    init();
+    };
 
   }
 

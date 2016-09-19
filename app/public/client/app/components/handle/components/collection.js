@@ -9,7 +9,7 @@
   /**
    * Component controller.
    */
-  function CollectionCtrl($window,
+  function CollectionCtrl($anchorScroll,
                           $mdMedia,
                           $location,
                           QueryManager,
@@ -97,6 +97,8 @@
       QueryManager.setAction(QueryActions.LIST);
 
       setFormFactor();
+
+      $anchorScroll();
 
     }
 

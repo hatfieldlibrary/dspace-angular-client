@@ -36,6 +36,8 @@
 
     ctrl.fileAccessLabel = Messages.FILE_ACCESS_RESTRICTED_LABEL;
 
+    ctrl.parentCollectionLabel = Messages.PARENT_COLLECTION_LABEL;
+
     ctrl.dspaceHost = AppContext.getDspaceHost();
 
     ctrl.dspaceRoot = AppContext.getDspaceRoot();

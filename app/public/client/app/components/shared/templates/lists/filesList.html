@@ -6,17 +6,17 @@
       <md-icon md-font-library="material-icons">file_download</md-icon>
       {{$ctrl.downloadLabel}}
     </md-button>
-    <div style="padding-left: 30px;max-width: 130px;">
+    <div style="padding-left: 34px;max-width: 130px;">
       <div class="md-subhead file-name" aria-label="{{stream.description}}">{{stream.description}}
       </div>
-      <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis;margin-top: 3px;"
+      <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis;margin-top: 8px;"
            aria-label="{{stream.name}}">{{stream.name}}
       </div>
-      <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis"
+      <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis; margin-top: 4px;"
            aria-label="{{stream.mimeType}}">
         {{stream.mimeType}}
       </div>
-      <div class="md-caption" aria-label="{{stream.sizeBytes}}">{{stream.sizeBytes}} bytes</div>
+      <div class="md-caption" style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis;margin-top: 4px;" aria-label="{{stream.sizeBytes}}">{{stream.sizeBytes}} bytes</div>
     </div>
   </div>
 </div>

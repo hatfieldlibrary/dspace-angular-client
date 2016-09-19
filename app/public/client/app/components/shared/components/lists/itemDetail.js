@@ -27,6 +27,8 @@
 
     ctrl.queryAction = QueryManager.getAction();
 
+    var event;
+
     /**
      * Sets fullscreen view via media query.
      */
@@ -44,17 +46,26 @@
      * bookmarking and seo for items using the default item
      * dialog component.
      */
-    $scope.$watch(function () {
-      return AppContext.getSelectedItemId();
-    }, function (newValue) {
+    // $scope.$watch(function () {
+    //   return AppContext.getSelectedItemId();
+    // }, function (newValue) {
+    //
+    //   if (newValue === ctrl.id) {
+    //
+    //     ItemDialogFactory.showItem(null, ctrl.id, $scope.customFullscreen);
+    //
+    //   }
+    //
+    // });
 
-      if (newValue === ctrl.id) {
 
-        ItemDialogFactory.showItem(null, ctrl.id, $scope.customFullscreen);
-
-      }
-
-    });
+    /**
+     * Sets the current event object.
+     * @param ev
+     */
+    ctrl.setEvent = function(ev) {
+      event = ev;
+    };
 
     /**
      * Click handler for item dialog.  This opens the dialog if
@@ -63,21 +74,25 @@
      * @param id
      */
     ctrl.reloadItem = function(ev, id) {
+
       /**
        * If the position has not changed, we need to show
-       * the dialog for the user.  New positions are handled
+       * the dialog for the user.  New  are handled
        * by the $locationChangeSuccess function in pager.
        */
-      if (AppContext.getSelectedItemId() === ctrl.id) {
-
-        ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
+      if (ctrl.context !== 'seo') {
+        if (ctrl.selectedItem === ctrl.id) {
+          ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
+        }
       }
 
     };
 
+    //browse
     ctrl.showItem = function (ev, id) {
-
-      ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
+      if (ctrl.selectedItem === ctrl.id) {
+        ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
+      }
 
     };
 
@@ -118,6 +133,14 @@
 
     };
 
+    ctrl.$onChanges = function(changes) {
+      if (changes.selectedItem) {
+        if (changes.selectedItem.currentValue === ctrl.id) {
+          ItemDialogFactory.showItem(event, ctrl.id, $scope.customFullscreen);
+        }
+      }
+    };
+
 
   }
 
@@ -134,7 +157,8 @@
       type: '@',
       last: '<',
       abstract: '@',
-      context: '@'
+      context: '@',
+      selectedItem: '@'
 
     },
     controller: ItemDetailController,

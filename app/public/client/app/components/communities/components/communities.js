@@ -8,7 +8,8 @@
 (function () {
 
 
-  function CommunitiesCtrl(GetCommunities,
+  function CommunitiesCtrl(AppContext,
+                           GetCommunities,
                            QueryManager,
                            AssetTypes,
                            Messages,
@@ -21,7 +22,9 @@
 
     ctrl.intro = Messages.COMMUNITIES_LIST_INTRO;
 
-    ctrl.heading = Messages.COMMUNITIES_LIST_HEADING;
+    ctrl.headerImage = Messages.COMMUNITIES_HEADER_IMAGE;
+
+    ctrl.showHeaderImage = false;
 
     /**
      * Indicates when data has been returned.
@@ -37,6 +40,11 @@
 
     function _init() {
 
+      // set header image.
+      if (ctrl.headerImage.length > 0) {
+        ctrl.showHeaderImage = true;
+      }
+
       SeoPaging.setNextLink('nofollow','');
       SeoPaging.setPrevLink('nofollow','');
 
@@ -46,14 +54,26 @@
 
       QueryManager.setAssetType(AssetTypes.COMMUNITY_LIST);
 
-      var fetch = GetCommunities.query();
+      // we cache the communities object.
+      if (Object.keys(AppContext.getCommunitiesList()).length !== 0) {
 
-      fetch.$promise.then(function (data) {
         ctrl.ready = true;
-        ctrl.communities = data;
-      }, function (err) {
-        console.log('Error status: ' + err.status + ' - ' + err.statusText);
-      });
+        ctrl.communities = AppContext.getCommunitiesList()
+
+      } else {
+
+        var fetch = GetCommunities.query();
+        fetch.$promise.then(function (data) {
+
+          ctrl.ready = true;
+          ctrl.communities = data;
+          AppContext.setCommunitiesList(data);
+
+        }, function (err) {
+          console.log('Error status: ' + err.status + ' - ' + err.statusText);
+        });
+
+      }
 
     }
 

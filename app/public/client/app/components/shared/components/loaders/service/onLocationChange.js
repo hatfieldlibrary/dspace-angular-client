@@ -64,7 +64,8 @@
             AppContext.setViewStartIndex(0);
             AppContext.setOpenItem(-1);
             AppContext.setSelectedPositionIndex(-1);
-            AppContext.setSelectedItemId(-1);
+            pager.setSelected(-1);
+           // AppContext.setSelectedItemId(-1);
 
             //Item dialog might be open.  Close it.
             $mdDialog.cancel();
@@ -135,10 +136,10 @@
               PagerUtils.updateList(pager, qs.sort, qs.d);
 
             }
-            // Otherwise just update positions.
+            // Otherwise just update positions. This will open items.
             else {
 
-              PagerUtils.initializePositions(qs);
+              PagerUtils.initializePositions(pager);
 
             }
 
@@ -177,7 +178,7 @@
 
             }
             else {
-              PagerUtils.initializePositions(qs);
+              PagerUtils.initializePositions(pager);
             }
           }
 

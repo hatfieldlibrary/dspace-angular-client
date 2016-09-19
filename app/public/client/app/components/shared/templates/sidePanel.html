@@ -51,14 +51,15 @@
 
       <md-list-item class="icon-list" ng-show="$ctrl.canAdminister"  target="_top"
                     href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/{{$ctrl.service}}?{{$ctrl.service}}ID={{$ctrl.itemId}}">
-        <md-icon> group </md-icon>
+        <md-icon ng-if="$ctrl.actionType=='Community'"> group </md-icon>
+        <md-icon ng-if="$ctrl.actionType=='Collection'"> library_books </md-icon>
         <p class="md-body-1">Administer {{$ctrl.actionType}} </p>
       </md-list-item>
 
       <md-list-item class="icon-list" ng-show="$ctrl.isSystemAdmin"
                     href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/panel"
                     target="_blank">
-        <md-icon md-font-set="material-icons"> group </md-icon>
+        <md-icon md-font-set="material-icons"> desktop_windows </md-icon>
         <p class="md-body-1">Administer DSpace </p>
       </md-list-item>
 

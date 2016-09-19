@@ -8,7 +8,8 @@
 (function () {
 
 
-  function ItemCtrl(GetCollectionInfo,
+  function ItemCtrl($window,
+                    GetCollectionInfo,
                     Utils,
                     Messages,
                     AppContext,
@@ -35,6 +36,8 @@
 
     ctrl.fileAccessLabel = Messages.FILE_ACCESS_RESTRICTED_LABEL;
 
+    ctrl.parentCollectionLabel = Messages.PARENT_COLLECTION_LABEL;
+
     ctrl.dspaceHost = AppContext.getDspaceHost();
 
     ctrl.dspaceRoot = AppContext.getDspaceRoot();
@@ -45,6 +48,14 @@
       ctrl.showMetadata = !ctrl.showMetadata;
 
     };
+
+    ctrl.openCollection = function () {
+
+      var collection = '/ds/handle/' + ctrl.data.parentCollection.handle;
+      $window.location.href = collection;
+
+    };
+
     /**
      * Get information about the item.
      */
