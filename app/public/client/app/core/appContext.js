@@ -63,9 +63,6 @@
 
         startIndex: 0,
 
-        selectedItemId: -1,
-
-        openItem: -1,
 
         /**
          * These values are set by the sort options component, which is shared by collection
@@ -75,12 +72,8 @@
          * tracked here.  Default to ascending.
          */
         authorOrder: QuerySort.ASCENDING,
-        //
+
         subjectOrder: QuerySort.ASCENDING,
-
-        nextPagerOffset: 0,
-
-        previousPagerOffset: 0,
 
         newSet: true,
 
@@ -156,13 +149,6 @@
         return AppConfig.USE_REDIRECT;
       }
 
-      function setSystemAdminPermission(permission) {
-        _context.canSysAdmin = permission;
-      }
-
-      function getSystemAdminPermission() {
-        return _context.canSysAdmin;
-      }
 
       function setWritePermission(permission) {
         _context.canWrite = permission;
@@ -195,14 +181,6 @@
       function reverseSubjectList() {
         reverseArray(_context.subjectArray);
 
-      }
-
-      function setSelectedPositionIndex(index) {
-        _context.currentListIndex = +index;
-      }
-
-      function getSelectedPositionIndex() {
-        return _context.currentListIndex;
       }
 
       function setAuthorsList(list) {
@@ -351,38 +329,6 @@
         return !isAuthorListRequest() && !isSubjectListRequest();
       }
 
-      function setOpenItem(itemPosition) {
-        _context.openItem = +itemPosition;
-      }
-
-      function getOpenItem() {
-        return _context.openItem;
-      }
-
-      function setSelectedItemId(itemId) {
-        _context.selectedItemId = itemId;
-      }
-
-      function getSelectedItemId() {
-        return _context.selectedItemId;
-      }
-
-      function setNextPagerOffset(offset) {
-        _context.nextPagerOffset = offset;
-      }
-
-      function getNextPagerOffset() {
-        return _context.nextPagerOffset;
-      }
-
-      function setPreviousPagerOffset(offset) {
-        _context.previousPagerOffset = offset;
-      }
-
-      function getPreviousPagerOffset() {
-        return _context.previousPagerOffset;
-      }
-
       function getDefaultItemListField() {
         return _context.defaultItemsField;
       }
@@ -424,8 +370,6 @@
         getSubmitPermission: getSubmitPermission,
         reverseAuthorList: reverseAuthorList,
         reverseSubjectList: reverseSubjectList,
-        setSelectedPositionIndex: setSelectedPositionIndex,
-        getSelectedPositionIndex: getSelectedPositionIndex,
         setAuthorsList: setAuthorsList,
         setSubjectList: setSubjectList,
         getAuthors: getAuthors,
@@ -460,14 +404,6 @@
         isNewSet: isNewSet,
         setViewStartIndex: setViewStartIndex,
         getViewStartIndex: getViewStartIndex,
-        setOpenItem: setOpenItem,
-        getOpenItem: getOpenItem,
-        setSelectedItemId: setSelectedItemId,
-        getSelectedItemId: getSelectedItemId,
-        setNextPagerOffset: setNextPagerOffset,
-        getNextPagerOffset: getNextPagerOffset,
-        setPreviousPagerOffset: setPreviousPagerOffset,
-        getPrevousPagerOffset: getPreviousPagerOffset,
         getDefaultItemListField: getDefaultItemListField,
         getDefaultSortOrder: getDefaultSortOrder,
         setInitOffset: setInitOffset,

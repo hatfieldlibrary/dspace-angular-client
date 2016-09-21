@@ -61,7 +61,6 @@
 
           });
         } else {
-          console.log(sysAdminStatus)
           return callback(sysAdminStatus);
 
         }

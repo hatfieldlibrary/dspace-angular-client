@@ -7,7 +7,7 @@
 (function () {
 
   /**
-   * Controller for sort options.
+   * Controller sort options.
    * @param $scope
    * @param $location
    * @param $timeout
@@ -20,6 +20,8 @@
    * @param QuerySort
    * @param QueryTypes
    * @param AppContext
+   * @param QueryActions
+   * @param SolrDataLoader
    * @param QueryManager
    * @constructor
    */
@@ -35,7 +37,6 @@
                            QuerySort,
                            QueryTypes,
                            AppContext,
-                           PagerUtils,
                            QueryActions,
                            SolrDataLoader,
                            QueryManager) {
@@ -45,6 +46,14 @@
     var defaultField;
 
     var defaultOrder;
+
+    var setSize = AppContext.getSetSize();
+    /**
+     * private vars for parent component functions.
+     */
+    var _setNextPagerOffset,
+      _setSelectedItem,
+      _setSelectedPosition;
 
     ctrl.fieldLabel = Messages.SORT_BY_FIELD_LABEL;
 
@@ -87,108 +96,17 @@
     }
 
     /**
-     * Watch for changes to query type triggered by a
-     * query string update.
-     */
-    $scope.$watch(function () {
-        return QueryManager.getQueryType();
-      },
-      function (newValue, oldValue) {
-        if (newValue !== oldValue) {
-          ctrl.selectedField = newValue;
-          // Since we are not CURRENTLY tracking filter
-          // terms in history, reset the bound values
-          // to empty string.
-          ctrl.filterTerms = '';
-        }
-      });
-
-    /**
-     * Watch for changes to sort order triggered by a
-     * query string update.
-     */
-    $scope.$watch(function () {
-        return QueryManager.getSort();
-      },
-      function (newValue, oldValue) {
-        if (newValue !== oldValue) {
-          ctrl.selectedOrder = newValue;
-          ctrl.filterTerms = '';
-        }
-      });
-
-    function init() {
-
-      /**
-       * Label/Value map for query fields (title, author, subject, date)
-       * @type {*[]}
-       */
-      if (ctrl.context === QueryActions.LIST ) {
-
-        ctrl.fields = CollectionQueryFieldMap.fields;
-
-        /**
-         * The selected field is initialized to title.
-         * @type {string}
-         */
-        ctrl.selectedField = QueryManager.getQueryType();
-
-        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
-
-      }
-      else if (ctrl.context === QueryActions.BROWSE) {
-        ctrl.fields = BrowseQueryFieldMap.fields;
-        /**
-         * The selected field is initialized to title.
-         * @type {string}
-         */
-        ctrl.selectedField = BrowseQueryFieldMap.fields[0].value;
-
-        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
-
-      }
-
-      /**
-       * The search object will be empty on initial load.
-       */
-      if (Object.keys($location.search()).length === 0) {
-        /**
-         * The default placeholder message for the filter query.
-         * @type {string}
-         */
-        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
-      }
-
-      /**
-       * Author and subject facets execute a new search
-       */
-      if (ctrl.selectedField === QueryTypes.SUBJECT_FACETS ||
-        ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
-        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
-      }
-
-
-
-    }
-
-
-
-    init();
-
-
-    /**
      * Executes filter query.
      */
     var doJump = function (filterType) {
 
-      AppContext.setOpenItem(-1);
       /**
        * Set application context to expect a new set.
        */
       AppContext.isNewSet(true);
 
-      AppContext.setOpenItem(-1);
-      AppContext.setSelectedItemId(-1);
+
+      _setSelectedItem(-1);
 
       var qs = $location.search();
 
@@ -202,6 +120,7 @@
       $location.search(qs);
 
     };
+
     /**
      * Executes query to retrieve a fresh result set.
      */
@@ -279,7 +198,7 @@
       /**
        * Reset the selected item.
        */
-      AppContext.setSelectedPositionIndex(-1);
+      _setSelectedPosition(-1);
 
       $location.search({
         'field': ctrl.selectedField,
@@ -303,7 +222,7 @@
       /**
        * Reset the selected item.
        */
-      AppContext.setSelectedPositionIndex(-1);
+      _setSelectedPosition(-1);
 
       /**
        * Set the filter query type.
@@ -328,10 +247,11 @@
            * and return the values to update the view
            */
           else {
+
             AppContext.setViewStartIndex(0);
-            // AppContext.setNextPagerOffset(+offset + setSize);
-            PagerUtils.updatePagerOffsets('next',0);
+            _setNextPagerOffset(setSize);
             QueryManager.setOffset(0);
+
             doSearch();
           }
         }
@@ -382,13 +302,11 @@
 
       AppContext.isNewSet(true);
 
-      AppContext.setOpenItem(-1);
-
 
       /**
        * Reset the selected item.
        */
-      AppContext.setSelectedPositionIndex(-1);
+     _setSelectedPosition(-1);
       /**
        * Reset the filter.
        * @type {string}
@@ -399,7 +317,7 @@
        */
       QueryManager.setQueryType(ctrl.selectedField);
 
-      AppContext.setPreviousPagerOffset(-1);
+     // AppContext.setPreviousPagerOffset(-1);
 
       AppContext.setViewStartIndex(0);
 
@@ -437,13 +355,95 @@
 
     };
 
+    ctrl.$onChanges = function(changes) {
+
+      if (changes.queryType) {
+        if (changes.queryType.currentValue !== ctrl.selectedField) {
+             ctrl.selectedField = changes.queryType.currentValue;
+        }
+      }
+
+      if (changes.sortOrder) {
+        if (changes.sortOrder.currentValue !== ctrl.selectedOrder) {
+          ctrl.selectedOrder = changes.sortOrder.currentValue;
+        }
+      }
+
+    };
+
+
+    ctrl.$onInit = function() {
+
+      _setNextPagerOffset = ctrl.parent.setNextPagerOffset;
+      _setSelectedItem = ctrl.parent.setSelectedItem;
+      _setSelectedPosition = ctrl.parent.setSelectedPosition;
+
+
+      /**
+       * Label/Value map for query fields (title, author, subject, date)
+       * @type {*[]}
+       */
+      if (ctrl.context === QueryActions.LIST ) {
+
+        ctrl.fields = CollectionQueryFieldMap.fields;
+
+        /**
+         * The selected field is initialized to title.
+         * @type {string}
+         */
+        ctrl.selectedField = QueryManager.getQueryType();
+
+        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
+
+      }
+      else if (ctrl.context === QueryActions.BROWSE) {
+        ctrl.fields = BrowseQueryFieldMap.fields;
+        /**
+         * The selected field is initialized to title.
+         * @type {string}
+         */
+        ctrl.selectedField = BrowseQueryFieldMap.fields[0].value;
+
+        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
+
+      }
+
+      /**
+       * The search object will be empty on initial load.
+       */
+      if (Object.keys($location.search()).length === 0) {
+        /**
+         * The default placeholder message for the filter query.
+         * @type {string}
+         */
+        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
+      }
+
+      /**
+       * Author and subject facets execute a new search
+       */
+      if (ctrl.selectedField === QueryTypes.SUBJECT_FACETS ||
+        ctrl.selectedField === QueryTypes.AUTHOR_FACETS) {
+        ctrl.placeholder = Utils.placeholderMessage(ctrl.selectedField);
+      }
+
+
+    };
+
+
+
   }
 
   dspaceComponents.component('sortOptionsComponent', {
 
+    require: {
+      parent: '^itemListComponent'
+    },
     bindings: {
       resetListView: '&',
-      context: '@'
+      context: '@',
+      queryType: '@',
+      sortOrder: '@'
     },
     templateUrl: '/ds/shared/templates/loaders/sortOptions.html',
     controller: SortOptionsCtrl

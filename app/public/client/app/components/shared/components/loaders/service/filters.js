@@ -11,14 +11,15 @@
 
 (function () {
 
-  dspaceServices.factory('PagerFilters', [
+  dspaceServices.factory('CollectionFilters', [
+
     '$location',
     'QueryManager',
     'QueryActions',
     'QuerySort',
     'QueryTypes',
     'AppContext',
-    'PagerUtils',
+    'LoaderUtils',
     'SolrDataLoader',
     'FacetHandler',
 
@@ -28,14 +29,15 @@
               QuerySort,
               QueryTypes,
               AppContext,
-              PagerUtils,
+              LoaderUtils,
               SolrDataLoader,
               FacetHandler) {
 
 
       var setSize = AppContext.getSetSize();
 
-      function itemFilter(pager, offset) {
+
+      function itemFilter(loader, offset) {
 
         AppContext.isFilter(true);
         var items;
@@ -46,7 +48,7 @@
           items.$promise.then(function (data) {
            // AppContext.setNextPagerOffset(data.offset);
             AppContext.setViewStartIndex(data.offset);
-            PagerUtils.addResult(pager, 'next', data);
+            LoaderUtils.addResult(loader, 'next', data);
           });
         }
 
@@ -59,17 +61,22 @@
             // We need to update the query object!
             var qs = $location.search();
             qs.offset = data.offset;
-            PagerUtils.addResult(pager, 'next', data);
+            LoaderUtils.addResult(loader, 'next', data);
 
           });
         }
       }
 
       /**
-       * Fetches the authors array.
+       * Fetches the authors array
+       * @param loader
        * @param terms
+       * @param sort
+       * @param direction
+       * @param initOffset
+       * @private
        */
-      function _fetchAuthors(pager, terms, sort, direction, initOffset) {
+      function _fetchAuthors(loader, terms, sort, direction, initOffset) {
         // Fetch authors.
         var result = SolrDataLoader.invokeQuery();
         result.$promise.then(function (data) {
@@ -81,7 +88,7 @@
 
           // Call the filter method.
 
-          authorFilter(pager, terms, sort, direction, initOffset);
+          authorFilter(loader, terms, sort, direction, initOffset);
         });
       }
 
@@ -99,11 +106,14 @@
 
 
       /**
-       * Authors filter.
+       * Gets the requested slice of the authors facet array.
+       * @param loader
        * @param terms
+       * @param sort
+       * @param direction
+       * @param initOffset
        */
-
-      function authorFilter(pager, terms, sort, direction, initOffset) {
+      function authorFilter(loader, terms, sort, direction, initOffset) {
 
         AppContext.isFilter(true);
         // Author array exists. We can run filter.
@@ -114,36 +124,42 @@
           // Get the offset.
           var offset = _findOffset(initOffset, terms, 'author');
 
+
           QueryManager.setOffset(offset);
           AppContext.setViewStartIndex(offset);
-          //AppContext.setNextPagerOffset(+offset + setSize);
-          PagerUtils.updatePagerOffsets(direction, parseInt(offset));
+
+          LoaderUtils.updatePagerOffsets(loader, direction, offset);
 
           if (AppContext.isNewSet()) {
             // Set the context start index to the matching offset.
            // AppContext.setStartIndex(offset);
 
-            pager.updateParentNewSet(FacetHandler.getAuthorListSlice(setSize));
+            loader.updateParentNewSet(FacetHandler.getAuthorListSlice(setSize));
 
           } else {
-            pager.updateParent(FacetHandler.getAuthorListSlice(setSize), direction);
+            loader.updateParent(FacetHandler.getAuthorListSlice(setSize), direction);
           }
 
         }
         else {
           // No author array is available.
           // Fetch it.
-          _fetchAuthors(pager, terms, sort, direction, initOffset);
+          _fetchAuthors(loader, terms, sort, direction, initOffset);
         }
 
       }
 
 
       /**
-       * Fetches the subjects array.
+       * Fetches subjects facets array.
+       * @param loader
        * @param terms
+       * @param sort
+       * @param direction
+       * @param initOffset
+       * @private
        */
-      function _fetchSubjects(pager, terms, sort, direction, initOffset) {
+      function _fetchSubjects(loader, terms, sort, direction, initOffset) {
         // Fetch subjects.
         var result = SolrDataLoader.invokeQuery();
         result.$promise.then(function (data) {
@@ -151,12 +167,20 @@
           AppContext.setSubjectList(data.facets);
          // AppContext.setNextPagerOffset(data.offset);
           // Call the filter method.
-          subjectFilter(pager, terms, sort, direction, initOffset);
+          subjectFilter(loader, terms, sort, direction, initOffset);
         });
       }
 
 
-      function subjectFilter(pager, terms, sort, direction, initOffset) {
+      /**
+       * Gets the requested slice of the subject facets array.
+       * @param loader
+       * @param terms
+       * @param sort
+       * @param direction
+       * @param initOffset
+       */
+      function subjectFilter(loader, terms, sort, direction, initOffset) {
 
         AppContext.isFilter(true);
 
@@ -172,17 +196,17 @@
           QueryManager.setOffset(offset);
 
           AppContext.setViewStartIndex(offset);
-         // AppContext.setNextPagerOffset(+offset + setSize);
-          PagerUtils.updatePagerOffsets(direction, parseInt(offset));
+
+          LoaderUtils.updatePagerOffsets(loader, direction, offset);
 
           if (AppContext.isNewSet()) {
             // Set the context start index to the matching offset.
             AppContext.setViewStartIndex(offset);
-            pager.updateParentNewSet(FacetHandler.getSubjectListSlice(setSize));
+            loader.updateParentNewSet(FacetHandler.getSubjectListSlice(setSize));
 
           } else {
 
-            pager.updateParent(FacetHandler.getSubjectListSlice(setSize), direction);
+            loader.updateParent(FacetHandler.getSubjectListSlice(setSize), direction);
 
           }
 
@@ -191,7 +215,7 @@
         }
         else {
 
-          _fetchSubjects(pager, terms, sort, direction, initOffset);
+          _fetchSubjects(loader, terms, sort, direction, initOffset);
         }
       }
 

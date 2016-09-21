@@ -58,7 +58,7 @@
       if (Object.keys(AppContext.getCommunitiesList()).length !== 0) {
 
         ctrl.ready = true;
-        ctrl.communities = AppContext.getCommunitiesList()
+        ctrl.communities = AppContext.getCommunitiesList();
 
       } else {
 

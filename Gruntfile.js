@@ -73,10 +73,10 @@ module.exports = function (grunt) {
       }
     },
     watch: {
-      babel: {
-        files: ['<%= client %>/**/!(*.spec|*.mock|*.html).js'],
-        tasks: ['newer:babel:client']
-      },
+      // babel: {
+      //   files: ['<%= client %>/**/!(*.spec|*.mock|*.html).js'],
+      //   tasks: ['newer:babel:client']
+      // },
       // injectJS: {
       //   files: [
       //     '<%= client %>/**/!(*.spec|*.mock).js',

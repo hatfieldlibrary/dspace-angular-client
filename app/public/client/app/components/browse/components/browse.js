@@ -26,7 +26,7 @@
     ctrl.rows = $routeParams.rows;
     ctrl.action = QueryActions.BROWSE;
     ctrl.offset = $routeParams.offset;
-    ctrl.context = QueryActions.SEARCH;
+    ctrl.context = QueryActions.BROWSE;
 
 
     function init() {

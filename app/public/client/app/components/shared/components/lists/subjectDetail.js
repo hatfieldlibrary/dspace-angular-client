@@ -57,19 +57,18 @@
      * The selected index. This will be set by the $watch.
      * @type {number}
      */
-    ctrl.selectedIndex = -1;
+    ctrl.selectedPosition = -1;
 
-    ctrl.xsSelectedIndex = -1;
+    ctrl.xsSelectedPosition = -1;
 
     ctrl.sort = QueryManager.getSort();
 
-
     /**
-     * Sets the current index as the selected index
+     * Wrapper function. Sets the current index as the selected index
      * on the parent component, using the provided callback.
      */
-    ctrl.setSelectedIndex = function () {
-      ctrl.setSelected({pos: ctrl.pos});
+    ctrl.setSelectedPosition = function () {
+      ctrl.setSelectedPos({pos: ctrl.pos});
 
     };
 
@@ -129,31 +128,27 @@
     };
 
 
-    /**
-     * Sets a $watch on the context's currentListIndex.
-     */
-    $scope.$watch(
-      function () {
-        return AppContext.getSelectedPositionIndex();
-      },
-      function (newValue) {
-        if (newValue === parseInt(ctrl.pos)) {
+    ctrl.$onChanges = function (changes) {
+
+      if (changes.selectedPosition) {
+        if (changes.selectedPosition.currentValue === ctrl.pos) {
 
           getResults();
 
           if (($mdMedia('sm') || $mdMedia('xs'))) {
-            ctrl.xsSelectedIndex = newValue;
+            ctrl.xsSelectedPosition = changes.selectedPosition.currentValue;
 
           } else {
-            ctrl.selectedIndex = newValue;
+            ctrl.selectedPosition = changes.selectedPosition.currentValue;
 
           }
 
         } else {
-          ctrl.selectedIndex = -1;
+          ctrl.selectedPosition = -1;
         }
+
       }
-    );
+    };
 
   }
 
@@ -169,7 +164,8 @@
       field: '@',
       pos: '@',
       last: '<',
-      setSelected: '&'
+      selectedPosition: '@',
+      setSelectedPos: '&'
 
     },
 

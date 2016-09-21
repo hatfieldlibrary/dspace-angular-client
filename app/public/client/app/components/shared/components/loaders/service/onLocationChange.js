@@ -18,9 +18,9 @@
     'QueryTypes',
     'AppContext',
     'Utils',
-    'PagerFilters',
+    'CollectionFilters',
     'SolrDataLoader',
-    'PagerUtils',
+    'LoaderUtils',
     'FacetHandler',
 
     function ($mdDialog,
@@ -30,20 +30,20 @@
               QueryTypes,
               AppContext,
               Utils,
-              PagerFilters,
+              CollectionFilters,
               SolrDataLoader,
-              PagerUtils,
+              LoaderUtils,
               FacetHandler) {
 
 
       /**
        * The location change method is used by the collection view's loader component
        * to handle query string changes.
-       * @param pager - reference to the pager controller.
+       * @param loader - reference to the loader component.
        * @param qs - the current query string.
        * @private
        */
-      function onLocationChange(pager, qs) {
+      function onLocationChange(loader, qs) {
 
         // Query string is empty.
         if (Object.keys(qs).length === 0) {
@@ -53,29 +53,30 @@
           // set default offset
           qs.offset = 0;
 
-          PagerUtils.initialize(qs, pager.context);
+          LoaderUtils.initialize(qs, loader.context);
 
           // Ignore browse and search actions.
-          if (pager.context !== QueryActions.BROWSE && pager.context !== QueryActions.SEARCH && pager.context !== QueryActions.ADVANCED) {
+          if (loader.context !== QueryActions.BROWSE && loader.context !== QueryActions.SEARCH && loader.context !== QueryActions.ADVANCED) {
 
             // Set default in query object.
             QueryManager.setOffset(0);
             QueryManager.setFilter('');
             AppContext.setViewStartIndex(0);
-            AppContext.setOpenItem(-1);
-            AppContext.setSelectedPositionIndex(-1);
-            pager.setSelected(-1);
-           // AppContext.setSelectedItemId(-1);
+            loader.setSelectedPosition(-1);
+            loader.setTheSelectedItem(-1);
+
+            loader.setTheQueryType(AppContext.getDefaultItemListField());
+            loader.setTheSortOrder(AppContext.getDefaultSortOrder());
 
             //Item dialog might be open.  Close it.
             $mdDialog.cancel();
 
             // Initialize the pager offsets.
-            AppContext.setNextPagerOffset(AppContext.getSetSize());
-            AppContext.setPreviousPagerOffset(0);
+            loader.setNextPagerOffset(AppContext.getSetSize());
+            loader.setPrevPagerOffset(0);
 
             // Do query.
-            PagerUtils.updateList(pager, QueryManager.getSort(), 'next');
+            LoaderUtils.updateList(loader, QueryManager.getSort(), 'next');
 
           }
 
@@ -84,13 +85,21 @@
         // Query string object has parameters.
         else {
 
-          PagerUtils.initialize(qs, pager.context);
+          LoaderUtils.initialize(qs, loader.context);
 
           /* Verify that application components will not see this as a filter
            * query. When in filter state, the backPager is always hidden
            * from view.  We want it to appear in all other situations when
            * initialized with and offset greater than zero.*/
           AppContext.isFilter(false);
+
+          if (typeof qs.field !== 'undefined') {
+            loader.setTheQueryType(qs.field);
+          }
+
+          if (typeof qs.sort !== 'undefined') {
+            loader.setTheSortOrder(qs.sort);
+          }
 
           // Update query object with filter param if none exists.
           if (typeof qs.filter === 'undefined') {
@@ -125,21 +134,21 @@
 
               // We do not need to call hasNewParams for an item filter, but we still need to update state
               //in PagerUtils
-              PagerUtils.setCurrentParmsState(qs.field, qs.sort, qs.offset, qs.filter);
-              PagerFilters.itemFilter(pager, qs.offset);
+              LoaderUtils.setCurrentParmsState(qs.field, qs.sort, qs.offset, qs.filter);
+              CollectionFilters.itemFilter(loader, qs.offset);
 
             }
 
             // If there is change in any request field, get new data.
-            else if (PagerUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter, qs.filters, qs.comm, qs.coll) && qs.itype !== 'i') {
+            else if (LoaderUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter, qs.filters, qs.comm, qs.coll) && qs.itype !== 'i') {
 
-              PagerUtils.updateList(pager, qs.sort, qs.d);
+              LoaderUtils.updateList(loader, qs.sort, qs.d);
 
             }
             // Otherwise just update positions. This will open items.
             else {
 
-              PagerUtils.initializePositions(pager);
+              LoaderUtils.initializePositions(loader);
 
             }
 
@@ -155,30 +164,30 @@
             if (qs.filter === 'author') {
 
               if (AppContext.isNewSet()) {
-                PagerFilters.authorFilter(pager, qs.terms, qs.sort, qs.d);
+                CollectionFilters.authorFilter(loader, qs.terms, qs.sort, qs.d);
               }
               else {
-                PagerFilters.authorFilter(pager, qs.terms, qs.sort, qs.d, qs.offset);
+                CollectionFilters.authorFilter(loader, qs.terms, qs.sort, qs.d, qs.offset);
               }
 
             }
             else if (qs.filter === 'subject') {
 
               if (AppContext.isNewSet()) {
-                PagerFilters.subjectFilter(pager, qs.terms, qs.sort, qs.d);
+                CollectionFilters.subjectFilter(loader, qs.terms, qs.sort, qs.d);
               }
               else {
-                PagerFilters.subjectFilter(pager, qs.terms, qs.sort, qs.d, qs.offset);
+                CollectionFilters.subjectFilter(loader, qs.terms, qs.sort, qs.d, qs.offset);
               }
 
             }
-            else if (PagerUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter)) {
+            else if (LoaderUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter)) {
 
-              PagerUtils.updateList(pager, qs.sort, qs.d);
+              LoaderUtils.updateList(loader, qs.sort, qs.d);
 
             }
             else {
-              PagerUtils.initializePositions(pager);
+              LoaderUtils.initializePositions(loader);
             }
           }
 

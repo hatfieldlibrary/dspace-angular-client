@@ -6,7 +6,7 @@
 
 (function () {
 
-  function AuthorDetailController($scope,
+  function AuthorDetailController(
                                   $mdMedia,
                                   Utils,
                                   QueryManager,
@@ -44,32 +44,17 @@
 
     ctrl.isSmallScreen = ($mdMedia('sm') || $mdMedia('xs'));
 
-    /**
-     * The current application context.
-     * This needs to be added to $scope so we can $watch.
-     *
-     *  @type {{context: {}}}
-     */
-    // $scope.context = AppContext.getContext();
-
-    /**
-     * The selected index. This will be set by the $watch.
-     * @type {number}
-     */
-    ctrl.selectedIndex = -1;
-    //AppContext.setCurrentIndex(-1);
-
-    ctrl.xsSelectedIndex = -1;
+   // ctrl.xsSelectedPosition = -1;
 
     ctrl.sort = QueryManager.getSort();
 
 
     /**
-     * Sets the current index as the selected index
+     * Wrapper method. Sets the current index as the selected index
      * on the parent component, using the provided callback.
      */
-    ctrl.setSelectedIndex = function () {
-      ctrl.setSelected({pos: ctrl.pos});
+    ctrl.setSelectedPosition = function () {
+      ctrl.setSelectedPos({pos: ctrl.pos});
 
     };
 
@@ -95,32 +80,29 @@
 
     };
 
+    ctrl.$onChanges = function (changes) {
 
-    /**
-     * Sets a $watch on the context's currentListIndex.
-     */
-    $scope.$watch(
-      function () {
-        return AppContext.getSelectedPositionIndex();
-      },
-      function (newValue) {
-        if (newValue === parseInt(ctrl.pos)) {
+      if (changes.selectedPosition) {
+
+        if (changes.selectedPosition.currentValue === ctrl.pos) {
 
           getResults();
 
           if (($mdMedia('sm') || $mdMedia('xs'))) {
-            ctrl.xsSelectedIndex = newValue;
+            ctrl.xsSelectedPosition = changes.selectedPosition.currentValue;
 
           } else {
-            ctrl.selectedIndex = newValue;
+            ctrl.selectedPosition = changes.selectedPosition.currentValue;
 
           }
 
         } else {
-          ctrl.selectedIndex = -1;
+          ctrl.selectedPosition = -1;
         }
+
       }
-    );
+    };
+
 
 
   }
@@ -137,7 +119,8 @@
       offset: '@',
       count: '@',
       last: '<',
-      setSelected: '&'
+      selectedPosition: '@',
+      setSelectedPos: '&'
 
     },
     controller: AuthorDetailController,

@@ -1,11 +1,26 @@
 <div style="min-height: 800px;">
 
+  <loader-component context="{{$ctrl.context}}"
+                    on-new-set="$ctrl.onUpdate(results, count, field, offset, jump)"
+                    on-pager-update="$ctrl.onPagerUpdate(results, count, field)"
+                    on-prev-update="$ctrl.onPreviousUpdate(results, count, field)"
+                    prev-pager-offset="$ctrl.setPrevPagerOffset(offset)"
+                    next-pager-offset="$ctrl.setNextPagerOffset(offset)"
+                    set-selected-item="$ctrl.setSelectedItem(id)"
+                    set-selected-pos="$ctrl.setSelectedPostion(pos)"
+                    set-query-type="$ctrl.setQueryType(type)"
+                    set-sort-order="$ctrl.setSortOrder(order)">
+
+  </loader-component>
+
   <h2 class="md-title" ng-if="$ctrl.isBrowseContext() && $ctrl.context!='seo'">Browsing: {{$ctrl.browseTerms}}</h2>
 
   <div class="filter-container intro" ng-if="$ctrl.showDiscoverContainer  && $ctrl.context!='seo'">
 
     <sort-options-component ng-if="$ctrl.showOptions && $ctrl.context!='seo'"
                             context="{{$ctrl.context}}"
+                            query-type="{{$ctrl.qt}}"
+                            sort-order="{{$ctrl.sort}}"
                             reset-list-view="$ctrl.resetListView()">
     </sort-options-component>
 
@@ -29,14 +44,14 @@
   <div flex="100" layout-fill layout="column" style="height: 100%;margin-top: -12px;">
 
     <pager-back-component ng-if="$ctrl.jump && $ctrl.context!='seo'"
-                          context="$ctrl.context">
+                          context="$ctrl.context" prev="{{$ctrl.prevPagerOffset}}" end="{{$ctrl.nextPagerOffset}}">
 
     </pager-back-component>
 
     <small-spinner ng-hide="$ctrl.ready"></small-spinner>
 
     <md-list ng-show="$ctrl.ready">
-                            HEY {{$ctrl.selectedItem}}
+
       <!-- item query results and search crawler paging -->
       <item-detail-component
         rel="nofollow"
@@ -50,11 +65,10 @@
         handle="{{col.handle}}"
         abstract="{{col.abstract}}"
         id="{{col.id}}"
-        selected-id="{{$ctrl.selectedItem}}"
         pos="{{$index}}"
         context="{{$ctrl.context}}"
         selected-item="{{$ctrl.selectedItem}}"
-      ng-class="{'set-divider': $ctrl.addBorder($index)}">
+        ng-class="{'set-divider': $ctrl.addBorder($index)}">
 
       </item-detail-component>
 
@@ -72,7 +86,8 @@
         field="{{$ctrl.field}}"
         abstract="{{col.abstract}}"
         last="$last"
-        set-selected="$ctrl.setSelected(pos)">
+        selected-position="{{$ctrl.selectedPosition}}"
+        set-selected-pos="$ctrl.setSelectedPosition(pos)">
 
       </author-detail-component>
 
@@ -89,7 +104,8 @@
         field="{{$ctrl.field}}"
         abstract="{{col.abstract}}"
         last="$last"
-        set-selected="$ctrl.setSelected(pos)">
+        selected-position="{{$ctrl.selectedPosition}}"
+        set-selected-pos="$ctrl.setSelectedPosition(pos)">
 
       </subject-detail-component>
 
@@ -111,15 +127,13 @@
     </md-list>
 
     <pager-component ng-show="$ctrl.ready && $ctrl.context!='seo'"
-
-      on-pager-update="$ctrl.onPagerUpdate(results, count, field)"
-      on-prev-update="$ctrl.onPreviousUpdate(results, count, field)"
-      on-new-set="$ctrl.onUpdate(results, count, field, offset, jump)"
-      context="{{$ctrl.context}}">
+    next="{{$ctrl.nextPagerOffset}}"
+    context="{{$ctrl.context}}">
 
     </pager-component>
 
-    <div ng-if="$ctrl.count > 10 && $ctrl.context!='seo'" class="md-body-1 md-accent layout-padding">{{$ctrl.resultMessage}}
+    <div ng-if="$ctrl.count > 10 && $ctrl.context!='seo'" class="md-body-1 md-accent layout-padding">
+      {{$ctrl.resultMessage}}
     </div>
 
     <p>&nbsp;</p>

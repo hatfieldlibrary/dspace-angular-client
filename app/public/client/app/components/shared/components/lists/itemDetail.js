@@ -88,11 +88,14 @@
 
     };
 
-    //browse
+    /**
+     * Shows item for browse view.
+     * @param ev
+     * @param id
+     */
     ctrl.showItem = function (ev, id) {
-      if (ctrl.selectedItem === ctrl.id) {
+
         ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
-      }
 
     };
 
@@ -158,7 +161,9 @@
       last: '<',
       abstract: '@',
       context: '@',
-      selectedItem: '@'
+      selectedPosition: '@',
+      selectedItem: '@',
+      setSelectedId: '&'
 
     },
     controller: ItemDetailController,

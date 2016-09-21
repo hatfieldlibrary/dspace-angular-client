@@ -1,5 +1,5 @@
-<md-list-item flex flex ng-click="$ctrl.setSelectedIndex();$ctrl.getItems();"
-              ng-class="{ 'md-whiteframe-z2': $ctrl.pos == $ctrl.selectedIndex, 'selected-index': $ctrl.pos == $ctrl.selectedIndex,  'selected-sm-index': $ctrl.pos == $ctrl.xsSelectedIndex}">
+<md-list-item flex flex ng-click="$ctrl.setSelectedPosition();$ctrl.getItems();"
+              ng-class="{ 'md-whiteframe-z2': $ctrl.pos == $ctrl.selectedPosition, 'selected-index': $ctrl.pos == $ctrl.selectedPosition,  'selected-sm-index': $ctrl.pos == $ctrl.xsSelectedPosition}">
 
 
   <md-item-content layout-fill>
@@ -7,7 +7,7 @@
     <div layout-fill flex class="md-list-item-text app-list-item">
 
       <div layout="row" >
-        <a class="browse-anchor" ng-class="{'md-title': $ctrl.pos == $ctrl.selectedIndex}" ng-href="#">{{$ctrl.author}}</a>
+        <a class="browse-anchor" ng-class="{'md-title': $ctrl.pos == $ctrl.selectedPosition}" ng-href="#">{{$ctrl.author}}</a>
       </div>
 
       <div style="height: 100%;max-height: 900px;width:100%;" layout-fill flex>

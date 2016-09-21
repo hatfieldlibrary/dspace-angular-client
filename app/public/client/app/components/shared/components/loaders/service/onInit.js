@@ -17,40 +17,37 @@
     'QuerySort',
     'QueryTypes',
     'AppContext',
-    'PagerFilters',
-    'PagerUtils',
+    'CollectionFilters',
+    'LoaderUtils',
     'SolrDataLoader',
 
     function (QueryManager,
               QuerySort,
               QueryTypes,
               AppContext,
-              PagerFilters,
-              PagerUtils,
+              CollectionFilters,
+              LoaderUtils,
               SolrDataLoader) {
 
 
       /**
        * The init method.
-       * @param pager - reference to the pager controller
+       * @param loader - reference to the loader component
        * @param qs - the current query string
        * @private
        */
-      function onInit(pager, qs) {
-
+      function onInit(loader, qs) {
 
         AppContext.isNewSet(true);
-
-
 
         /**
          * Sets the open position or item id for the current state.
          */
-        PagerUtils.initializePositions(pager);
+        LoaderUtils.initializePositions(loader);
 
         AppContext.setPager(false);
 
-        PagerUtils.initialize(qs, pager.context);
+        LoaderUtils.initialize(qs, loader.context);
 
         /**
          * Filtering on a (title, author, or subject)
@@ -67,8 +64,6 @@
           SolrDataLoader.setJumpType();
 
 
-
-
           /**
            * Title filter.
            */
@@ -77,7 +72,7 @@
             /**
              * Execute item filter.
              */
-            PagerFilters.itemFilter(pager, qs.offset);
+            CollectionFilters.itemFilter(loader, qs.offset);
 
           }
           /**
@@ -96,7 +91,7 @@
               AppContext.setViewStartIndex(0);
             }
 
-            PagerFilters.authorFilter(pager, qs.terms, qs.sort, qs.d, qs.offset);
+            CollectionFilters.authorFilter(loader, qs.terms, qs.sort, qs.d, qs.offset);
 
           }
           /**
@@ -117,7 +112,7 @@
             /**
              * Execute subject filter.
              */
-            PagerFilters.subjectFilter(pager, qs.terms, qs.sort, qs.d, qs.offset);
+            CollectionFilters.subjectFilter(loader, qs.terms, qs.sort, qs.d, qs.offset);
 
 
           }
@@ -127,13 +122,12 @@
          */
         else {
 
-         // PagerUtils.setIndex(qs);
           /**
            * Use QueryManager values.  On initialization of item list view, there is no guarantee we
            * have a query string. This has been accounted for by the keys check earlier in this method,
            * and in the default values set in QueryManager when no query string exists.
            */
-          PagerUtils.updateList(pager, QueryManager.getSort(), qs.d);
+          LoaderUtils.updateList(loader, QueryManager.getSort(), qs.d);
         }
 
       }

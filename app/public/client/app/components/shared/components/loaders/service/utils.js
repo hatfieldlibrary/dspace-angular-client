@@ -11,7 +11,7 @@
 
 (function () {
 
-  dspaceServices.factory('PagerUtils', [
+  dspaceServices.factory('LoaderUtils', [
 
     'QueryManager',
     'QueryActions',
@@ -73,7 +73,7 @@
        * for changes in context.
        * @param qs
        */
-      function _setOpenItemPosition(qs) {
+      function _setOpenItemPosition(loader, qs) {
 
         if (typeof qs.pos !== 'undefined' && typeof qs.offset !== 'undefined') {
 
@@ -89,8 +89,8 @@
                */
               var newOffset = _verifyOffset(qs);
 
-              AppContext.setOpenItem(qs.pos - newOffset);
-              AppContext.setSelectedPositionIndex(qs.pos - newOffset);
+             // AppContext.setOpenItem(qs.pos - newOffset);
+              loader.setSelectedPosition(qs.pos - newOffset);
             }
             /**
              * The item position is within the set that will
@@ -104,8 +104,8 @@
                */
               if (typeof qs.offset !== 'undefined') {
                 if (qs.filter === 'none') {
-                  AppContext.setOpenItem(qs.pos - qs.offset);
-                  AppContext.setSelectedPositionIndex(qs.pos - qs.offset);
+                //  AppContext.setOpenItem(qs.pos - qs.offset);
+                  loader.setSelectedPosition(qs.pos - qs.offset);
                 }
               }
               /**
@@ -114,28 +114,28 @@
                * zero.
                */
               else {
-                AppContext.setOpenItem(qs.pos);
-                AppContext.setSelectedPositionIndex(qs.pos);
+              //  AppContext.setOpenItem(qs.pos);
+                loader.setSelectedPosition(qs.pos);
               }
             }
           } else {
             if (typeof qs.offset !== 'undefined') {
               if (qs.filter === 'none') {
-                AppContext.setOpenItem(qs.pos);
-                AppContext.setSelectedPositionIndex(qs.pos);
+              //  AppContext.setOpenItem(qs.pos);
+                loader.setSelectedPosition(qs.pos);
               }
               else {
                 if (qs.pos > setSize) {
-                  AppContext.setOpenItem(qs.pos - setSize);
+              //    AppContext.setOpenItem(qs.pos - setSize);
                   AppContext.setSelectedPositionIndex(qs.pos - setSize);
                 } else {
-                  AppContext.setOpenItem(qs.pos);
-                  AppContext.setSelectedPositionIndex(qs.pos);
+               //   AppContext.setOpenItem(qs.pos);
+                  loader.setSelectedPosition(qs.pos);
                 }
               }
             } else {
-              AppContext.setOpenItem(qs.pos);
-              AppContext.setSelectedPositionIndex(qs.pos);
+           //   AppContext.setOpenItem(qs.pos);
+              loader.setSelectedPosition(qs.pos);
             }
 
           }
@@ -145,8 +145,8 @@
          * prevents a match with item.
          */
         else {
-          AppContext.setOpenItem(-1);
-          AppContext.setSelectedPositionIndex(-1);
+        //  AppContext.setOpenItem(-1);
+          loader.setSelectedPosition(-1);
         }
       }
 
@@ -156,7 +156,7 @@
        * as provided in the query string..
        * @param qs
        */
-      function initializePositions(pager) {
+      function initializePositions(loader) {
 
         var qs = $location.search();
 
@@ -171,14 +171,14 @@
         }
 
         if (typeof qs.id !== 'undefined') {
-          pager.setSelectedItem(qs.id);
+          loader.setTheSelectedItem(qs.id);
           //AppContext.setSelectedItemId(qs.id);
         } else {
-          pager.setSelectedItem(-1);
+          loader.setTheSelectedItem(-1);
          // AppContext.setSelectedItemId(-1);
         }
 
-        _setOpenItemPosition(qs);
+        _setOpenItemPosition(loader, qs);
 
       }
 
@@ -232,16 +232,20 @@
       }
 
 
-      function updatePagerOffsets(direction, offset) {
+      function updatePagerOffsets(loader, direction, offset) {
+
+        if (typeof offset === 'string') {
+          offset = parseInt(offset, 10);
+        }
 
         if (direction === 'prev') {
 
-          AppContext.setPreviousPagerOffset(offset - AppContext.getSetSize());
+          loader.setPrevPagerOffset(offset - AppContext.getSetSize());
           AppContext.setViewStartIndex(offset);
 
         } else {
           offset += 20;
-          AppContext.setNextPagerOffset(offset);
+          loader.setNextPagerOffset(offset);
 
         }
 
@@ -352,6 +356,7 @@
 
       function _setQueryComponents(qs, context) {
 
+
         /**
          * If qs object has keys, then update the query type and
          * sort order with provided parameters.
@@ -383,13 +388,13 @@
        * Updates the pager controller with new data retrieved by solr query. Input
        * parameters for field and sort may be new values originating from a sort options
        * action by the user.
-       * @param pager  - reference to the pager controller
+       * @param loader  - reference to the pager controller
        * @param field - search field
        * @param sort  - sort order
        * @param direction - paging direction (next, prev)
        * @private
        */
-      function updateList(pager, sort, direction) {
+      function updateList(loader, sort, direction) {
 
         var isNewRequest = AppContext.isNewSet();
 
@@ -411,10 +416,9 @@
           if (items !== undefined) {
             items.$promise.then(function (data) {
 
-
                 AppContext.setItemsCount(data.count);
 
-                updatePagerOffsets(direction, QueryManager.getOffset());
+                updatePagerOffsets(loader, direction, QueryManager.getOffset());
 
                 _updatePagingHeaders();
 
@@ -422,21 +426,21 @@
                   /**
                    * If not a new request, swap in the new data.
                    */
-                  pager.updateParentNewSet(data);
+                  loader.updateParentNewSet(data);
 
                 } else {
 
                   /**
                    * If paging, add the new data to the view.
                    */
-                  pager.updateParent(data, direction);
+                  loader.updateParent(data, direction);
                 }
 
-                initializePositions(pager);
+                initializePositions(loader);
 
               },
               function (errResponse) {
-                _handleError(pager, errResponse);
+                _handleError(loader, errResponse);
 
               });
           }
@@ -462,7 +466,7 @@
 
                   AppContext.setItemsCount(data.count);
 
-                  updatePagerOffsets(direction, QueryManager.getOffset());
+                  updatePagerOffsets(loader, direction, QueryManager.getOffset());
 
                   _updatePagingHeaders();
                   /**
@@ -477,25 +481,25 @@
 
                   FacetHandler.setAuthorListOrder(sort);
 
-                  pager.updateParentNewSet(FacetHandler.getAuthorListSlice(setSize));
+                  loader.updateParentNewSet(FacetHandler.getAuthorListSlice(setSize));
 
-                  initializePositions(pager);
+                  initializePositions(loader);
 
                 },
                 function (errResponse) {
-                  _handleError(pager, errResponse);
+                  _handleError(loader, errResponse);
 
                 });
             } else {
 
-              updatePagerOffsets(direction, QueryManager.getOffset());
+              updatePagerOffsets(loader, direction, QueryManager.getOffset());
 
               _updatePagingHeaders();
               /**
                * If not a new request, use the existing author
                * facets.
                */
-              pager.updateParent(FacetHandler.getAuthorListSlice(setSize), direction);
+              loader.updateParent(FacetHandler.getAuthorListSlice(setSize), direction);
 
             }
 
@@ -515,7 +519,7 @@
 
                   AppContext.setItemsCount(data.count);
 
-                  updatePagerOffsets(direction, QueryManager.getOffset());
+                  updatePagerOffsets(loader, direction, QueryManager.getOffset());
                   _updatePagingHeaders();
 
                   /**
@@ -526,24 +530,24 @@
 
                   FacetHandler.setSubjectListOrder(sort);
 
-                  pager.updateParentNewSet(FacetHandler.getSubjectListSlice(setSize));
+                  loader.updateParentNewSet(FacetHandler.getSubjectListSlice(setSize));
 
-                  initializePositions(pager);
+                  initializePositions(loader);
 
 
                 },
                 function (errResponse) {
-                  _handleError(pager, errResponse);
+                  _handleError(loader, errResponse);
 
                 });
 
             } else {
 
-              updatePagerOffsets(direction, QueryManager.getOffset());
+              updatePagerOffsets(loader, direction, QueryManager.getOffset());
               _updatePagingHeaders();
 
               /** Updating parent with current facets */
-              pager.updateParent(FacetHandler.getSubjectListSlice(setSize), direction);
+              loader.updateParent(FacetHandler.getSubjectListSlice(setSize), direction);
             }
           }
         }
@@ -597,22 +601,22 @@
 
       /**
        * Replace or append to result set based on context.
-       * @param pager  - reference to the pager controller.
+       * @param loader  - reference to the pager controller.
        * @param direction - direction of current pager (next,prev).
        * @param data - the results.
        * @private
        */
-      function addResult(pager, direction, data) {
+      function addResult(loader, direction, data) {
         if (AppContext.isNewSet()) {
           /**
            * If not a new request, swap in the new data.
            */
-          pager.updateParentNewSet(data);
+          loader.updateParentNewSet(data);
         } else {
           /**
            * If paging, add the new data to the view.
            */
-          pager.updateParent(data, direction);
+          loader.updateParent(data, direction);
         }
       }
 

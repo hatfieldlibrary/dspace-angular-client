@@ -8,10 +8,10 @@
 
 (function () {
 
-  function PagerCtrl($scope,
+  function PagerCtrl(
+                     LoaderUtils,
                      QueryManager,
-                     AppContext,
-                     PagerUtils) {
+                     AppContext) {
 
 
     var backPager = this;
@@ -30,19 +30,6 @@
     }
 
     /**
-     * Watch for changes to query offset triggered by a
-     * query string update.   Probably UNNECESSARY.
-     */
-    $scope.$watch(function () {
-        return AppContext.getPrevousPagerOffset();
-      },
-      function (newValue) {
-
-        backPager.more = more(newValue);
-
-      });
-
-    /**
      * Generates and returns the url for the pager link. Also,
      * the PagerUtils method will update the link rel="next" and rel="prev"
      * html header elements to assist search engines, per google recommendation
@@ -54,15 +41,21 @@
      */
     backPager.prevUrl = function () {
 
-      var offset = AppContext.getPrevousPagerOffset();
-      return PagerUtils.prevUrl(offset);
+      return LoaderUtils.prevUrl(backPager.prev);
 
     };
 
-    function init() {
+    backPager.$onChanges = function(changes) {
 
-     // var offset = QueryManager.getOffset();
-    //  AppContext.setStartIndex(offset);
+      if (changes.prev) {
+        backPager.prev = changes.prev.currentValue;
+        // Show/hide the offset value for previous items.
+        backPager.more = more(backPager.prev);
+
+      }
+    };
+
+    backPager.$onInit = function() {
 
       /**
        * Current start position for view model.
@@ -70,29 +63,15 @@
        */
       backPager.start = QueryManager.getOffset() + 1;
       /**
-       * Current end position for view model.
-       * @type {number}
-       */
-      backPager.end = AppContext.getNextPagerOffset();
-      /**
        * Used in ng-if to show/hide the component.
        * @type {boolean}
        */
       backPager.showPager = AppContext.getPager();
 
-      /**
-       * Show/hide the pager based on the query offset.
-       */
-      var offset = AppContext.getPrevousPagerOffset();
-
-      backPager.more = more(offset);
-
-      backPager.url = PagerUtils.prevUrl(offset);
+      backPager.url = LoaderUtils.prevUrl(backPager.prev);
 
 
-    }
-
-    init();
+    };
 
 
   }
@@ -103,6 +82,8 @@
     template: '<div layout="row" layout-align="center center" ><a rel="nofollow" ng-href="{{backPager.prevUrl()}}"><md-button class="md-raised md-accent md-fab md-mini" ng-if="backPager.more"><md-icon md-font-library="material-icons" class="md-light" aria-label="Previous Results">expand_less</md-icon></md-button></a></div>',
 
     bindings: {
+      prev: '@',
+      end: '@',
       context: '@'
 
     },

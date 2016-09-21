@@ -12,6 +12,7 @@
                         AppContext,
                         Messages) {
 
+
     var ctrl = this;
 
     ctrl.showPager = false;
@@ -26,7 +27,13 @@
 
     ctrl.resultMessage = '';
 
-    ctrl.selectedItem = -1;
+    ctrl.nextPagerOffset = 0;
+
+    ctrl.prevPagerOffset = 0;
+
+    ctrl.qt = AppContext.getDefaultItemListField();
+
+    ctrl.sort = AppContext.getDefaultSortOrder();
 
     function _format(str, arr) {
       return str.replace(/{(\d+)}/g, function (match, number) {
@@ -42,7 +49,12 @@
      * The selected index. This is used to set the css .select class
      * of items in the list.
      */
-    ctrl.selectedIndex = -1;
+    ctrl.selectedPosition = -1;
+    /**
+     * Holds the id of the currently selected item.
+     * @type {number}
+     */
+    ctrl.selectedItem = -1;
 
     /**
      * The current asset type. Used to set the list type in the view.
@@ -97,15 +109,31 @@
     }
 
     /**
+     * Updates the currently selected item id.
+     * @param id
+     */
+    ctrl.setSelectedItem = function (id) {
+      ctrl.selectedItem = id;
+
+    };
+
+    /**
      * Sets the selected index in the controller and in the application
      * context.  Used by subject and author lists to toggle view state.
      * @param index
      */
-    ctrl.setSelected = function (index) {
+    ctrl.setSelectedPosition = function (pos) {
 
-      ctrl.selectedIndex = index;
-      // AppContext.setSelectedPositionIndex(index);
+      ctrl.selectedPosition = pos;
 
+    };
+
+    ctrl.setNextPagerOffset = function (offset) {
+      ctrl.nextPagerOffset = offset;
+    };
+
+    ctrl.setPrevPagerOffset = function (offset) {
+      ctrl.prevPagerOffset = offset;
     };
 
     /**
@@ -168,17 +196,15 @@
 
     ctrl.onPreviousUpdate = function (results, count, field) {
 
-
       addPreviousResults(results);
       ctrl.field = field;
       ctrl.count = count;
       var end;
-      if (AppContext.getNextPagerOffset() <= AppContext.getItemsCount()) {
-        end = AppContext.getNextPagerOffset();
+      if (ctrl.nextPagerOffset <= AppContext.getItemsCount()) {
+        end = ctrl.nextPagerOffset;
       } else {
         end = AppContext.getItemsCount();
       }
-
       var start = AppContext.getViewStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
       ctrl.ready = true;
@@ -191,14 +217,14 @@
 
     };
 
-    /**
-     * Updates the currently selected item id.
-     * @param id
-     */
-    ctrl.setSelectedItem = function (id) {
-      ctrl.selectedItem = id;
-
+    ctrl.setQueryType = function (type) {
+      ctrl.qt = type;
     };
+
+    ctrl.setSortOrder = function (sort) {
+      ctrl.sort = sort;
+    };
+
 
     ctrl.$onInit = function () {
 
@@ -230,6 +256,7 @@
           ctrl.jump = true;
         }
       }
+
       var checkOffset;
       if (typeof qs.offset !== 'undefined') {
         checkOffset = parseInt(qs.offset);
@@ -241,12 +268,12 @@
        * children of the item-list-component.  Their values should be based
        * on increments or decrements of the initial offset.
        */
-      AppContext.setNextPagerOffset(checkOffset + AppContext.getSetSize());
+      ctrl.setNextPagerOffset(checkOffset + AppContext.getSetSize());
 
       if (checkOffset !== 0) {
-        AppContext.setPreviousPagerOffset(checkOffset - AppContext.getSetSize());
+        ctrl.setPrevPagerOffset(checkOffset - AppContext.getSetSize());
       } else {
-        AppContext.setPreviousPagerOffset(-1);
+        ctrl.setPrevPagerOffset(-1);
       }
 
 
