@@ -62,7 +62,7 @@
     /**
      * Initialize the component.
      */
-    var init = function () {
+    ctrl.$onInit = function () {
 
       Utils.resetQuerySettings();
 
@@ -72,6 +72,11 @@
       var query = ItemByHandle.query({site: site, item: item});
       query.$promise.then(
         function (data) {
+
+          console.log(data)
+
+          ctrl.parent.setQueryType(QueryManager.getQueryType());
+
 
           /** A simple check for whether data was returned */
           if (data.type !== undefined) {
@@ -94,7 +99,7 @@
             }
 
             if (typeof data.canWrite !== 'undefined') {
-              AppContext.setWritePermission(data.canWrite);
+              ctrl.parent.setWritePermission(data.canWrite);
             }
 
             /**
@@ -127,10 +132,14 @@
              */
             QueryManager.setAssetType(type);
 
+            ctrl.parent.setAssetType(type);
+
             /**
              * Set the dspace ID in the query context.
              */
             QueryManager.setAssetId(id);
+
+            ctrl.parent.setAssetId(id);
 
 
           }
@@ -143,7 +152,6 @@
 
     };
 
-    init();
 
     /**
      * If data was not returned the cause is likely
@@ -198,6 +206,10 @@
   }
 
   dspaceComponents.component('handleComponent', {
+
+    require: {
+      parent: '^handleContainerComponent'
+    },
 
     template: '<!-- Switch components based on item type --> ' +
     '<div ng-if="$ctrl.loginRequired || $ctrl.accessNotAllowed"> ' +

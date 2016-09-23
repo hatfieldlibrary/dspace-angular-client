@@ -181,12 +181,15 @@
       addResults(results);
       ctrl.field = field;
       ctrl.count = count;
+      console.log('next model ' + ctrl.nextPagerOffset)
+      console.log('context ' + AppContext.getItemsCount())
       var off = QueryManager.getOffset();
       off++;
       var end = off + endIncrement;
       if (end > count) {
         end = count;
       }
+      console.log('calulated ' + end)
       var start = AppContext.getViewStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
       ctrl.ready = true;
@@ -200,11 +203,14 @@
       ctrl.field = field;
       ctrl.count = count;
       var end;
+      console.log('prev model ' + ctrl.nextPagerOffset)
+      console.log('context ' + AppContext.getItemsCount())
       if (ctrl.nextPagerOffset <= AppContext.getItemsCount()) {
         end = ctrl.nextPagerOffset;
       } else {
         end = AppContext.getItemsCount();
       }
+      console.log('calulated ' + end)
       var start = AppContext.getViewStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
       ctrl.ready = true;

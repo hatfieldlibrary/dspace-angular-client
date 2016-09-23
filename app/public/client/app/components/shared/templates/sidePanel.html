@@ -47,8 +47,6 @@
         <p class="md-body-1">{{$ctrl.submitInstructionsLabel}} </p>
       </md-list-item>
 
-
-
       <md-list-item class="icon-list" ng-show="$ctrl.canAdminister"  target="_top"
                     href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/{{$ctrl.service}}?{{$ctrl.service}}ID={{$ctrl.itemId}}">
         <md-icon ng-if="$ctrl.actionType=='Community'"> group </md-icon>
@@ -66,8 +64,7 @@
     </div>
 
 
-    <search-box-component ng-if="$ctrl.type!='global' && $ctrl.type!='discover'" type="{{$ctrl.type}}"
-                          id="{{$ctrl.id}}"></search-box-component>
+    <search-box-component ng-if="$ctrl.type!='global' && $ctrl.type!='discover'" asset-id="{{$ctrl.assetId}}"></search-box-component>
 
     <global-search-box-component ng-if="$ctrl.type=='global'"></global-search-box-component>
 

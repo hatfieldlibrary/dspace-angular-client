@@ -84,11 +84,6 @@
         currentListIndex: -1,
 
         /**
-         * Tracks whether or not a current DSpace session exists.
-         */
-        hasDspaceSession: false,
-
-        /**
          * The current item count.
          */
         count: 0,
@@ -99,10 +94,6 @@
          */
         discoveryContext: '',
 
-        /**
-         * Menu status.
-         */
-        openMenu: false,
 
         /** Show the pager */
         pager: false,
@@ -221,13 +212,6 @@
         return _context.count;
       }
 
-      function setMenu(open) {
-        _context.openMenu = open;
-      }
-
-      function getMenuState() {
-        return _context.openMenu;
-      }
 
       function setPager(showPager) {
         _context.pager = showPager;
@@ -263,14 +247,6 @@
 
       function getHomeLink() {
         return AppConfig.HOME_LINK;
-      }
-
-      function hasDspaceSession() {
-        return _context.hasDspaceSession;
-      }
-
-      function updateDspaceSession(hasSession) {
-        _context.hasDspaceSession = hasSession;
       }
 
       function setListOffset(offset) {
@@ -378,8 +354,6 @@
         getSubjectsCount: getSubjectsCount,
         setItemsCount: setItemsCount,
         getItemsCount: getItemsCount,
-        setMenu: setMenu,
-        getMenuState: getMenuState,
         setPager: setPager,
         getPager: getPager,
         setDiscoverCommunities: setDiscoverCommunities,
@@ -389,8 +363,6 @@
         getSetSize: getSetSize,
         getHomeLogo: getHomeLogo,
         getHomeLink: getHomeLink,
-        hasDspaceSession: hasDspaceSession,
-        updateDspaceSession: updateDspaceSession,
         setListOffset: setListOffset,
         getListOffset: getListOffset,
         setAuthorsOrder: setAuthorsOrder,

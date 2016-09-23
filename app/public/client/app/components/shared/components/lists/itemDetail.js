@@ -18,7 +18,6 @@
   function ItemDetailController($scope,
                                 $location,
                                 $mdMedia,
-                                AppContext,
                                 QueryManager,
                                 QueryActions,
                                 ItemDialogFactory) {
@@ -37,27 +36,6 @@
     }, function (wantsFullScreen) {
       $scope.customFullscreen = wantsFullScreen;
     });
-
-    /**
-     * Watch for change in the current open item.
-     * If the open item is this item, launch the
-     * dialog.  The pager init method updates the
-     * open item value on initialization.  This allows
-     * bookmarking and seo for items using the default item
-     * dialog component.
-     */
-    // $scope.$watch(function () {
-    //   return AppContext.getSelectedItemId();
-    // }, function (newValue) {
-    //
-    //   if (newValue === ctrl.id) {
-    //
-    //     ItemDialogFactory.showItem(null, ctrl.id, $scope.customFullscreen);
-    //
-    //   }
-    //
-    // });
-
 
     /**
      * Sets the current event object.
@@ -164,7 +142,6 @@
       selectedPosition: '@',
       selectedItem: '@',
       setSelectedId: '&'
-
     },
     controller: ItemDetailController,
     templateUrl: '/ds/shared/templates/lists/itemDetail.html'

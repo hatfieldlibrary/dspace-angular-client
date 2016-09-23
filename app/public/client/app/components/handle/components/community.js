@@ -14,12 +14,11 @@
                          $anchorScroll,
                          Messages,
                          Utils,
-                         AppContext,
                          PageTitle,
                          PageDescription,
                          PageAuthor,
                          SeoPaging,
-                         $scope) {
+                         SessionObserver) {
 
     var ctrl = this;
 
@@ -72,14 +71,25 @@
      * that the user does not have access to collections still
      * hidden behind DSpace authorizations.
      */
-    $scope.$watch(function () {
-        return AppContext.hasDspaceSession();
-      },
-      function (newValue, oldValue) {
-        if (newValue !== oldValue) {
-          ctrl.hideLoginMessage = newValue;
-        }
-      });
+    // $scope.$watch(function () {
+    //     return AppContext.hasDspaceSession();
+    //   },
+    //   function (newValue, oldValue) {
+    //     if (newValue !== oldValue) {
+    //       ctrl.hideLoginMessage = newValue;
+    //     }
+    //   })
+    // ;
+
+    ctrl.hideLoginMessage = SessionObserver.get();
+    var subscription = SessionObserver.subscribe(function (state) {
+      ctrl.hideLoginMessage = state;
+    });
+
+    ctrl.$onDestroy = function () {
+      subscription.dispose();
+    };
+
 
     /**
      * Shows login message if the count of returned collections

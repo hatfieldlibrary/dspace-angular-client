@@ -6,19 +6,21 @@
 
 (function () {
 
-  function HeaderCtrl(AppContext, $window, $mdMedia) {
+  function HeaderCtrl(AppContext, MenuObserver, $window, $mdMedia) {
 
     var ctrl = this;
 
     var open = false;
 
     ctrl.isSmallScreen = $mdMedia('sm') || $mdMedia('xs');
-    
+
     ctrl.homeLogo = AppContext.getHomeLogo();
 
     ctrl.openMenu = function () {
       open = !open;
-      AppContext.setMenu(open);
+      // Update the menu observable.
+      MenuObserver.set(open);
+
     };
 
     ctrl.goToHome = function() {
@@ -26,7 +28,6 @@
     };
 
   }
-
 
   dspaceComponents.component('headerComponent', {
 

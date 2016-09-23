@@ -234,6 +234,8 @@
 
       function updatePagerOffsets(loader, direction, offset) {
 
+        console.log('got offset ' + offset)
+
         if (typeof offset === 'string') {
           offset = parseInt(offset, 10);
         }
@@ -607,6 +609,7 @@
        * @private
        */
       function addResult(loader, direction, data) {
+
         if (AppContext.isNewSet()) {
           /**
            * If not a new request, swap in the new data.

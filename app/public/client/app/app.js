@@ -7,6 +7,7 @@ var dspaceApp = angular.module('dspaceApp', [
   'ngMaterial',
   'ngRoute',
   'ngSanitize',
+  'rx',
   'appConstants',
   'ngAnimate',
   'ngMessages',
@@ -31,7 +32,7 @@ var dspaceApp = angular.module('dspaceApp', [
 
       $routeProvider
         .when('/ds/handle/:site/:item', {
-          templateUrl: '/ds/partials/handle',
+          templateUrl: '/ds/partials/handle.html',
           reloadOnSearch: false
         })
         .when('/ds/handle/:site/:id/:field/:sort', {
@@ -41,14 +42,14 @@ var dspaceApp = angular.module('dspaceApp', [
           templateUrl: '/ds/partials/continuousPaging'
         })
         .when('/ds/communities', {
-          templateUrl: '/ds/partials/communities'
+          templateUrl: '/ds/partials/communities.html'
         })
         .when('/ds/browse/:site/:item', {
           templateUrl: '/ds/partials/handle',
           reloadOnSearch: false
         })
         .when('/ds/browse/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', {
-          templateUrl: '/ds/partials/browse',
+          templateUrl: '/ds/partials/browse.html',
           reloadOnSearch: false
         })
         .when('/ds/discover/:type/:id/:terms', {
@@ -56,11 +57,11 @@ var dspaceApp = angular.module('dspaceApp', [
           reloadOnSearch: false
         })
         .when('/ds/advanced', {
-          templateUrl: '/ds/partials/advanced',
+          templateUrl: '/ds/partials/advanced.html',
           reloadOnSearch: false
         })
         .when('/ds/discover', {
-          templateUrl: '/ds/ds/partials/discover'
+          templateUrl: '/ds/ds/partials/discover.html'
         });
 
       $locationProvider.html5Mode(true);

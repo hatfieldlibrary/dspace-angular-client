@@ -43,20 +43,24 @@
         var items;
         // unary operator
         if (typeof offset !== 'undefined' && +offset !== 0) {
+
           QueryManager.setOffset(offset);
           items = SolrDataLoader.invokeQuery();
           items.$promise.then(function (data) {
-           // AppContext.setNextPagerOffset(data.offset);
+            loader.setNextPagerOffset(data.offset + setSize);
             AppContext.setViewStartIndex(data.offset);
             LoaderUtils.addResult(loader, 'next', data);
           });
+
         }
 
         else {
+
           items = SolrDataLoader.filterQuery();
+
           items.$promise.then(function (data) {
             QueryManager.setOffset(data.offset);
-           // AppContext.setNextPagerOffset(data.offset);
+            loader.setNextPagerOffset(data.offset + setSize);
             AppContext.setViewStartIndex(data.offset);
             // We need to update the query object!
             var qs = $location.search();
@@ -124,7 +128,6 @@
           // Get the offset.
           var offset = _findOffset(initOffset, terms, 'author');
 
-
           QueryManager.setOffset(offset);
           AppContext.setViewStartIndex(offset);
 
@@ -188,9 +191,6 @@
 
           AppContext.setItemsCount(AppContext.getSubjects().length);
 
-          // Set the subject facet list order.
-          // FacetHandler.setSubjectListOrder(sort);
-          // Get the offset.
           var offset = _findOffset(initOffset, terms, 'subject');
 
           QueryManager.setOffset(offset);
@@ -200,6 +200,7 @@
           LoaderUtils.updatePagerOffsets(loader, direction, offset);
 
           if (AppContext.isNewSet()) {
+
             // Set the context start index to the matching offset.
             AppContext.setViewStartIndex(offset);
             loader.updateParentNewSet(FacetHandler.getSubjectListSlice(setSize));
@@ -216,6 +217,7 @@
         else {
 
           _fetchSubjects(loader, terms, sort, direction, initOffset);
+
         }
       }
 

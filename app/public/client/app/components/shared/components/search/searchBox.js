@@ -7,8 +7,7 @@
 (function () {
 
 
-  function MainSearchBoxCtrl($scope,
-                             $location,
+  function MainSearchBoxCtrl($location,
                              QueryActions,
                              AssetTypes,
                              Messages,
@@ -61,24 +60,23 @@
     };
 
     /**
-     * Watch for changes in current DSpace ID.  This value
-     * can change after this component has been added to
-     * the parent.
+     * Watch for the asset id returned by the handle query.
+     * @param changes
      */
-    $scope.$watch(function () {
-        return QueryManager.getAssetId();
-      },
-      function (newValue, oldValue) {
-        if (newValue !== oldValue) {
-          sb.id = QueryManager.getAssetId();
-          sb.currentCollectionId = newValue;
-        }
-      });
+    sb.$onChanges = function(changes) {
+      if (changes.assetId) {
+        sb.id = changes.assetId.currentValue;
+        sb.currentCollectionId = changes.assetId.currentValue;
+      }
+    }
 
   }
 
   dspaceComponents.component('searchBoxComponent', {
 
+    bindings: {
+      assetId: '@'
+    },
     templateUrl: '/ds/shared/templates/search/searchBox.html',
     controller: MainSearchBoxCtrl,
     controllerAs: 'sb'

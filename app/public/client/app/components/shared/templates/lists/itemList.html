@@ -24,16 +24,11 @@
                             reset-list-view="$ctrl.resetListView()">
     </sort-options-component>
 
-
     <discover-filter-container ng-if="$ctrl.context=='search'"
                                on-update="$ctrl.onUpdate(results, count, field)">
     </discover-filter-container>
 
   </div>
-
-  <!--<div ng-if="$ctrl.count <= 10" class="md-body-1 md-accent layout-padding" style="padding-top: 30px;">-->
-  <!--{{$ctrl.resultCountLabel}} {{$ctrl.count}}-->
-  <!--</div>-->
 
   <div class="md-body-1 md-accent layout-padding">{{$ctrl.resultMessage}}
   </div>
@@ -54,7 +49,6 @@
 
       <!-- item query results and search crawler paging -->
       <item-detail-component
-        rel="nofollow"
         ng-if="$ctrl.field!='author' && $ctrl.field!='subject' && $ctrl.field!='discover'"
         ng-repeat="col in $ctrl.items"
         class="repeat-animation"

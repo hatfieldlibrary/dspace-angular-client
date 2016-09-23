@@ -22,6 +22,7 @@
     'AssetTypes',
     'QuerySort',
     'QueryTypes',
+    'SessionObserver',
 
     function ($window,
               $location,
@@ -32,12 +33,12 @@
               Messages,
               CheckSession,
               CheckSysAdmin,
-
               QueryActions,
               QueryFields,
               AssetTypes,
               QuerySort,
-              QueryTypes) {
+              QueryTypes,
+              SessionObserver) {
 
       var utils = {};
 
@@ -49,7 +50,7 @@
       /**
        * Check system administrator status.
        */
-      utils.setSysAdminStatus = function(callback) {
+      utils.setSysAdminStatus = function (callback) {
 
         if (typeof sysAdminStatus === 'undefined') {
 
@@ -254,9 +255,11 @@
         var sessionStatus = CheckSession.query();
         sessionStatus.$promise.then(function () {
           if (sessionStatus.status === 'ok') {
-            AppContext.updateDspaceSession(true);
+           // AppContext.updateDspaceSession(true);
+            SessionObserver.set(true);
           } else {
-            AppContext.updateDspaceSession(false);
+            //AppContext.updateDspaceSession(false);
+            SessionObserver.set(false);
           }
 
         });
@@ -405,7 +408,7 @@
        * Gets the base url query string required by the paging and seo components.
        * @returns {string}
        */
-      utils.getBaseUrl = function(offset, direction) {
+      utils.getBaseUrl = function (offset, direction) {
 
         var qs = $location.search();
         var url = $location.path() + '?';
@@ -430,7 +433,7 @@
       };
 
 
-      utils.isSmallScreen = function() {
+      utils.isSmallScreen = function () {
 
         return $mdMedia('sm') || $mdMedia('xs');
 
@@ -457,41 +460,39 @@
        * Creates JSON-LD object from the item data.
        */
 
-      utils.setJsonLd = function(data) {
+      utils.setJsonLd = function (data) {
 
-          var json = '"@context": "http://schema.org/"';
+        var json = '"@context": "http://schema.org/"';
 
-          if (typeof data.jsonLdType !== 'undefined') {
-            json += ',"@type":"' + data.jsonLdType + '"';
-          }
-          if (typeof data.name !== 'undefined') {
-            json += ',"name":"' + data.name.replace('\'', '\'').replace('"', '\"') + '"';
-          }
-          if (typeof data.author !== 'undefined') {
-            json += ',"author": "' + data.author + '"';
-          }
-          if (typeof data.description !== 'undefined') {
-            json += ',"description": "' + data.description.replace('\'', '\'').replace('"', '\"') + '"';
-          }
-          if (typeof data.publisher !== 'undefined') {
-            json += ',"publisher": "' + data.publisher + '"';
-          }
-          if (typeof data.date !== 'undefined') {
-            json += ',"date": "' + data.date + '"';
-          }
+        if (typeof data.jsonLdType !== 'undefined') {
+          json += ',"@type":"' + data.jsonLdType + '"';
+        }
+        if (typeof data.name !== 'undefined') {
+          json += ',"name":"' + data.name.replace('\'', '\'').replace('"', '\"') + '"';
+        }
+        if (typeof data.author !== 'undefined') {
+          json += ',"author": "' + data.author + '"';
+        }
+        if (typeof data.description !== 'undefined') {
+          json += ',"description": "' + data.description.replace('\'', '\'').replace('"', '\"') + '"';
+        }
+        if (typeof data.publisher !== 'undefined') {
+          json += ',"publisher": "' + data.publisher + '"';
+        }
+        if (typeof data.date !== 'undefined') {
+          json += ',"date": "' + data.date + '"';
+        }
 
-          var jsonld = '{' + json + '}';
+        var jsonld = '{' + json + '}';
 
-          return jsonld;
+        return jsonld;
 
-        };
+      };
 
 
-        return utils;
+      return utils;
 
     }
-
-
 
 
   ]);

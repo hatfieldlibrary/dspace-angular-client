@@ -4,14 +4,14 @@
 
 'use strict';
 
-function SideNavCtrl($scope,
-                     $mdMedia,
+function SideNavCtrl($mdMedia,
                      $mdSidenav,
                      Messages,
                      AssetTypes,
                      QueryTypes,
                      QueryManager,
                      AppContext,
+                     MenuObserver,
                      Utils) {
 
   var ctrl = this;
@@ -24,8 +24,47 @@ function SideNavCtrl($scope,
     ctrl.isSystemAdmin = canAdmin;
   }
 
+  /**
+   * Subscribe to menu state changes.
+   */
+  var subscription = MenuObserver.subscribe(function onNext() {
+    buildToggler('right');
+  });
+  /**
+   * Cleanup observable.
+   */
+  ctrl.$onDestroy = function () {
+    subscription.dispose();
+  };
 
-  function init() {
+  /**
+   * Menu toggler.
+   * @param navID
+   */
+  function buildToggler(navID) {
+    $mdSidenav(navID)
+      .toggle()
+      .then(function () {
+      });
+  }
+
+  /**
+   * Menu close.
+   */
+  ctrl.close = function () {
+    $mdSidenav('right').close()
+      .then(function () {
+      });
+
+  };
+
+  ctrl.greaterThanMd = function () {
+    return $mdMedia('gt-md');
+  };
+
+
+
+  ctrl.$onInit = function () {
 
     Utils.setSysAdminStatus(_setSysAdminStatus);
 
@@ -54,119 +93,67 @@ function SideNavCtrl($scope,
     ctrl.submitInstructionsLink = Messages.SUBMIT_INSTRUCTIONS_LINK;
 
 
-  }
-
-  init();
-
-  /**
-   * Build handler to open/close SideNav.
-   */
-  function buildToggler(navID) {
-    $mdSidenav(navID)
-      .toggle()
-      .then(function () {
-
-      });
-  }
-
-  $scope.$watch(function () {
-      return AppContext.getMenuState();
-    },
-    function updateMenu(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        buildToggler('right');
-      }
-    });
-
-
-  $scope.$watch(function () {
-      return AppContext.getWritePermission();
-    },
-    function (newValue, oldValue) {
-      if (newValue !== oldValue) {
-        ctrl.canWrite = newValue;
-      }
-    }
-  );
-
-  /**
-   * Side panel sets different administrative options
-   * based on AssetType. In most cases, we can simply
-   * watch for tne new AssetType and update links based
-   * on the current authenticated users permission level.
-   */
-  $scope.$watch(function () {
-      return QueryManager.getAssetType();
-    },
-    function (newValue, oldValue) {
-      if (newValue !== oldValue) {
-
-
-        if (newValue === AssetTypes.COLLECTION) {
-          ctrl.actionType = 'Collection';
-          ctrl.service = 'collection';
-          ctrl.itemHandle = QueryManager.getHandle();
-          ctrl.itemId = QueryManager.getAssetId();
-          ctrl.canSubmit = AppContext.getSubmitPermission();
-          ctrl.canAdminister = AppContext.getAdministerPermission();
-          ctrl.showSubmitInstuctions = ctrl.canSubmit;
-
-        }
-        else if (newValue === AssetTypes.COMMUNITY) {
-          ctrl.actionType = 'Community';
-          ctrl.service = 'community';
-          ctrl.itemId = QueryManager.getAssetId();
-          ctrl.canSubmit = false;
-          ctrl.canAdminister = AppContext.getAdministerPermission();
-          ctrl.showSubmitInstuctions = false;
-
-        }
-        else if (newValue === AssetTypes.ITEM) {
-
-          ctrl.canAdminister = AppContext.getAdministerPermission();
-          ctrl.canWrite = AppContext.getWritePermission();
-
-        } else if (newValue === AssetTypes.COMMUNITY_LIST) {
-          ctrl.actionType = 'DSpace';
-          ctrl.canAdminister = false; // not needed
-          ctrl.canWrite = false; // not needed
-
-
-        }
-      }
-    }
-  );
-
-  /**
-   * Since we cannot use AssetType with Discovery queries, we need
-   * to add another watch.  It would be nice to eliminate this one,
-   * but that will require modifying to queryManager.  Could be done.
-   */
-  $scope.$watch(function () {
-      return QueryManager.getQueryType();
-    },
-    function (newValue, oldValue) {
-      if (newValue !== oldValue) {
-        if (newValue === QueryTypes.DISCOVER) {
-          ctrl.canAdminister = false; // not needed
-          ctrl.canWrite = false; // not needed
-        }
-      }
-
-    });
-
-  ctrl.greaterThanMd = function () {
-    return $mdMedia('gt-md');
   };
 
-  ctrl.close = function () {
 
-    $mdSidenav('right').close()
-      .then(function () {
+  ctrl.$onChanges = function (changes) {
 
-      });
+    /**
+     * Side panel sets administrative options based on the AssetType.
+     * In most cases, we can simply watch for tne new AssetType and update
+     * links based on the current authenticated users permission level.
+     */
+    if (changes.assetType) {
+      if (changes.assetType.currentValue === AssetTypes.COLLECTION) {
+        ctrl.actionType = 'Collection';
+        ctrl.service = 'collection';
+        ctrl.itemHandle = QueryManager.getHandle();
+        ctrl.itemId = QueryManager.getAssetId();
+        ctrl.canSubmit = AppContext.getSubmitPermission();
+        ctrl.canAdminister = AppContext.getAdministerPermission();
+        ctrl.showSubmitInstuctions = ctrl.canSubmit;
+      }
+      else if (changes.assetType.currentValue === AssetTypes.COMMUNITY) {
+        ctrl.actionType = 'Community';
+        ctrl.service = 'community';
+        ctrl.itemId = QueryManager.getAssetId();
+        ctrl.canSubmit = false;
+        ctrl.canAdminister = AppContext.getAdministerPermission();
+        ctrl.showSubmitInstuctions = false;
+      }
+      else if (changes.assetType.currentValue === AssetTypes.ITEM) {
+        ctrl.canAdminister = AppContext.getAdministerPermission();
+        ctrl.canWrite = AppContext.getWritePermission();
+      }
+      else if (changes.assetType.currentValue === AssetTypes.COMMUNITY_LIST) {
+        ctrl.actionType = 'DSpace';
+        ctrl.canAdminister = false; // not needed
+        ctrl.canWrite = false; // not needed
+      }
+      else if (changes.assetId) {
+        ctrl.assetId = changes.assetId.currentValue;
+      }
+    }
+    /**
+     * Set the write permission.
+     */
+    if (changes.writePermission) {
+      ctrl.canWrite = changes.writePermission.currentValue;
+    }
+    /**
+     * Since we rely on AssetType with Discovery queries, we need
+     * to add another change watch.  It would be nice to eliminate this one,
+     * but that will require modifying to queryManager.  Could be done.
+     */
+    if (changes.queryType) {
+      if (changes.queryType.currentValue === QueryTypes.DISCOVER) {
+        ctrl.canAdminister = false; // not needed
+        ctrl.canWrite = false; // not needed
+      }
+    }
 
   };
+
 
 }
 
@@ -174,6 +161,11 @@ function SideNavCtrl($scope,
 dspaceComponents.component('sideNavComponent', {
 
   bindings: {
+    assetType: '@',
+    queryType: '@',
+   // menuState: '<',
+    assetId: '@',
+    writePermission: '<',
     type: '@'
   },
   templateUrl: '/ds/shared/templates/sidePanel.html',

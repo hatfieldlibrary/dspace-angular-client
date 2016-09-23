@@ -5,10 +5,9 @@
 
 (function () {
 
-  function LoginCtrl($scope,
-                     Utils,
+  function LoginCtrl(Utils,
                      Messages,
-                     AppContext) {
+                     SessionObserver) {
 
     var ctrl = this;
 
@@ -17,32 +16,24 @@
 
     ctrl.logoutLabel = Messages.LOGOUT_LABEL;
 
-    ctrl.sessionStatus = AppContext.hasDspaceSession();
+    ctrl.sessionStatus = SessionObserver.get();
 
-    /** Login request */
-    // ctrl.login = function () {
-    //   Login.query();
-    //
-    // };
+    /** Watch for change in DSpace session status. */
+    var subscription = SessionObserver.subscribe(function (state) {
+      ctrl.sessionStatus = state;
+    });
+
+    ctrl.$onDestroy = function () {
+      subscription.dispose();
+    };
+
 
     /** Check DSpace session status on init. */
-    var init = function () {
-
+    ctrl.$onInit = function () {
       Utils.checkSession();
 
     };
-    /** Watch for change in DSpace session status. */
-    $scope.$watch(function () {
-        return AppContext.hasDspaceSession();
-      },
 
-      function (newValue, oldValue) {
-        if (newValue !== oldValue) {
-          ctrl.sessionStatus = newValue;
-        }
-      });
-
-    init();
 
   }
 
