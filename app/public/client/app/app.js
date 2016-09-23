@@ -53,7 +53,7 @@ var dspaceApp = angular.module('dspaceApp', [
           reloadOnSearch: false
         })
         .when('/ds/discover/:type/:id/:terms', {
-          templateUrl: '/ds/partials/discover',
+          templateUrl: '/ds/partials/discover.html',
           reloadOnSearch: false
         })
         .when('/ds/advanced', {

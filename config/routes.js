@@ -86,9 +86,9 @@ module.exports = function (app, config, passport) {
 
   app.get('/ds/bitstream/:id/:file', bitstream.bitstream);
 
-  app.use('/ds/handleRequest/:site/:item', handle.getItem);
+  app.get('/ds/handleRequest/:site/:item', handle.getItem);
 
-  app.use('/ds/getItem/:item', item.getItem);
+  app.get('/ds/getItem/:item', item.getItem);
 
   app.get('/ds/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', solr.browse);
 
@@ -112,8 +112,7 @@ module.exports = function (app, config, passport) {
     res.sendFile(
       app.get('appPath') +
       '/partials/' +
-      name +
-      '.html'
+      name
     );
   });
 
@@ -288,6 +287,8 @@ module.exports = function (app, config, passport) {
       );
     }
   );
+
+
 
 };
 
