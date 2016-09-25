@@ -28,6 +28,7 @@
 
     var event;
 
+
     /**
      * Sets fullscreen view via media query.
      */
@@ -114,6 +115,10 @@
 
     };
 
+    ctrl.getItemUrlForSeo = function() {
+      return  '/ds/handle/' + ctrl.handle;
+    };
+
     ctrl.$onChanges = function(changes) {
       if (changes.selectedItem) {
         if (changes.selectedItem.currentValue === ctrl.id) {
@@ -121,6 +126,7 @@
         }
       }
     };
+
 
 
   }

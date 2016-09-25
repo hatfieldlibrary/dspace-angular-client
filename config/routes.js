@@ -125,11 +125,38 @@ module.exports = function (app, config, passport) {
 
     var name = req.params.name;
 
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/shared/templates/lists/' +
-      name
-    );
+    // For the itemDetail template, detect search engine crawlers and
+    // return a template that links to the canonical handle view
+    // rather than the app's modal dialog view.
+    if (name === 'itemDetail.html') {
+
+      var regex = /Googlebot|Bingbot|Slurp/i;
+      var userAgent =  req.headers['user-agent'];
+
+      // ...is a crawler request, use crawler template
+      if (userAgent.match(regex)) {
+        res.sendFile(
+          app.get('appPath') +
+          '/app/components/shared/templates/lists/itemDetailSeo.html'
+        );
+      }
+      // ...in-app template
+      else {
+        res.sendFile(
+          app.get('appPath') +
+          '/app/components/shared/templates/lists/' +
+          name
+        );
+      }
+    }
+    // All other shared list templates.
+    else {
+      res.sendFile(
+        app.get('appPath') +
+        '/app/components/shared/templates/lists/' +
+        name
+      );
+    }
   });
 
   app.get('/ds/shared/templates/search/:name', function (req, res) {
@@ -169,11 +196,12 @@ module.exports = function (app, config, passport) {
 
     var name = req.params.name;
 
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/shared/templates/' +
-      name
-    );
+      res.sendFile(
+        app.get('appPath') +
+        '/app/components/shared/templates/' +
+        name
+      );
+
   });
 
   app.get('/ds/handle/templates/item/:name', function (req, res) {

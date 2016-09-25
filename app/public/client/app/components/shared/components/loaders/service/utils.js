@@ -234,8 +234,6 @@
 
       function updatePagerOffsets(loader, direction, offset) {
 
-        console.log('got offset ' + offset)
-
         if (typeof offset === 'string') {
           offset = parseInt(offset, 10);
         }

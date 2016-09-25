@@ -73,8 +73,6 @@
       query.$promise.then(
         function (data) {
 
-          console.log(data)
-
           ctrl.parent.setQueryType(QueryManager.getQueryType());
 
 

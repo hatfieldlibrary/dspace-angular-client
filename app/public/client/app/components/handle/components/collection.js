@@ -78,7 +78,7 @@
     }
 
 
-    function init() {
+    ctrl.$onInit = function() {
 
       if (Utils.isSearchEngine()) {
         ctrl.context = QueryActions.SEO;
@@ -100,10 +100,7 @@
 
       $anchorScroll();
 
-    }
-
-    // Initialize component state.
-    init();
+    };
 
   }
 

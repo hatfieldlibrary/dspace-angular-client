@@ -10,6 +10,9 @@ body {
   min-height: 100%;
   /* Fix for safari 9.0 bug. */
   -webkit-font-variant-ligatures: normal;
+}
+
+md-toolbar.main-toolbar {
   border-top: .4375rem solid #791716;
 }
 

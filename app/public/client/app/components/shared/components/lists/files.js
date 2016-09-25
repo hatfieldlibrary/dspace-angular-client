@@ -16,7 +16,7 @@
 
     ctrl.downloadLabel = Messages.FILE_DOWNLOAD;
 
-    ctrl.isDesktop = $mdMedia('gt-sm');
+    ctrl.isDesktop = $mdMedia('gt-md');
 
     ctrl.setTarget = function (type) {
 

@@ -41,6 +41,6 @@
     {
       templateUrl:'/ds/handle/templates/handleContainer.html',
       controller: ContainerController
-    })
+    });
 
 })();

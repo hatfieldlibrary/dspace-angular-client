@@ -83,7 +83,9 @@
 
     ctrl.hideLoginMessage = SessionObserver.get();
     var subscription = SessionObserver.subscribe(function (state) {
-      ctrl.hideLoginMessage = state;
+
+      ctrl.hideLoginMessage = showLoginMessage(state);
+
     });
 
     ctrl.$onDestroy = function () {
@@ -100,9 +102,14 @@
 
       if (!dspaceTokenExists) {
         if (ctrl.data.countItems !== ctrl.data.itemTotal) {
-          ctrl.hideLoginMessage = false;
+          return false;
 
+        }  else {
+          return true;
         }
+      }
+      else {
+        return true;
       }
     }
 

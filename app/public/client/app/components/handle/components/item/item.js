@@ -9,6 +9,7 @@
 
 
   function ItemCtrl($window,
+                    $anchorScroll,
                     GetCollectionInfo,
                     Utils,
                     Messages,
@@ -84,6 +85,8 @@
       ctrl.parentName = data.parentCommunity.name;
       ctrl.parentHandle = data.parentCommunity.handle;
     });
+
+    $anchorScroll();
 
   }
 

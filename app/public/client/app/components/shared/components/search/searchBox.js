@@ -68,7 +68,7 @@
         sb.id = changes.assetId.currentValue;
         sb.currentCollectionId = changes.assetId.currentValue;
       }
-    }
+    };
 
   }
 
