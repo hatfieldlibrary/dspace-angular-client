@@ -8,6 +8,16 @@
 
   appConstants.constant('Messages', {
 
+    /**
+     * The link used by by the header logo.
+     */
+    HOME_LINK: 'http://libmedia.willamette.edu/',
+
+    /**
+     * The header logo image.
+     */
+    HOME_LOGO: '/ds/images/acom_header.png',
+
     COMMUNITIES_META_TITLE: 'University Departments',
 
     COMMUNITIES_META_DESCRIPTION: 'Willamette University Departments',

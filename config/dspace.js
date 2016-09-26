@@ -18,7 +18,7 @@ var config = {
     // rest port is either standard port (e.g. 8080) or ssl port (e.g. 8443).
     port: '8080',
 
-    // if using ssl and a self-signed certificate, this needs to be false. Otherwise, true.
+    // if using self-signed certificate with ssl, this should be false. Otherwise, true.
     rejectUnauthorized: true,
 
     // the rest API servlet context.
@@ -34,6 +34,7 @@ var config = {
     // not also running dspace on localhost, e.g.:
     // ssh -L 1234:127.0.0.1:8080 dspace.college.edu.
     solrPort: '1234'
+
   },
 
   /**  production  */

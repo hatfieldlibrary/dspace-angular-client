@@ -17,7 +17,7 @@
     /**
      * Your Dspace host (can be an empty string).  This link
      * is used to open the administration and submission options
-     * that are not currently available in the API client.
+     * that are not available currently in the API client.
      */
     DSPACE_HOST: 'http://libmedia.willamette.edu',
 
@@ -28,25 +28,15 @@
     DSPACE_ROOT: '/xmlui',
 
     /**
-     * The maximum number if items returned by queries.
-     */
-    RESPONSE_SET_SIZE: 20,
-
-    /**
      * Check for authenticated user and give the user an
      * opportunity to log in if no authenticated session exists.
      */
     USE_REDIRECT: true,
 
     /**
-     * The link used by by the header logo.
+     * The maximum number of items returned by queries.
      */
-    HOME_LINK: 'http://libmedia.willamette.edu/',
-
-    /**
-     * The header logo image.
-     */
-    HOME_LOGO: '/ds/images/acom_header.png'
+    RESPONSE_SET_SIZE: 20
 
   });
 
