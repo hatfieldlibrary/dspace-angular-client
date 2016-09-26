@@ -1,4 +1,4 @@
-<header-component></header-component>
+
 
 
 <!-- Without explicit height, Firefox (44.0.1) does not calculate the height of the flex container. -->
@@ -12,12 +12,9 @@
 
         <div layout="row" flex="100" layout-align="left center">
 
-          <div column layout="row" flex="100" layout-align="start start">
+          <div flex="100" layout-align="start start">
 
-            <handle-component flex="100" flex-gt-sm="90"
-                              class="app-primary-content-container"></handle-component>
-
-            <side-nav-component type="handle" flex></side-nav-component>
+           <handle-container-component layout="row"></handle-container-component>
 
           </div>
         </div>
@@ -25,7 +22,7 @@
     </div>
 
 
-    <ng-include src="'/ds/partials/footer'">
+    <ng-include src="'/ds/partials/footer.html'">
     </ng-include>
 
   </md-content>

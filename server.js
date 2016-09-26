@@ -34,7 +34,7 @@ require('./config/errorHandler')(app);
 
 /**
  * Starts the HTTP server.  If in production environment, sets
- * uid and gid after start (allows use of lower ports if that's 
+ * uid and gid after start (allows use of lower ports if that's
  * needed).
  */
 function startServer() {
