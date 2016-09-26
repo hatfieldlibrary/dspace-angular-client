@@ -1,10 +1,14 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
 <head>
-  <title ng-bind="title">DSpace</title>
+  <title ng-bind="title"></title>
   <link rel="{{relValue}}" ng-href="{{nextPage}}"/>
   <link rel="{{prevValue}}" ng-href="{{prevPage}}"/>
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -16,7 +20,7 @@
   <meta name="author" content="{{author}}">
 
   <!-- build:css ds/css/app.css -->
-  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"/>
   <link rel="stylesheet" href="ds/css/style.css"/>
   <!-- endbuild -->
 
@@ -30,7 +34,10 @@
   <!-- Here we are using an Adobe typekit account (to assure Helvetica Neue is available).
       This is specific to our university domain. -->
   <script src="//use.typekit.net/ata4lfd.js"></script>
-  <script>try{Typekit.load();}catch(e){}</script>
+  <script>try {
+    Typekit.load();
+  } catch (e) {
+  }</script>
 
   <script>
     (function (i, s, o, g, r, a, m) {
@@ -51,22 +58,39 @@
     // ga('send', 'pageview');
   </script>
 
-  <!--[if !IE]><!--><script>
-  if (/*@cc_on!@*/false) {
-    document.documentElement.className+=' ie10';
-  }
-</script><!--<![endif]-->
+  <!--[if !IE]><!-->
+  <script>
+    if (/*@cc_on!@*/false) {
+      document.documentElement.className += ' ie10';
+    }
+  </script><!--<![endif]-->
 
 </head>
 
 <!-- IE flexbox fix: height: 100% -->
 <body layout-fill style="height: 100%" class="{{ bodyClass }}" ng-cloak>
 
+<md-toolbar class="main-toolbar">
+  <div class="md-toolbar-tools">
+    <div layout="row" flex="100" layout-align="center center">
+      <div layout="row" flex="100" style="max-width:950px" layout-align="left center"
+           class="content-width" flex>
+
+        <header-component layout="row" flex="100" layout-align="left center"></header-component>
+
+      </div>
+    </div>
+  </div>
+</md-toolbar>
+
 <!-- Angularjs view container -->
 <div class="main" ng-view layout-fill layout="column"></div>
 
+
 <!-- build:js ds/app/app.js -->
 <script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/rxjs/dist/rx.lite.js"></script>
+<script src="bower_components/rx-angular/dist/rx.angular.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
 <script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
@@ -83,86 +107,85 @@
 <script src="bower_components/angulartics/src/angulartics.js"></script>
 <script src="bower_components/angulartics-google-analytics/lib/angulartics-google-analytics.js"></script>
 
-<script src="app/core/modules/services.js"></script>
-<script src="app/core/modules/constants.js"></script>
-<script src="app/core/modules/components.js"></script>
-<script src="app/core/modules/context.js"></script>
-<script src="app/core/stack.js"></script>
-<script src="app/core/queryTypes.js"></script>
-<script src="app/core/discovery/discoveryForms.js"></script>
-<script src="app/core/queryManager.js"></script>
-<script src="app/core/appContext.js"></script>
-<script src="app/core/utils.js"></script>
-
+<script src="app/services/core/modules/services.js"></script>
+<script src="app/services/core/modules/constants.js"></script>
+<script src="app/services/core/modules/components.js"></script>
+<script src="app/services/core/modules/context.js"></script>
 
 <script src="app/config/messages.js"></script>
 <script src="app/config/appConfig.js"></script>
 
+<script src="app/services/dialog/dialogFactory.js"></script>
+<script src="app/services/core/stack.js"></script>
+<script src="app/services/core/queryTypes.js"></script>
+<script src="app/services/core/discovery/discoveryForms.js"></script>
+<script src="app/services/core/queryManager.js"></script>
+<script src="app/services/core/appContext.js"></script>
+<script src="app/services/core/utils.js"></script>
+<script src="app/services/requests/communities.js"></script>
+<script src="app/services/requests/itemByHandle.js"></script>
+<script src="app/services/requests/itemById.js"></script>
+<script src="app/services/requests/collectionInfo.js"></script>
+<script src="app/services/requests/browse.js"></script>
+<script src="app/services/requests/checkSession.js"></script>
+<script src="app/services/requests/login.js"></script>
+<script src="app/services/requests/solrRecentSubs.js"></script>
+<script src="app/services/requests/solrQuery.js"></script>
+<script src="app/services/requests/checkAdminUser.js"></script>
+<script src="app/services/shared/pageTitle.js"></script>
+<script src="app/services/shared/metaDescription.js"></script>
+<script src="app/services/shared/metaAuthor.js"></script>
+<script src="app/services/shared/seo.js"></script>
+<script src="app/services/observable/observeMenuState.js"></script>
+<script src="app/services/observable/dspaceSessionObserver.js"></script>
+<script src="app/services/loader/facets.js"></script>
+<script src="app/services/loader/query.js"></script>
+<script src="app/services/loader/onInit.js"></script>
+<script src="app/services/loader/onLocationChange.js"></script>
+<script src="app/services/loader/filters.js"></script>
+<script src="app/services/loader/utils.js"></script>
 
-<script src="app/requests/communities.js"></script>
-<script src="app/requests/itemByHandle.js"></script>
-<script src="app/requests/itemById.js"></script>
-<script src="app/requests/collectionInfo.js"></script>
-<script src="app/requests/browse.js"></script>
-<script src="app/requests/checkSession.js"></script>
-<script src="app/requests/login.js"></script>
-<script src="app/requests/solrRecentSubs.js"></script>
-<script src="app/requests/solrQuery.js"></script>
-<script src="app/requests/checkAdminUser.js"></script>
+<script src="app/components/shared/loaders/loader.js"></script>
+<script src="app/components/shared/loaders/sortOptions.js"></script>
+<script src="app/components/shared/loaders/discoveryFilter.js"></script>
+<script src="app/components/shared/loaders/discoverFilterContainer.js"></script>
+<script src="app/components/shared/header.js"></script>
+<script src="app/components/shared/login.js"></script>
+<script src="app/components/shared/smallSpinner.js"></script>
+<script src="app/components/shared/search/globalSearchBox.js"></script>
+<script src="app/components/shared/search/searchBox.js"></script>
+<script src="app/components/shared/sidePanel.js"></script>
+<script src="app/components/shared/spinner.js"></script>
+<script src="app/components/shared/lists/files.js"></script>
+<script src="app/components/shared/lists/itemList.js"></script>
+<script src="app/components/shared/lists/itemDetail.js"></script>
+<script src="app/components/shared/lists/inlineItemDetail.js"></script>
+<script src="app/components/shared/lists/community.js"></script>
+<script src="app/components/shared/lists/collectionItem.js"></script>
+<script src="app/components/shared/lists/authorDetail.js"></script>
+<script src="app/components/shared/lists/subjectDetail.js"></script>
+<script src="app/components/shared/lists/discoverDetail.js"></script>
+<script src="app/components/shared/lists/browseDetail.js"></script>
+<script src="app/components/shared/pager.js"></script>
+<script src="app/components/shared/backPager.js"></script>
+<script src="app/components/handle/handleContainer.js"></script>
+<script src="app/components/handle/handle.js"></script>
+<script src="app/components/handle/noAccess.js"></script>
+<script src="app/components/handle/collection.js"></script>
+<script src="app/components/handle/community.js"></script>
+<script src="app/components/handle/item/layoutSelector.js"></script>
+<script src="app/components/handle/item/mobileItem.js"></script>
+<script src="app/components/handle/item/item.js"></script>
+<script src="app/components/handle/item/mobileItemPage.js"></script>
+<script src="app/components/seo/pagingRequest.js"></script>
+<script src="app/components/advanced/advanced.js"></script>
+<script src="app/components/advanced/filters/advancedFilterContainer.js"></script>
+<script src="app/components/discover/discover.js"></script>
+<script src="app/components/communities/communities.js"></script>
+<script src="app/components/browse/browse.js"></script>
 
-
-<script src="app/components/shared/service/pageTitle.js"></script>
-<script src="app/components/shared/service/metaDescription.js"></script>
-<script src="app/components/shared/service/metaAuthor.js"></script>
-<script src="app/components/shared/service/seo.js"></script>
-<script src="app/components/shared/components/loaders/service/facets.js"></script>
-<script src="app/components/shared/components/loaders/service/query.js"></script>
-<script src="app/components/shared/components/loaders/service/onInit.js"></script>
-<script src="app/components/shared/components/loaders/service/onLocationChange.js"></script>
-<script src="app/components/shared/components/loaders/service/filters.js"></script>
-<script src="app/components/shared/components/loaders/service/utils.js"></script>
-<script src="app/components/shared/components/loaders/pager.js"></script>
-<script src="app/components/shared/components/loaders/backPager.js"></script>
-<script src="app/components/shared/components/loaders/sortOptions.js"></script>
-<script src="app/components/shared/components/loaders/discoveryFilter.js"></script>
-<script src="app/components/shared/components/loaders/discoverFilterContainer.js"></script>
-<script src="app/components/shared/components/header.js"></script>
-<script src="app/components/shared/components/login.js"></script>
-<script src="app/components/shared/components/smallSpinner.js"></script>
-<script src="app/components/shared/components/search/globalSearchBox.js"></script>
-<script src="app/components/shared/components/search/searchBox.js"></script>
-<script src="app/components/shared/components/sidePanel.js"></script>
-<script src="app/components/shared/components/spinner.js"></script>
-<script src="app/components/shared/components/lists/files.js"></script>
-<script src="app/components/shared/components/lists/itemList.js"></script>
-<script src="app/components/shared/components/lists/itemDetail.js"></script>
-<script src="app/components/shared/components/lists/inlineItemDetail.js"></script>
-<script src="app/components/shared/components/lists/community.js"></script>
-<script src="app/components/shared/components/lists/collectionItem.js"></script>
-<script src="app/components/shared/components/lists/authorDetail.js"></script>
-<script src="app/components/shared/components/lists/subjectDetail.js"></script>
-<script src="app/components/shared/components/lists/discoverDetail.js"></script>
-<script src="app/components/shared/components/lists/browseDetail.js"></script>
-
-
-<script src="app/components/handle/components/handle.js"></script>
-<script src="app/components/handle/components/noAccess.js"></script>
-<script src="app/components/handle/components/collection.js"></script>
-<script src="app/components/handle/components/community.js"></script>
-<script src="app/components/handle/components/item/layoutSelector.js"></script>
-<script src="app/components/handle/components/item/mobileItem.js"></script>
-<script src="app/components/handle/components/item/item.js"></script>
-<script src="app/components/handle/components/item/mobileItemPage.js"></script>
-<script src="app/components/handle/service/dialogFactory.js"></script>
-
-<script src="app/components/seo/components/pagingRequest.js"></script>
-
-<script src="app/components/advanced/components/advanced.js"></script>
-<script src="app/components/advanced/components/filters/advancedFilterContainer.js"></script>
-<script src="app/components/discover/components/discover.js"></script>
-<script src="app/components/communities/components/communities.js"></script>
-<script src="app/components/browse/components/browse.js"></script>
 <script src="app/app.js"></script>
+
 <!-- endbuild -->
 
 </body>

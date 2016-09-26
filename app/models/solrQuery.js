@@ -81,7 +81,6 @@ var constants = require('../core/constants');
           transform: processResult
         }
       ).then(function (json) {
-        console.log(json)
         // This warrants a bit of review!  We need
         // to check for an empty results array and
         // return 404 if empty.  However, the facets

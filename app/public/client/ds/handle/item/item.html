@@ -1,0 +1,126 @@
+<script ng-bind="$ctrl.jsonLd"></script>
+<div class="item-details" aria-label="List dialog" style="margin-top: 24px;min-width:100%">
+
+  <md-card class="item">
+
+  <md-toolbar class="md-primary dialog-toolbar md-hue-3" style="min-width:100%">
+    <div class="md-toolbar-tools">
+      <md-button class="md-icon-button" ng-click="$ctrl.openCollection()">
+        <md-icon aria-label="Close dialog" md-font-library="material-icons">arrow_back</md-icon>
+      </md-button>
+      <!--<h2>{{$ctrl.pageHeader}}</h2>-->
+      <span flex></span>
+      <md-button ng-show="$ctrl.canWrite" class="md-icon-button"
+                 ng-href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/item?itemID={{$ctrl.itemId}}" target="_blank"
+                 aria-label="Edit">
+        <i class="material-icons" aria-label="edit">mode_edit</i>
+      </md-button>
+
+
+    </div>
+  </md-toolbar>
+
+  <!-- IE 10/11 style hacks:
+   max-width: 100%; -->
+
+  <div ng-class="{'large-dialog': $ctrl.isLargeScreen }">
+
+    <div id="dialog-top" style="height: 0px; padding:0;"></div>
+
+    <div layout-fill>
+
+
+      <!-- Title, layout row-->
+      <div layout="row" layout-align="start start" layout-padding class="dialog-item-title dialog-record-width">
+
+        <div flex="20" hide show-gt-md class="item-left-col-dimens"></div>
+        <div flex="100" flex-gt-md="80" layout="column" layout-padding>
+          <div class="md-headline">{{$ctrl.data.name}}</div>
+        </div>
+
+      </div>
+
+      <md-divider style="padding-bottom: 0px;"></md-divider>
+
+      <!-- Main content area, layout row < lg, layout column > md -->
+      <div class="dialog-record dialog-record-width">
+
+        <div layout="row" layout-align="start start" flex="100" style="height:100%" layout-padding>
+
+          <!-- Files, gt-md -->
+          <div hide show-gt-md flex="20" class="item-left-col-dimens">
+            <div ng-if="$ctrl.data.bitstreams.length > 0">
+              <div class="md-caption" style="padding-left: 12px;">{{$ctrl.filesLabel}} ({{$ctrl.fileCount}})</div>
+              <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
+            </div>
+            <div ng-if="$ctrl.data.bitstreams.length == 0">
+              <i class="material-icons">lock_outline</i> {{$ctrl.fileAccessLabel}}
+            </div>
+          </div>
+
+
+          <div layout="column" layout-padding flex="100" flex-gt-sm="80" style="max-width:100%;box-sizing:border-box">
+
+            <!-- Byline and citation -->
+            <div layout="column" layout-align="start start" style="max-width:100%;box-sizing:border-box;">
+              <div class="md-title byline dialog-record-width" style="max-width: 100%;">{{$ctrl.data.author}}</div>
+              <div class="md-body-2">{{$ctrl.publicationLabel}}</div>
+              <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.date}}</div>
+              <div class="md-body-2 citation-margin">{{$ctrl.citationLabel}}</div>
+              <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.url}}</div>
+              <div class="md-body-2 citation-margin">{{$ctrl.parentCollectionLabel}}</div>
+              <div class="md-subhead" style="max-width:100%;box-sizing:border-box"><a ng-href="/ds/handle/{{$ctrl.data.parentCollection.handle}}" target="_top">{{$ctrl.data.parentCollection.name}}</a></div>
+            </div>
+
+            <md-divider hide-gt-md style="margin: 18px 0;"></md-divider>
+
+            <!-- Files, lt-lg -->
+            <div hide-gt-md layout="column" layout-align="start start">
+
+              <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
+
+            </div>
+
+            <md-divider hide-gt-md style="margin: 26px 0;"></md-divider>
+
+            <!-- abstract and metadata -->
+            <div class="abstract" layout="column">
+              <div ng-if="$ctrl.data.description.length > 0" class="md-subhead">{{$ctrl.abstractLabel}}</div>
+              <div class="md-body-1">{{$ctrl.data.description}}</div>
+              <div id="metadata"></div>
+              <h3 class="md-title">
+                {{$ctrl.metadataLabel}}
+                <md-button class="md-subhead md-fab md-mini md-accent" style="color: #fff;"
+                           ng-click="$ctrl.toggleMeta();"
+                           ng-if="!$ctrl.showMetadata">
+                  <md-icon md-font-library="material-icons">expand_more</md-icon>
+                </md-button>
+
+                <md-button class="md-subhead md-fab md-mini md-accent" style="color: #fff;"
+                           ng-click="$ctrl.toggleMeta();"
+                           ng-if="$ctrl.showMetadata">
+                  <md-icon md-font-library="material-icons">expand_less</md-icon>
+                </md-button>
+              </h3>
+              <div layout="column" style="margin-top: 4px;" ng-repeat="meta in $ctrl.data.metadata"
+                   ng-show="$ctrl.showMetadata">
+                <div class="md-body-2">{{meta.key}}</div>
+                <div class="md-body-1">{{meta.value}}</div>
+              </div>
+              <p></p>
+              <p></p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  </md-card>
+
+
+</div>
+
+
