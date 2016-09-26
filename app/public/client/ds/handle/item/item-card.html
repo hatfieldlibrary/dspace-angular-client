@@ -1,0 +1,112 @@
+<script ng-bind="$ctrl.jsonLd"></script>
+
+<div class="layout-padding" flex>
+
+  <div layout="column" class="page-title">
+    <div class="md-subhead parent-title"><a ng-href="/ds/handle/{{$ctrl.parentHandle}}">{{$ctrl.parentName}}</a>
+    </div>
+    <div>
+      <div class="md-display-1 item-title"><a ng-href="/ds/handle/{{$ctrl.data.parentCollection.handle}}">{{$ctrl.data.parentCollection.name}}</a>
+      </div>
+    </div>
+  </div>
+
+  <md-card class="main-card md-hue-1" flex>
+
+    <md-card-content class="handle-item">
+      <div id="dialog-top" style="height: 0px; padding:0;"></div>
+
+      <div layout-fill>
+
+        <!-- Title, layout row-->
+        <div layout="row" layout-align="start start">
+
+          <div flex="20" hide show-gt-md class="item-left-col-width"></div>
+          <div flex="100" flex-gt-md="80" layout="column" layout-padding>
+            <div class="md-headline">{{$ctrl.data.name}}</div>
+          </div>
+
+        </div>
+
+        <md-divider style="padding-bottom: 0px;"></md-divider>
+
+        <!-- Main content area, layout row < lg, layout column > md -->
+        <div layout="row" layout-align="start start" style="height:100%">
+
+          <!-- Files, gt-md -->
+          <div hide show-gt-md flex="20" class="item-left-col-position file-info">
+
+            <div ng-if="$ctrl.data.bitstreams.length > 0">
+              <div class="md-caption" style="margin-bottom: 24px;">{{$ctrl.filesLabel}} ({{$ctrl.fileCount}})</div>
+              <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
+            </div>
+            <div ng-if="$ctrl.data.bitstreams.length == 0">
+              <i class="material-icons">lock_outline</i> {{$ctrl.fileAccessLabel}}
+            </div>
+
+          </div>
+
+          <div layout="column" flex="100" flex-gt-sm="80" style="max-width:100%;box-sizing:border-box" layout-padding>
+
+            <!-- Byline and citation -->
+            <div layout="column" layout-align="start start" style="max-width:100%;box-sizing:border-box;">
+              <!-- IE 10/11 style hack -->
+              <div class="md-title byline" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.author}}</div>
+              <div class="md-body-1">{{$ctrl.publicationLabel}}</div>
+              <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.date}}</div>
+              <div class="md-body-1 citation-margin">{{$ctrl.citationLabel}}</div>
+              <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.url}}</div>
+            </div>
+
+            <div ng-show="$ctrl.canWrite"><a href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/item?itemID={{$ctrl.itemId}}" target="_blank">{{$ctrl.editItemLabel}}</a></div>
+
+            <md-divider hide-gt-md style="margin: 18px 0;"></md-divider>
+
+            <!-- Files, lt-lg -->
+            <div hide-gt-md layout="column" layout-align="start start">
+
+              <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
+
+            </div>
+
+            <md-divider hide-gt-md style="margin: 26px 0;"></md-divider>
+
+            <!-- abstract and metadata -->
+            <div class="abstract" layout="column">
+              <div ng-if="$ctrl.data.description.length > 0" class="md-subhead">{{$ctrl.abstractLabel}}</div>
+              <div class="md-body-1">{{$ctrl.data.description}}</div>
+              <div id="metadata"></div>
+              <h3 class="md-title">
+                {{$ctrl.metadataLabel}}
+                <md-button class="md-subhead md-fab md-mini md-accent" style="color: #fff;"
+                           ng-click="$ctrl.toggleMeta();"
+                           ng-if="!$ctrl.showMetadata">
+                  <md-icon md-font-library="material-icons">expand_more</md-icon>
+                </md-button>
+
+                <md-button class="md-subhead md-fab md-mini md-accent" style="color: #fff;"
+                           ng-click="$ctrl.toggleMeta();"
+                           ng-if="$ctrl.showMetadata">
+                  <md-icon md-font-library="material-icons">expand_less</md-icon>
+                </md-button>
+              </h3>
+              <div layout="column" style="margin-top: 4px;" ng-repeat="meta in $ctrl.data.metadata"
+                   ng-show="$ctrl.showMetadata">
+                <div class="md-body-2">{{meta.key}}</div>
+                <div class="md-body-1">{{meta.value}}</div>
+              </div>
+              <p></p>
+              <p></p>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+
+    </md-card-content>
+  </md-card>
+
+
+</div>

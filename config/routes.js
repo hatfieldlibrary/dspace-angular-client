@@ -10,13 +10,14 @@ module.exports = function (app, config, passport) {
     item = require('../app/controllers/item'),
     solr = require('../app/controllers/solr');
 
-
   /**
    * Pass app configuration to the login controller.
    */
   login.setConfig(config);
 
-  // AUTHENTICATION
+
+  // AUTHENTICATION.
+
   /**
    * Use OAUTH2 for development.
    */
@@ -57,6 +58,10 @@ module.exports = function (app, config, passport) {
         res.redirect('/ds/login/' + req.user);
       });
   }
+
+
+  // API ENDPOINTS.
+
   /**
    * Get DSpace token for authenticated user.
    */
@@ -74,8 +79,6 @@ module.exports = function (app, config, passport) {
 
   app.get('/ds/adminStatus', login.checkSysAdminStatus);
 
-  // REST API for dspace requests
-
   app.get('/ds/getCommunities', community.getCommunities);
 
   app.get('/ds/communitiesForDiscover', community.getCommunitiesForDiscover);
@@ -86,9 +89,9 @@ module.exports = function (app, config, passport) {
 
   app.get('/ds/bitstream/:id/:file', bitstream.bitstream);
 
-  app.use('/ds/handleRequest/:site/:item', handle.getItem);
+  app.get('/ds/handleRequest/:site/:item', handle.getItem);
 
-  app.use('/ds/getItem/:item', item.getItem);
+  app.get('/ds/getItem/:item', item.getItem);
 
   app.get('/ds/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', solr.browse);
 
@@ -98,9 +101,8 @@ module.exports = function (app, config, passport) {
 
   app.post('/ds/solrJumpToQuery', solr.jumpTo);
 
-  // currently unused.
-  app.use('/ds/solrRecentSubmissions/:type/:id', solr.recentSubmissions);
 
+  // HTML5 MODE ROUTING.
 
   /**
    * Route to page partials.
@@ -112,167 +114,6 @@ module.exports = function (app, config, passport) {
     res.sendFile(
       app.get('appPath') +
       '/partials/' +
-      name +
-      '.html'
-    );
-  });
-
-
-  /**
-   * Routes to component templates.
-   */
-
-  app.get('/ds/shared/templates/lists/:name', function (req, res) {
-
-    var name = req.params.name;
-
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/shared/templates/lists/' +
-      name
-    );
-  });
-
-  app.get('/ds/shared/templates/search/:name', function (req, res) {
-
-    var name = req.params.name;
-
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/shared/templates/search/' +
-      name
-    );
-  });
-
-  app.get('/ds/shared/templates/loaders/:name', function (req, res) {
-
-    var name = req.params.name;
-
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/shared/templates/loaders/' +
-      name
-    );
-  });
-
-  app.get('/ds/seo/templates/:name', function (req, res) {
-
-    var name = req.params.name;
-
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/seo/templates/' +
-      name
-    );
-  });
-
-  app.get('/ds/shared/templates/:name', function (req, res) {
-
-    var name = req.params.name;
-
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/shared/templates/' +
-      name
-    );
-  });
-
-  app.get('/ds/handle/templates/item/:name', function (req, res) {
-
-    var name = req.params.name;
-
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/handle/templates/item/' +
-      name
-    );
-  });
-
-  app.get('/ds/handle/templates/:name', function (req, res) {
-
-    var name = req.params.name;
-
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/handle/templates/' +
-      name
-    );
-  });
-
-  app.get('/ds/browse/templates/:name', function (req, res) {
-
-    var name = req.params.name;
-
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/browse/templates/' +
-      name
-    );
-  });
-
-  app.get('/ds/communities/templates/:name', function (req, res) {
-
-    var name = req.params.name;
-
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/communities/templates/' +
-      name
-    );
-  });
-
-  app.get('/ds/wrapper/templates/:name', function (req, res) {
-
-    var name = req.params.name;
-
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/wrapper/templates/' +
-      name
-    );
-  });
-
-  app.get('/ds/discover/templates/:name', function (req, res) {
-
-    var name = req.params.name;
-
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/discover/templates/' +
-      name
-    );
-  });
-
-  app.get('/ds/advanced/templates/:name', function (req, res) {
-
-    var name = req.params.name;
-
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/advanced/templates/' +
-      name
-    );
-  });
-
-  app.get('/ds/advanced/templates/lists/:name', function (req, res) {
-
-    var name = req.params.name;
-
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/advanced/templates/lists/' +
-      name
-    );
-  });
-
-
-  app.get('/ds/advanced/templates/filters/:name', function (req, res) {
-
-    var name = req.params.name;
-
-    res.sendFile(
-      app.get('appPath') +
-      '/app/components/advanced/templates/filters/' +
       name
     );
   });

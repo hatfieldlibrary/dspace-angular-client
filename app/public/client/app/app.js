@@ -7,6 +7,7 @@ var dspaceApp = angular.module('dspaceApp', [
   'ngMaterial',
   'ngRoute',
   'ngSanitize',
+  'rx',
   'appConstants',
   'ngAnimate',
   'ngMessages',
@@ -31,7 +32,7 @@ var dspaceApp = angular.module('dspaceApp', [
 
       $routeProvider
         .when('/ds/handle/:site/:item', {
-          templateUrl: '/ds/partials/handle',
+          templateUrl: '/ds/partials/handle.html',
           reloadOnSearch: false
         })
         .when('/ds/handle/:site/:id/:field/:sort', {
@@ -41,26 +42,26 @@ var dspaceApp = angular.module('dspaceApp', [
           templateUrl: '/ds/partials/continuousPaging'
         })
         .when('/ds/communities', {
-          templateUrl: '/ds/partials/communities'
+          templateUrl: '/ds/partials/communities.html'
         })
         .when('/ds/browse/:site/:item', {
           templateUrl: '/ds/partials/handle',
           reloadOnSearch: false
         })
         .when('/ds/browse/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', {
-          templateUrl: '/ds/partials/browse',
+          templateUrl: '/ds/partials/browse.html',
           reloadOnSearch: false
         })
         .when('/ds/discover/:type/:id/:terms', {
-          templateUrl: '/ds/partials/discover',
+          templateUrl: '/ds/partials/discover.html',
           reloadOnSearch: false
         })
         .when('/ds/advanced', {
-          templateUrl: '/ds/partials/advanced',
+          templateUrl: '/ds/partials/advanced.html',
           reloadOnSearch: false
         })
         .when('/ds/discover', {
-          templateUrl: '/ds/ds/partials/discover'
+          templateUrl: '/ds/ds/partials/discover.html'
         });
 
       $locationProvider.html5Mode(true);
@@ -72,25 +73,24 @@ var dspaceApp = angular.module('dspaceApp', [
   // Angular Material configuration...
   dspaceApp.config(function ($mdThemingProvider) {
 
-    $mdThemingProvider
-      .definePalette('Custom Background', {
-        '50': '#ffffff',
-        '100': '#D2CFC7',
-        '200': '#F7F5F0',
-        '300': '#e4dcca',
-        '400': '#daceb5',
-        '500': '#d0c1a1',
-        '600': '#c6b48d',
-        '700': '#bca678',
-        '800': '#b19964',
-        '900': '#333333',
-        'A100': '#ffffff',
-        'A200': '#ffffff',
-        'A400': '#daceb5',
-        'A700': '#bca678',
-        'contrastDefaultColor': 'light',
-        'contrastDarkColors': '50 100 200 300 400 500 600 700 800 900 A100 A200 A400 A700'
-      });
+    $mdThemingProvider.definePalette('Custom Background', {
+      '50': '#ffffff',
+      '100': '#e7e0d2',
+      '200': '#fbf9f4',
+      '300': '#e7e0d2',
+      '400': '#deceaa',
+      '500': '#d6c194',
+      '600': '#ceb47e',
+      '700': '#c5a768',
+      '800': '#bd9b52',
+      '900': '#333333',
+      'A100': '#ffffff',
+      'A200': '#ffffff',
+      'A400': '#deceaa',
+      'A700': '#c5a768',
+      'contrastDefaultColor': 'light',
+      'contrastDarkColors': '50 100 200 300 400 500 600 700 800 900 A100 A200 A400 A700'
+    });
 
     $mdThemingProvider
       .definePalette('Palette Primary', {
