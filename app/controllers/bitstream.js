@@ -18,8 +18,10 @@ var request = require('request');
 
     var file = req.params.file;
 
+    var size = req.params.size;
 
-    models.getBitstream(req, res, id, session, file);
+
+    models.getBitstream(req, res, id, session, file, size);
 
   };
 

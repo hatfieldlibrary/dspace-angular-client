@@ -144,6 +144,8 @@
      */
     ctrl.onUpdate = function (results, count, field, offset, jump) {
 
+      ctrl.noResultWarning = false;
+
       offset++;
       var end = '';
       if (count < endIncrement) {
@@ -159,6 +161,7 @@
         ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
       } else {
         ctrl.resultMessage = Messages.NO_RESULTS_LABEL;
+        ctrl.noResultWarning = true;
       }
       ctrl.showDiscoverContainer = ctrl.context !== QueryActions.ADVANCED;
       ctrl.jump = jump;

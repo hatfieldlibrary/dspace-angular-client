@@ -87,7 +87,7 @@ module.exports = function (app, config, passport) {
 
   app.get('/ds/collectionsForCommunity/:id', community.getCollections);
 
-  app.get('/ds/bitstream/:id/:file', bitstream.bitstream);
+  app.get('/ds/bitstream/:id/:size/:file/', bitstream.bitstream);
 
   app.get('/ds/handleRequest/:site/:item', handle.getItem);
 
