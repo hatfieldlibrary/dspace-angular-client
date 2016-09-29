@@ -17,7 +17,8 @@
                     PageTitle,
                     PageDescription,
                     PageAuthor,
-                    SeoPaging) {
+                    SeoPaging,
+                    WriteObserver) {
 
     var ctrl = this;
 
@@ -63,7 +64,7 @@
     ctrl.data.$promise.then(function (data) {
 
       ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
-      ctrl.canWrite = AppContext.getWritePermission();
+      ctrl.canWrite = WriteObserver.get();
       ctrl.itemId = data.id;
 
       SeoPaging.setNextLink('nofollow', '');

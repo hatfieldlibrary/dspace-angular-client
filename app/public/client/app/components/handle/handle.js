@@ -13,7 +13,8 @@
                       ItemByHandle,
                       QueryManager,
                       AppContext,
-                      Utils) {
+                      Utils,
+                      WriteObserver) {
 
 
     var ctrl = this;
@@ -97,7 +98,8 @@
             }
 
             if (typeof data.canWrite !== 'undefined') {
-              ctrl.parent.setWritePermission(data.canWrite);
+              //ctrl.parent.setWritePermission(data.canWrite);
+              WriteObserver.set(data.canWrite);
             }
 
             /**
