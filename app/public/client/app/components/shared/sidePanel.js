@@ -121,10 +121,6 @@ function SideNavCtrl($mdMedia,
         ctrl.canAdminister = AppContext.getAdministerPermission();
         ctrl.showSubmitInstuctions = false;
       }
-      else if (changes.assetType.currentValue === AssetTypes.ITEM) {
-        ctrl.canAdminister = AppContext.getAdministerPermission();
-        ctrl.canWrite = AppContext.getWritePermission();
-      }
       else if (changes.assetType.currentValue === AssetTypes.COMMUNITY_LIST) {
         ctrl.actionType = 'DSpace';
         ctrl.canAdminister = false; // not needed
@@ -133,12 +129,6 @@ function SideNavCtrl($mdMedia,
       else if (changes.assetId) {
         ctrl.assetId = changes.assetId.currentValue;
       }
-    }
-    /**
-     * Set the write permission.
-     */
-    if (changes.writePermission) {
-      ctrl.canWrite = changes.writePermission.currentValue;
     }
     /**
      * Since we rely on AssetType with Discovery queries, we need
