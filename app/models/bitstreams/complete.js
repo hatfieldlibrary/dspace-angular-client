@@ -16,8 +16,6 @@ else {
 
   module.exports = function (req, res, id, session, file) {
 
-    console.log('complete')
-
 
     /**
      * When an actual file name and extension are provided, this
