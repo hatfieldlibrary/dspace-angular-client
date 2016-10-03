@@ -10,7 +10,7 @@
 
   </div>
 
-  <md-card class="main-card md-hue-2" style=" max-width: 100%;min-width:90%;">
+  <md-card class="main-card" md-colors="::{background: 'default-background-50'}" style=" max-width: 100%;min-width:90%;">
 
 
     <img ng-if="$ctrl.hasLogo()" ng-src="{{$ctrl.getLogo()}}" class="md-card-image" alt="image caption"/>
@@ -28,8 +28,10 @@
 
         <div class="md-subhead" ng-bind-html="$ctrl.data.introductoryText"></div>
 
-        <div style="margin-top: 30px;">
-          <md-divider></md-divider>
+        <div style="margin-top: 30px;position:relative;">
+
+
+          <md-divider class="bold-highlight collection-list"></md-divider>
 
           <collection-item-component ng-repeat="coll in $ctrl.data.items" title="{{coll.name}}"
                                      description="{{coll.introductoryText}}" handle="{{coll.handle}}"

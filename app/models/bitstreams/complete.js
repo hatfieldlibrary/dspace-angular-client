@@ -41,62 +41,55 @@ else {
       rejectUnauthorized: utils.rejectUnauthorized()
     };
 
-    console.log(host + port + '/' + dspaceContext + '/bitstreams/' + id)
     http.get(options, function (response) {
 
-      var range = req.headers['range'];
-
-      var mimeType = response.headers['content-type'];
-      console.log(mimeType)
-
-      /**
-       * Internet Explorer resists displaying images without a proper
-       * mime type. This fix, which is hopefully temporary, assumes
-       * the mime type for logos will be image/jpg.
-       */
-      if (file === 'logo') {
-        res.type('jpg');
-      } else {
-        res.type(mimeType);
-      }
-
-
-      /**
-       * Setting the response header.
-       */
       try {
 
+        var mimeType = response.headers['content-type'];
+
+        /**
+         * Internet Explorer resists displaying images without a proper
+         * mime type. This fix, which is hopefully temporary, assumes
+         * the mime type for logos will be image/jpg.
+         */
+        if (file === 'logo') {
+          res.type('jpg');
+        } else {
+          res.type(mimeType);
+        }
+        //
+        // // res.status(200);
+        // // res.set('Connection', 'keep-alive');
+        // // res.set('Content-Type', mimeType);
+        //  res.set('Transfer-Encoding', 'chunked');
 
 
-        res.status(200);
-        res.set('Connection', 'keep-alive');
-        res.set('Content-Type', mimeType);
-        res.set('Transfer-Encoding', 'chunked');
-
-        // write data chunk to res.
-        response.on('data', function (chunk) {
-          // Set to encode base64.
-          res.write(chunk, 'base64');
-
-        });
-        response.on('close', function () {
-          // closed, let's end client request as well
-          res.end();
-
-        });
-        response.on('end', function () {
-          // finished, ending res.
-          res.end();
-
-        });
-
-      }
-      catch
-        (err) {
-
+      } catch (err) {
         console.log(err);
-
       }
+
+
+
+      response.pipe(res);
+
+      // // write data chunk to res.
+      // response.on('data', function (chunk) {
+      //   // Set to encode base64.
+      //   res.write(chunk, 'base64');
+      //
+      // });
+      // response.on('close', function () {
+      //   // closed, let's end client request as well
+      //   res.end();
+      //
+      // });
+      // response.on('end', function () {
+      //   // finished.
+      //   res.end();
+      //
+      //
+      // });
+
 
     });
   }

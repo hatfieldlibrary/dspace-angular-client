@@ -45,13 +45,10 @@ else {
       'wav': 'audio/x-wav',
       'webm': 'video/webm'
     };
-    console.log(id)
 
     try {
-      console.log(range)
 
       const fileParts = file.split('\.');
-
 
       // A range request
       if (range) {
@@ -61,8 +58,6 @@ else {
       }
 
       else {
-
-
 
         // In the case of video/audio requests, Safari will request and use
         // partial content ranges.  This means we should ignore the initial
@@ -78,7 +73,6 @@ else {
 
         // All other browsers.
           else {
-          console.log('calling complete without range')
             completeContent(req, res, id, session, file);
 
           }

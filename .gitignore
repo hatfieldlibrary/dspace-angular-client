@@ -1,5 +1,6 @@
 node_modules
 app/public/client/bower_components
+app/models/bitstreams/diskCache
 .tmp
 config/credentials.js
 .idea/workspace.xml
