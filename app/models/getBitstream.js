@@ -1,8 +1,8 @@
 'use strict';
 
 var utils = require('../core/utils');
-const partialContent = require('./bitstreams/partial');
-const completeContent = require('./bitstreams/complete');
+var partialContent = require('./bitstreams/partial');
+var completeContent = require('./bitstreams/complete');
 
 
 if (utils.getDspaceRestProtocol() === 'https') {
@@ -48,7 +48,7 @@ else {
 
     try {
 
-      const fileParts = file.split('\.');
+      var fileParts = file.split('\.');
 
       // A range request
       if (range) {
@@ -62,7 +62,7 @@ else {
         // In the case of video/audio requests, Safari will request and use
         // partial content ranges.  This means we should ignore the initial
         // download request and wait for the follow up requests with ranges.
-        const regex = '/safari/i';
+        var regex = '/safari/i';
 
         if (req.headers['user-agent'].match(regex)) {
           // Only request here if the file is not video or audio.

@@ -151,8 +151,8 @@ else {
 
 
     // try to stat file on disk.
-    const regex = /\s/g;
-    const filePath = __dirname + '/diskCache/' + id + '-' + file.replace(regex, '_');
+    var regex = /\s/g;
+    var filePath = __dirname + '/diskCache/' + id + '-' + file.replace(regex, '_');
     fs.stat(filePath, _loadContent);
 
 
