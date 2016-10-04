@@ -118,6 +118,13 @@ var config = {
       casServer: credentials.cas.casServer
     },
     /**
+     * The cache directory location, used by partial content
+     * requests for video.
+     */
+    diskCache: {
+      dir: '/var/ds/diskCache'
+    },
+    /**
      * Runtime environment.
      */
     nodeEnv: env
@@ -189,6 +196,9 @@ var config = {
     },
     cas: {
       casServer: credentials.cas.casServer
+    },
+    diskCache: {
+      dir: '/var/ds/diskCache'
     },
     nodeEnv: env
   }

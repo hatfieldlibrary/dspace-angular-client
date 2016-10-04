@@ -43,8 +43,8 @@ module.exports = function (app, config, passport) {
         res.redirect('/ds/login/' + req.user);
       }
     );
-  }
 
+  }
   else if (app.get('env') === 'production') {
     /**
      * Authentication route for CAS.
@@ -57,7 +57,21 @@ module.exports = function (app, config, passport) {
         // Successful authentication, redirect to login/netid to obtain DSpace token.
         res.redirect('/ds/login/' + req.user);
       });
+
+
   }
+
+
+  /**
+   * Set the disk cache location for video files.
+   */
+  app.use(function(req, res, next) {
+
+    req.filePath = config.diskCache.dir;
+    return next();
+
+  });
+
 
 
   // API ENDPOINTS.
