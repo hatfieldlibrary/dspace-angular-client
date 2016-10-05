@@ -2,7 +2,7 @@
 
 var partialContent = require('./bitstreams/partial');
 var completeContent = require('./bitstreams/complete');
-var utils = require('../core/utils');
+var checkAuthorization = require('./bitstreams/authorization');
 
 /**
  * Requests a bitstream from the DSpace host via REST API and
@@ -21,9 +21,7 @@ var utils = require('../core/utils');
     // we need to check for range request.
     var range = req.headers['range'];
 
-    try {
-
-      var fileParts = file.split('\.');
+    function _fetchBitstream() {
 
       // A range request.
       if (range) {
@@ -34,37 +32,13 @@ var utils = require('../core/utils');
 
       else {
 
-        // In the case of video/audio requests, Chrome/Safari will request and use
-        // partial content ranges.  This means we should ignore the initial
-        // download request and wait for the follow up requests with ranges.
-        // This condition may change with changes to how video is requested in
-        // the client. Currently, an anchor link is used, not embedded video
-        // elements.
-        var regex = '/safari|chrome/i';
-
-        if (req.headers['user-agent'].match(regex)) {
-
-          if (utils.isMediaExtension(fileParts[1])) {
-            // non-media files for chrome/safari.
-            completeContent(req, res, id, session, file);
-          }
-
-        }
-
-        // All files for other browsers.
-        else {
-
-          completeContent(req, res, id, session, file);
-
-        }
+        completeContent(req, res, id, session, file);
 
       }
-
-    } catch (err) {
-
-      console.log(err);
-
     }
+
+    // Check authorization before handing bitstream request.
+    checkAuthorization(req, res, id, session, _fetchBitstream);
 
   };
 
