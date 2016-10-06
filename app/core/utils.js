@@ -10,6 +10,17 @@
   var config = require('../../config/environment');
   var constants = require('./constants');
 
+  // video and audio extensions.
+  var mimeNames = {
+    'mp3': 'audio/mpeg',
+    'mp4': 'video/mp4',
+    'mov': 'video/mov',
+    'ogv': 'video/ogg',
+    'oga': 'audio/ogg',
+    'wav': 'audio/x-wav',
+    'webm': 'video/webm'
+  };
+
   /**
    * Checks for dspace token in the current session and
    * returns token if present.
@@ -37,7 +48,7 @@
   exports.jsonResponse = function (res, json) {
 
     // Set custom response header.
-   // res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Origin', '*');
     res.json(json);
 
   };
@@ -67,9 +78,9 @@
     return config.dspace.protocol + '://' + config.dspace.host + ':' + config.dspace.port;
   };
 
- exports.getSolrUrl = function() {
-   return config.dspace.solrProtocol + '://' + config.dspace.solrHost + ':' + config.dspace.solrPort;
- };
+  exports.getSolrUrl = function () {
+    return config.dspace.solrProtocol + '://' + config.dspace.solrHost + ':' + config.dspace.solrPort;
+  };
 
 
   /**
@@ -90,7 +101,7 @@
    * Returns the dspace application context.
    * @returns {*}
    */
-  exports.getDspaceAppContext = function() {
+  exports.getDspaceAppContext = function () {
 
     if (config.dspace.context.length > 0) {
       return config.dspace.context;
@@ -100,7 +111,7 @@
 
   };
 
-  exports.getDspaceRestProtocol = function() {
+  exports.getDspaceRestProtocol = function () {
 
     if (config.dspace.protocol === 'http' || config.dspace.protocol === 'https') {
       return config.dspace.protocol;
@@ -111,7 +122,7 @@
     }
   };
 
-  exports.rejectUnauthorized = function() {
+  exports.rejectUnauthorized = function () {
 
     if (typeof config.dspace.rejectUnauthorized === 'boolean') {
       return config.dspace.rejectUnauthorized;
@@ -144,8 +155,8 @@
    * in the DSpace API request itself.
    * @param id  dspace ID
    * @returns {*}
-     */
-  exports.getId = function(id) {
+   */
+  exports.getId = function (id) {
 
     if (id === 0 || id === '0') {
       return '';
@@ -154,10 +165,26 @@
 
   };
 
-  exports.truncateAbstract = function(text) {
+  exports.truncateAbstract = function (text) {
 
   };
 
+  exports.mimeType = function (type) {
+
+    if (mimeNames[type]) {
+      return mimeNames[type];
+    }
+    return 'unknown';
+
+  }
+
+  exports.isMediaExtension = function(extension) {
+
+    if (extension in mimeNames) {
+      return true;
+    }
+    return false;
+  }
 
 
 })();

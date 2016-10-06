@@ -16,7 +16,7 @@ module.exports = function (app, config) {
   /**
    * Enable the error message view.
    */
-  app.set('views', config.root + '../views');
+  app.set('views', config.root + '/views');
   app.engine('html', require('ejs').renderFile);
   app.set('view engine', 'html');
 
