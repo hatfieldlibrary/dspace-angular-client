@@ -151,10 +151,6 @@ md-dialog.item-details {
   max-width: 640px;
 }
 
-.nav-login {
-  right: 72px;
-}
-
 .nav-login a,
 .nav-login a:visited {
   color: #fff;
