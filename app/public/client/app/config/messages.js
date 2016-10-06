@@ -31,6 +31,10 @@
 
     COMMUNITY_HOME_LINK_LABEL: 'All Departments',
 
+    COMMUNITY_DIVIDER_LABEL: 'Departments',
+
+    COLLECTION_DIVIDER_LABEL: 'Collections',
+
     SEARCHBOX_OPTIONS_HEADER_LABEL: 'Search Collections',
 
     SEARCHBOX_BASIC_HEADER_LABEL: 'Search Departments',
@@ -49,7 +53,7 @@
 
     ADVANCED_SEARCH_PAGE_HEADER: 'Advanced Search',
 
-    ADVANCED_SEARCH_COMMUNITY_LABEL: 'Choose Department or Collection Area',
+    ADVANCED_SEARCH_COMMUNITY_LABEL: 'Choose Department',
 
     ADVANCED_SEARCH_COLLECTION_LABEL: 'Choose Collection',
 

@@ -22,8 +22,10 @@
 
     var ctrl = this;
 
+    ctrl.divLabel = Messages.COLLECTION_DIVIDER_LABEL;
+
     ctrl.isMobile = true;
-    if ($mdMedia('gt-md')) {
+    if ($mdMedia('gt-sm')) {
       ctrl.isMobile = false;
     }
 

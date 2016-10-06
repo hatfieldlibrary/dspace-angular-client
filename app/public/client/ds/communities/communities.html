@@ -7,12 +7,7 @@
     </div>
   </div>
 
-  <!--<div class="page-title" ng-hide="!$ctrl.ready">-->
-  <!--<div class="md-display-1 item-title">{{$ctrl.heading}}</div>-->
-
-  <!--</div>-->
-
-  <md-card class="main-card" md-colors="::{background: 'default-background-50'}" style="max-width:100%;"
+  <md-card class="main-card" md-colors="::{background: 'default-background-50'}" style="margin-top: 30px;max-width:100%;"
            ng-hide="!$ctrl.ready">
 
     <img ng-if="$ctrl.showHeaderImage" ng-src="{{$ctrl.headerImage}}">
@@ -21,9 +16,16 @@
 
       <div class="md-subhead" style="margin-bottom: 30px;" ng-bind-html="$ctrl.intro"></div>
 
+      <style>
+        .community-list::before {
+          content: "{{$ctrl.divLabel}}"
+        }
+      </style>
+
       <div style="position:relative;">
         <md-divider class="bold-highlight community-list"></md-divider>
       </div>
+
       <community-item-component ng-repeat="comm in $ctrl.communities" handle="{{comm.handle}}" name="{{comm.name}}"
                                 last="$last">
       </community-item-component>
