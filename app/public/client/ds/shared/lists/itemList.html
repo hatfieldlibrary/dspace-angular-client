@@ -15,7 +15,10 @@
 
   <h2 class="md-title" ng-if="$ctrl.isBrowseContext() && $ctrl.context!='seo'">Browsing: {{$ctrl.browseTerms}}</h2>
 
-  <div class="filter-container intro" ng-if="$ctrl.showDiscoverContainer  && $ctrl.context!='seo'">
+  <div  style="background: #791716; color: #fefefe; font-size: 16px;font-weight: 500;letter-spacing: 0.005em; padding-left: 5px;" class="md-body-1 layout-padding"><div layout="row" layout-align="left center"  ng-class="{'warning': $ctrl.noResultWarning}"><i class="material-icons" ng-show="$ctrl.noResultWarning">error_outline</i>&nbsp;{{$ctrl.resultMessage}} </div>
+  </div>
+
+  <md-content md-colors="::{background: 'default-background-200'}" class="filter-container" ng-if="$ctrl.showDiscoverContainer  && $ctrl.context!='seo'">
 
     <sort-options-component ng-if="$ctrl.showOptions && $ctrl.context!='seo'"
                             context="{{$ctrl.context}}"
@@ -28,13 +31,7 @@
                                on-update="$ctrl.onUpdate(results, count, field)">
     </discover-filter-container>
 
-  </div>
-
-  <div class="md-body-1 md-accent layout-padding">{{$ctrl.resultMessage}}
-  </div>
-
-  <md-divider></md-divider>
-
+  </md-content>
 
   <div flex="100" layout-fill layout="column" style="height: 100%;margin-top: -12px;">
 

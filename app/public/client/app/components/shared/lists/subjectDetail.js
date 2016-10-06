@@ -145,6 +145,7 @@
 
         } else {
           ctrl.selectedPosition = -1;
+          ctrl.xsSelectedPosition = -1;
         }
 
       }

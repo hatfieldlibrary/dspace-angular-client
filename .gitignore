@@ -1,5 +1,11 @@
 node_modules
 app/public/client/bower_components
+app/models/bitstreams/**/*.mp4
+app/models/bitstreams/**/*.mp3
+app/models/bitstreams/**/*.mov
+app/models/bitstreams/**/*.ogg
+app/models/bitstreams/**/*.x-wav
+app/models/bitstreams/**/*.webm
 .tmp
 config/credentials.js
 .idea/workspace.xml

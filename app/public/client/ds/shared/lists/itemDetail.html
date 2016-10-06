@@ -6,10 +6,9 @@
         {{$ctrl.title}}
       </span>
         <br>
-        <span ng-repeat="au in $ctrl.author" class="md-caption">{{au}}; </span> <span class="md-caption"
-                                                                                      ng-if="$ctrl.publisher">{{$ctrl.publisher}}; </span>
+        <span ng-repeat="au in $ctrl.author" class="md-caption">{{au}}; </span> <span class="md-caption" ng-if="$ctrl.publisher">{{$ctrl.publisher}}; </span>
         <span class="md-caption" ng-if="$ctrl.year">{{$ctrl.year}}</span></div>
-      <div class="md-body-1 item-block-ellipsis">{{$ctrl.abstract}}</div>
+      <div flex class="md-body-1 item-block-ellipsis">{{$ctrl.abstract}}</div>
     </div>
   </div>
   <md-divider ng-if="!$ctrl.last"></md-divider>
