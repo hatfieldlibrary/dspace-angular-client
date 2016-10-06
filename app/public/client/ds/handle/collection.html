@@ -2,7 +2,7 @@
      layout-padding ng-if="!$ctrl.mobileItemRequest" ng-class="{'is-mobile': $ctrl.isMobileListView}">
 
 
-  <div class="page-title">
+  <div class="page-title" ng-class="{'is-mobile': $ctrl.isMobileListView}">
     <div class="md-subhead parent-title"><a ng-href="/ds/handle/{{$ctrl.data.parentCommunity.handle}}">{{$ctrl.data.parentCommunity.name}}</a>
     </div>
     <div class="md-display-1 item-title">{{$ctrl.data.name}}</div>

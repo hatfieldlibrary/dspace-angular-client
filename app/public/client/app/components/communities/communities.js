@@ -24,6 +24,8 @@
 
     ctrl.headerImage = Messages.COMMUNITIES_HEADER_IMAGE;
 
+    ctrl.divLabel = Messages.COMMUNITY_DIVIDER_LABEL;
+
     ctrl.showHeaderImage = false;
 
     /**
