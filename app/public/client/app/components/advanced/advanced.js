@@ -153,7 +153,11 @@
      */
     adv.hideComponents = true;
 
-    adv.context = QueryActions.ADVANCED;
+    // Swapping advanced search to behave like discovery.
+    // The may change after advanced search is updated to
+    // be more advanced.
+    //adv.context = QueryActions.ADVANCED;
+    adv.context = QueryActions.SEARCH;
 
     /**
      * Handles search form submission.

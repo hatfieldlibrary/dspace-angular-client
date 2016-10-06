@@ -21,9 +21,9 @@
     ctrl.setTarget = function (type) {
 
       if (type === 'application/pdf') {
-        return '_blank';
+        return '_top';
       } else if (type === 'text/plain') {
-        return '_blank';
+        return '_top';
       }
       return '_top';
     };

@@ -1,104 +1,45 @@
 'use strict';
 
-var utils = require('../core/utils');
-
-if (utils.getDspaceRestProtocol() === 'https') {
-  var http = require('https');
-}
-else {
-  var http = require('http');
-}
+var partialContent = require('./bitstreams/partial');
+var completeContent = require('./bitstreams/complete');
+var checkAuthorization = require('./bitstreams/authorization');
 
 /**
  * Requests a bitstream from the DSpace host via REST API and
  * writes to the Express response stream using base64 encoding.
- * The proxy request includes the dspace REST token is one is
+ *
+ * The proxied request includes the dspace REST token if one is
  * provided. This allows access to restricted bitstreams.
  *
- * This proxy does no additional work. The only additional benefit
- * is that we consolidate all requests to this host/port.  Alternatively,
- * the browser client could be configured to request bitstream
- * data directly from the DSpace REST servlet -- if authentication
- * is not an issue.
- *
- * NOTE: Uses the http module. For communicating with the REST API over
- * SSL, you need the https module. Also add 'rejectUnauthorized: false' to
- * the options.
+ * The partial content module supports Content-Partial requests f
+ * or video, something that dspace does not do currently.
  */
 (function () {
 
-  module.exports = function (req, res, id, session, file) {
+  module.exports = function (req, res, id, session, file, size) {
 
-    /**
-     * When an actual file name and extension are provided, this
-     * could be used to set mime type. Currently, returning
-     * application/octetstream.
-     */
+    // we need to check for range request.
+    var range = req.headers['range'];
 
-    var dspaceTokenHeader = utils.getDspaceToken(session);
-    var host = utils.getHost();
-    var port = utils.getPort();
-    var dspaceContext = utils.getDspaceAppContext();
+    function _fetchBitstream() {
 
-    var options = {
-      host: host,
-      port: port,
-      path: '/' + dspaceContext + '/bitstreams/' + id + '/retrieve',
-      method: 'GET',
-      headers: {
-        'rest-dspace-token': dspaceTokenHeader
-      },
-      rejectUnauthorized: utils.rejectUnauthorized()
-    };
+      // A range request.
+      if (range) {
 
-    http.get(options, function (response) {
+        partialContent(range, req, res, id, session, file, size);
 
-      /**
-       * Setting the response header.
-       */
-      try {
-        /**
-         *  Get the content type returned by DSpace.
-         *  Will be application/octetstream
-         */
-        var mimeType = response.headers['content-type'];
-        /**
-         * Internet Explorer resists displaying images without a proper
-         * mime type. This fix, which is hopefully temporary, assumes
-         * the mime type for logos will be image/jpg.
-         */
-        if (file === 'logo') {
-          res.type('jpg');
-        } else {
-          res.type(mimeType);
-        }
-
-      } catch (err) {
-        console.log(err);
       }
 
-      // write data chunk to res.
-      response.on('data', function (chunk) {
-        // Set to encode base64.
-        res.write(chunk, 'base64');
+      else {
 
-      });
-      response.on('close', function () {
-        // closed, let's end client request as well
-        res.end();
+        completeContent(req, res, id, session, file);
 
-      });
-      response.on('end', function () {
-        // finished, ending res.
-        res.end();
+      }
+    }
 
-      });
+    // Check authorization before handing bitstream request.
+    checkAuthorization(req, res, id, session, _fetchBitstream);
 
-    }).on('error', function (e) {
-      // we got an error, return 500 error to client and log error
-      console.log(e.message);
-      res.end();
-    });
+  };
 
-  }
 })();
