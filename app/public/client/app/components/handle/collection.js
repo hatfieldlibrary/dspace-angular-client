@@ -57,7 +57,7 @@
      * removed.
      */
     function setFormFactor() {
-      if ($mdMedia('gt-md')) {
+      if ($mdMedia('gt-sm')) {
         // hides the style for mobile list view
         ctrl.isMobileListView = false;
         // shows the item list on init

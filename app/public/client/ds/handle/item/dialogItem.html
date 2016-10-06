@@ -55,7 +55,7 @@
 
 
           <!-- Files, gt-md -->
-          <div hide show-gt-md flex="20" class="item-left-col-dimens">
+          <div hide show-gt-sm flex="20" class="item-left-col-dimens">
             <div ng-if="$ctrl.data.bitstreams.length > 0">
               <div class="md-caption" style="padding-left: 12px;">{{$ctrl.filesLabel}} ({{$ctrl.fileCount}})</div>
               <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
@@ -81,16 +81,16 @@
               </div>
             </div>
 
-            <md-divider hide-gt-md style="margin: 18px 0;"></md-divider>
+            <md-divider hide-gt-sm style="margin: 18px 0;"></md-divider>
 
             <!-- Files, lt-lg -->
-            <div hide-gt-md layout="column" layout-align="start start">
+            <div hide-gt-sm layout="column" layout-align="start start">
 
               <files-list-component streams="$ctrl.data.bitstreams"></files-list-component>
 
             </div>
 
-            <md-divider hide-gt-md style="margin: 26px 0;"></md-divider>
+            <md-divider hide-gt-sm style="margin: 26px 0;"></md-divider>
 
             <!-- abstract and metadata -->
             <div class="abstract" layout="column">
