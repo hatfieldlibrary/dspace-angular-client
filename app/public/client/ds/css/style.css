@@ -129,6 +129,9 @@ community-item-component md-list-item .md-no-style.md-button, md-list-item.md-no
 .page-title {
   margin: 0 8px;
 }
+.page-title.is-mobile {
+  margin: 0;
+}
 
 .nav-logo {
   color: #ffffff;
@@ -271,13 +274,13 @@ collection-item-component .hide-content {
   letter-spacing: 0.005em;
 }
 
-.community-list::before {
-  content: "Departments"
-}
+/*.community-list::before {*/
+  /*content: "Departments"*/
+/*}*/
 
-.collection-list::before {
-  content: "Collections";
-}
+/*.collection-list::before {*/
+  /*content: "Collections";*/
+/*}*/
 
 .search-box-container {
   border: 1px solid #ddd;

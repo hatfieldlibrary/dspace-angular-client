@@ -115,7 +115,7 @@
 
     };
 
-    ctrl.getItemUrlForSeo = function() {
+    ctrl.getItemUrlAlt = function() {
       return  '/ds/handle/' + ctrl.handle;
     };
 
