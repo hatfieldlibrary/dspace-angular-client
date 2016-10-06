@@ -19,11 +19,7 @@
 
       <div layout="column" layout-align="center left">
 
-        <md-content md-colors="::{background: 'default-background-400'}" style="margin-bottom: 10px;border: 1px solid #ccc; border-radius: 4px;"
-                    layout-padding layout="row" layout-align="left center" ng-hide="$ctrl.hideLoginMessage">
-          <div class="md-subhead" layout-fill>{{$ctrl.loginMessage}}</div>
-          <login-component raised="true"></login-component>
-        </md-content>
+
 
 
         <div class="md-subhead" ng-bind-html="$ctrl.data.introductoryText"></div>
@@ -32,6 +28,14 @@
 
 
           <md-divider class="bold-highlight collection-list"></md-divider>
+
+          <md-content md-colors="::{background: 'default-background-400'}" style="margin-bottom: 10px;border: 1px solid #ccc; border-radius: 4px;"
+                      layout-padding layout="row" layout-align="left center" ng-hide="$ctrl.hideLoginMessage">
+            <div class="md-subhead" layout-fill>{{$ctrl.loginMessage}}</div>
+
+            <login-component raised="true"></login-component>
+
+          </md-content>
 
           <collection-item-component ng-repeat="coll in $ctrl.data.items" title="{{coll.name}}"
                                      description="{{coll.introductoryText}}" handle="{{coll.handle}}"
