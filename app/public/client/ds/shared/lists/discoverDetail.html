@@ -4,7 +4,7 @@
      <span class="md-caption">{{$ctrl.itemLabel}}</span>
     <div class="list-highlight" ng-if="$ctrl.title.length > 0" ng-bind-html="$ctrl.title"></div>
     <div class="list-highlight" ng-if="$ctrl.title.length == 0" ng-bind-html="$ctrl.defaultTitle"></div>
-    <div>
+    <div class="list-padding">
       <span class="md-body-1" ng-repeat="desc in $ctrl.description" ng-bind-html="desc"></span>
     </div>
   </div>

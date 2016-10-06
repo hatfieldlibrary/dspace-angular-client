@@ -59,7 +59,7 @@ function SideNavCtrl($mdMedia,
   };
 
   ctrl.greaterThanMd = function () {
-    return $mdMedia('gt-md');
+    return $mdMedia('gt-sm');
   };
 
 

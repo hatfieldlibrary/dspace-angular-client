@@ -75,21 +75,21 @@ var dspaceApp = angular.module('dspaceApp', [
 
     $mdThemingProvider.definePalette('Custom Background', {
       '50': '#ffffff',
-      '100': '#e7e0d2',
-      '200': '#fbf9f4',
-      '300': '#e7e0d2',
-      '400': '#deceaa',
-      '500': '#d6c194',
-      '600': '#ceb47e',
-      '700': '#c5a768',
-      '800': '#bd9b52',
-      '900': '#333333',
+      '100': '#f7f6f2',
+      '200': '#f3f1ec',
+      '300': '#d8d0c0',
+      '400': '#ccc2ad',
+      '500': '#c0b49a',
+      '600': '#b4a687',
+      '700': '#a89874',
+      '800': '#9d8a62',
+      '900': '#666666',
       'A100': '#ffffff',
       'A200': '#ffffff',
-      'A400': '#deceaa',
-      'A700': '#c5a768',
+      'A400': '#ccc2ad',
+      'A700': '#a89874',
       'contrastDefaultColor': 'light',
-      'contrastDarkColors': '50 100 200 300 400 500 600 700 800 900 A100 A200 A400 A700'
+      'contrastDarkColors': '50 100 200 300 400 500 600 700 800 A100 A200 A400 A700'
     });
 
     $mdThemingProvider
@@ -153,21 +153,25 @@ var dspaceApp = angular.module('dspaceApp', [
 
     // configure the Angular Material theme
     $mdThemingProvider.theme('default')
+
       .primaryPalette('Palette Primary', {
         'default': '500', // by default use shade 400 from the pink palette for primary intentions
         'hue-1': '300', // use shade 100 for the <code>md-hue-1</code> class
         'hue-2': '600', // use shade 600 for the <code>md-hue-2</code> class
         'hue-3': '700' // use shade 700 for the <code>md-hue-3</code> class
       })
+
       .accentPalette('Accent Palette', {
         'default': '500',
         'hue-2': '900'
       })
+
       .warnPalette('Custom Warn')
+
       .backgroundPalette('Custom Background', {
-        'default': '100',
-        'hue-1': '200',
-        'hue-2': '300'
+        'default': '50',
+        'hue-1': '100',
+        'hue-2': '200'
       });
 
   });

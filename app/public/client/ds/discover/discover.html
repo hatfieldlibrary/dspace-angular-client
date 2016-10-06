@@ -7,13 +7,14 @@
   </div>
 
 
-  <md-card class="main-card md-hue-1" style="max-width:100%;">
+  <md-card class="main-card md-hue-1" style="max-width:100%;" md-colors="::{background: 'default-background-50'}">
 
     <md-card-content>
 
       <div layout="column" class="discoveryMessages" layout-padding>
 
-        <form name="discoveryForm" ng-submit="disc.submit(disc.terms)">
+        <div style="padding: 8px">
+        <form name="discoveryForm" class="discover-form" ng-submit="disc.submit(disc.terms)">
 
           <md-input-container class="md-block" flex-gt-sm="70">
             <label>{{disc.textLabel}}</label>
@@ -55,6 +56,8 @@
 
 
         </form>
+
+        </div>
 
         <item-list-component ng-hide="disc.hideComponents" context="{{disc.context}}"></item-list-component>
 

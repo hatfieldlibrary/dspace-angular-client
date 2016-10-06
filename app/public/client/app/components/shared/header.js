@@ -6,13 +6,21 @@
 
 (function () {
 
-  function HeaderCtrl(Messages, MenuObserver, $window, $mdMedia) {
+  function HeaderCtrl(Messages, MenuObserver, $window, $mdMedia, $scope) {
 
     var ctrl = this;
 
     var open = false;
 
-    ctrl.isSmallScreen = $mdMedia('sm') || $mdMedia('xs');
+
+    /**
+     * Sets fullscreen view via media query.
+     */
+    $scope.$watch(function () {
+      return $mdMedia('xs') || $mdMedia('sm');
+    }, function (smallScreen) {
+      ctrl.isSmallScreen = smallScreen;
+    });
 
     ctrl.homeLogo = Messages.HOME_LOGO;
 
