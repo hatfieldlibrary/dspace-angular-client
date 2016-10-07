@@ -1,7 +1,13 @@
 <div layout="row" flex layout-align="center center">
 
-  <div flex-offset-gt-xs="5" flex-offset-gt-sm="15" flex-offset-gt-md="20" flex-offset-gt-lg="25" flex="100"
-       flex-gt-sm="65" flex-gt-lg="40">
+  <div flex-offset-gt-xs="5"
+       flex-offset-gt-sm="15"
+       flex-offset-gt-md="25"
+       flex-offset-gt-lg="25"
+       flex="80"
+       flex-gt-sm="60"
+       flex-gt-md="60"
+       flex-gt-lg="40">
 
     <md-button class="logo" aria-label="Academic Commons" ng-click="$ctrl.goToHome();"
                style="max-width: 170px; height: 37px; vertical-align: middle;"
@@ -11,9 +17,11 @@
 
   </div>
 
-  <div flex></div>
-
-  <div layout="column" layout-padding layout-align="center right" flex-gt-xs="20" flex-gt-md="15" flex-gt-lg="10">
+  <div layout="column" layout-padding layout-align="center right"
+       flex-gt-xs="10"
+       flex-gt-sm="15"
+       flex-gt-md="10"
+       flex-gt-lg="10">
 
     <login-component class="nav-login" ng-if="!$ctrl.isSmallScreen"></login-component>
 
@@ -25,7 +33,10 @@
     </md-button>
 
   </div>
-  <div flex-gt-xs="5" flex-gt-sm="10" flex-gt-md="20" ></div>
+  <div flex-gt-xs="5"
+       flex-gt-sm="10"
+       flex-gt-md="15"
+       flex-gt-lg="25"></div>
 </div>
 
 

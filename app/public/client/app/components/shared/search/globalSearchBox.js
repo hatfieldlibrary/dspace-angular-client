@@ -16,7 +16,8 @@
    * @param AssetTypes
    * @constructor
    */
-  function GlobalSearchBoxCtrl($location,
+  function GlobalSearchBoxCtrl($mdMedia,
+                               $location,
                                QueryManager,
                                QueryActions,
                                AssetTypes,
@@ -33,6 +34,10 @@
     sb.searchButtonLabel = Messages.SEARCHBOX_BUTTON_LABEL;
 
     sb.searchHeaderLabel = Messages.SEARCHBOX_BASIC_HEADER_LABEL;
+
+    sb.lessThanMd = function () {
+      return !$mdMedia('gt-sm');
+    };
 
     sb.submit = function (terms) {
 
