@@ -7,7 +7,8 @@
 (function () {
 
 
-  function MainSearchBoxCtrl($location,
+  function MainSearchBoxCtrl($mdMedia,
+                             $location,
                              QueryActions,
                              AssetTypes,
                              Messages,
@@ -57,6 +58,14 @@
 
       $location.path('/ds/discover/' + sb.type + '/' + sb.id + '/' + terms);
 
+    };
+
+    sb.lessThanMd = function () {
+       if (!$mdMedia('gt-md'))   {
+         console.log(true)
+         return true;
+       }
+      return false;
     };
 
     /**

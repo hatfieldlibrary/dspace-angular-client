@@ -93,9 +93,12 @@ md-sidenav {
 }
 
 md-sidenav.md-locked-open {
-  max-width: 265px;
+  max-width: 247px;
 }
 
+.mobile-search-box {
+  border: none !important;
+}
 community-item-component md-list-item .md-no-style.md-button, md-list-item.md-no-proxy.md-button   {
   min-height: 60px;
 }
