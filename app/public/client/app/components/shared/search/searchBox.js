@@ -61,8 +61,7 @@
     };
 
     sb.lessThanMd = function () {
-       if (!$mdMedia('gt-md'))   {
-         console.log(true)
+       if (!$mdMedia('gt-sm'))   {
          return true;
        }
       return false;

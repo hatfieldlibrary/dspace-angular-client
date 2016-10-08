@@ -70,6 +70,7 @@ img {
 
 .main-card {
   min-height: 650px;
+  min-width: 95%;
 }
 
 .main-card > img {
@@ -92,9 +93,9 @@ md-sidenav {
   position: fixed;
 }
 
-md-sidenav.md-locked-open {
-  max-width: 247px;
-}
+/*md-sidenav.md-locked-open {*/
+  /*max-width: 80%;*/
+/*}*/
 
 .mobile-search-box {
   border: none !important;
@@ -115,6 +116,9 @@ community-item-component md-list-item .md-no-style.md-button, md-list-item.md-no
   margin-right: 8px;
 }
 
+search-box-component {
+  margin-right: 30px;
+}
 .content-width {
   max-width: 950px !important;
   box-sizing: border-box;
@@ -293,7 +297,7 @@ collection-item-component .hide-content {
 }
 
 .search-form {
-  width: 75%;
+  width: 80%;
   padding-left: 22px;
 }
 

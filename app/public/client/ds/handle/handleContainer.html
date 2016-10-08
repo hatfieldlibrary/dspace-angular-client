@@ -1,6 +1,11 @@
 
 
-<handle-component flex="100" flex-gt-md="85"
+<handle-component flex="100"
+                  flex-gt-sm="85"
+                  flex-gt-md="80"
                   class="app-primary-content-container"></handle-component>
 
-<side-nav-component asset-type="{{$ctrl.assetType}}" asset-id="{{$ctrl.assetId}}" query-type="{{$ctrl.queryType}}" write-permission="$ctrl.canWrite" type="handle" flex flex-gt-md="15"></side-nav-component>
+<side-nav-component asset-type="{{$ctrl.assetType}}" asset-id="{{$ctrl.assetId}}" query-type="{{$ctrl.queryType}}" write-permission="$ctrl.canWrite" type="handle"
+                    flex
+                    flex-gt-sm="15"
+                    flex-gt-md="20"></side-nav-component>
