@@ -16,6 +16,7 @@
     'PageTitle',
     'PageDescription',
     'PageAuthor',
+    'WriteObserver',
 
     function ($mdDialog,
               $mdMedia,
@@ -23,7 +24,8 @@
               ItemById,
               PageTitle,
               PageDescription,
-              PageAuthor) {
+              PageAuthor,
+              WriteObserver) {
 
       /**
        * Dialog controller.
@@ -90,7 +92,7 @@
          */
         ctrl.data.$promise.then(function (data) {
           ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
-          ctrl.canWrite = AppContext.getWritePermission();
+          ctrl.canWrite = WriteObserver.get();
           ctrl.itemId = data.id;
           PageTitle.setTitle(data.name);
           PageAuthor.setAuthor(data.author);
