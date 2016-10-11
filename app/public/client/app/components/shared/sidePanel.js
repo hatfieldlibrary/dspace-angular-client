@@ -63,6 +63,10 @@ function SideNavCtrl($mdMedia,
   };
 
 
+  ctrl.isEqualMd = function () {
+    return $mdMedia('md');
+  };
+
 
   ctrl.$onInit = function () {
 
