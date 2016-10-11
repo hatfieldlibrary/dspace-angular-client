@@ -1,7 +1,7 @@
 <md-sidenav class="md-sidenav-right" md-component-id="right" md-is-locked-open="$mdMedia('gt-sm')"
             ng-class="{'transparent': $ctrl.greaterThanMd()}">
 
-  <div ng-class="{'app-side-nav': $ctrl.greaterThanMd()}" layout="column">
+  <div ng-class="{'app-side-nav': $ctrl.greaterThanMd(), 'md-side-panel': $ctrl.isEqualMd()}" layout="column">
 
     <md-toolbar ng-if="!$ctrl.greaterThanMd()" style="background-color: #cccccc">
       <div class="md-toolbar-tools">

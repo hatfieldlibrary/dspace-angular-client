@@ -60,10 +60,25 @@
 
     };
 
+    /**
+     * Sets style for views sm and xs. (Removes border)
+     * @returns {boolean}
+     */
     sb.lessThanMd = function () {
-       if (!$mdMedia('gt-sm'))   {
+       if ($mdMedia('xs') || $mdMedia('sm')) {
          return true;
        }
+      return false;
+    };
+
+    /**
+     * Set style for md views. (Adjusts width)
+     * @returns {boolean}
+     */
+    sb.isEqualMd = function() {
+      if ($mdMedia('md'))   {
+        return true;
+      }
       return false;
     };
 
