@@ -1,11 +1,12 @@
+
 <div layout-fill style="height: 100%;max-width: 100%;">
 
   <md-content flex class="main-content">
 
-    <div layout="row" layout-fill layout-padding class="top-highlight" layout-align="center left" flex="100">
+    <div layout="row" layout-fill class="top-highlight" layout-align="center left" flex="100">
 
-      <communities-component flex="100"
-                        flex-offset="0"
+      <handle-component flex="100"
+                        flex-offset-gt-xs="0"
                         flex-offset-gt-sm="5"
                         flex-offset-gt-md="15"
                         flex-offset-gt-lg="20"
@@ -13,9 +14,9 @@
                         flex-gt-sm="70"
                         flex-gt-md="60"
                         flex-gt-lg="55"
-                        class="app-primary-content-container"></communities-component>
+                        class="app-primary-content-container"></handle-component>
 
-      <side-nav-component type="global"
+      <side-nav-component asset-type="{{$ctrl.assetType}}" asset-id="{{$ctrl.assetId}}" query-type="{{$ctrl.queryType}}" type="handle"
                           flex-gt-xs="0"
                           flex-gt-sm="25"
                           flex-gt-md="25"
@@ -23,15 +24,5 @@
 
 
     </div>
-
-    <ng-include src="'/ds/partials/footer.html'">
-    </ng-include>
-
   </md-content>
 </div>
-
-
-
-
-
-

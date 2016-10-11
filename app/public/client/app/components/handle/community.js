@@ -140,7 +140,7 @@
     bindings: {
       data: '<'
     },
-    templateUrl: '/ds/handle/community.html',
+    templateUrl: 'app/templates/handle/community.html',
     controller: CommunityCtrl
 
   });

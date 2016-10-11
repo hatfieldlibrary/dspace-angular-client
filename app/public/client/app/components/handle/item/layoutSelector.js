@@ -24,7 +24,7 @@
     bindings: {
       data: '<'
     },
-    templateUrl: '/ds/handle/item/selector.html',
+    templateUrl: '/app/templates/handle/item/selector.html',
     controller: ItemCtrl
 
   });

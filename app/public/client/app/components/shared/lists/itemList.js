@@ -291,7 +291,7 @@
       context: '@'
     },
 
-    templateUrl: '/ds/shared/lists/itemList.html',
+    templateUrl: '/app/templates/shared/lists/itemList.html',
     controller: ItemListCtrl
 
   });

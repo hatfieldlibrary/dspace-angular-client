@@ -148,7 +148,6 @@ function SideNavCtrl($mdMedia,
 
   };
 
-
 }
 
 
@@ -157,12 +156,10 @@ dspaceComponents.component('sideNavComponent', {
   bindings: {
     assetType: '@',
     queryType: '@',
-   // menuState: '<',
     assetId: '@',
-    writePermission: '<',
     type: '@'
   },
-  templateUrl: '/ds/shared/sidePanel.html',
+  templateUrl: '/app/templates/shared/sidePanel.html',
   controller: SideNavCtrl
 
 });

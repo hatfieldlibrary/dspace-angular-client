@@ -7,20 +7,20 @@
  */
 dspaceServices.factory('SolrQuery', ['$resource',
   function ($resource) {
-    return $resource('/ds/solrQuery');
+    return $resource('/rest/solrQuery');
   }
 ]);
 
 dspaceServices.factory('SolrBrowseQuery', ['$resource',
   function ($resource) {
-    return $resource('/ds/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', {}, {
+    return $resource('/rest/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', {}, {
       query: {method: 'GET', isArray: false}
     });
   }]);
 
 dspaceServices.factory('SolrJumpToQuery', ['$resource',
   function ($resource) {
-    return $resource('/ds/solrJumpToQuery');
+    return $resource('/rest/solrJumpToQuery');
   }]);
 
 /**
@@ -28,7 +28,7 @@ dspaceServices.factory('SolrJumpToQuery', ['$resource',
  */
 dspaceServices.factory('SolrSortOptionsQuery', '$resource',
   function($resource) {
-    return $resource('/ds/solrQuery/:field/:mode');
+    return $resource('/rest/solrQuery/:field/:mode');
   });
 
 

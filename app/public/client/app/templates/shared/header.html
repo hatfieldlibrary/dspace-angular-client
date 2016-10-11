@@ -1,13 +1,16 @@
-<div layout="row" flex layout-align="center center">
+<div layout="row" layout-align="center center" flex="100">
 
-  <div flex-offset-gt-xs="5"
+
+  <div flex-offset="5"
+       flex-offset-gt-xs="5"
        flex-offset-gt-sm="10"
-       flex-offset-gt-md="20"
+       flex-offset-gt-md="15"
        flex-offset-gt-lg="25"
-       flex="80"
-       flex-gt-sm="60"
+       flex="75"
+       flex-gt-xs="80"
+       flex-gt-sm="70"
        flex-gt-md="60"
-       flex-gt-lg="40">
+       flex-gt-lg="55">
 
     <md-button class="logo" aria-label="Academic Commons" ng-click="$ctrl.goToHome();"
                style="max-width: 170px; height: 37px; vertical-align: middle;"
@@ -17,26 +20,20 @@
 
   </div>
 
-  <div layout="column" layout-padding layout-align="center right"
-       flex-gt-xs="10"
-       flex-gt-sm="15"
-       flex-gt-md="15"
-       flex-gt-lg="10">
+  <div layout="column" flex layout-padding layout-align="center left"
+       flex>
 
     <login-component class="nav-login" ng-if="!$ctrl.isSmallScreen"></login-component>
 
     <md-button class="md-icon-button md-button md-ink-ripple hide-gt-md" type="button"
                style="margin: auto; vertical-align: middle;"
                ng-click="$ctrl.openMenu()" hide-gt-sm="" aria-label="Toggle Menu">
-      <md-icon md-svg-src="/ds/images/ic_menu_white_24px.svg" width="100%" aria-hidden="true"></md-icon>
+      <md-icon md-svg-src="/images/ic_menu_white_24px.svg" width="100%" aria-hidden="true"></md-icon>
       <div class="md-ripple-container"></div>
     </md-button>
 
   </div>
-  <div flex-gt-xs="5"
-       flex-gt-sm="10"
-       flex-gt-md="15"
-       flex-gt-lg="25"></div>
+
 </div>
 
 

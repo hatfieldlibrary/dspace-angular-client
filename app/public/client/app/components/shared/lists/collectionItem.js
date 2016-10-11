@@ -24,7 +24,7 @@
       last: '=',
       id: '@'
     },
-    templateUrl: '/ds/shared/lists/collectionItem.html',
+    templateUrl: '/app/templates/shared/lists/collectionItem.html',
     controller: CollectionItemCtrl
 
   });

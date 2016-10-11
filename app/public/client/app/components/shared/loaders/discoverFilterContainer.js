@@ -90,7 +90,7 @@
     bindings: {
       onUpdate: '&'
     },
-    templateUrl: '/ds/shared/loaders/discoverFilterContainer.html',
+    templateUrl: '/app/templates/shared/loaders/discoverFilterContainer.html',
     controller: FilterContainerController
   });
 

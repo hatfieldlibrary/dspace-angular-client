@@ -23,7 +23,7 @@
 
   dspaceComponents.component('noAccessComponent', {
 
-    templateUrl: '/ds/handle/noAccess.html',
+    templateUrl: '/app/templates/handle/noAccess.html',
     controller: NoAccessCtrl
 
   });

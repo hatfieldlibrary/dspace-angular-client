@@ -9,7 +9,7 @@
 
   dspaceComponents.component('smallSpinner', {
 
-    templateUrl: '/ds/shared/smallSpinner.html'
+    templateUrl: '/app/templates/shared/smallSpinner.html'
 
   });
 

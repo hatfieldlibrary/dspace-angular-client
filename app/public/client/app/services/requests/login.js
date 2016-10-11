@@ -5,7 +5,7 @@
  */
 dspaceServices.factory('Login', ['$resource',
   function ($resource) {
-    return $resource('/ds/auth/google', {}, {
+    return $resource('/rest/auth/google', {}, {
       query: {method: 'GET', isArray: false}
     });
   }

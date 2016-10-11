@@ -46,7 +46,7 @@
        */
       raised: '<'
     },
-    templateUrl: '/ds/shared/login.html',
+    templateUrl: '/app/templates/shared/login.html',
     controller: LoginCtrl
 
   });

@@ -2,7 +2,7 @@
 
 dspaceServices.factory('GetCollectionInfo', ['$resource',
   function ($resource) {
-    return $resource('/ds/collectionInfo/:item', {}, {
+    return $resource('/rest/collectionInfo/:item', {}, {
       query: {method: 'GET', isArray: false}
     });
   }

@@ -150,7 +150,7 @@
       setSelectedId: '&'
     },
     controller: ItemDetailController,
-    templateUrl: '/ds/shared/lists/itemDetail.html'
+    templateUrl: '/app/templates/shared/lists/itemDetail.html'
 
   });
 

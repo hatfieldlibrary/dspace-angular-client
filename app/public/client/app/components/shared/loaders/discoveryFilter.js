@@ -108,7 +108,7 @@
       onRemoveFilter: '&',
       position: '@'
     },
-    templateUrl: '/ds/shared/loaders/discoveryFilter.html',
+    templateUrl: '/app/templates/shared/loaders/discoveryFilter.html',
     controller: DiscoverFilterCtrl
 
   });

@@ -16,7 +16,7 @@
     /**
      * The header logo image.
      */
-    HOME_LOGO: '/ds/images/acom_header.png',
+    HOME_LOGO: '/images/acom_header.png',
 
     COMMUNITIES_META_TITLE: 'University Departments',
 
@@ -25,7 +25,7 @@
     COMMUNITIES_LIST_INTRO: 'Willamette University departmental collections are listed below. Each department will have one or more collections.  Many collections will be visible only after you log in with your Willamette University credentials.',
 
     // Relative path to the image used with collection list view.  Can be empty string.
-    COMMUNITIES_HEADER_IMAGE: '/ds/images/collections-list.png',
+    COMMUNITIES_HEADER_IMAGE: '/images/collections-list.png',
 
     VIEW_ALL_COMMUNITIES: 'View Departments',
 

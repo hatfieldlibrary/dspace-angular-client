@@ -79,7 +79,7 @@
       handle: '@',
       last: '<'
     },
-    templateUrl: '/ds/shared/lists/discoverDetail.html',
+    templateUrl: '/app/templates/shared/lists/discoverDetail.html',
     controller: DiscoverDetailCtrl
 
   });

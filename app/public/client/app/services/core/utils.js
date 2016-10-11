@@ -355,7 +355,7 @@
        */
       utils.getLogoPath = function (logoId) {
 
-        var path = '/ds/bitstream/' + logoId + '/logo';
+        var path = '/rest/bitstream/' + logoId + '/logo';
 
         return path;
       };

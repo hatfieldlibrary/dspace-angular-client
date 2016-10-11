@@ -5,7 +5,7 @@
  */
 dspaceServices.factory('GetCommunities', ['$resource',
   function ($resource) {
-    return $resource('/ds/getCommunities', {}, {
+    return $resource('/rest/getCommunities', {}, {
       query: {method: 'GET', isArray: true}
     });
   }
@@ -18,7 +18,7 @@ dspaceServices.factory('GetCommunities', ['$resource',
  */
 dspaceServices.factory('GetCommunitiesForDiscover', ['$resource',
   function ($resource) {
-    return $resource('/ds/communitiesForDiscover', {}, {
+    return $resource('/rest/communitiesForDiscover', {}, {
       query: {method: 'GET', isArray: true}
     });
   }
@@ -29,7 +29,7 @@ dspaceServices.factory('GetCommunitiesForDiscover', ['$resource',
  */
 dspaceServices.factory('GetCollectionsForCommunity', ['$resource',
   function ($resource) {
-    return $resource('/ds/collectionsForCommunity/:id', {}, {
+    return $resource('/rest/collectionsForCommunity/:id', {}, {
       query: {method: 'GET', isArray: true}
     });
   }

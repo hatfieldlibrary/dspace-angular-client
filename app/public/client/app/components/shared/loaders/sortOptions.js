@@ -445,7 +445,7 @@
       queryType: '@',
       sortOrder: '@'
     },
-    templateUrl: '/ds/shared/loaders/sortOptions.html',
+    templateUrl: '/app/templates/shared/loaders/sortOptions.html',
     controller: SortOptionsCtrl
 
   });

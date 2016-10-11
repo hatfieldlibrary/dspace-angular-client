@@ -4,7 +4,7 @@
 
     <div layout="row" layout-fill layout-padding class="top-highlight" layout-align="center left" flex="100">
 
-      <discover-component flex="100"
+      <browse-component flex="100"
                              flex-offset-gt-xs="0"
                              flex-offset-gt-sm="5"
                              flex-offset-gt-md="15"
@@ -13,34 +13,19 @@
                              flex-gt-sm="70"
                              flex-gt-md="60"
                              flex-gt-lg="55"
-                             class="app-primary-content-container"></discover-component>
+                             class="app-primary-content-container"></browse-component>
 
-      <side-nav-component asset-type="{{$ctrl.assetType}}" asset-id="{{$ctrl.assetId}}" query-type="{{$ctrl.queryType}}" type="discover"
+      <side-nav-component type="handle" asset-type="{{$ctrl.assetType}}" asset-id="{{$ctrl.assetId}}" query-type="{{$ctrl.queryType}}" write-permission="$ctrl.canWrite"
                           flex-gt-xs="0"
                           flex-gt-sm="25"
                           flex-gt-md="25"
                           flex-gt-lg="25"></side-nav-component>
 
 
-
     </div>
-
 
     <ng-include src="'/ds/partials/footer.html'">
     </ng-include>
 
   </md-content>
-
 </div>
-
-
-
-
-
-
-
-
-
-
-
-

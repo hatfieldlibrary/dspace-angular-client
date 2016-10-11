@@ -8,7 +8,8 @@
     <div class="md-display-1 item-title">{{$ctrl.data.name}}</div>
   </div>
 
-  <md-card md-colors="::{background: 'default-background-50'}" class="main-card" style="max-width: 900px;min-width: 90%;">
+  <md-card md-colors="::{background: 'default-background-50'}" class="main-card"
+           style="max-width: 900px;min-width: 90%;">
 
     <img ng-if="$ctrl.hasLogo()" ng-src="{{$ctrl.getLogo()}}" class="md-card-image opaque-img" alt="image caption">
 
@@ -19,7 +20,8 @@
         <div class="md-subhead intro" ng-bind-html="$ctrl.data.introductoryText"></div>
 
         <md-content>
-          <item-list-component flex="100" layout-fill class="list-width" context="{{$ctrl.context}}"></item-list-component>
+          <item-list-component flex="100" layout-fill class="list-width"
+                               context="{{$ctrl.context}}"></item-list-component>
         </md-content>
 
       </div>
@@ -34,7 +36,7 @@
 <div layout-fill layout-align="start start" ng-if="$ctrl.mobileItemRequest" style="margin-top: -10px">
 
   <mobile-collection-item-component layout-fill layout-align="start start" collection-item="{{$ctrl.collectionItem}}"
-                         collection-handle="{{$ctrl.collectionHandle}}"></mobile-collection-item-component>
+                                    collection-handle="{{$ctrl.collectionHandle}}"></mobile-collection-item-component>
 
 </div>
 

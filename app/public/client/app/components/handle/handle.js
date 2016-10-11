@@ -215,8 +215,8 @@
     '<div ng-if="$ctrl.loginRequired || $ctrl.accessNotAllowed"> ' +
     '<login-required-component></login-required-component> ' +
     '</div> ' +
-    '<div layout-fill class="spinner" ng-hide="$ctrl.ready" >' +
-    '<div layout="row" layout-fill layout-sm="column" layout-md="column" layout-align="space-around">' +
+    '<div flex layout-fill class="spinner" ng-hide="$ctrl.ready" >' +
+    '<div layout="row" flex layout-fill layout-sm="row" layout-md="row" style="min-height: 800px;" layout-align="space-around">' +
     '<md-progress-circular class="md-warn" md-mode="indeterminate" md-diameter="90"></md-progress-circular>' +
     '</div>' +
     '</div>' +

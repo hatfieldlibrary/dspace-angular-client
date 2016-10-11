@@ -67,7 +67,7 @@
 
   dspaceComponents.component('advancedFilterContainer', {
 
-    templateUrl: '/ds/advanced/filters/advancedFilterContainer.html',
+    templateUrl: '/app/templates/advanced/filters/advancedFilterContainer.html',
     controller: FilterContainerController
   });
 

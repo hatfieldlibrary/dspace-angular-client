@@ -101,7 +101,7 @@
 
   dspaceComponents.component('seoPagingComponent', {
 
-    templateUrl: '/ds/seo/continuous.html',
+    templateUrl: '/app/templates/seo/continuous.html',
     controller: SeoPagingCtrl
 
   });

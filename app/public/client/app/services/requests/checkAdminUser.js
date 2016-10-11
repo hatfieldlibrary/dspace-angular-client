@@ -6,7 +6,7 @@
 
 dspaceServices.factory('CheckSysAdmin', ['$resource',
   function ($resource) {
-    return $resource('/ds/adminStatus', {}, {
+    return $resource('/rest/adminStatus', {}, {
       query: {method: 'GET', isArray: false}
     });
   }

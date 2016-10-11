@@ -1,27 +1,7 @@
-<!-- Without explicit height, Firefox (44.0.1) does not calculate the height of the flex container. -->
-<div layout-fill style="height: 100%;max-width: 100%;">
+<handle-container-component></handle-container-component>
 
-  <md-content flex class="main-content" style="max-width: 100%;">
-
-    <div layout="row" layout-fill class="top-highlight" layout-align="center left" flex="100">
-
-      <handle-container-component flex="100"
-                                  flex-offset-gt-xs="5"
-                                  flex-offset-gt-sm="10"
-                                  flex-offset-gt-md="15"
-                                  flex-offset-gt-lg="25">
-
-      </handle-container-component>
-
-    </div>
-
-
-    <ng-include src="'/ds/partials/footer.html'">
-    </ng-include>
-
-  </md-content>
-
-</div>
+<ng-include src="'/ds/partials/footer.html'">
+</ng-include>
 
 
 

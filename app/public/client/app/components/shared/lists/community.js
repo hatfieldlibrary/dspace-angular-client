@@ -24,7 +24,7 @@
       handle: '@',
       last: '='
     },
-    templateUrl: '/ds/shared/lists/community.html',
+    templateUrl: '/app/templates/shared/lists/community.html',
 
     controller: CommunityItemCtrl
 

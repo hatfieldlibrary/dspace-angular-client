@@ -125,7 +125,7 @@
 
     },
     controller: AuthorDetailController,
-    templateUrl: '/ds/shared/lists/authorDetail.html'
+    templateUrl: '/app/templates/shared/lists/authorDetail.html'
 
   });
 

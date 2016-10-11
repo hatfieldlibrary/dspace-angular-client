@@ -36,7 +36,7 @@
     bindings: {
       streams: '<'
     },
-    templateUrl: '/ds/shared/lists/filesList.html',
+    templateUrl: '/app/templates/shared/lists/filesList.html',
     controller: FilesController
 
   });

@@ -45,7 +45,7 @@
       type: '@',
       id: '@'
     },
-    templateUrl: '/ds/shared/header.html',
+    templateUrl: '/app/templates/shared/header.html',
     controller: HeaderCtrl
 
   });

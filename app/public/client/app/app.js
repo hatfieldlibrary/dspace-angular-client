@@ -61,7 +61,7 @@ var dspaceApp = angular.module('dspaceApp', [
           reloadOnSearch: false
         })
         .when('/ds/discover', {
-          templateUrl: '/ds/ds/partials/discover.html'
+          templateUrl: '/ds/partials/discover.html'
         });
 
       $locationProvider.html5Mode(true);

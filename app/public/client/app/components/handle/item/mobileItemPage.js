@@ -78,7 +78,7 @@
       collectionItem: '@',
       collectionHandle: '@'
     },
-    templateUrl: '/ds/handle/item/mobileItem.html',
+    templateUrl: '/app/templates/handle/item/mobileItem.html',
     controller: MobileItemCtrl
 
   });

@@ -64,7 +64,7 @@
 
     },
     controller: ItemDetailController,
-    templateUrl: '/ds/shared/lists/inlineItemDetail.html'
+    templateUrl: '/app/templates/shared/lists/inlineItemDetail.html'
 
   });
 

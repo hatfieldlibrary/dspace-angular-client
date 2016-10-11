@@ -40,7 +40,7 @@
 
   dspaceComponents.component('browseContainerComponent',
     {
-      templateUrl:'/ds/browse/browseContainer.html',
+      templateUrl:'/app/templates/browse/browseContainer.html',
       controller: ContainerController
     });
 

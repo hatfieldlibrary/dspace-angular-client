@@ -5,7 +5,7 @@
  */
 dspaceServices.factory('CheckSession', ['$resource',
   function ($resource) {
-    return $resource('/ds/check-session', {}, {
+    return $resource('/rest/check-session', {}, {
       query: {method: 'GET', isArray: false}
     });
   }

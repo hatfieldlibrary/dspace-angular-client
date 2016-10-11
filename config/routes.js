@@ -39,7 +39,7 @@ module.exports = function (app, config, passport) {
       ),
       // If authentication succeeded, redirect to login/netid to obtain DSpace token.
       function (req, res) {
-        res.redirect('/ds/login/' + req.user);
+        res.redirect('/rest/login/' + req.user);
       }
     );
 
@@ -54,7 +54,7 @@ module.exports = function (app, config, passport) {
       ),
       function (req, res) {
         // Successful authentication, redirect to login/netid to obtain DSpace token.
-        res.redirect('/ds/login/' + req.user);
+        res.redirect('/rest/login/' + req.user);
       });
 
   }
@@ -63,7 +63,7 @@ module.exports = function (app, config, passport) {
    * Requests for item detail are fulfilled based
    * on the user agent.
    */
-  app.get('/ds/shared/lists/itemDetail.html', function (req, res) {
+  app.get('/app/templates/shared/lists/itemDetail.html', function (req, res) {
 
     sendItemDetail(req, res);
 
@@ -85,40 +85,39 @@ module.exports = function (app, config, passport) {
    * Get DSpace token for authenticated user.
    */
   /*jshint unused:false*/
-  app.get('/ds/login/:netid', login.dspace);
-
+  app.get('/rest/login/:netid', login.dspace);
   /**
    * Logout
    */
-  app.get('/ds/logout', login.logout);
+  app.get('/rest/logout', login.logout);
   /**
    * Check for existing DSpace session.
    */
-  app.get('/ds/check-session', login.checkSession);
+  app.get('/rest/check-session', login.checkSession);
 
-  app.get('/ds/adminStatus', login.checkSysAdminStatus);
+  app.get('/rest/adminStatus', login.checkSysAdminStatus);
 
-  app.get('/ds/getCommunities', community.getCommunities);
+  app.get('/rest/getCommunities', community.getCommunities);
 
-  app.get('/ds/communitiesForDiscover', community.getCommunitiesForDiscover);
+  app.get('/rest/communitiesForDiscover', community.getCommunitiesForDiscover);
 
-  app.get('/ds/collectionInfo/:item', collection.getCollectionInfo);
+  app.get('/rest/collectionInfo/:item', collection.getCollectionInfo);
 
-  app.get('/ds/collectionsForCommunity/:id', community.getCollections);
+  app.get('/rest/collectionsForCommunity/:id', community.getCollections);
 
-  app.get('/ds/bitstream/:id/:file/', bitstream.bitstream);
+  app.get('/rest/bitstream/:id/:file/', bitstream.bitstream);
 
-  app.get('/ds/handleRequest/:site/:item', handle.getItem);
+  app.get('/rest/handleRequest/:site/:item', handle.getItem);
 
-  app.get('/ds/getItem/:item', item.getItem);
+  app.get('/rest/getItem/:item', item.getItem);
 
-  app.get('/ds/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', solr.browse);
+  app.get('/rest/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', solr.browse);
 
-  app.get('/ds/solrQuery/:site/:item/:field/:mode', solr.sortOptions);
+  app.get('/rest/solrQuery/:site/:item/:field/:mode', solr.sortOptions);
 
-  app.post('/ds/solrQuery', solr.query);
+  app.post('/rest/solrQuery', solr.query);
 
-  app.post('/ds/solrJumpToQuery', solr.jumpTo);
+  app.post('/rest/solrJumpToQuery', solr.jumpTo);
 
 
   // HTML5 MODE ROUTING.
@@ -166,14 +165,14 @@ module.exports = function (app, config, passport) {
 
       res.sendFile(
         app.get('appPath') +
-        '/alternate/shared/lists/itemDetailSeo.html'
+        '/app/alternate/shared/lists/itemDetailSeo.html'
       );
     }
     // ...not a crawler, use in-app template
     else {
       res.sendFile(
         app.get('appPath') +
-        '/alternate/shared/lists/itemDetail.html'
+        '/app/alternate/shared/lists/itemDetail.html'
       );
     }
 

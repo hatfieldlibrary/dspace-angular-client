@@ -235,7 +235,7 @@
 
   dspaceComponents.component('advancedSearchComponent', {
 
-    templateUrl: '/ds/advanced/advanced.html',
+    templateUrl: '/app/templates/advanced/advanced.html',
     controller: AdvancedCtrl,
     controllerAs: 'adv'
 

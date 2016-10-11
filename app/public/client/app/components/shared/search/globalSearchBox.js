@@ -36,7 +36,21 @@
     sb.searchHeaderLabel = Messages.SEARCHBOX_BASIC_HEADER_LABEL;
 
     sb.lessThanMd = function () {
-      return !$mdMedia('gt-sm');
+      if ($mdMedia('gt-sm'))  {
+        return false;
+      }
+      return true;
+    };
+
+    /**
+     * Set style for md views. (Adjusts width)
+     * @returns {boolean}
+     */
+    sb.isEqualMd = function() {
+      if ($mdMedia('md'))   {
+        return true;
+      }
+      return false;
     };
 
     sb.submit = function (terms) {
@@ -64,7 +78,7 @@
 
   dspaceComponents.component('globalSearchBoxComponent', {
 
-    templateUrl: '/ds/shared/search/globalSearchBox.html',
+    templateUrl: '/app/templates/shared/search/globalSearchBox.html',
     controller: GlobalSearchBoxCtrl,
     controllerAs: 'sb'
 

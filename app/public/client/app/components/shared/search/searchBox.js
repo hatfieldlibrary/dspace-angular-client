@@ -64,7 +64,7 @@
      * Sets style for views sm and xs. (Removes border)
      * @returns {boolean}
      */
-    sb.lessThanMd = function () {
+    sb.isLessThanMd = function () {
        if ($mdMedia('xs') || $mdMedia('sm')) {
          return true;
        }
@@ -100,7 +100,7 @@
     bindings: {
       assetId: '@'
     },
-    templateUrl: '/ds/shared/search/searchBox.html',
+    templateUrl: '/app/templates/shared/search/searchBox.html',
     controller: MainSearchBoxCtrl,
     controllerAs: 'sb'
 

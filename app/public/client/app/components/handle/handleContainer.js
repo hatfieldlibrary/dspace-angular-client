@@ -39,7 +39,7 @@
 
   dspaceComponents.component('handleContainerComponent',
     {
-      templateUrl:'/ds/handle/handleContainer.html',
+      templateUrl:'/app/templates/handle/handleContainer.html',
       controller: ContainerController
     });
 

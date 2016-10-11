@@ -2,7 +2,7 @@
   <div class="file-info" layout="column" layout-align="start start" layout-align-xs="start"
        ng-repeat="stream in $ctrl.streams"
        ng-if="stream.bundleName==='ORIGINAL'">
-    <md-button class="md-subhead" target="{{$ctrl.setTarget(stream.mimeType)}}" analytics-on="click" analytics-event="Download" ng-href="/ds/bitstream/{{stream.id}}/{{stream.name}}">
+    <md-button class="md-subhead" target="{{$ctrl.setTarget(stream.mimeType)}}" analytics-on="click" analytics-event="Download" ng-href="/rest/bitstream/{{stream.id}}/{{stream.name}}">
       <md-icon md-font-library="material-icons">file_download</md-icon>
       {{$ctrl.downloadLabel}}
     </md-button>

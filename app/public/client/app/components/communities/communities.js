@@ -85,7 +85,7 @@
 
   dspaceComponents.component('communitiesComponent', {
 
-    templateUrl: '/ds/communities/communities.html',
+    templateUrl: '/app/templates/communities/communities.html',
     controller: CommunitiesCtrl
 
   });

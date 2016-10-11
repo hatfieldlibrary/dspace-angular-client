@@ -171,7 +171,7 @@
     },
 
     controller: SubjectDetailController,
-    templateUrl: '/ds/shared/lists/subjectDetail.html'
+    templateUrl: '/app/templates/shared/lists/subjectDetail.html'
   });
 
 })();

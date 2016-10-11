@@ -6,7 +6,7 @@
  */
 dspaceServices.factory('ItemByHandle', ['$resource',
   function ($resource) {
-    return $resource('/ds/handleRequest/:site/:item', {}, {
+    return $resource('/rest/handleRequest/:site/:item', {}, {
       query: {method: 'GET', isArray: false}
     });
   }

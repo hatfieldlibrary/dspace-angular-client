@@ -214,7 +214,7 @@
 
   dspaceComponents.component('discoverComponent', {
 
-    templateUrl: '/ds/discover/discover.html',
+    templateUrl: '/app/templates/discover/discover.html',
     controller: DiscoverCtrl,
     controllerAs: 'disc'
 

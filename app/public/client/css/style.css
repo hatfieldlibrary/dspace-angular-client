@@ -69,7 +69,6 @@ img {
 }
 
 .main-card {
-  max-width: 900px;
   min-height: 650px;
   min-width: 95%;
 }
@@ -86,8 +85,17 @@ img {
   margin-top: 102px;
 }
 
-.app-primary-content-container {
+.user-options-medium {
+  width: 100%;
+}
+
+.side-nav-medium {
+  width: 100%;
+}
+
+.layout-row .app-primary-content-container {
   margin-top: 10px;
+  max-width: 900px;
 }
 
 md-sidenav {
@@ -170,7 +178,7 @@ md-dialog.item-details {
 }
 
 .top-highlight {
-  background-image: url('/ds/images/masthead-bottom-img.jpg'), url('/ds/images/background-grain.jpg');
+  background-image: url('/images/masthead-bottom-img.jpg'), url('/images/background-grain.jpg');
   background-repeat: no-repeat, repeat-x;
   background-position: top center, top center;
   min-height: 200px;
@@ -292,13 +300,19 @@ collection-item-component .hide-content {
 
 }
 
+.mobile-search-box {
+  border: none;
+  width: 100%;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
 .search-form {
   width: 80%;
   padding-left: 22px;
 }
 
-.medium-search-form {
-  width: 80%;
+.search-form-medium {
+  width: 100%;
 }
 
 md-sidenav md-list-item{
@@ -377,7 +391,7 @@ md-input-container.halfer {
 
 .is-mobile md-card,
 .is-mobile md-card-content {
-  margin: 0;
+  margin: 4px;
   padding: 4px;
 }
 
@@ -602,7 +616,7 @@ discover-detail-component {
 }
 
 .footer > .footer-background {
-  background-image: url(/ds/images/footer-watermark.png);
+  background-image: url(/images/footer-watermark.png);
   background-position: 100% 0;
   background-repeat: no-repeat;
   padding: 2.1875em;

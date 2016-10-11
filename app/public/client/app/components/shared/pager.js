@@ -83,7 +83,7 @@
 
   dspaceComponents.component('pagerComponent', {
 
-    templateUrl: '/ds/shared/loaders/pager.html',
+    templateUrl: '/app/templates/shared/loaders/pager.html',
     bindings: {
       context: '@',
       next: '@'

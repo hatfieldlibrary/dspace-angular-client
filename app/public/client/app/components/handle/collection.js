@@ -120,7 +120,7 @@
       // API handle query response
       data: '<'
     },
-    templateUrl: '/ds/handle/collection.html',
+    templateUrl: '/app/templates/handle/collection.html',
     controller: CollectionCtrl
 
   });

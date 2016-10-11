@@ -15,10 +15,12 @@ global.models = require('./app/models');
 
 var app = express();
 
+
 /**
  * Basic Express setup for logging, parser, static routes...
  */
 require('./config/express')(app, config);
+
 /**
  * Sets up passport authentication and Express sessions.
  */

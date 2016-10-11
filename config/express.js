@@ -28,6 +28,7 @@ module.exports = function (app, config) {
 
   if ('production' === env) {
 
+    console.log('production')
     app.set('appPath', config.root + 'public/client');
     /**
      * Enable trust proxy if the Express server is not directly
@@ -39,9 +40,7 @@ module.exports = function (app, config) {
      * Use Apache log output.
      */
     app.use(morgan('common'));
-    /**
-     * Path to static files.
-     */
+
     app.use(express.static(path.join(config.root, 'public/client')));
     /**
      * Path to favicon.
@@ -60,6 +59,7 @@ module.exports = function (app, config) {
 
     // static routes.
     app.use(express.static(path.join(config.root, '.tmp')));
+
     app.use(express.static(path.join(config.root, 'public/client')));
 
   }
