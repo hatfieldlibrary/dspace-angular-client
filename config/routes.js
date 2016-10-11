@@ -15,7 +15,6 @@ module.exports = function (app, config, passport) {
    */
   login.setConfig(config);
 
-
   // AUTHENTICATION.
 
   /**
@@ -58,9 +57,17 @@ module.exports = function (app, config, passport) {
         res.redirect('/ds/login/' + req.user);
       });
 
-
   }
 
+  /**
+   * Requests for item detail are fulfilled based
+   * on the user agent.
+   */
+  app.get('/ds/shared/lists/itemDetail.html', function (req, res) {
+
+    sendItemDetail(req, res);
+
+  });
 
   /**
    * Set the disk cache location for video files.
@@ -71,8 +78,6 @@ module.exports = function (app, config, passport) {
     return next();
 
   });
-
-
 
   // API ENDPOINTS.
 
@@ -143,6 +148,36 @@ module.exports = function (app, config, passport) {
       );
     }
   );
+
+  /**
+   * For the itemDetail template: detect search engine crawlers and
+   * return a template that links to the canonical handle view
+   * rather than the app's modal dialog view.
+   * @param res
+   */
+  function sendItemDetail(req, res) {
+
+    var regex = /Googlebot|Bingbot|Slurp/i;
+    var userAgent =  req.headers['user-agent'];
+
+    // ...is a crawler request, use crawler template
+    if (userAgent.match(regex)) {
+      console.log('Got bot user agent: ' + userAgent);
+
+      res.sendFile(
+        app.get('appPath') +
+        '/alternate/shared/lists/itemDetailSeo.html'
+      );
+    }
+    // ...not a crawler, use in-app template
+    else {
+      res.sendFile(
+        app.get('appPath') +
+        '/alternate/shared/lists/itemDetail.html'
+      );
+    }
+
+  }
 
 };
 
