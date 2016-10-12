@@ -1,0 +1,135 @@
+<div style="min-height: 800px;">
+
+  <loader-component context="{{$ctrl.context}}"
+                    on-new-set="$ctrl.onUpdate(results, count, field, offset, jump)"
+                    on-pager-update="$ctrl.onPagerUpdate(results, count, field)"
+                    on-prev-update="$ctrl.onPreviousUpdate(results, count, field)"
+                    prev-pager-offset="$ctrl.setPrevPagerOffset(offset)"
+                    next-pager-offset="$ctrl.setNextPagerOffset(offset)"
+                    set-selected-item="$ctrl.setSelectedItem(id)"
+                    set-selected-pos="$ctrl.setSelectedPostion(pos)"
+                    set-query-type="$ctrl.setQueryType(type)"
+                    set-sort-order="$ctrl.setSortOrder(order)">
+  </loader-component>
+
+  <h2 class="md-title" ng-if="$ctrl.isBrowseContext() && $ctrl.context!='seo'">Browsing: {{$ctrl.browseTerms}}</h2>
+
+  <div  style="background: #791716; color: #fefefe; font-size: 16px;font-weight: 500;letter-spacing: 0.005em; padding-left: 5px;" class="md-body-1 layout-padding">
+    <div layout="row" layout-align="left center"  ng-class="{'warning': $ctrl.noResultWarning}"><i class="material-icons" ng-show="$ctrl.noResultWarning">error_outline</i>&nbsp;{{$ctrl.resultMessage}}</div>
+  </div>
+
+  <md-content md-colors="::{background: 'default-background-200'}" class="filter-container" ng-if="$ctrl.showDiscoverContainer  && $ctrl.context!='seo'">
+
+    <sort-options-component ng-if="$ctrl.showOptions && $ctrl.context!='seo'"
+                            context="{{$ctrl.context}}"
+                            query-type="{{$ctrl.qt}}"
+                            sort-order="{{$ctrl.sort}}"
+                            reset-list-view="$ctrl.resetListView()">
+    </sort-options-component>
+
+    <discover-filter-container ng-if="$ctrl.context=='search'"
+                               on-update="$ctrl.onUpdate(results, count, field)">
+    </discover-filter-container>
+
+  </md-content>
+
+  <div flex="100" layout-fill layout="column" style="height: 100%;margin-top: -12px;">
+
+    <pager-back-component ng-if="$ctrl.jump && $ctrl.context!='seo'"
+                          context="$ctrl.context" prev="{{$ctrl.prevPagerOffset}}" end="{{$ctrl.nextPagerOffset}}">
+
+    </pager-back-component>
+
+    <small-spinner ng-hide="$ctrl.ready"></small-spinner>
+
+    <md-list ng-show="$ctrl.ready">
+
+      <!-- item query results and search crawler paging -->
+      <item-detail-component
+        ng-if="$ctrl.field!='author' && $ctrl.field!='subject' && $ctrl.field!='discover'"
+        ng-repeat="col in $ctrl.items"
+        class="repeat-animation"
+        title="{{col.title}}"
+        author="col.author"
+        publisher="{{col.publisher}}"
+        year="{{col.year}}"
+        handle="{{col.handle}}"
+        abstract="{{col.abstract}}"
+        id="{{col.id}}"
+        pos="{{$index}}"
+        context="{{$ctrl.context}}"
+        selected-item="{{$ctrl.selectedItem}}"
+        ng-class="{'set-divider': $ctrl.addBorder($index)}">
+
+      </item-detail-component>
+
+      <author-detail-component
+
+        ng-if="$ctrl.field=='author'"
+        ng-repeat="au in $ctrl.items"
+        class="'animate'"
+        ng-class="{'selected': $index==$ctrl.selectedIndex}"
+        author="{{au.item.value}}"
+        count="{{au.item.count}}"
+        type="{{$ctrl.type}}"
+        id="{{$ctrl.id}}"
+        pos="{{$index}}"
+        field="{{$ctrl.field}}"
+        abstract="{{col.abstract}}"
+        last="$last"
+        selected-position="{{$ctrl.selectedPosition}}"
+        set-selected-pos="$ctrl.setSelectedPosition(pos)">
+
+      </author-detail-component>
+
+      <subject-detail-component
+
+        ng-if="$ctrl.field=='subject'"
+        ng-repeat="sub in $ctrl.items"
+        ng-class="{'selected': $index==$ctrl.selectedIndex}"
+        subject="{{sub.item.value}}"
+        count="{{sub.item.count}}"
+        type="{{$ctrl.type}}"
+        id="{{$ctrl.id}}"
+        pos="{{$index}}"
+        field="{{$ctrl.field}}"
+        abstract="{{col.abstract}}"
+        last="$last"
+        selected-position="{{$ctrl.selectedPosition}}"
+        set-selected-pos="$ctrl.setSelectedPosition(pos)">
+
+      </subject-detail-component>
+
+      <discover-detail-component
+
+        ng-if="$ctrl.field=='discover'"
+        ng-repeat="item in $ctrl.items"
+        title="{{item.title[0]}}"
+        author="item.author"
+        default-title="{{item.defaultTitle}}"
+        id="{{item.resourceid}}"
+        description="item.description"
+        resource-type="{{item.resourcetype}}"
+        handle="{{item.handle}}"
+        last="$last"
+        count="{{$ctrl.count}}">
+
+      </discover-detail-component>
+
+    </md-list>
+
+    <pager-component ng-show="$ctrl.ready && $ctrl.context!='seo'"
+    next="{{$ctrl.nextPagerOffset}}"
+    context="{{$ctrl.context}}">
+
+    </pager-component>
+
+    <div ng-if="$ctrl.count > 10 && $ctrl.context!='seo'" class="md-body-1 md-accent layout-padding">
+      {{$ctrl.resultMessage}}
+    </div>
+
+    <p>&nbsp;</p>
+  </div>
+</div>
+
+

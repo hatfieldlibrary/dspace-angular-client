@@ -15,7 +15,7 @@ module.exports = function (app, config, passport) {
    */
   login.setConfig(config);
 
-  // AUTHENTICATION.
+  // AUTHENTICATION
 
   /**
    * Use OAUTH2 for development.
@@ -25,7 +25,7 @@ module.exports = function (app, config, passport) {
     /**
      * Authentication route for Google OAuth .
      */
-    app.get('/ds/auth/login', passport.authenticate('google', {
+    app.get('/ds-api/auth/login', passport.authenticate('google', {
       scope: ['https://www.googleapis.com/auth/userinfo.profile',
         'https://www.googleapis.com/auth/userinfo.email']
     }));
@@ -39,43 +39,48 @@ module.exports = function (app, config, passport) {
       ),
       // If authentication succeeded, redirect to login/netid to obtain DSpace token.
       function (req, res) {
-        res.redirect('/rest/login/' + req.user);
+        res.redirect('/ds-api/login/' + req.user);
       }
     );
 
   }
+
   else if (app.get('env') === 'production') {
     /**
      * Authentication route for CAS.
      */
     // app.get('/auth/login', app.passportStrategy.authenticate);
-    app.get('/ds/auth/login', passport.authenticate('cas',
+    app.get('/ds-api/auth/login', passport.authenticate('cas',
       {failureRedirect: '/ds/communities'}
       ),
       function (req, res) {
         // Successful authentication, redirect to login/netid to obtain DSpace token.
-        res.redirect('/rest/login/' + req.user);
+        res.redirect('/ds-api/login/' + req.user);
       });
 
   }
+
+  // DISK CACHE
+
+  /**
+   * Set the disk cache location for video files.
+   */
+  app.use(function (req, res, next) {
+
+    req.filePath = config.diskCache.dir;
+    return next();
+
+  });
+
+  // ALTERNATE
 
   /**
    * Requests for item detail are fulfilled based
    * on the user agent.
    */
-  app.get('/app/templates/shared/lists/itemDetail.html', function (req, res) {
+  app.get('/ds-app/app/templates/shared/lists/itemDetail.html', function (req, res) {
 
     sendItemDetail(req, res);
-
-  });
-
-  /**
-   * Set the disk cache location for video files.
-   */
-  app.use(function(req, res, next) {
-
-    req.filePath = config.diskCache.dir;
-    return next();
 
   });
 
@@ -85,39 +90,39 @@ module.exports = function (app, config, passport) {
    * Get DSpace token for authenticated user.
    */
   /*jshint unused:false*/
-  app.get('/rest/login/:netid', login.dspace);
+  app.get('/ds-api/login/:netid', login.dspace);
   /**
    * Logout
    */
-  app.get('/rest/logout', login.logout);
+  app.get('/ds-api/logout', login.logout);
   /**
    * Check for existing DSpace session.
    */
-  app.get('/rest/check-session', login.checkSession);
+  app.get('/ds-api/check-session', login.checkSession);
 
-  app.get('/rest/adminStatus', login.checkSysAdminStatus);
+  app.get('/ds-api/adminStatus', login.checkSysAdminStatus);
 
-  app.get('/rest/getCommunities', community.getCommunities);
+  app.get('/ds-api/getCommunities', community.getCommunities);
 
-  app.get('/rest/communitiesForDiscover', community.getCommunitiesForDiscover);
+  app.get('/ds-api/communitiesForDiscover', community.getCommunitiesForDiscover);
 
-  app.get('/rest/collectionInfo/:item', collection.getCollectionInfo);
+  app.get('/ds-api/collectionInfo/:item', collection.getCollectionInfo);
 
-  app.get('/rest/collectionsForCommunity/:id', community.getCollections);
+  app.get('/ds-api/collectionsForCommunity/:id', community.getCollections);
 
-  app.get('/rest/bitstream/:id/:file/', bitstream.bitstream);
+  app.get('/ds-api/bitstream/:id/:file/', bitstream.bitstream);
 
-  app.get('/rest/handleRequest/:site/:item', handle.getItem);
+  app.get('/ds-api/handleRequest/:site/:item', handle.getItem);
 
-  app.get('/rest/getItem/:item', item.getItem);
+  app.get('/ds-api/getItem/:item', item.getItem);
 
-  app.get('/rest/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', solr.browse);
+  app.get('/ds-api/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', solr.browse);
 
-  app.get('/rest/solrQuery/:site/:item/:field/:mode', solr.sortOptions);
+  app.get('/ds-api/solrQuery/:site/:item/:field/:mode', solr.sortOptions);
 
-  app.post('/rest/solrQuery', solr.query);
+  app.post('/ds-api/solrQuery', solr.query);
 
-  app.post('/rest/solrJumpToQuery', solr.jumpTo);
+  app.post('/ds-api/solrJumpToQuery', solr.jumpTo);
 
 
   // HTML5 MODE ROUTING.
@@ -157,7 +162,7 @@ module.exports = function (app, config, passport) {
   function sendItemDetail(req, res) {
 
     var regex = /Googlebot|Bingbot|Slurp/i;
-    var userAgent =  req.headers['user-agent'];
+    var userAgent = req.headers['user-agent'];
 
     // ...is a crawler request, use crawler template
     if (userAgent.match(regex)) {
@@ -165,14 +170,14 @@ module.exports = function (app, config, passport) {
 
       res.sendFile(
         app.get('appPath') +
-        '/app/alternate/shared/lists/itemDetailSeo.html'
+        '/ds-app/app/alternate/shared/lists/itemDetailSeo.html'
       );
     }
     // ...not a crawler, use in-app template
     else {
       res.sendFile(
         app.get('appPath') +
-        '/app/alternate/shared/lists/itemDetail.html'
+        '/ds-app/app/alternate/shared/lists/itemDetail.html'
       );
     }
 

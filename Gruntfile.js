@@ -73,29 +73,6 @@ module.exports = function (grunt) {
       }
     },
     watch: {
-      // babel: {
-      //   files: ['<%= client %>/**/!(*.spec|*.mock|*.html).js'],
-      //   tasks: ['newer:babel:client']
-      // },
-      // injectJS: {
-      //   files: [
-      //     '<%= client %>/**/!(*.spec|*.mock).js',
-      //     '!<%= client %>/app.js'
-      //   ],
-      //   tasks: ['injector:scripts']
-      // },
-      // injectCss: {
-      //   files: ['<%= public %>/**/*.css'],
-      //   tasks: ['injector:css']
-      // },
-      //mochaTest: {
-      //  files: ['<%= yeoman.server %>/**/*.{spec,integration}.js'],
-      //  tasks: ['env:test', 'mochaTest']
-      //},
-      //jsTest: {
-      //  files: ['<%= yeoman.client %>/{app,components}/**/*.{spec,mock}.js'],
-      //  tasks: ['newer:jshint:all', 'wiredep:test', 'karma']
-      //},
       gruntfile: {
         files: ['Gruntfile.js']
       },
@@ -146,41 +123,7 @@ module.exports = function (grunt) {
           './server.js'
         ]
       }
-      //options: {
-      //  jshintrc: '<%= yeoman.client %>/.jshintrc',
-      //  reporter: require('jshint-stylish')
-      //},
-      //server: {
-      //  options: {
-      //    jshintrc: '<%= yeoman.server %>/.jshintrc'
-      //  },
-      //  src: ['<%= yeoman.server %>/**/!(*.spec|*.integration).js']
-      //},
-      //serverTest: {
-      //  options: {
-      //    jshintrc: '<%= yeoman.server %>/.jshintrc-spec'
-      //  },
-      //  src: ['<%= yeoman.server %>/**/*.{spec,integration}.js']
-      //},
-      //all: ['<%= yeoman.client %>/{app,components}/**/!(*.spec|*.mock|app.constant).js'],
-      //test: {
-      //  src: ['<%= yeoman.client %>/{app,components}/**/*.{spec,mock}.js']
-      //}
     },
-
-    //jscs: {
-    //  options: {
-    //    config: ".jscsrc"
-    //  },
-    //  main: {
-    //    files: {
-    //      src: [
-    //        '<%= yeoman.client %>/app/**/*.js',
-    //        '<%= yeoman.server %>/**/*.js'
-    //      ]
-    //    }
-    //  }
-    //},
 
     // Empties folders to start fresh
     clean: {

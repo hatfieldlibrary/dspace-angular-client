@@ -45,7 +45,7 @@ module.exports = function (app, config) {
     /**
      * Path to favicon.
      */
-    app.use(favicon(path.join(config.root, 'public/client', 'favicon.ico')));
+    app.use(favicon(path.join(config.root, 'public/client', '/favicon.ico')));
 
   }
 
@@ -59,8 +59,13 @@ module.exports = function (app, config) {
 
     // static routes.
     app.use(express.static(path.join(config.root, '.tmp')));
-
+   // app.use(express.static(path.join(config.root, 'public/client')));
     app.use(express.static(path.join(config.root, 'public/client')));
+    /**
+     * Path to favicon.
+     */
+    app.use(favicon(path.join(config.root, 'public/client', '/favicon.ico')));
+
 
   }
 
