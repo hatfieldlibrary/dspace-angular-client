@@ -6,7 +6,6 @@
 
 (function () {
 
-
   dspaceServices.factory('Utils', [
     '$window',
     '$location',
@@ -492,11 +491,9 @@
 
       };
 
-
       return utils;
 
     }
-
 
   ]);
 

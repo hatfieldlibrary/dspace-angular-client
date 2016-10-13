@@ -166,7 +166,8 @@ module.exports = function (app, config, passport) {
 
     // ...is a crawler request, use crawler template
     if (userAgent.match(regex)) {
-      console.log('Got bot user agent: ' + userAgent);
+
+      console.log('Search engine user agent: ' + userAgent);
 
       res.sendFile(
         app.get('appPath') +

@@ -416,8 +416,6 @@
           if (items !== undefined) {
             items.$promise.then(function (data) {
 
-              console.log(data)
-
                 AppContext.setItemsCount(data.count);
 
                 updatePagerOffsets(loader, direction, QueryManager.getOffset());
