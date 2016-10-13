@@ -5,9 +5,9 @@
  * Created by mspalti on 2/26/16.
  */
 
-'use strict';
-
 (function () {
+
+  'use strict';
 
   /**
    *
@@ -78,9 +78,9 @@
 
   dspaceComponents.component('globalSearchBoxComponent', {
 
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/search/globalSearchBox.html';
-    },
+    }],
     controller: GlobalSearchBoxCtrl,
     controllerAs: 'sb'
 

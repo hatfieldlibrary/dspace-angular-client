@@ -1,9 +1,10 @@
 /**
  * Created by mspalti on 3/4/16.
  */
-'use strict';
 
 (function () {
+
+  'use strict';
 
   /**
    * Component controller.
@@ -80,9 +81,9 @@
       author: '<',
       last: '<'
     },
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/lists/discoverDetail.html';
-    },
+    }],
     controller: DiscoverDetailCtrl
 
   });

@@ -4,9 +4,9 @@
  * Created by mspalti on 2/23/16.
  */
 
-'use strict';
-
 (function () {
+
+  'use strict';
 
   /**
    * Forward paging controller.
@@ -83,9 +83,9 @@
 
   dspaceComponents.component('pagerComponent', {
 
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/loaders/pager.html';
-    },
+    }],
     bindings: {
       context: '@',
       next: '@'

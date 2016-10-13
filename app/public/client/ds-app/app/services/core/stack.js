@@ -4,9 +4,10 @@
  * here in case the the use case develops into on that requires
  * more than a single variable to hold history data.
  */
-'use strict';
 
 (function () {
+
+  'use strict';
 
   dspaceContext.factory('QueryStack', function () {
 
@@ -43,7 +44,7 @@
     };
 
     stack.pop = function () {
-      
+
       return stack.queries.pop();
     };
 

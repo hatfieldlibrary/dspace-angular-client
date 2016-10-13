@@ -3,20 +3,11 @@
  * Created by mspalti on 6/30/16.
  */
 
-'use strict';
-
 (function () {
 
+  'use strict';
 
-  dspaceServices.factory('SolrDataLoader', [
-
-    'QueryManager',
-    'AppContext',
-    'QueryActions',
-    'SolrQuery',
-    'SolrBrowseQuery',
-    'SolrJumpToQuery',
-    'QueryTypes',
+  dspaceServices.factory('SolrDataLoader',
 
     function (QueryManager,
               AppContext,
@@ -153,7 +144,7 @@
 
     }
 
-  ]);
+  );
 
 
 })();

@@ -3,9 +3,9 @@
  * Created by mspalti on 4/21/16.
  */
 
-'use strict';
-
 (function () {
+
+  'use strict';
 
   function NoAccessCtrl(Messages, AppContext) {
 
@@ -23,9 +23,9 @@
 
   dspaceComponents.component('noAccessComponent', {
 
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/handle/noAccess.html';
-    },
+    }],
     controller: NoAccessCtrl
 
   });

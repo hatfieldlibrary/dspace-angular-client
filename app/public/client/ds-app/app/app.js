@@ -7,21 +7,21 @@ var dspaceApp = angular.module('dspaceApp', [
   'ngMaterial',
   'ngRoute',
   'ngSanitize',
-  'rx',
-  'appConstants',
   'ngAnimate',
   'ngMessages',
   'ngAria',
-  'dspaceServices',
-  'dspaceComponents',
+  'rx',
+  'appConstants',
   'dspaceContext',
+  'dspaceServices',
+  'dspaceRequests',
+  'dspaceComponents',
   'angulartics',
   'angulartics.google.analytics'
 
 ]);
 
 (function () {
-
   /**
    * Configure $routeProvider with all routes to the
    * Express middleware endpoints .
@@ -69,8 +69,7 @@ var dspaceApp = angular.module('dspaceApp', [
     }
   ]);
 
-
-  // Angular Material configuration...
+  // Angular Material theme configuration...
   dspaceApp.config(function ($mdThemingProvider) {
 
     $mdThemingProvider.definePalette('Custom Background', {

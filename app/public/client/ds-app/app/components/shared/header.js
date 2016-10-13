@@ -2,9 +2,9 @@
  * Created by mspalti on 3/23/16.
  */
 
-'use strict';
-
 (function () {
+
+  'use strict';
 
   function HeaderCtrl(Messages, MenuObserver, $window, $mdMedia, $scope, Utils) {
 
@@ -49,9 +49,9 @@
       type: '@',
       id: '@'
     },
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/header.html';
-    },
+    }],
     controller: HeaderCtrl
 
   });

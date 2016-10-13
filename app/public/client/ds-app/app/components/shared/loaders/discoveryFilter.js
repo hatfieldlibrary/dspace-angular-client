@@ -2,10 +2,9 @@
  * Created by mspalti on 4/20/16.
  */
 
-
-'use strict';
-
 (function () {
+
+  'use strict';
 
   /**
    * Discovery filter component.
@@ -108,9 +107,9 @@
       onRemoveFilter: '&',
       position: '@'
     },
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/loaders/discoveryFilter.html';
-    },
+    }],
     controller: DiscoverFilterCtrl
 
   });

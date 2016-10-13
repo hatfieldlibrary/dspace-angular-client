@@ -2,9 +2,9 @@
  * Created by mspalti on 4/29/16.
  */
 
-'use strict';
-
 (function () {
+
+  'use strict';
 
   /**
    * Item component controller.
@@ -36,9 +36,9 @@
     bindings: {
       streams: '<'
     },
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/lists/filesList.html';
-    },
+    }],
     controller: FilesController
 
   });

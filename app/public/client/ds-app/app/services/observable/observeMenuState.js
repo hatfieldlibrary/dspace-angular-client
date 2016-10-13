@@ -1,9 +1,10 @@
 /**
  * Created by mspalti on 9/22/16.
  */
-'use strict';
 
 (function()  {
+
+  'use strict';
 
   dspaceServices.factory('MenuObserver', function(rx){
 

@@ -2,9 +2,10 @@
  * Created by mspalti on 2/23/16.
  */
 
-'use strict';
 
 (function () {
+
+  'use strict';
 
   /**
    * Component controller.
@@ -150,9 +151,9 @@
       setSelectedId: '&'
     },
     controller: ItemDetailController,
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/lists/itemDetail.html';
-    }
+    }]
 
   });
 

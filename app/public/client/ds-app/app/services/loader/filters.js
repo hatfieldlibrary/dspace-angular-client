@@ -7,21 +7,11 @@
  * Created by mspalti on 6/29/16.
  */
 
-'use strict';
-
 (function () {
 
-  dspaceServices.factory('CollectionFilters', [
+  'use strict';
 
-    '$location',
-    'QueryManager',
-    'QueryActions',
-    'QuerySort',
-    'QueryTypes',
-    'AppContext',
-    'LoaderUtils',
-    'SolrDataLoader',
-    'FacetHandler',
+  dspaceServices.factory('CollectionFilters',
 
     function ($location,
               QueryManager,
@@ -230,7 +220,7 @@
 
       };
 
-    }]);
+    });
 
 })();
 

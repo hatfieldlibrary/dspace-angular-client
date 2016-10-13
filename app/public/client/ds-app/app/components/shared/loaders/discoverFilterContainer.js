@@ -2,10 +2,9 @@
  * Created by mspalti on 4/21/16.
  */
 
-
-'use strict';
-
 (function () {
+
+  'use strict';
 
   function FilterContainerController($location,
                                      Utils,
@@ -90,9 +89,9 @@
     bindings: {
       onUpdate: '&'
     },
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/loaders/discoverFilterContainer.html';
-    },
+    }],
     controller: FilterContainerController
   });
 

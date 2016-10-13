@@ -89,7 +89,7 @@ module.exports = function (app, config, passport) {
 
       passport.authenticate('google', function (err, user) {
         if (user) {
-          res.redirect('/rest/login/' + req.user);
+          res.redirect('/ds-api/login/' + req.user);
         }
       });
 
@@ -112,7 +112,7 @@ module.exports = function (app, config, passport) {
         secret: 'ricsorieterazp',
         proxy: true,
         name: 'dsclient.sid',
-        cookie: { path: '/ds' },
+        cookie: { path: '/' },
         saveUninitialized: false, // don't create session until something stored,
         resave: false // don't save session if unmodified
       }
@@ -195,7 +195,7 @@ module.exports = function (app, config, passport) {
           }
 
           req.session.messages = '';
-          return res.redirect('/rest/login/' + user.username);
+          return res.redirect('/ds-api/login/' + user.username);
 
         });
       })(req, res, next);

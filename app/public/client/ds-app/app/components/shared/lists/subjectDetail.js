@@ -2,9 +2,10 @@
  * Created by mspalti on 3/11/16.
  */
 
-'use strict';
 
 (function () {
+
+  'use strict';
 
   function SubjectDetailController($scope,
                                    $location,
@@ -174,9 +175,9 @@
       setSelectedPos: '&'
 
     },
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/lists/subjectDetail.html';
-    },
+    }],
     controller: SubjectDetailController
   });
 

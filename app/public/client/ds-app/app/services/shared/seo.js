@@ -3,19 +3,11 @@
  * Service for setting the paging links in the html header.
  */
 
-'use strict';
-
 (function () {
 
-  dspaceServices.factory('SeoPaging', [
+  'use strict';
 
-    'QueryManager',
-    'QueryActions',
-    'QuerySort',
-    'QueryTypes',
-    'AppContext',
-    '$rootScope',
-    'Utils',
+  dspaceServices.factory('SeoPaging',
 
     function (QueryManager,
               QueryActions,
@@ -39,8 +31,6 @@
         var newOffset = offset + AppContext.getSetSize();
         var url = Utils.getBaseUrl(newOffset, 'next');
 
-        //url += '&offset=' + newOffset;
-
         if (newOffset < AppContext.getItemsCount()) {
 
           setNextLink('next', url);
@@ -61,9 +51,6 @@
 
         var prevOffset = offset - AppContext.getSetSize();
         var url = Utils.getBaseUrl(prevOffset, 'prev');
-      //  url += '&offset=' + prevOffset;
-     //   url += '&d=prev';
-
 
         if (prevOffset >= 0) {
           setPrevLink('prev', url);
@@ -85,15 +72,6 @@
         $rootScope.prevPage = link;
       }
 
-      // function _transformPath(fullUrl) {
-      //
-      //   var urlComponents = fullUrl.split('?');
-      //   var urlArr = urlComponents[0].split('/');
-      //   var url = '/ds/paging/' + urlArr[3] + '/' + urlArr[4] + '?' + urlComponents[1];
-      //   return url;
-      //
-      // }
-
       return {
 
         updateNextHeaderLink: updateNextHeaderLink,
@@ -101,14 +79,9 @@
         setNextLink: setNextLink,
         setPrevLink: setPrevLink
 
-
       };
 
-    }]);
-
-
-
-
+    });
 
 })();
 

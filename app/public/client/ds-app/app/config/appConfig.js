@@ -3,9 +3,9 @@
  * customizes the application UI for local requirements.
  */
 
-'use strict';
-
 (function () {
+
+  'use strict';
 
   appConstants.constant('AppConfig', {
 

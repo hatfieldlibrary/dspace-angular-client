@@ -2,16 +2,15 @@
  * Created by mspalti on 4/12/16.
  */
 
-'use strict';
-
 (function() {
 
+  'use strict';
 
   dspaceComponents.component('smallSpinner', {
 
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/smallSpinner.html';
-    }
+    }]
 
   });
 

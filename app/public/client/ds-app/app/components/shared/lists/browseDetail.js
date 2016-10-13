@@ -2,9 +2,9 @@
  * Created by mspalti on 3/2/16.
  */
 
-'use strict';
-
 (function () {
+
+  'use strict';
 
   function BrowseDetailCtrl(AppContext) {
   }
@@ -19,9 +19,9 @@
       handle: '@',
       id: '@'
     },
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/lists/browseDetail.html';
-    },
+    }],
     controller: BrowseDetailCtrl
 
   });

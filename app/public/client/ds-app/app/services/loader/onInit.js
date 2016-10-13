@@ -8,18 +8,11 @@
  * Created by mspalti on 8/17/2016.
  */
 
-'use strict';
-
 (function () {
 
-  dspaceServices.factory('OnPagerInit', [
-    'QueryManager',
-    'QuerySort',
-    'QueryTypes',
-    'AppContext',
-    'CollectionFilters',
-    'LoaderUtils',
-    'SolrDataLoader',
+  'use strict';
+
+  dspaceServices.factory('OnPagerInit',
 
     function (QueryManager,
               QuerySort,
@@ -140,7 +133,7 @@
       };
 
     }
+  );
 
-  ]);
 })();
 

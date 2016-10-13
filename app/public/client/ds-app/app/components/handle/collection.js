@@ -2,9 +2,9 @@
  * Created by mspalti on 2/24/16.
  */
 
-'use strict';
-
 (function () {
+
+  'use strict';
 
   /**
    * Component controller.
@@ -120,9 +120,9 @@
       // API handle query response
       data: '<'
     },
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return'/' + AppContext.getApplicationPrefix() + '-app/app/templates/handle/collection.html';
-    },
+    }],
     controller: CollectionCtrl
 
   });

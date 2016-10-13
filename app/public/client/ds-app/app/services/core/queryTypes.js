@@ -6,9 +6,9 @@
  * be altered without affecting client and server behavior.
  */
 
-'use strict';
-
 (function () {
+
+  'use strict';
 
   var authorSearch = 'authorFacets';
   var subjectSearch = 'subjectFacets';
@@ -98,7 +98,7 @@
   // Using factory modules for select options. This allows injecting
   // Messages and avoids the need to edit this file when configuring
   // the views.
-  appConstants.factory('CollectionQueryFieldMap', ['Messages', function (Messages) {
+  appConstants.factory('CollectionQueryFieldMap', function (Messages) {
     return {
       fields: [
         {label: Messages.SORT_OPTIONS_TITLE, value: titleList},
@@ -107,9 +107,9 @@
         {label: Messages.SORT_OPTIONS_SUBJECT, value: subjectSearch}
       ]
     };
-  }]);
+  });
 
-  appConstants.factory('BrowseQueryFieldMap', ['Messages', function (Messages) {
+  appConstants.factory('BrowseQueryFieldMap',  function (Messages) {
     return {
       fields: [
         {label: Messages.SORT_OPTIONS_DATE, value: datesList},
@@ -117,18 +117,18 @@
 
       ]
     };
-  }]);
+  });
 
-  appConstants.factory('ListSortOrderMap', ['Messages', function (Messages) {
+  appConstants.factory('ListSortOrderMap', function (Messages) {
     return {
       order: [
         {label: Messages.SORT_OPTIONS_ASCENDING, value: sortAscending},
         {label: Messages.SORT_OPTIONS_DESCENDING, value: sortDescending}
       ]
     };
-  }]);
+  });
 
-  appConstants.factory('DiscoveryFieldMap', ['Messages', function (Messages) {
+  appConstants.factory('DiscoveryFieldMap', function (Messages) {
     return {
       fields: [
         {label: Messages.SORT_OPTIONS_TITLE, value: filterTitle},
@@ -137,6 +137,6 @@
         {label: Messages.SORT_OPTIONS_SUBJECT, value: filterSubject}
       ]
     };
-  }]);
+  });
 
 })();

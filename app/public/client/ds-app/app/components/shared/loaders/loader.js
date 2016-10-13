@@ -2,9 +2,9 @@
  * Created by mspalti on 9/19/16.
  */
 
-'use strict';
-
 (function () {
+
+  'use strict';
 
   /**
    * Back paging controller.

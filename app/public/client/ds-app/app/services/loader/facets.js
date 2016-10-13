@@ -3,18 +3,11 @@
  * Created by mspalti on 6/29/16.
  */
 
-'use strict';
-
 (function () {
 
-  dspaceServices.factory('FacetHandler', [
+  'use strict';
 
-    'QueryManager',
-    'QueryActions',
-    'QuerySort',
-    'QueryTypes',
-    'AppContext',
-    'Utils',
+  dspaceServices.factory('FacetHandler',
 
     function (QueryManager,
               QueryActions,
@@ -144,5 +137,5 @@
         }
 
       };
-    }]);
+    });
 })();

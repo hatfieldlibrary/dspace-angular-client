@@ -2,10 +2,9 @@
  * Created by mspalti on 10/6/16.
  */
 
-
-'use strict';
-
 (function() {
+
+  'use strict';
 
   function ContainerController(QueryManager, AppContext) {
 
@@ -40,9 +39,9 @@
 
   dspaceComponents.component('browseContainerComponent',
     {
-      templateUrl: function (AppContext) {
+      templateUrl: ['AppContext', function (AppContext) {
         return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/browse/browseContainer.html';
-      },
+      }],
       controller: ContainerController
     });
 

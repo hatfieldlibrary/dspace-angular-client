@@ -240,20 +240,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // Allow the use of non-minsafe AngularJS files. Automatically makes it
-    // minsafe compatible so Uglify does not destroy the ng references
-    // ngAnnotate: {
-    //   dist: {
-    //     files: [{
-    //       expand: true,
-    //       cwd: '.tmp/concat',
-    //       src: '**/*.js',
-    //       dest: '.tmp/concat'
-    //     }]
-    //   }
-    // },
-
-
 
     // Copies remaining files to places other tasks can use
     copy: {
@@ -317,7 +303,7 @@ module.exports = function (grunt) {
       },
       dist: [
         'newer:babel:client',
-        'imagemin'
+       // 'imagemin'
       ]
     },
 

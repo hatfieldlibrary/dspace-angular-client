@@ -2,26 +2,11 @@
  * Factory for app utility methods.
  */
 
-'use strict';
-
 (function () {
 
-  dspaceServices.factory('Utils', [
-    '$window',
-    '$location',
-    '$timeout',
-    '$mdMedia',
-    'QueryManager',
-    'AppContext',
-    'Messages',
-    'CheckSession',
-    'CheckSysAdmin',
-    'QueryActions',
-    'QueryFields',
-    'AssetTypes',
-    'QuerySort',
-    'QueryTypes',
-    'SessionObserver',
+  'use strict';
+
+  dspaceServices.factory('Utils',
 
     function ($window,
               $location,
@@ -495,6 +480,6 @@
 
     }
 
-  ]);
+  );
 
 })();

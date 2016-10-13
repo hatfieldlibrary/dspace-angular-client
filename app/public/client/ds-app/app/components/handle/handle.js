@@ -4,9 +4,9 @@
  * Created by mspalti on 2/26/16.
  */
 
-'use strict';
-
 (function () {
+
+  'use strict';
 
   function HandleCtrl($routeParams,
                       $window,
@@ -179,7 +179,7 @@
          * This avoids infinite loop.
          */
         if (!dspaceSession) {
-          $window.location = '/' + AppContext.getApplicationPrefix() + '/auth/login';
+          $window.location = '/' + AppContext.getApplicationPrefix() + '-api/auth/login';
 
         } else {
           /**

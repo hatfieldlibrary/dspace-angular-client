@@ -1,18 +1,16 @@
-/**
- * This module defines text strings used in application components.
- */
-
-'use strict';
 
 (function () {
 
-  appConstants.constant('Messages', {
+  'use strict';
 
+  /**
+   * This module defines text strings used in application components.
+   */
+  appConstants.constant('Messages', {
     /**
      * The link used by by the header logo.
      */
     HOME_LINK: 'http://libmedia.willamette.edu/',
-
     /**
      * The header logo image.
      */

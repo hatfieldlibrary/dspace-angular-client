@@ -1,9 +1,10 @@
 /**
  * Created by mspalti on 2/23/16.
  */
-'use strict';
 
 (function () {
+
+  'use strict';
 
   function LoginCtrl(Utils,
                      Messages,
@@ -56,9 +57,9 @@
        */
       raised: '<'
     },
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/login.html';
-    },
+    }],
     controller: LoginCtrl
 
   });

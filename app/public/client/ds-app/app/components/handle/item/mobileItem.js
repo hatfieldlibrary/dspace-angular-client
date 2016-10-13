@@ -3,10 +3,9 @@
  * Created by mspalti on 2/25/16.
  */
 
-'use strict';
-
 (function () {
 
+  'use strict';
 
   function ItemCtrl($window,
                     GetCollectionInfo,
@@ -93,9 +92,9 @@
     bindings: {
       data: '<'
     },
-    templateUrl: function (AppContext) {
-      return'/' + AppContext.getApplicationPrefix() + '-app/app/templates/handle/item/mobileItem.html';}
-    ,
+    templateUrl: ['AppContext', function (AppContext) {
+      return'/' + AppContext.getApplicationPrefix() + '-app/app/templates/handle/item/mobileItem.html';
+    }],
     controller: ItemCtrl
 
   });

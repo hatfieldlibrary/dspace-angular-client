@@ -5,23 +5,11 @@
  * Created by mspalti on 8/20/16.
  */
 
-'use strict';
-
 (function () {
 
-  dspaceServices.factory('OnPagerLocationChange', [
+  'use strict';
 
-    '$mdDialog',
-    'QueryManager',
-    'QueryActions',
-    'QuerySort',
-    'QueryTypes',
-    'AppContext',
-    'Utils',
-    'CollectionFilters',
-    'SolrDataLoader',
-    'LoaderUtils',
-    'FacetHandler',
+  dspaceServices.factory('OnPagerLocationChange',
 
     function ($mdDialog,
               QueryManager,
@@ -204,6 +192,6 @@
 
       };
 
-    }]);
+    });
 })();
 

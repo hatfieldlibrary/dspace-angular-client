@@ -3,10 +3,9 @@
  * Created by mspalti on 2/25/16.
  */
 
-'use strict';
-
 (function () {
 
+  'use strict';
 
   function ItemCtrl($window,
                     $anchorScroll,
@@ -96,9 +95,9 @@
     bindings: {
       data: '<'
     },
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/handle/item/item.html';
-    },
+    }],
     controller: ItemCtrl
 
   });

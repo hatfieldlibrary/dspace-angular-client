@@ -5,9 +5,9 @@
  * Created by mspalti on 3/4/16.
  */
 
-'use strict';
-
 (function () {
+
+  'use strict';
 
   function DiscoverCtrl($routeParams,
                         $location,
@@ -214,9 +214,9 @@
 
   dspaceComponents.component('discoverComponent', {
 
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/discover/discover.html';
-    },
+    }],
     controller: DiscoverCtrl,
     controllerAs: 'disc'
 

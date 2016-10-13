@@ -2,10 +2,9 @@
  * Created by mspalti on 4/21/16.
  */
 
-
-'use strict';
-
 (function () {
+
+  'use strict';
 
   function FilterContainerController(Utils,
                                      QueryManager,
@@ -67,9 +66,9 @@
 
   dspaceComponents.component('advancedFilterContainer', {
 
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/advanced/filters/advancedFilterContainer.html';
-    },
+    }],
     controller: FilterContainerController
   });
 

@@ -7,23 +7,11 @@
  * Created by mspalti on 6/29/16.
  */
 
-'use strict';
-
 (function () {
 
-  dspaceServices.factory('LoaderUtils', [
+  'use strict';
 
-    'QueryManager',
-    'QueryActions',
-    'QuerySort',
-    'QueryTypes',
-    'AppContext',
-    '$location',
-    'DiscoveryContext',
-    'SolrDataLoader',
-    'FacetHandler',
-    'SeoPaging',
-    'Utils',
+  dspaceServices.factory('LoaderUtils',
 
     function (QueryManager,
               QueryActions,
@@ -36,7 +24,6 @@
               FacetHandler,
               SeoPaging,
               Utils) {
-
 
       /**
        * Angular services are singletons, so we can keep references here.
@@ -65,7 +52,6 @@
         _setQueryComponents(qs, context);
 
       }
-
 
       /**
        * Sets the position of the currently open item in the app
@@ -637,7 +623,7 @@
 
       };
 
-    }]);
+    });
 })();
 
 

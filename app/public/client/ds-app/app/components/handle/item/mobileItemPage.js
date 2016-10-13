@@ -3,10 +3,9 @@
  * Created by mspalti on 2/25/16.
  */
 
-'use strict';
-
 (function () {
 
+  'use strict';
 
   function MobileItemCtrl($window,
                           ItemById,
@@ -78,9 +77,9 @@
       collectionItem: '@',
       collectionHandle: '@'
     },
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return'/' + AppContext.getApplicationPrefix() + '-app/app/templates/handle/item/mobileItem.html';
-    },
+    }],
     controller: MobileItemCtrl
 
   });

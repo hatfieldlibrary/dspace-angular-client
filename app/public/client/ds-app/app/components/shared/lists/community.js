@@ -1,9 +1,10 @@
 /**
  * Created by mspalti on 4/13/16.
  */
-'use strict';
 
 (function () {
+
+  'use strict';
 
   function CommunityItemCtrl($location) {
 
@@ -24,9 +25,9 @@
       handle: '@',
       last: '='
     },
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return'/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/lists/community.html';
-    },
+    }],
     controller: CommunityItemCtrl
 
   });

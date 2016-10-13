@@ -2,10 +2,9 @@
  * Created by mspalti on 8/29/16.
  */
 
-
-'use strict';
-
 (function () {
+
+  'use strict';
 
   function SeoPagingCtrl($routeParams, QueryManager, QueryTypes, QueryActions, ItemByHandle, Utils) {
 
@@ -101,9 +100,9 @@
 
   dspaceComponents.component('seoPagingComponent', {
 
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return'/' + AppContext.getApplicationPrefix() + '-app/app/templates/seo/continuous.html';
-    },
+    }],
     controller: SeoPagingCtrl
 
   });

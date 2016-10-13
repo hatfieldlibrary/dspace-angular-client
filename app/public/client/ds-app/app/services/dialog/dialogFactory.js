@@ -3,20 +3,11 @@
  * $mdDialog.
  */
 
-'use strict';
-
 (function () {
 
+  'use strict';
 
-  dspaceServices.factory('ItemDialogFactory', [
-
-    '$mdDialog',
-    '$mdMedia',
-    'ItemById',
-    'PageTitle',
-    'PageDescription',
-    'PageAuthor',
-    'WriteObserver',
+  dspaceServices.factory('ItemDialogFactory',
 
     function ($mdDialog,
               $mdMedia,
@@ -25,6 +16,7 @@
               PageTitle,
               PageDescription,
               PageAuthor,
+              AppContext,
               WriteObserver) {
 
       /**
@@ -135,7 +127,7 @@
           {
             controller: DialogController,
             controllerAs: '$ctrl',
-            templateUrl: '/ds-app/app/templates/handle/item/dialogItem.html',
+            templateUrl: '/' + AppContext.getApplicationPrefix() + '-app/app/templates/handle/item/dialogItem.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose: true,
@@ -156,7 +148,6 @@
 
     }
 
-  ])
-  ;
+  );
 
 })();

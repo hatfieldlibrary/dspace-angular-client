@@ -3,12 +3,11 @@
  * application state.
  */
 
-'use strict';
-
 (function () {
 
-  dspaceContext.service('AppContext', [
-    'AppConfig', 'QuerySort', 'QueryManager', 'QueryTypes',
+  'use strict';
+
+  dspaceContext.service('AppContext',
     function (AppConfig, QuerySort, QueryManager, QueryTypes) {
 
       /**
@@ -390,6 +389,6 @@
 
       };
 
-    }]);
+    });
 
 })();

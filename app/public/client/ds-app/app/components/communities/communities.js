@@ -3,10 +3,9 @@
  * Created by mspalti on 2/25/16.
  */
 
-'use strict';
-
 (function () {
 
+  'use strict';
 
   function CommunitiesCtrl(AppContext,
                            GetCommunities,
@@ -85,9 +84,9 @@
 
   dspaceComponents.component('communitiesComponent', {
 
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
         return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/communities/communities.html';
-      },
+      }],
     controller: CommunitiesCtrl
 
   });

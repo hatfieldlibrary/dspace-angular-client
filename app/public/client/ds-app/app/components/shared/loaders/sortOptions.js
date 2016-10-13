@@ -2,9 +2,9 @@
  * Created by mspalti on 2/29/16.
  */
 
-'use strict';
-
 (function () {
+
+  'use strict';
 
   /**
    * Controller sort options.
@@ -445,9 +445,9 @@
       queryType: '@',
       sortOrder: '@'
     },
-    templateUrl: function (AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/loaders/sortOptions.html';
-    },
+    }],
     controller: SortOptionsCtrl
 
   });

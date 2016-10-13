@@ -2,9 +2,9 @@
  * Created by mspalti on 7/12/16.
  */
 
-'use strict';
-
 (function()  {
+
+  'use strict';
 
   dspaceServices.service('PageTitle', function($rootScope){
     return {
@@ -13,6 +13,5 @@
       }
     };
   });
-
 
 })();

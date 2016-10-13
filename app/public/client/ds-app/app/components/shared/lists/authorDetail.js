@@ -2,9 +2,9 @@
  * Created by mspalti on 3/1/16.
  */
 
-'use strict';
-
 (function () {
+
+  'use strict';
 
   function AuthorDetailController(
                                   $mdMedia,
@@ -123,9 +123,9 @@
 
     },
     controller: AuthorDetailController,
-    templateUrl: function(AppContext) {
+    templateUrl: ['AppContext', function (AppContext) {
       return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/lists/authorDetail.html';
-    }
+    }]
 
   });
 
