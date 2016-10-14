@@ -1,0 +1,49 @@
+<div class="search-form search-box-container" ng-class="{'mobile-search-box': sb.isLessThanMd(), 'search-form-medium': sb.isEqualMd()}" md-colors="::{background: 'default-background-100'}" layout-padding>
+
+  <form ng-submit="sb.submit(sb.terms)">
+
+    <p class="md-subhead" style="margin: 6px 0;">{{sb.searchHeaderLabel}}</p>
+
+    <div layout="column" style="margin-top: 3px;">
+    <md-input-container>
+      <label>{{sb.searchTextLabel}}</label>
+      <input ng-model="sb.terms">
+    </md-input-container>
+
+    <md-input-container ng-hide="!sb.showOptionsForCollection()">
+      <md-radio-group ng-model="sb.id" layout="column">
+        <md-radio-button value="{{sb.currentCollectionId}}" aria-label="{{sb.thisCollectionLabel}}" class="md-caption">
+          {{sb.thisCollectionLabel}}
+        </md-radio-button>
+        <md-radio-button value="0" aria-label="{{sb.searchAll}}" class="md-caption">
+          {{sb.searchAll}}
+        </md-radio-button>
+      </md-radio-group>
+    </md-input-container>
+
+    <md-input-container ng-hide="!sb.showOptionsForCommunity()">
+      <md-radio-group ng-model="sb.id" layout="column">
+        <md-radio-button value="{{sb.currentCollectionId}}" aria-label="{{sb.thisCommunityLabel}}" class="md-caption">
+          {{sb.thisCommunityLabel}}
+        </md-radio-button>
+        <md-radio-button value="0" aria-label="{{sb.searchAll}}" class="md-caption">
+          {{sb.searchAll}}
+        </md-radio-button>
+      </md-radio-group>
+    </md-input-container>
+
+    <md-input-container>
+      <md-button class="md-raised md-accent" ng-click="sb.submit(sb.terms)">
+        <!--<md-icon md-font-library="material-icons" class="md-light">search</md-icon>-->
+        {{sb.searchButtonLabel}}
+      </md-button>
+    </md-input-container>
+
+    <input type="hidden" ng-model="sb.id"/>
+    </div>
+  </form>
+
+  <p class="md-caption"><a ng-href="/ds/advanced" class="md-accent" style="color: #3faab2;">{{sb.advancedLink}}</a></p>
+
+</div>
+

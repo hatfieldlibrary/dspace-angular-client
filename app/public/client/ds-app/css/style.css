@@ -1,0 +1,659 @@
+/*!
+Local DSpace client styles.
+*/
+html {
+  height: 100%;
+}
+
+body {
+  background: #fff;
+  min-height: 100%;
+  /* Fix for safari 9.0 bug. */
+  -webkit-font-variant-ligatures: normal;
+}
+
+md-toolbar.main-toolbar {
+  border-top: .4375rem solid #791716;
+  padding: 0;
+  margin: 0;
+}
+
+.opaque-img {
+  opacity: 0.9;
+}
+
+.transparent {
+  background: transparent;
+}
+
+.main {
+  /*border-top: .4375rem solid #791716;*/
+  min-height: 800px;
+}
+
+a, a:visited {
+  color: #9A302F;
+  text-decoration: none;
+}
+
+.spinner {
+  position: relative;
+  top: 100px;
+
+}
+
+.set-divider {
+  border-bottom: 14px solid #dad8d0;
+}
+
+img {
+  -ms-interpolation-mode: bicubic;
+}
+
+.lastitem {
+  border-bottom: 6px solid #ccc;
+}
+
+.spinner {
+  position: relative;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.md-button.logo {
+  padding: 0;
+}
+
+.main-content {
+  background: #fefefe;
+}
+
+.main-card {
+  min-height: 650px;
+  min-width: 95%;
+  padding: 8px;
+}
+
+.main-card > img {
+  flex: 0 0 0;
+}
+
+.list-width {
+  max-width: 800px;
+}
+
+.app-side-nav {
+  margin-top: 102px;
+}
+
+.user-options-medium {
+  width: 100%;
+}
+
+.side-nav-medium {
+  width: 100%;
+}
+
+.layout-row .app-primary-content-container {
+  max-width: 900px;
+}
+
+md-sidenav {
+  position: fixed;
+}
+
+/*md-sidenav.md-locked-open {*/
+  /*max-width: 80%;*/
+/*}*/
+
+community-item-component md-list-item .md-no-style.md-button, md-list-item.md-no-proxy.md-button   {
+  min-height: 60px;
+}
+
+.md-sidenav-right .icon-list p,
+.md-sidenav-right .icon-list a,
+.md-sidenav-right .icon-list a:visited {
+  /*padding: 0;*/
+  /*margin: 0;*/
+  color: rgb(16, 143, 152);
+}
+
+.mb-sidenav-right .icon-list md-list-item > md-icon:first-child:not(.md-avatar-icon), md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon) {
+  margin-right: 8px;
+}
+
+search-box-component {
+  margin-right: 5px;
+}
+.content-width {
+  max-width: 950px !important;
+  box-sizing: border-box;
+}
+
+.dialog-item-title {
+  background: #e4dcca;
+  color: #753D3D;
+}
+
+.dialog-record-width {
+  max-width: 1000px;
+}
+
+.page-title {
+  margin: 0 8px;
+}
+.page-title.is-mobile {
+  margin: 0;
+}
+
+.nav-logo {
+  color: #ffffff;
+}
+
+.large-dialog {
+  min-width: 800px;
+}
+
+md-dialog.item-details {
+  max-width: 1100px;
+}
+
+.dialog-column-padding {
+  padding: 0px 12px !important;
+}
+
+.abstract {
+  padding-top: 20px;
+  max-width: 640px;
+}
+
+.nav-login a,
+.nav-login a:visited {
+  color: #fff;
+}
+
+.dialog-toolbar a,
+.dialog-toolbar a:visited {
+  color: #fff;
+}
+
+.top-highlight {
+  background-image: url('/ds-app/images/masthead-bottom-img.jpg'), url('/ds-app/images/background-grain.jpg');
+  background-repeat: no-repeat, repeat-x;
+  background-position: top center, top center;
+  min-height: 200px;
+}
+
+.top-offset {
+  margin-top: -192px;
+}
+
+.item-title {
+  line-height: 42px;
+  margin-top: 4px;
+}
+
+.item-block-ellipsis {
+  display:block;
+  display: -webkit-box;
+  max-width: 100%;
+  height: 83px;
+  margin: 0 0;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.parent-title {
+  line-height: 21px;
+}
+
+.background-highlight {
+  background: #fdfaf2;
+  padding: 8px;
+}
+
+pager-back-component {
+  margin-top: 30px;
+}
+
+discover-filter-component .sort-options {
+  margin-top: -15px;
+}
+
+collection-component md-content {
+  background: transparent;
+}
+
+collection-item-component md-list-item > .md-button {
+  padding: 0 0;
+}
+
+collection-item-component .hide-content {
+  display: none;
+}
+
+.discover-item .md-button {
+  line-height: 21px;
+}
+
+.discover-item em {
+  border: 1px solid #3FAAB2;
+  color: #18676D;
+  padding: 0 3px;
+
+}
+
+.discover-form {
+  border: 1px solid #e0dcd1;
+  background: #f3f1ec;
+  padding: 20px;
+}
+
+.list-highlight {
+  cursor: pointer;
+  color: #9A302F !important;
+  border: 0;
+  outline: none;
+  padding: 12px 0;
+}
+
+.list-padding {
+  padding: 0 0 10px;
+}
+
+.bold-highlight {
+  margin-bottom: 50px;
+}
+.bold-highlight::before {
+  height: 25px;
+  background: #791716;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  /* subtract h2 padding (1.5rem) */
+  left: 0;
+  right: 0;
+  color: #ead9d9;
+  padding: 12px;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+}
+
+/*.community-list::before {*/
+  /*content: "Departments"*/
+/*}*/
+
+/*.collection-list::before {*/
+  /*content: "Collections";*/
+/*}*/
+
+.search-box-container {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 12px;
+
+}
+
+.mobile-search-box {
+  border: none;
+  width: 100%;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+.search-form {
+  width: 80%;
+  padding-left: 22px;
+}
+
+.search-form-medium {
+  width: 100%;
+}
+
+md-sidenav md-list-item{
+  width: 85%;
+}
+
+.md-side-panel search-box-component {
+  width: 85%;
+}
+
+.search-form md-input-container.md-has-icon,
+.userOptions md-input-container {
+  padding-left: 18px;
+}
+
+.userOptions md-input-container {
+  margin: 0 0;
+}
+
+.intro {
+  margin-bottom: 40px;
+}
+
+.options-header {
+  margin-bottom: 20px;
+
+}
+
+.sort-options {
+  padding: 0px 8px;
+  margin: 0;
+}
+
+.filter-container {
+  border: 1px solid #ddd;
+  padding: 6px;
+  min-height: 100px;
+}
+
+.advanced-search .sort-options {
+  padding: 0;
+}
+
+md-input-container.halfer {
+  min-width: 50%;
+}
+
+.search-form md-input-container {
+  margin: 8px 0;
+}
+
+.search-form md-input-container md-radio-button {
+  margin-bottom: 6px;
+}
+
+.search-form md-radio-group md-radio-button:not(:first-child) {
+  margin-top: 8px;
+}
+
+.search-form .md-errors-spacer {
+  min-height: 8px;
+}
+
+.search-form .md-button {
+  margin: 8px 0;
+}
+
+.is-mobile div.md-button:first-child.md-button {
+  padding: 0 0;
+}
+
+.is-mobile .file-info .md-button,
+.handle-item .file-info .md-button {
+  margin: 0 0 -4px;
+}
+
+.file-info .md-button {
+  margin: 24px 0 -4px;
+}
+
+
+div.is-mobile,
+.is-mobile md-card.main-card,
+.is-mobile md-card-content {
+  margin: 4px ;
+  padding: 4px !important;
+}
+
+.md-caption.citation {
+  padding: 1px;
+  color: #666;
+}
+
+.file-name {
+  line-height: 18px;
+}
+
+md-card.item {
+  background: #fff;
+}
+
+.file-info .md-button,
+.file-info .md-button md-icon,
+.dialog-record a {
+  color: #37949b;
+
+}
+
+.citation-margin {
+  margin-top: 6px;
+}
+
+.search-form .md-button:not([disabled]):hover {
+  background-color: rgba(158, 158, 158, 0.2);
+}
+
+.search-form .md-button[disabled] {
+  color: rgba(0, 0, 0, 0.26);
+  background-color: transparent;
+}
+
+.byline {
+  margin-bottom: 20px;
+}
+
+.item-left-col-dimens {
+  margin-top: 16px;
+  min-width: 172px;
+  margin-right: 4px;
+}
+
+.app-list-item {
+  padding: 12px 9px;
+  border: 0;
+  outline: 0;
+}
+
+.selected-index .app-list-item {
+  padding: 2px 9px;
+}
+
+.app-list-item div {
+  border: 0;
+  outline: 0;
+}
+
+.selected md-list-item.md-no-proxy, .selected md-list-item .md-no-style {
+  padding: 0px 4px 0 4px;
+}
+
+.selected md-list-item.md-2-line .md-list-item-text {
+
+  outline: 0;
+  border: 0;
+}
+
+md-list-item.selected-index {
+  padding: 8px 0;
+  background: #e2dccc;
+  margin: 8px 3px 10px;
+  width: 99%;
+}
+
+md-list-item.selected-sm-index {
+  margin: 3px 3px 10px;
+  border: 1px solid #ccc;
+  width: 99%;
+  background: #e2dccc;
+}
+
+.warning {
+  color: #fbc900;
+}
+md-list-item .browse-item {
+  position: relative;
+  visibility: hidden;
+  opacity: 0;
+  max-height: 0;
+
+}
+
+md-list-item.selected-index .browse-item,
+md-list-item.selected-sm-index .browse-item {
+  height: 100%;
+  background: #FAF9F7;
+  visibility: visible;
+  opacity: 1;
+  max-height: 1770px;
+  margin-left: -7px;
+  /*margin-bottom: 3px;*/
+  width: 100%;
+  transition: height 200ms, max-height 200ms, margin-left 300ms, opacity 300ms, visibility 300ms;
+
+}
+
+.selected-index .browse-item:last-child,
+.selected-sm-index .browse-item:last-child {
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.browse-anchor {
+  cursor: pointer;
+}
+
+.selected-index .browse-anchor,
+.selected-sm-index .browse-anchor {
+  cursor: default;
+  color: #173C3F;
+  outline: 0;
+  border: 0;
+}
+
+.selected-index .browse-anchor.md-title,
+.selected-sm-index .browse-anchor.md-title {
+  margin-bottom: 10px;
+  margin-top: 6px;
+  display: block;
+
+}
+
+item-detail-component,
+author-detail-component,
+subject-detail-component,
+discover-detail-component {
+  display: block;
+  min-height: 50px;
+  padding-left: 4px;
+}
+
+.md-dialog-content h3 {
+  color: rgb(121, 23, 22);
+}
+
+.repeat-animation.ng-enter,
+.repeat-animation.ng-move,
+.repeat-animation.ng-leave {
+  animation: 0.5s my_animation;
+  opacity: 0;
+}
+
+.repeat-animation.ng-enter,
+.repeat-animation.ng-leave,
+.repeat-animation.ng-move.ng-move-active,
+.repeat-animation.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes my_animation {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/* Standard syntax */
+@keyframes my_animation {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+
+.discoveryMessages {
+  /* NOTE: Check the demo's HTML to see some additional RTL support CSS */
+  /* Setup animations similar to the ng-messages */
+}
+
+.discoveryMessages .hint {
+  /* Position the hint */
+  position: absolute;
+  left: 2px;
+  right: auto;
+  bottom: 7px;
+  /* Copy styles from ng-messages */
+  font-size: 12px;
+  line-height: 14px;
+  /* Set our own color */
+  color: grey;
+}
+
+.fade.ng-hide {
+  opacity: 0;
+}
+
+.fade.ng-hide-remove,
+.fade.ng-hide-add {
+  display: block !important;
+}
+
+.fade.ng-hide-remove {
+  transition: all linear 10ms;
+}
+
+.fade.ng-hide-add {
+  transition: all linear 300ms;
+}
+
+.footer {
+  margin-top: 200px;
+  min-height: 300px;
+  background-color: #791716;
+  text-align: center;
+}
+
+.footer a,
+.fooger a:visited {
+  margin: 22px 22px;
+}
+
+.footer > .footer-background {
+  padding: 3.4375em 0;
+}
+
+.footer > .footer-background {
+  background-image: url(/ds-app/images/footer-watermark.png);
+  background-position: 100% 0;
+  background-repeat: no-repeat;
+  padding: 2.1875em;
+}
+
+.footer-main-nav {
+  margin-top: 40px;
+}
+
+.footer-main-nav a {
+  font-size: 1.125em;
+}
+
+.footer-main-nav a {
+  color: #c0ac7e;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-weight: 500;
+  font-size: 1.0em;
+  margin: 20px 30px;
+}
+
+.footer-main-nav h4 {
+  color: #fff;
+}
+
+
+
+
+
+
+
