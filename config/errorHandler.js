@@ -2,7 +2,7 @@
  * Set up the Express error handlers.
  * Created by mspalti on 6/1/16.
  */
- 
+
 'use strict';
 
 module.exports = function (app) {
@@ -47,7 +47,8 @@ module.exports = function (app) {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
-      error: err
+      error: err,
+      status: err.status
     });
   }
 
@@ -62,7 +63,8 @@ module.exports = function (app) {
     res.status(err.status || 500).end();
     res.render('error', {
       message: err.message,
-      error: {}
+      error: {},
+      status: err.status
     });
   }
 

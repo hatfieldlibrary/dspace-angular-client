@@ -1,40 +1,23 @@
 <!doctype html>
-<!--[if lt IE 7]>
-<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>
-<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>
-<html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js"> <!--<![endif]-->
+<html>
 <head>
   <title>Error</title>
-  <link rel="{{relValue}}" ng-href="{{nextPage}}"/>
-  <link rel="{{prevValue}}" ng-href="{{prevPage}}"/>
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <base href="/">
   <meta charset="utf-8"/>
-
-  <!--[if !IE]><!-->
-  <script>
-    if (/*@cc_on!@*/false) {
-      document.documentElement.className += ' ie10';
-    }
-  </script><!--<![endif]-->
-
 </head>
 
-<!-- IE flexbox fix: height: 100% -->
+<body style="padding:0;margin:0">
 
-<div flex="100" style="background:#000; height: 50px; width:100%;margin:0;padding:0;color:#fff;">
-   hi
+<div flex="100" style="background:#000; height: 50px; width:100%;margin:0;padding:8px;color:#fff;">
+  <h2>Error <%= status %></h2>
 </div>
 
-<h2>Error</h2>
+<div style="padding: 8px;">
+  <h4><%= message %></h4>
+  <p><%= error %></p>
 
-<h4><%= message %></h4>
-
-<p><%= error %></p>
+</div>
 
 </body>
 </html>
