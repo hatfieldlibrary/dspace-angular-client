@@ -1,0 +1,21 @@
+<md-list-item class="discover-item" ng-click="$ctrl.showItem($event, $ctrl.id, $ctrl.resourceType)">
+
+  <div class="md-list-item-text" layout-fill>
+
+    <div class="list-highlight" ng-if="$ctrl.title.length > 0" ng-bind-html="$ctrl.title">
+    </div>
+    <div class="list-highlight" ng-if="$ctrl.title.length == 0" ng-bind-html="$ctrl.defaultTitle">
+    </div>
+    <span class="md-body-2" style="padding:0;">{{$ctrl.itemLabel}}</span>
+    <span ng-repeat="au in $ctrl.author" class="md-caption citation">{{au}}<span ng-if="!$last">;</span></span> </span>
+    <div class="list-padding">
+      <span class="md-body-1" ng-repeat="desc in $ctrl.description" ng-bind-html="desc"></span>
+    </div>
+  </div>
+
+  <md-divider ng-if="!$ctrl.last"></md-divider>
+
+</md-list-item>
+
+
+

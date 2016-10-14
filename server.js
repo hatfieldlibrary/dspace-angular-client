@@ -4,8 +4,6 @@
 
 'use strict';
 
-var server;
-
 var express = require('express'),
   http = require('http'),
   passport = require('passport'),
@@ -13,16 +11,19 @@ var express = require('express'),
 
 global.models = require('./app/models');
 
+var server;
+
 var app = express();
 
 /**
  * Basic Express setup for logging, parser, static routes...
  */
 require('./config/express')(app, config);
+
 /**
  * Sets up passport authentication and Express sessions.
  */
-require('./config/authenticate')(app, config, passport);
+require('./config/authConfig')(app, config, passport);
 /**
  * Configures Express routes.
  */
@@ -55,6 +56,7 @@ function startServer() {
         console.log('Express server listening on port ' + config.port);
       } catch (err) {
         console.log('Refusing to keep the process alive as root.');
+        console.log(err);
         process.exit(1);
       }
     } else {

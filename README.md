@@ -40,7 +40,7 @@ Additional configuration files for express, routes and authentication are also l
 
 Text values and other configuration options in Angular UI can be changed by modifying the constants defined in `app/config/messages.js` and `app/config/appConfig.js`.  
 
-You can also modify color themes by changing the Material Design palettes defined in the Angular `app.js` file.  Here's an example of [a handy Material Design palette generator](http://mcg.mbitson.com/#/). The `public/client/app/ds/css/styles.css` file may also need to be modified to your specifications.
+You can also modify color themes by changing the Material Design palettes defined in the Angular `app.js` file.  Here's an example of [a handy Material Design palette generator](http://mcg.mbitson.com/#/). The `public/client/app/css/styles.css` file may also need to be modified to your specifications.
 
 
 ## DSpace Authentication

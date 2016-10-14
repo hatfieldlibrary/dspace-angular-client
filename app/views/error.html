@@ -1,5 +1,25 @@
-<h2>Error</h2>
+<!doctype html>
+<html>
+<head>
+  <title>Error</title>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <base href="/">
+  <meta charset="utf-8"/>
+</head>
 
-<h4><%= message %></h4>
+<body style="padding:0;margin:0">
 
-<p><%= error %></p>
+<div flex="100" style="background:#000; height: 50px; width:100%;margin:0;padding:8px;color:#fff;">
+  <h2>Error <%= status %></h2>
+</div>
+
+<div style="padding: 8px;">
+  <h4><%= message %></h4>
+  <p><%= error %></p>
+
+</div>
+
+</body>
+</html>
+
+

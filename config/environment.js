@@ -1,5 +1,5 @@
 var path = require('path'),
-  rootPath = path.normalize(__dirname + '/../app/'),
+  devPath = path.normalize(__dirname + '/../app/'),
   distPath = path.normalize(__dirname + '/../dist/app/'),
   credentials = require('./credentials'),
   dspace = require('./dspace');
@@ -47,7 +47,7 @@ var config = {
    * Development.
    */
   development: {
-    root: rootPath,
+    root: devPath,
     app: {
       name: 'dspace'
     },
@@ -134,7 +134,7 @@ var config = {
    * Test.
    */
   test: {
-    root: rootPath,
+    root: devPath,
     app: {
       name: 'dspace'
     },
