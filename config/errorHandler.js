@@ -68,7 +68,6 @@ module.exports = function (app) {
     });
   }
 
-
   /**
    * Set error handlers for production and development environments.
    */

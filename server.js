@@ -4,8 +4,6 @@
 
 'use strict';
 
-var server;
-
 var express = require('express'),
   http = require('http'),
   passport = require('passport'),
@@ -13,8 +11,9 @@ var express = require('express'),
 
 global.models = require('./app/models');
 
-var app = express();
+var server;
 
+var app = express();
 
 /**
  * Basic Express setup for logging, parser, static routes...
@@ -24,7 +23,7 @@ require('./config/express')(app, config);
 /**
  * Sets up passport authentication and Express sessions.
  */
-require('./config/authenticate')(app, config, passport);
+require('./config/authConfig')(app, config, passport);
 /**
  * Configures Express routes.
  */

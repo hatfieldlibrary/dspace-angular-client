@@ -16,7 +16,6 @@
                       Utils,
                       WriteObserver) {
 
-
     var ctrl = this;
 
     /**
@@ -69,7 +68,7 @@
 
       QueryManager.setHandle(site + '/' + item);
 
-      /** Retrieve data for the handle. */
+      // Retrieve data for the handle.
       var query = ItemByHandle.query({site: site, item: item});
       query.$promise.then(
         function (data) {
@@ -77,18 +76,14 @@
           ctrl.parent.setQueryType(QueryManager.getQueryType());
 
 
-          /** A simple check for whether data was returned */
+          // A simple check for whether data was returned
           if (data.type !== undefined) {
 
             ctrl.ready = true;
-
-            /** Add query result to view model. */
+            //Add query result to view model.
             ctrl.data = data;
-
-            /**
-             * Set user permissions in context. These values
-             * will be used in the side panel component.
-             */
+            // Set user permissions in context. These values
+            // will be used in the side panel component.
             if (typeof data.canSubmit !== 'undefined') {
               AppContext.setSubmitPermission(data.canSubmit);
             }
@@ -98,14 +93,8 @@
             }
 
             if (typeof data.canWrite !== 'undefined') {
-              //ctrl.parent.setWritePermission(data.canWrite);
               WriteObserver.set(data.canWrite);
             }
-
-            /**
-             * Get the result type and dspace ID. These values are
-             * then set in context and used in handle sub-components.
-             */
 
             /**
              * String nType is obtained by truncating the DSpace data type.
@@ -113,7 +102,7 @@
              */
             ctrl.nType = Utils.getLocalType(data.type);
 
-             /**
+            /**
              * Utils.getType() returns AssetTypes.COLLECTION if the nType of
              * the current object is an AssetTypes.ITEM. Otherwise, the
              * nType of the current object is returned.
@@ -127,81 +116,68 @@
              */
             var id = Utils.getId(data, ctrl.nType);
 
-            /**
-             * Set the asset type in the query context.
-             */
+            // Set the asset type in the query context.
             QueryManager.setAssetType(type);
 
             ctrl.parent.setAssetType(type);
 
-            /**
-             * Set the dspace ID in the query context.
-             */
+            // Set the dspace ID in the query context.
             QueryManager.setAssetId(id);
 
             ctrl.parent.setAssetId(id);
 
-
           }
+
         }).catch(function (err) {
 
         console.log('Handle Request: ' + err.message);
+        // If data was not returned the cause is likely
+        // to be an expired session or the user following an
+        // external link to a resource they are not authorized
+        // to use.
         Utils.checkStatus(status);
 
       });
 
     };
 
-
     /**
-     * If data was not returned the cause is likely
-     * to be an expired session or the user following an
-     * external link to a resource they are not authorized
-     * to use.
+     * Callback function.
      *
-     * If no session exists we will login and retrieve
+     * If no session exists we redirect to login and retrieve
      * a token.
      *
-     * If we have an existing token, then the user does not
-     * have access to the item.
+     * If we have a token, then the user does not have access
+     * to the item.
      *
      * We need more information from the DSpace REST API to
-     * know with certainty that the user needs to be authenticated.
+     * know with certainty that the user requires authenticated.
      * So it probably makes sense to provide an administrative
      * contact in the message to the user.  The admin can investigate
-     * the problem if contacted.
+     * the problem when contacted.
      */
     function status(dspaceSession) {
 
       if (AppContext.useRedirect()) {
-        /**
-         * Attempt to login. Redirect only if no DSpace session exists.
-         * This avoids infinite loop.
-         */
+        // Attempt to login. Redirect only if no DSpace session exists.
+        // This avoids infinite loop.
         if (!dspaceSession) {
           $window.location = '/' + AppContext.getApplicationPrefix() + '-api/auth/login';
 
         } else {
-          /**
-           * If the user has authenticated and received a Dspace , assume that the user is
-           * not authorized to access the resource.
-           * @type {boolean}
-           */
+          // If the user has authenticated and received a Dspace token, assume that the user is
+          // not authorized to access the resource.
           ctrl.accessNotAllowed = true;
           ctrl.ready = true;
         }
       }
       else {
-        /**
-         * If not offering auto redirection, this shows the login required
-         * component.
-         */
+        // If not offering auto redirection, this shows the login required
+        // component.
         ctrl.loginRequired = true;
         ctrl.ready = true;
       }
-
     }
-
 
   }
 

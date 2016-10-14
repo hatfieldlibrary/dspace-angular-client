@@ -2,78 +2,30 @@ module.exports = function (app, config, passport) {
 
   'use strict';
 
-  var login = require('../app/controllers/login'),
+  var adminStatus = require('../app/controllers/adminStatus'),
     handle = require('../app/controllers/handle'),
     community = require('../app/controllers/community'),
     collection = require('../app/controllers/collection'),
     bitstream = require('../app/controllers/bitstream'),
     item = require('../app/controllers/item'),
-    solr = require('../app/controllers/solr');
-
-  /**
-   * Pass app configuration to the login controller.
-   */
-  login.setConfig(config);
+    solr = require('../app/controllers/solr'),
+    authHandler = require('./authHandler');
 
   // AUTHENTICATION
-
-  /**
-   * Use OAUTH2 for development.
-   */
-  if (app.get('env') === 'development') {
-
-    /**
-     * Authentication route for Google OAuth .
-     */
-    app.get('/ds-api/auth/login', passport.authenticate('google', {
-      scope: ['https://www.googleapis.com/auth/userinfo.profile',
-        'https://www.googleapis.com/auth/userinfo.email']
-    }));
-    /**
-     * Google OAuth callback route.
-     */
-    // If authentication failed, redirect back to the communities page for now.
-    app.get('/ds/oauth2callback',
-      passport.authenticate('google',
-        {failureRedirect: '/ds/communities'}
-      ),
-      // If authentication succeeded, redirect to login/netid to obtain DSpace token.
-      function (req, res) {
-        res.redirect('/ds-api/login/' + req.user);
-      }
-    );
-
-  }
-
-  else if (app.get('env') === 'production') {
-    /**
-     * Authentication route for CAS.
-     */
-    // app.get('/auth/login', app.passportStrategy.authenticate);
-    app.get('/ds-api/auth/login', passport.authenticate('cas',
-      {failureRedirect: '/ds/communities'}
-      ),
-      function (req, res) {
-        // Successful authentication, redirect to login/netid to obtain DSpace token.
-        res.redirect('/ds-api/login/' + req.user);
-      });
-
-  }
+  // authHandler includes authentication routes.
+  authHandler(app, config, passport);
 
   // DISK CACHE
-
   /**
    * Set the disk cache location for video files.
    */
   app.use(function (req, res, next) {
-
     req.filePath = config.diskCache.dir;
     return next();
 
   });
 
   // ALTERNATE
-
   /**
    * Requests for item detail are fulfilled based
    * on the user agent.
@@ -85,22 +37,7 @@ module.exports = function (app, config, passport) {
   });
 
   // API ENDPOINTS.
-
-  /**
-   * Get DSpace token for authenticated user.
-   */
-  /*jshint unused:false*/
-  app.get('/ds-api/login/:netid', login.dspace);
-  /**
-   * Logout
-   */
-  app.get('/ds-api/logout', login.logout);
-  /**
-   * Check for existing DSpace session.
-   */
-  app.get('/ds-api/check-session', login.checkSession);
-
-  app.get('/ds-api/adminStatus', login.checkSysAdminStatus);
+  app.get('/ds-api/adminStatus', adminStatus.checkSysAdminStatus);
 
   app.get('/ds-api/getCommunities', community.getCommunities);
 
@@ -125,8 +62,7 @@ module.exports = function (app, config, passport) {
   app.post('/ds-api/solrJumpToQuery', solr.jumpTo);
 
 
-  // HTML5 MODE ROUTING.
-
+  // HTML5 MODE ROUTING
   /**
    * Route to page partials.
    */
