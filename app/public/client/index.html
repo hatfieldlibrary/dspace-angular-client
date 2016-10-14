@@ -19,9 +19,9 @@
         content="{{pageDescription}}"/>
   <meta name="author" content="{{author}}">
 
-  <!-- build:css ds/css/app.css -->
+  <!-- build:css /ds-app/css/app.min.css -->
   <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"/>
-  <link rel="stylesheet" href="ds/css/style.css"/>
+  <link rel="stylesheet" href="/ds-app/css/style.css"/>
   <!-- endbuild -->
 
 
@@ -86,7 +86,7 @@
 <div class="main" ng-view layout-fill layout="column"></div>
 
 
-<!-- build:js ds/app/app.js -->
+<!-- build:js /ds-app/app/app-full-rev-4.min.js -->
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/rxjs/dist/rx.lite.js"></script>
 <script src="bower_components/rx-angular/dist/rx.angular.js"></script>
@@ -106,85 +106,87 @@
 <script src="bower_components/angulartics/src/angulartics.js"></script>
 <script src="bower_components/angulartics-google-analytics/lib/angulartics-google-analytics.js"></script>
 
-<script src="app/services/core/modules/services.js"></script>
-<script src="app/services/core/modules/constants.js"></script>
-<script src="app/services/core/modules/components.js"></script>
-<script src="app/services/core/modules/context.js"></script>
+<script src="ds-app/app/services/core/modules/constants.js"></script>
+<script src="ds-app/app/services/core/modules/context.js"></script>
+<script src="ds-app/app/services/core/modules/services.js"></script>
+<script src="ds-app/app/services/core/modules/requests.js"></script>
+<script src="ds-app/app/services/core/modules/components.js"></script>
 
-<script src="app/config/messages.js"></script>
-<script src="app/config/appConfig.js"></script>
+<script src="ds-app/app/config/messages.js"></script>
+<script src="ds-app/app/config/appConfig.js"></script>
 
-<script src="app/services/dialog/dialogFactory.js"></script>
-<script src="app/services/core/stack.js"></script>
-<script src="app/services/core/queryTypes.js"></script>
-<script src="app/services/core/discovery/discoveryForms.js"></script>
-<script src="app/services/core/queryManager.js"></script>
-<script src="app/services/core/appContext.js"></script>
-<script src="app/services/core/utils.js"></script>
-<script src="app/services/requests/communities.js"></script>
-<script src="app/services/requests/itemByHandle.js"></script>
-<script src="app/services/requests/itemById.js"></script>
-<script src="app/services/requests/collectionInfo.js"></script>
-<script src="app/services/requests/browse.js"></script>
-<script src="app/services/requests/checkSession.js"></script>
-<script src="app/services/requests/login.js"></script>
-<script src="app/services/requests/solrRecentSubs.js"></script>
-<script src="app/services/requests/solrQuery.js"></script>
-<script src="app/services/requests/checkAdminUser.js"></script>
-<script src="app/services/shared/pageTitle.js"></script>
-<script src="app/services/shared/metaDescription.js"></script>
-<script src="app/services/shared/metaAuthor.js"></script>
-<script src="app/services/shared/seo.js"></script>
-<script src="app/services/observable/observeMenuState.js"></script>
-<script src="app/services/observable/dspaceSessionObserver.js"></script>
-<script src="app/services/loader/facets.js"></script>
-<script src="app/services/loader/query.js"></script>
-<script src="app/services/loader/onInit.js"></script>
-<script src="app/services/loader/onLocationChange.js"></script>
-<script src="app/services/loader/filters.js"></script>
-<script src="app/services/loader/utils.js"></script>
+<script src="ds-app/app/services/dialog/dialogFactory.js"></script>
+<script src="ds-app/app/services/core/stack.js"></script>
+<script src="ds-app/app/services/core/queryTypes.js"></script>
+<script src="ds-app/app/services/core/discovery/discoveryForms.js"></script>
+<script src="ds-app/app/services/core/queryManager.js"></script>
+<script src="ds-app/app/services/core/appContext.js"></script>
+<script src="ds-app/app/services/core/utils.js"></script>
+<script src="ds-app/app/services/requests/communities.js"></script>
+<script src="ds-app/app/services/requests/itemByHandle.js"></script>
+<script src="ds-app/app/services/requests/itemById.js"></script>
+<script src="ds-app/app/services/requests/collectionInfo.js"></script>
+<script src="ds-app/app/services/requests/browse.js"></script>
+<script src="ds-app/app/services/requests/checkSession.js"></script>
+<script src="ds-app/app/services/requests/login.js"></script>
+<script src="ds-app/app/services/requests/solrRecentSubs.js"></script>
+<script src="ds-app/app/services/requests/solrQuery.js"></script>
+<script src="ds-app/app/services/requests/checkAdminUser.js"></script>
+<script src="ds-app/app/services/shared/pageTitle.js"></script>
+<script src="ds-app/app/services/shared/metaDescription.js"></script>
+<script src="ds-app/app/services/shared/metaAuthor.js"></script>
+<script src="ds-app/app/services/shared/seo.js"></script>
+<script src="ds-app/app/services/observable/observeMenuState.js"></script>
+<script src="ds-app/app/services/observable/dspaceSessionObserver.js"></script>
+<script src="ds-app/app/services/observable/canWriteStatus.js"></script>
+<script src="ds-app/app/services/loader/facets.js"></script>
+<script src="ds-app/app/services/loader/query.js"></script>
+<script src="ds-app/app/services/loader/onInit.js"></script>
+<script src="ds-app/app/services/loader/onLocationChange.js"></script>
+<script src="ds-app/app/services/loader/filters.js"></script>
+<script src="ds-app/app/services/loader/utils.js"></script>
 
-<script src="app/components/shared/loaders/loader.js"></script>
-<script src="app/components/shared/loaders/sortOptions.js"></script>
-<script src="app/components/shared/loaders/discoveryFilter.js"></script>
-<script src="app/components/shared/loaders/discoverFilterContainer.js"></script>
-<script src="app/components/shared/header.js"></script>
-<script src="app/components/shared/login.js"></script>
-<script src="app/components/shared/smallSpinner.js"></script>
-<script src="app/components/shared/search/globalSearchBox.js"></script>
-<script src="app/components/shared/search/searchBox.js"></script>
-<script src="app/components/shared/sidePanel.js"></script>
-<script src="app/components/shared/spinner.js"></script>
-<script src="app/components/shared/lists/files.js"></script>
-<script src="app/components/shared/lists/itemList.js"></script>
-<script src="app/components/shared/lists/itemDetail.js"></script>
-<script src="app/components/shared/lists/inlineItemDetail.js"></script>
-<script src="app/components/shared/lists/community.js"></script>
-<script src="app/components/shared/lists/collectionItem.js"></script>
-<script src="app/components/shared/lists/authorDetail.js"></script>
-<script src="app/components/shared/lists/subjectDetail.js"></script>
-<script src="app/components/shared/lists/discoverDetail.js"></script>
-<script src="app/components/shared/lists/browseDetail.js"></script>
-<script src="app/components/shared/pager.js"></script>
-<script src="app/components/shared/backPager.js"></script>
-<script src="app/components/handle/handleContainer.js"></script>
-<script src="app/components/handle/handle.js"></script>
-<script src="app/components/handle/noAccess.js"></script>
-<script src="app/components/handle/collection.js"></script>
-<script src="app/components/handle/community.js"></script>
-<script src="app/components/handle/item/layoutSelector.js"></script>
-<script src="app/components/handle/item/mobileItem.js"></script>
-<script src="app/components/handle/item/item.js"></script>
-<script src="app/components/handle/item/mobileItemPage.js"></script>
-<script src="app/components/seo/pagingRequest.js"></script>
-<script src="app/components/advanced/advanced.js"></script>
-<script src="app/components/advanced/filters/advancedFilterContainer.js"></script>
-<script src="app/components/discover/discover.js"></script>
-<script src="app/components/communities/communities.js"></script>
-<script src="app/components/browse/browseContainer.js"></script>
-<script src="app/components/browse/browse.js"></script>
+<script src="ds-app/app/components/shared/loaders/loader.js"></script>
+<script src="ds-app/app/components/shared/loaders/sortOptions.js"></script>
+<script src="ds-app/app/components/shared/loaders/discoveryFilter.js"></script>
+<script src="ds-app/app/components/shared/loaders/discoverFilterContainer.js"></script>
+<script src="ds-app/app/components/shared/header.js"></script>
+<script src="ds-app/app/components/shared/login.js"></script>
+<script src="ds-app/app/components/shared/smallSpinner.js"></script>
+<script src="ds-app/app/components/shared/search/globalSearchBox.js"></script>
+<script src="ds-app/app/components/shared/search/searchBox.js"></script>
+<script src="ds-app/app/components/shared/sidePanel.js"></script>
+<script src="ds-app/app/components/shared/spinner.js"></script>
+<script src="ds-app/app/components/shared/lists/files.js"></script>
+<script src="ds-app/app/components/shared/lists/itemList.js"></script>
+<script src="ds-app/app/components/shared/lists/itemDetail.js"></script>
+<script src="ds-app/app/components/shared/lists/inlineItemDetail.js"></script>
+<script src="ds-app/app/components/shared/lists/community.js"></script>
+<script src="ds-app/app/components/shared/lists/collectionItem.js"></script>
+<script src="ds-app/app/components/shared/lists/authorDetail.js"></script>
+<script src="ds-app/app/components/shared/lists/subjectDetail.js"></script>
+<script src="ds-app/app/components/shared/lists/discoverDetail.js"></script>
+<script src="ds-app/app/components/shared/lists/browseDetail.js"></script>
+<script src="ds-app/app/components/shared/pager.js"></script>
+<script src="ds-app/app/components/shared/backPager.js"></script>
+<script src="ds-app/app/components/handle/handleContainer.js"></script>
+<script src="ds-app/app/components/handle/handle.js"></script>
+<script src="ds-app/app/components/handle/noAccess.js"></script>
+<script src="ds-app/app/components/handle/collection.js"></script>
+<script src="ds-app/app/components/handle/community.js"></script>
+<script src="ds-app/app/components/handle/item/layoutSelector.js"></script>
+<script src="ds-app/app/components/handle/item/mobileItem.js"></script>
+<script src="ds-app/app/components/handle/item/item.js"></script>
+<script src="ds-app/app/components/handle/item/mobileItemPage.js"></script>
+<script src="ds-app/app/components/seo/pagingRequest.js"></script>
+<script src="ds-app/app/components/advanced/advanced.js"></script>
+<script src="ds-app/app/components/advanced/filters/advancedFilterContainer.js"></script>
+<script src="ds-app/app/components/discover/discover.js"></script>
+<script src="ds-app/app/components/communities/communities.js"></script>
+<script src="ds-app/app/components/browse/browseContainer.js"></script>
+<script src="ds-app/app/components/browse/browse.js"></script>
 
-<script src="app/app.js"></script>
+<script src="ds-app/app/app.js"></script>
 
 <!-- endbuild -->
 
