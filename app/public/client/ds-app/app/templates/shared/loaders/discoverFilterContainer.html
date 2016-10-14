@@ -1,0 +1,14 @@
+<div hide show-gt-sm>
+
+  <div class="row" flex>
+    <div layout-padding class="md-caption options-header">{{$ctrl.filterLabel}}</div>
+  </div>
+  <discover-filter-component
+    ng-repeat="filter in $ctrl.filters"
+    position="{{$index}}"
+    on-add-filter="$ctrl.onAddFilter(field, mode, terms)"
+    on-remove-filter="$ctrl.onRemoveFilter(position)">
+
+  </discover-filter-component>
+</div>
+

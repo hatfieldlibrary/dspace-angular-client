@@ -6,7 +6,6 @@
 
 (function () {
 
-
   /**
    * The author response is a facet object containing a list
    * of all authors for the collection or community. This method
@@ -174,6 +173,7 @@
       }
       var key = tmp.resourcetype + '-' + tmp.resourceid;
 
+      tmp.author = docs[i]['dc.contributor.author'];
       tmp.title = highlights[key]['dc.title_hl'];
       tmp.defaultTitle = docs[i]['dc.title'][0];
       tmp.description = highlights[key]['dc.description.abstract_hl'];
@@ -184,7 +184,6 @@
     final.offset = json.response.start;
     final.results = resultArr;
     final.count = json.response.numFound;
-
 
     return final;
   };

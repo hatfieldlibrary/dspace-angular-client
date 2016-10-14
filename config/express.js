@@ -16,7 +16,7 @@ module.exports = function (app, config) {
   /**
    * Enable the error message view.
    */
-  app.set('views', config.root + '/views');
+  app.set('views', config.root + 'views');
   app.engine('html', require('ejs').renderFile);
   app.set('view engine', 'html');
 
@@ -26,9 +26,14 @@ module.exports = function (app, config) {
   app.use(bodyParser.urlencoded({extended: false}));
   app.use(bodyParser.json());
 
-  if ('production' === env) {
+  /** Application directory. */
+  app.set('appPath', config.root + 'public/client');
+  /** Static directory. */
+  app.use(express.static(path.join(config.root, 'public/client')));
+  /** Path to favicon. */
+  app.use(favicon(path.join(config.root, 'public/client', '/favicon.ico')));
 
-    app.set('appPath', config.root + 'public/client');
+  if ('production' === env) {
     /**
      * Enable trust proxy if the Express server is not directly
      * facing the Internet.  If true, the client’s IP address is
@@ -40,27 +45,18 @@ module.exports = function (app, config) {
      */
     app.use(morgan('common'));
     /**
-     * Path to static files.
-     */
-    app.use(express.static(path.join(config.root, 'public/client')));
-    /**
      * Path to favicon.
      */
-    app.use(favicon(path.join(config.root, 'public/client', 'favicon.ico')));
+    app.use(favicon(path.join(config.root, 'public/client', '/favicon.ico')));
 
   }
 
   if ('development' === env || 'test' === env) {
 
-    app.set('appPath', config.root + 'public/client');
-
      // Use simplified development log output.
     app.use(morgan('dev'));
     app.use(require('connect-livereload')());
-
-    // static routes.
     app.use(express.static(path.join(config.root, '.tmp')));
-    app.use(express.static(path.join(config.root, 'public/client')));
 
   }
 
