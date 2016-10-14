@@ -85,7 +85,9 @@
 
     ctrl.selectedField = QueryTypes.DATES_LIST;
 
+
     if (($mdMedia('sm') || $mdMedia('xs'))) {
+
       ctrl.fieldSelectorWidth = '50';
       ctrl.filterWidth = '50';
 
@@ -94,6 +96,7 @@
       ctrl.filterWidth = '66';
 
     }
+
 
     /**
      * Executes filter query.
@@ -306,7 +309,7 @@
       /**
        * Reset the selected item.
        */
-     _setSelectedPosition(-1);
+      _setSelectedPosition(-1);
       /**
        * Reset the filter.
        * @type {string}
@@ -317,7 +320,7 @@
        */
       QueryManager.setQueryType(ctrl.selectedField);
 
-     // AppContext.setPreviousPagerOffset(-1);
+      // AppContext.setPreviousPagerOffset(-1);
 
       AppContext.setViewStartIndex(0);
 
@@ -355,11 +358,11 @@
 
     };
 
-    ctrl.$onChanges = function(changes) {
+    ctrl.$onChanges = function (changes) {
 
       if (changes.queryType) {
         if (changes.queryType.currentValue !== ctrl.selectedField) {
-             ctrl.selectedField = changes.queryType.currentValue;
+          ctrl.selectedField = changes.queryType.currentValue;
         }
       }
 
@@ -372,7 +375,7 @@
     };
 
 
-    ctrl.$onInit = function() {
+    ctrl.$onInit = function () {
 
       _setNextPagerOffset = ctrl.parent.setNextPagerOffset;
       _setSelectedItem = ctrl.parent.setSelectedItem;
@@ -383,7 +386,7 @@
        * Label/Value map for query fields (title, author, subject, date)
        * @type {*[]}
        */
-      if (ctrl.context === QueryActions.LIST ) {
+      if (ctrl.context === QueryActions.LIST) {
 
         ctrl.fields = CollectionQueryFieldMap.fields;
 
@@ -429,7 +432,6 @@
 
 
     };
-
 
 
   }

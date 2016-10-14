@@ -1,5 +1,42 @@
+<!doctype html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+  <title>Error</title>
+  <link rel="{{relValue}}" ng-href="{{nextPage}}"/>
+  <link rel="{{prevValue}}" ng-href="{{prevPage}}"/>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <base href="/">
+  <meta charset="utf-8"/>
+
+  <!--[if !IE]><!-->
+  <script>
+    if (/*@cc_on!@*/false) {
+      document.documentElement.className += ' ie10';
+    }
+  </script><!--<![endif]-->
+
+</head>
+
+<!-- IE flexbox fix: height: 100% -->
+
+<div flex="100" style="background:#000; height: 50px; width:100%;margin:0;padding:0;color:#fff;">
+   hi
+</div>
+
 <h2>Error</h2>
 
 <h4><%= message %></h4>
 
 <p><%= error %></p>
+
+</body>
+</html>
+
+

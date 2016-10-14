@@ -1,4 +1,4 @@
-<div layout-fill layout-align="start start" style="max-width: 100%;height:100%;box-sizing:border-box;" layout-padding>
+<div layout-align="start start" style="max-width: 100%;height:100%;box-sizing:border-box;" layout-padding>
 
 
   <div class="page-title">
@@ -6,14 +6,13 @@
     </div>
   </div>
 
-
   <md-card class="main-card md-hue-1" style="max-width:100%;" md-colors="::{background: 'default-background-50'}">
 
     <md-card-content>
 
       <div layout="column" class="discoveryMessages" layout-padding>
 
-        <div style="padding: 8px">
+
           <form name="discoveryForm" class="discover-form" ng-submit="adv.submit(disc.terms)">
 
             <md-input-container class="md-block" flex-gt-sm="70">
@@ -21,7 +20,6 @@
               <input ng-model="adv.terms" required name="terms" title="search terms">
               <div class="hint">Search term is required.</div>
             </md-input-container>
-
             <div>
               <md-input-container class="halfer">
                 <label class="md-no-sticky">{{adv.communityLabel}}</label>
@@ -49,19 +47,15 @@
               </md-input-container>
             </div>
 
-
             <md-input-container flex-gt-sm="20">
               <md-button class="md-raised md-accent" ng-click="adv.submit()">{{adv.submitLabel}}</md-button>
             </md-input-container>
-
 
           </form>
 
         </div>
 
         <item-list-component flex="100" ng-if="!adv.hideComponents" layout-fill class="list-width" context="{{adv.context}}"></item-list-component>
-
-      </div>
 
 
     </md-card-content>

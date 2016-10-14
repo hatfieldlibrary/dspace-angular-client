@@ -7,7 +7,8 @@
 
   'use strict';
 
-  function ItemListCtrl($location,
+  function ItemListCtrl($mdMedia,
+                        $location,
                         QueryManager,
                         QueryActions,
                         AppContext,
@@ -164,7 +165,7 @@
         ctrl.resultMessage = Messages.NO_RESULTS_LABEL;
         ctrl.noResultWarning = true;
       }
-      ctrl.showDiscoverContainer = ctrl.context !== QueryActions.ADVANCED;
+      ctrl.showDiscoverContainer = (ctrl.context !== QueryActions.ADVANCED) && $mdMedia('gt-xs');
       ctrl.jump = jump;
       ctrl.field = field;
       ctrl.count = count;

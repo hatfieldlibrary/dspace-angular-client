@@ -103,7 +103,7 @@ md-sidenav {
 }
 
 /*md-sidenav.md-locked-open {*/
-  /*max-width: 80%;*/
+/*max-width: 80%;*/
 /*}*/
 
 community-item-component md-list-item .md-no-style.md-button, md-list-item.md-no-proxy.md-button   {
@@ -283,11 +283,11 @@ collection-item-component .hide-content {
 }
 
 /*.community-list::before {*/
-  /*content: "Departments"*/
+/*content: "Departments"*/
 /*}*/
 
 /*.collection-list::before {*/
-  /*content: "Collections";*/
+/*content: "Collections";*/
 /*}*/
 
 .search-box-container {

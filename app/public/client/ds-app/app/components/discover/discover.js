@@ -9,7 +9,8 @@
 
   'use strict';
 
-  function DiscoverCtrl($routeParams,
+  function DiscoverCtrl($mdMedia,
+                        $routeParams,
                         $location,
                         QueryManager,
                         AssetTypes,
@@ -32,6 +33,12 @@
     var id = $routeParams.id;
     disc.terms = $routeParams.terms;
     disc.context = QueryActions.SEARCH;
+
+    disc.isMobile = true;
+
+    if ($mdMedia('gt-sm')) {
+      disc.isMobile = false;
+    }
 
     /**
      * Pass the controller to discovery extensions.

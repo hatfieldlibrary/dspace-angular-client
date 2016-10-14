@@ -7,7 +7,8 @@
 
   'use strict';
 
-  function CommunitiesCtrl(AppContext,
+  function CommunitiesCtrl($mdMedia,
+                           AppContext,
                            GetCommunities,
                            QueryManager,
                            AssetTypes,
@@ -26,6 +27,12 @@
     ctrl.divLabel = Messages.COMMUNITY_DIVIDER_LABEL;
 
     ctrl.showHeaderImage = false;
+
+    ctrl.isMobile = true;
+
+    if ($mdMedia('gt-sm')) {
+      ctrl.isMobile = false;
+    }
 
     /**
      * Indicates when data has been returned.
