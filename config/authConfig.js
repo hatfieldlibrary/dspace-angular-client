@@ -2,24 +2,20 @@
  * Authentication module. Sets up the authentication methods and
  * session store. Google OAUTH2 is initialized for development and CAS
  * plus a redis session store for production.
- *
  */
-
-'use strict';
-
-/**
- * Express session store
- * @type {session|exports|module.exports}
- */
-var session = require('express-session');
-
 module.exports = function (app, config, passport) {
 
+  'use strict';
+
+  /**
+   * Express session store
+   * @type {session|exports|module.exports}
+   */
+  var session = require('express-session');
 
   // Set up authentication and session.
   app.use(passport.initialize());
   app.use(passport.session());
-
 
   // Define serializer and deserializer
   passport.serializeUser(function (user, done) {
@@ -28,7 +24,6 @@ module.exports = function (app, config, passport) {
   passport.deserializeUser(function (user, done) {
     done(null, user);
   });
-
 
   // DEVELOPMENT
   // Use Google OAUTH2 and express-session.
