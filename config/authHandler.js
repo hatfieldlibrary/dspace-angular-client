@@ -4,6 +4,8 @@
 
 module.exports = function (app, config, passport) {
 
+  'use strict';
+
   var login = require('../app/controllers/login');
 
   /**
