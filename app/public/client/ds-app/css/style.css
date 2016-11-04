@@ -18,6 +18,16 @@ md-toolbar.main-toolbar {
   margin: 0;
 }
 
+side-nav-component md-input-container.md-default-theme .md-input,
+side-nav-component md-input-container .md-input {
+  border-color: rgb(162, 205, 208);
+
+}
+
+side-nav-component md-input-container label {
+  color: rgb(147, 198, 202);
+}
+
 .opaque-img {
   opacity: 0.9;
 }
@@ -29,6 +39,10 @@ md-toolbar.main-toolbar {
 .main {
   /*border-top: .4375rem solid #791716;*/
   min-height: 800px;
+}
+
+side-nav-component form p.md-subhead {
+  color: rgb(97, 97, 97);
 }
 
 a, a:visited {
@@ -103,10 +117,10 @@ md-sidenav {
 }
 
 /*md-sidenav.md-locked-open {*/
-  /*max-width: 80%;*/
+/*max-width: 80%;*/
 /*}*/
 
-community-item-component md-list-item .md-no-style.md-button, md-list-item.md-no-proxy.md-button   {
+community-item-component md-list-item .md-no-style.md-button, md-list-item.md-no-proxy.md-button {
   min-height: 60px;
 }
 
@@ -125,6 +139,7 @@ community-item-component md-list-item .md-no-style.md-button, md-list-item.md-no
 search-box-component {
   margin-right: 5px;
 }
+
 .content-width {
   max-width: 950px !important;
   box-sizing: border-box;
@@ -142,6 +157,7 @@ search-box-component {
 .page-title {
   margin: 0 8px;
 }
+
 .page-title.is-mobile {
   margin: 0;
 }
@@ -194,7 +210,7 @@ md-dialog.item-details {
 }
 
 .item-block-ellipsis {
-  display:block;
+  display: block;
   display: -webkit-box;
   max-width: 100%;
   height: 83px;
@@ -266,6 +282,7 @@ collection-item-component .hide-content {
 .bold-highlight {
   margin-bottom: 50px;
 }
+
 .bold-highlight::before {
   height: 25px;
   background: #791716;
@@ -283,11 +300,11 @@ collection-item-component .hide-content {
 }
 
 /*.community-list::before {*/
-  /*content: "Departments"*/
+/*content: "Departments"*/
 /*}*/
 
 /*.collection-list::before {*/
-  /*content: "Collections";*/
+/*content: "Collections";*/
 /*}*/
 
 .search-box-container {
@@ -303,6 +320,7 @@ collection-item-component .hide-content {
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
 }
+
 .search-form {
   width: 80%;
   padding-left: 22px;
@@ -312,7 +330,7 @@ collection-item-component .hide-content {
   width: 100%;
 }
 
-md-sidenav md-list-item{
+md-sidenav md-list-item {
   width: 85%;
 }
 
@@ -390,11 +408,10 @@ md-input-container.halfer {
   margin: 24px 0 -4px;
 }
 
-
 div.is-mobile,
 .is-mobile md-card.main-card,
 .is-mobile md-card-content {
-  margin: 4px ;
+  margin: 4px;
   padding: 4px !important;
 }
 
@@ -483,6 +500,7 @@ md-list-item.selected-sm-index {
 .warning {
   color: #fbc900;
 }
+
 md-list-item .browse-item {
   position: relative;
   visibility: hidden;
@@ -560,16 +578,23 @@ discover-detail-component {
 
 /* Chrome, Safari, Opera */
 @-webkit-keyframes my_animation {
-  from {opacity: 0;}
-  to {opacity: 1;}
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Standard syntax */
 @keyframes my_animation {
-  from {opacity: 0;}
-  to {opacity: 1;}
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
-
 
 .discoveryMessages {
   /* NOTE: Check the demo's HTML to see some additional RTL support CSS */
