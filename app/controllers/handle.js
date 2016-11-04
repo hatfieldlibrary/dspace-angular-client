@@ -53,11 +53,11 @@ var utils = require('../core/utils');
 
           try {
             var type = result.type;
-            var id = result.id;
+            var link = result.link;
 
             if (type === 'community') {
 
-              models.communities(id, session)
+              models.communities(link, session)
                 .then(function (result) {
                   callback(null, result);
                 })
@@ -67,7 +67,7 @@ var utils = require('../core/utils');
 
             } else if (type === 'collection') {
 
-              models.collections(id, session)
+              models.collections(link, session)
                 .then(function (result) {
                   callback(null, result);
                 })
@@ -77,7 +77,7 @@ var utils = require('../core/utils');
 
             } else if (type === 'item') {
 
-              models.items(id, session)
+              models.items(link, session)
                 .then(function (result) {
                   callback(null, result);
                 })

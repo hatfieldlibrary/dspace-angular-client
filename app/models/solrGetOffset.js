@@ -33,7 +33,7 @@ var queryGenerator = require('../core/queryGenerator');
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
-            'rest-dspace-token': dspaceTokenHeader
+            'Cookie': dspaceTokenHeader
           },
           json: true,
           rejectUnauthorized: utils.rejectUnauthorized(),

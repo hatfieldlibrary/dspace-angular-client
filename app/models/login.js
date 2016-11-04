@@ -2,6 +2,7 @@
 
 var rp = require('request-promise');
 var utils = require('../core/utils');
+var qs = require('querystring');
 
 (function () {
 
@@ -15,47 +16,54 @@ var utils = require('../core/utils');
     var dspaceContext = utils.getDspaceAppContext();
 
     var loginRequest = rp(
-
       {
-        url: host + '/' + dspaceContext +  '/login',
+        url: host + '/' + dspaceContext + '/login',
         method: 'POST',
         headers: {'User-Agent': 'Request-Promise'},
-        json: {
-          email: netid,
-          password: config.secret
+        form: {
+          'email': netid,
+          'password': encodeURI(config.secret)
         },
         rejectUnauthorized: utils.rejectUnauthorized()
-
 
       },
 
       function (error, response, body) {
 
+
         if (error) {
-          console.log('DSpace login error: ' + error);  // error
+          console.log('Got DSpace login error: ' + error);  // error
+          return;
+        }
 
-        } else {
+        var session = req.session;
 
-          var session = req.session;
+        if (response.statusCode === 200) {    // success
 
-          if (response.statusCode === 200) {    // success
+          var regex = /^JSESSIONID.*/;
+          var cookies =  response.headers['set-cookie'];
+          if (cookies) {
+            cookies.forEach(function(cookie) {
+                if (cookie.match(regex)) {
+                  var cstring = cookie.split(';');
+                  session.dspaceSessionCookie = cstring[0];
 
-            // Add DSpace token to session.
-            session.getDspaceToken = body;
-
-          } else if (response.statusCode === 403) {   // forbidden
-            console.log('DSpace access forbidden.');
-
-          } else if (response.statusCode == 400 ) {
-            // 400 (malformed request) may mean that the token no
-            // longer exists in DSpace, possibly because of server
-            // restart. Remove the stale token if one is present.
-            utils.removeDspaceSession(req.session);
-
+                }
+            })
           }
-          else {
-            console.log('Unknown DSpace login status.'); // unknown status
-          }
+
+        } else if (response.statusCode === 403) {   // forbidden
+          console.log('DSpace access forbidden.');
+
+        } else if (response.statusCode == 400) {
+          // 400 (malformed request) may mean that the token no
+          // longer exists in DSpace, possibly because of server
+          // restart. Remove the stale token if one is present.
+          utils.removeDspaceSession(req.session);
+
+        }
+        else {
+          console.log('Unknown DSpace login status.'); // unknown status
         }
 
       });

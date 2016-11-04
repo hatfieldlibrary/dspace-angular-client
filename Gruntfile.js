@@ -529,7 +529,7 @@ module.exports = function (grunt) {
         //  'concurrent:pre',
         //  'concurrent:test',
         // 'injector',
-        'postcss',
+        //'postcss',
         //  'wiredep:test',
         'karma'
       ]);
@@ -556,7 +556,7 @@ module.exports = function (grunt) {
           //   'concurrent:test',
           // 'injector',
           //  'wiredep:client',
-          'postcss',
+          //'postcss',
           'express:dev',
           'protractor'
         ]);

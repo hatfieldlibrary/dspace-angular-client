@@ -38,7 +38,7 @@ else {
         path: '/' + dspaceContext + '/bitstreams/' + id + '/retrieve',
         method: 'GET',
         headers: {
-          'rest-dspace-token': dspaceTokenHeader
+          'Cookie': dspaceTokenHeader
         },
         rejectUnauthorized: utils.rejectUnauthorized()
       };

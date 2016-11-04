@@ -8,11 +8,8 @@ var utils = require('../core/utils');
 
   module.exports = function (dspaceTokenHeader) {
 
-    console.log('check dspace session with token ' + dspaceTokenHeader);
-
     var host = utils.getURL();
     var dspaceContext = utils.getDspaceAppContext();
-
 
     /** DSpace session status request-promise */
     var sessionStatus =
@@ -22,7 +19,7 @@ var utils = require('../core/utils');
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
-            'rest-dspace-token': dspaceTokenHeader
+            'Cookie': dspaceTokenHeader
           },
           json: true,
           rejectUnauthorized: utils.rejectUnauthorized()

@@ -372,7 +372,6 @@
 
       };
 
-
       /**
        * Set delay on showing the pager button.  The pager's view state
        * is managed via the application context.  This allows other components
@@ -389,7 +388,6 @@
         }, 300);
 
       };
-
 
       /**
        * Gets the base url query string required by the paging and seo components.

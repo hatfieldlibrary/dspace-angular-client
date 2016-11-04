@@ -74,7 +74,7 @@ var constants = require('../core/constants');
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
-            'rest-dspace-token': dspaceTokenHeader
+            'Cookie': dspaceTokenHeader
           },
           json: true,
           rejectUnauthorized: utils.rejectUnauthorized(),
