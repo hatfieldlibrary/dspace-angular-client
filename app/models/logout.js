@@ -34,7 +34,7 @@ var utils = require('../core/utils');
           method: 'POST',
           headers: {
             'User-Agent': 'Request-Promise',
-            'rest-dspace-token': dspaceTokenHeader
+            'Cookie': dspaceTokenHeader
           },
           json: true,
           rejectUnauthorized: utils.rejectUnauthorized()

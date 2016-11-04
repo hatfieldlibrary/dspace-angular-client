@@ -7,7 +7,7 @@ var utils = require('../core/utils');
   /**
    * Model for item information. Uses REST API.
    */
-  module.exports = function (id, session) {
+  module.exports = function (link, session) {
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
@@ -16,11 +16,11 @@ var utils = require('../core/utils');
     var itemRequest =
       rp(
         {
-          url: host + '/' + dspaceContext + '/items/' + id + '?expand=bitstreams,logo,metadata,parentCollection,permission',
+          url: host + '/' + dspaceContext + '/items/' + link + '?expand=bitstreams,logo,metadata,parentCollection,permission',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
-            'rest-dspace-token': dspaceTokenHeader
+            'Cookie': dspaceTokenHeader
           },
           json: true,
           rejectUnauthorized: utils.rejectUnauthorized(),

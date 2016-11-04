@@ -17,7 +17,6 @@
       config,
       req)
       .then(function () {
-        console.log('login succeeded')
         // If successful, redirect to session.url or to home page.
         if (session.url !== 'undefined') {
           res.redirect(session.url);
@@ -56,23 +55,23 @@
     var session = req.session;
 
     /** If session does not already have DSpace token, login to DSpace.  */
-    if (!session.getDspaceToken) {
+    if (!session.dspaceSessionCookie) {
+
 
       loginToDspace(netid, config, req, res);
 
     } else {
       /** Check validity of token. */
       models
-        .checkDspaceSession(session.getDspaceToken)
+        .checkDspaceSession(session.dspaceSessionCookie)
         .then(
           function (response) {
             // DSpace API REST status check will return a boolean
             // value for authenticated.
             if (!response.authenticated) {
-              console.log('This dspace token is no longer valid: ' + session.getDspaceToken);
+              console.log('This dspace token is no longer valid: ' + session.dspaceSessionCookie);
               // If not authenticated, remove the stale token.
               utils.removeDspaceSession(session);
-              console.log("Retrieving new Dspace token.");
               loginToDspace(netid, config, req, res);
             }
 
@@ -124,6 +123,7 @@
         .checkDspaceSession(dspaceTokenHeader)
         .then(
           function (response) {
+
             // DSpace API REST status check will return a boolean
             // value for authenticated.
             if (response.authenticated) {
