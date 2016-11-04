@@ -46,7 +46,7 @@
      */
     ctrl.communities = {};
 
-    function _init() {
+    ctrl.$onInit = function() {
 
       // set header image.
       if (ctrl.headerImage.length > 0) {
@@ -83,9 +83,7 @@
 
       }
 
-    }
-
-    _init();
+    };
 
   }
 

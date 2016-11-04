@@ -8,7 +8,7 @@ var utils = require('../core/utils');
   /**
    * Model for an individual dspace community. Uses REST API.
    */
-  module.exports = function (id, session) {
+  module.exports = function (link, session) {
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
@@ -18,11 +18,11 @@ var utils = require('../core/utils');
     var communityRequest =
       rp(
         {
-          url: host + '/' + dspaceContext +  '/communities/' + utils.getId(id) + '?expand=collections,logo,permission',
+          url: host + link + '?expand=collections,logo,permission',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
-            'rest-dspace-token': dspaceTokenHeader
+            'Cookie': dspaceTokenHeader
           },
           json: true,
           rejectUnauthorized: utils.rejectUnauthorized(),

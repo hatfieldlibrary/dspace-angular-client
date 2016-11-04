@@ -30,9 +30,8 @@
   exports.getDspaceToken = function (session) {
 
     var dspaceTokenHeader;
-
-    if ('getDspaceToken' in session) {
-      dspaceTokenHeader = session.getDspaceToken;
+    if ('dspaceSessionCookie' in session) {
+      dspaceTokenHeader = session.dspaceSessionCookie;
     } else {
       dspaceTokenHeader = '';
     }
@@ -61,8 +60,8 @@
   exports.removeDspaceSession = function (session) {
 
     try {
-      if ('getDspaceToken' in session) {
-        delete session.getDspaceToken;
+      if ('dspaceSessionCookie' in session) {
+        delete session.dspaceSessionCookie;
 
       }
     } catch (err) {

@@ -2,6 +2,7 @@
 
 var rp = require('request-promise');
 var utils = require('../core/utils');
+var qs = require('querystring');
 
 (function () {
 
@@ -19,20 +20,19 @@ var utils = require('../core/utils');
         url: host + '/' + dspaceContext + '/login',
         method: 'POST',
         headers: {'User-Agent': 'Request-Promise'},
-
-        json: {
-          email: netid,
-          password: config.secret
+        form: {
+          'email': netid,
+          'password': encodeURI(config.secret)
         },
         rejectUnauthorized: utils.rejectUnauthorized()
-
 
       },
 
       function (error, response, body) {
 
+
         if (error) {
-          console.log('DSpace login error: ' + error);  // error
+          console.log('Got DSpace login error: ' + error);  // error
           return;
         }
 
@@ -40,9 +40,17 @@ var utils = require('../core/utils');
 
         if (response.statusCode === 200) {    // success
 
+          var regex = /^JSESSIONID.*/;
+          var cookies =  response.headers['set-cookie'];
+          if (cookies) {
+            cookies.forEach(function(cookie) {
+                if (cookie.match(regex)) {
+                  var cstring = cookie.split(';');
+                  session.dspaceSessionCookie = cstring[0];
 
-          // Add DSpace token to session.
-          session.getDspaceToken = body;
+                }
+            })
+          }
 
         } else if (response.statusCode === 403) {   // forbidden
           console.log('DSpace access forbidden.');
