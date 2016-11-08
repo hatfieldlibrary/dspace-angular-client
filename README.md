@@ -15,7 +15,7 @@ REST authentication requires a custom DSpace authentication plugin that uses a s
  
   [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material 2 is currently in alpha. 
   
-This project is not related to the [Angular 2 UI Prototype Project](https://github.com/DSpace-Labs/angular2-ui-prototype). But that project is very much worth following! As currently planned, this project will work within the NodeJs world rather than migrating into Javaland.  That works for us.  But I'm very interested in seeing how the DSpace UI team's Angular 2 UI takes shape and the problems it solves.   
+*NOTE:* This project is not related to the [Angular 2 UI Prototype Project](https://github.com/DSpace-Labs/angular2-ui-prototype). But that project is very much worth following! As currently planned, this project will work within the NodeJs world rather than migrating into Javaland.  That works for us.  But I'm very interested in seeing how the DSpace UI team's Angular 2 UI takes shape and the problems it solves.   
 
 ### Live site:
 
