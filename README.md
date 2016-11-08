@@ -104,15 +104,15 @@ Currently have only middleware integration tests.  To run tests, execute `mocha`
 
 ## Build
    
-To build the application, you will need the Strongloop command line tool.  You can install this via `npm install -g strongloop`
+To build the application for deployment, you will need the Strongloop command line tool.  You can install this via `npm install -g strongloop`
    
 Next:
    
   1. Build the AngularJs application using `grunt build`
-  2. Verify the details of the NodeJs production environment in config/credentials.js and config/environment.js.
+  2. Verify the details of the NodeJs production environment configuration(config/dspace, config/credentials.js and config/environment.js.
   3. Build the tar file using the `slc` command line tool: `slc build --install --pack`
   
-This will create a zipped tar file for your project.
+This will create a zipped tar file for your project (e.g.: `DSpace_API_Client-1.0.0.tgz`).
 
 ## Deploy
 
@@ -129,10 +129,11 @@ Create an `init.d` script that launches the application using `forever` as well 
 
 Create a `node` user on the system. Next, verify that your init.d startup script sets the NODE_ENV value to 'production.'  Example: `NODE_ENV=production $DAEMON $DAEMONOPTS start $NODEAPP`.
 
-Next: 
+To deploy or update the application: 
  
-1. Copy the tar file to the production host.
-2. If you are updating an existing installation, stop forever via the init script (e.g. /sbin/service dspace_client stop).
-3. Unpack the tar file into the application directory.
-4. Set the owner and group for project all files (including .* files) to `node`.
-5. Start forever via the init.d script (e.g. /sbin/service dspace_client start).
+1. Copy the application tar file to the production host.
+2. Unpack the tar file in the directory containing the DSpace client application directory (the untarred directory name will be 'package').
+3. Set the owner and group for project files inside the package directory to be `node`.
+4. Remove the current application directory.
+5. Rename the 'package' directory to the name of the application directory (e.g. mv package dspace-client).
+6. Restart forever via the init.d script (e.g. /sbin/service dspace_client restart).
