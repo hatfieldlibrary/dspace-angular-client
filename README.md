@@ -11,8 +11,6 @@ The client supports login, logout, handle-based browsing of communities, collect
 The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"). In production, [connect-redis](https://github.com/tj/connect-redis "connect-redis") is used as the session store.  The Node application's controllers and models are responsible for user authentication and access to DSpace Rest and solr services. 
    
 
-REST authentication requires a custom DSpace authentication plugin that uses a shared, secret application key (defined in the Node credentials file and in the REST servlet's web.xml file).  This secret key is used as the password in the authentication request.  As of the DSpace 6 release, upon successful DSpace authentication the JSESSIONID is added to the Express session store and used in subsequent DSpace requests. Communication between the NodeJs application and DSpace REST can use either https or http protocols. In a typical deployment, the Node Express server will run on the DSpace host.
- 
   [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material 2 is currently in alpha. 
   
 *NOTE:* This project is not related to the [Angular 2 UI Prototype Project](https://github.com/DSpace-Labs/angular2-ui-prototype). But that project is very much worth following! As currently planned, this project will work within the NodeJs world rather than migrating into Javaland.  That works for us.  But I'm very interested in seeing how the DSpace UI team's Angular 2 UI takes shape and the problems it solves.   
@@ -46,15 +44,19 @@ You can also modify color themes by changing the Material Design palettes define
 
 ## DSpace Authentication
 
-Authentication is handled by the NodeJs Passport middleware.  This application currently supports CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
+Initial authentication is handled by the NodeJs Passport middleware.  This application currently supports CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
 
+Once authenticated, a DSpace session needs to be established.  This requires a DSpace authentication plugin that is not provided in this repository. That plugin uses a shared, secret application key (defined in the Node application's credentials file and in the REST servlet's web.xml file). The authenticated user's netid is used as the DSpace REST login's email parameter. The secret key is used as the password. 
+
+As of the DSpace 6 release, upon successful DSpace authentication the JSESSIONID is added to the Express session store and used in subsequent DSpace requests. Communication between the NodeJs application and DSpace REST can use either https or http protocols. In a typical deployment, the Node Express server will run on the DSpace host.
+ 
 #### Authentication Steps
 
 1. The NodeJs Express application authenticates via CAS or OAUTH2 using Passport. 
 2. If Passport authentication succeeds, the secret application key is passed to the DSpace REST API authenticate service. 
 3. The secret key is verified by the `RestAuthentication`  plugin, configured to be at the beginning of DSpace authentication sequence.  
 4. If the keys shared by the Nodejs application and DSpace match, DSpace authentication succeeds.  
-5. The REST API generates a DSpace REST token and returns it for use in subsequent API requests.
+5. The REST API establishes a session context using the netid.
 
 
 ## Modifications to REST API  
