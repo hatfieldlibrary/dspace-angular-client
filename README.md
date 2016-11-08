@@ -3,20 +3,19 @@
 
 ## General Overview
 
-This DSpace REST API/solr client uses AngularJs 1.x (1.5) and NodeJs middleware.  
+This DSpace 6 [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace 6 REST")  API/solr client uses AngularJs 1.x (1.5) and NodeJs middleware.  Based on the new Angular 1.5 component model and local scope, the Angular application should port easily to Angular 2.0.
 
-The client supports login, logout, handle-based browsing of communities, collections and items, sorting and filtering, administration and submission options based on the user's authorization level, discovery, and retrieving bitstreams.   
+The client supports login, logout, handle-based browsing of communities, collections and items, sorting, filtering, discovery, bitstream retrieval, and administration and submission options based on the user's authorization level.   
 
 
-The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"). In production, [connect-redis](https://github.com/tj/connect-redis "connect-redis") is used as the session store.   
-
-The Node application queries DSpace via the [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace using the REST API") and solr.  In this version, it uses a revised copy of the DSpace 5.5 REST API that supports authentication plugins, special groups and access to user authorization levels.  
+The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"). In production, [connect-redis](https://github.com/tj/connect-redis "connect-redis") is used as the session store.  The Node application's controllers and models are responsible for user authentication and access to DSpace Rest and solr services. 
+   
 
 REST authentication requires a custom DSpace authentication plugin that uses a shared, secret application key (defined in the Node credentials file and in the REST servlet's web.xml file).  This secret key is used as the password in the authentication request.  Upon successful DSpace authentication, a REST token is returned and added to the Express session store and used in all subsequent requests. Communication between the NodeJs application and DSpace REST can use either https or http protocols. In a typical deployment, the Node Express server will run on the DSpace host.
+ 
+  [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material is based on CSS3 Flexbox layout. 
 
-The Angular client routes all API and solr requests through the NodeJs application layer. Based entirely on the new component model, the Angular application should port easily to Angular 2.0. [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material is based on CSS3 Flexbox layout. 
-
-#### Examples 
+### Live site:
 
 [Public Site](http://libmedia.willamette.edu/ds/communities)
 
