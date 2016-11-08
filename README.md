@@ -8,8 +8,7 @@ This DSpace 6 [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+
 The client supports login, logout, handle-based browsing of communities, collections and items, sorting, filtering, discovery, bitstream retrieval, and administration and submission options based on the user's authorization level.   
 
 
-The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"). In production, [connect-redis](https://github.com/tj/connect-redis "connect-redis") is used as the session store.  The Node application's controllers and models are responsible for user authentication and access to DSpace Rest and solr services. 
-   
+The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"). In production, [connect-redis](https://github.com/tj/connect-redis "connect-redis") is used as the session store.  The Node application's controllers and models are responsible for user authentication and access to DSpace Rest and solr services. Communication between the NodeJs application and DSpace REST can use either https or http protocols. In a typical deployment, the Node Express server will run on the DSpace host.
 
   [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material 2 is currently in alpha. 
   
@@ -48,7 +47,7 @@ Initial authentication is handled by the NodeJs Passport middleware.  This appli
 
 Once authenticated, a DSpace session needs to be established.  This requires a DSpace authentication plugin that is not provided in this repository. That plugin uses a shared, secret application key (defined in the Node application's credentials file and in the REST servlet's web.xml file). The authenticated user's netid is used as the DSpace REST login's email parameter. The secret key is used as the password. 
 
-As of the DSpace 6 release, upon successful DSpace authentication the JSESSIONID is added to the Express session store and used in subsequent DSpace requests. Communication between the NodeJs application and DSpace REST can use either https or http protocols. In a typical deployment, the Node Express server will run on the DSpace host.
+As of the DSpace 6 release, upon successful DSpace authentication the JSESSIONID is added to the Express session store and used in subsequent DSpace requests. 
  
 #### Authentication Steps
 
