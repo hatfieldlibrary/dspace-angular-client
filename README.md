@@ -12,13 +12,13 @@ The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passpo
 
   [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material 2 is currently in alpha. 
   
-*NOTE:* This project is not related to the [Angular 2 UI Prototype Project](https://github.com/DSpace-Labs/angular2-ui-prototype). But that project is very much worth following! As currently planned, this project will work within the NodeJs world rather than migrating into Javaland.  That works for us.  But I'm very interested in seeing how the DSpace UI team's Angular 2 UI takes shape and the problems it solves.   
+*NOTE:* This project is not related to the [Angular 2 UI Prototype Project](https://github.com/DSpace-Labs/angular2-ui-prototype). But that project is very much worth following! As currently planned, this project will work within the NodeJs world rather than migrating into Javaland.  That works for us.  I'm very interested in seeing how the DSpace UI team's Angular 2 UI takes shape and the problems it solves.   
 
 ### Live site:
 
-[Public Site](http://libmedia.willamette.edu/ds/communities)
+[Willamette University Public Site](http://libmedia.willamette.edu/ds/communities)
 
-[Public Collection - Willamette Sports Law Journal](http://libmedia.willamette.edu/ds/handle/10177/5561)
+[Public Collection - Willamette Sports Law Journal](http://libmedia.willamette.edu/ds/handle/10177/5561)  (Unfortunately, most of our collections are restricted to university users.)
 
 
 ## Configuration
