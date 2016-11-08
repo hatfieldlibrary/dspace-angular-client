@@ -45,7 +45,7 @@ You can also modify color themes by changing the Material Design palettes define
 
 Initial authentication is handled by the NodeJs Passport middleware.  This application currently supports CAS or OAUTH2 authentication strategies.  (Many other Passport authentication strategies have been implemented and available as open source.) 
 
-Once authenticated, a DSpace session needs to be established.  This requires a DSpace authentication plugin that is not provided in this repository. That plugin uses a shared, secret application key (defined in the Node application's credentials file and in the REST servlet's web.xml file). The authenticated user's netid is used as the DSpace REST login's email parameter. The secret key is used as the password. 
+Once authenticated, a DSpace session needs to be established.  This requires a DSpace authentication plugin that is not provided in this repository. That plugin uses a shared, secret application key (defined in the Node application's credentials file and in the REST servlet's web.xml file). The secret key is used as the REST login password. The user's netid is used in the email parameter. 
 
 As of the DSpace 6 release, upon successful DSpace authentication the JSESSIONID is added to the Express session store and used in subsequent DSpace requests. 
  
