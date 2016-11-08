@@ -54,15 +54,20 @@ Authentication is handled by the NodeJs Passport middleware.  This application c
 4. If the keys shared by the Nodejs application and DSpace match, DSpace authentication succeeds.  
 5. The REST API generates a DSpace REST token and returns it for use in subsequent API requests.
 
+
+## Modifications to REST API  
+
+Modifications to the REST API are required to use this client. The REST API updates are not available in this repository.  
+
 #### DSpace 5.5 Updates
 
-The DSpace 5.5 REST API does not support special groups, so we updated the REST API to retrieve special groups at login and retain special group IDs in the REST `TokenHolder` (in addition to the the `EPerson` ID). The DSpace REST API was also extended with a new `permissions` expand option that returns READ, WRITE, ADD and ADMIN authorizations on the object. This information is used in the AngularJs client to provide administrative and submit options.
-
-These modifications to the 5.5 REST API are required to use this client. The REST API updates are not available in this repository.  
+REST login modified to use a RESTAuthention login module in lieu of password authentication. As ofDSpace 5.5 REST API does not support special groups, so we updated the REST API to retrieve special groups at login and retain special group IDs in the REST `TokenHolder` (in addition to the the `EPerson` ID). The DSpace REST API was also extended with a new `permissions` expand option that returns READ, WRITE, ADD and ADMIN authorizations on the object. This information is used in the AngularJs client to provide administrative and submit options.
 
 #### DSpace 6.0 Updates
  
-DSpace 6.0 REST authentication supports authentication plugins and special groups, and DSpace session management is handled by the servlet rather than the `TokenHolder` class.  These enhancements reduce the number of DSpace modifications required by this client. A new 'permission' expand option currently needs to be added to the DSpace REST API so that requests for resources can be accompanied by authorization information (canWrite, canSubmit, canAdmin).  I also added a new adminStatus endpoint to determine whether the current session has system administrative permissions.  REST authentication only works when the email address is provided as the security principal.  I updated `Resource` to create the context using netid if email fails, as will be the case for authentication methods that rely on netids.  This issue could also be addressed in the RESTAuthentication plugin itself. It seems hopeful that these requirements will be met in future DSpace releases 
+DSpace 6.0 REST authentication supports authentication plugins and special groups, and DSpace session management is handled by the servlet rather than the `TokenHolder` class.  These enhancements reduce the number of DSpace modifications required by this client. The new 'permission' expand option currently needs to be added to the DSpace REST API so that requests for resources can be accompanied by authorization information (canWrite, canSubmit, canAdmin).  I also added a new adminStatus endpoint to determine whether the current session has system administration permissions.  REST authentication only works when the email address is provided as the security principal.  I updated `Resource` to create the context using netid if email fails, as will be the case for authentication methods that rely on netids.  This issue could also be addressed in the REST authentication plugin itself. 
+
+It seems hopeful that these requirements will be met in future DSpace releases 
 
 ## Setting up the development environment
 
