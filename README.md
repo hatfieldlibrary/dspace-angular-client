@@ -3,7 +3,7 @@
 
 ## General Overview
 
-This DSpace 6 [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace 6 REST")  API/solr client uses AngularJs 1.x (1.5) and NodeJs middleware.  Based on the new Angular 1.5 component model and local scope, the Angular application should port easily to Angular 2.0.
+This DSpace 6 [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace 6 REST") /solr client uses AngularJs 1.x (1.5) and NodeJs middleware.  Based on the new Angular 1.5 component model and local scope, the Angular application should port easily to Angular 2.0.
 
 The client supports login, logout, handle-based browsing of communities, collections and items, sorting, filtering, discovery, bitstream retrieval, and administration and submission options based on the user's authorization level.   
 
