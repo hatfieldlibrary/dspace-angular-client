@@ -14,6 +14,8 @@ The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passpo
 REST authentication requires a custom DSpace authentication plugin that uses a shared, secret application key (defined in the Node credentials file and in the REST servlet's web.xml file).  This secret key is used as the password in the authentication request.  As of the DSpace 6 release, upon successful DSpace authentication the JSESSIONID is added to the Express session store and used in subsequent DSpace requests. Communication between the NodeJs application and DSpace REST can use either https or http protocols. In a typical deployment, the Node Express server will run on the DSpace host.
  
   [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material 2 is currently in alpha. 
+  
+This project is not related to the [Angular 2 UI Prototype Project](https://github.com/DSpace-Labs/angular2-ui-prototype). But that project is very much worth following! As currently planned, this project will work within the NodeJs world rather than migrating into Javaland.  That works for us.  But I'm very interested in seeing how the DSpace UI team's Angular 2 UI takes shape and the problems it solves.   
 
 ### Live site:
 
