@@ -13,7 +13,7 @@ The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passpo
 
 REST authentication requires a custom DSpace authentication plugin that uses a shared, secret application key (defined in the Node credentials file and in the REST servlet's web.xml file).  This secret key is used as the password in the authentication request.  Upon successful DSpace authentication, a REST token is returned and added to the Express session store and used in all subsequent requests. Communication between the NodeJs application and DSpace REST can use either https or http protocols. In a typical deployment, the Node Express server will run on the DSpace host.
  
-  [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material is based on CSS3 Flexbox layout. 
+  [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material 2 is currently in alpha. 
 
 ### Live site:
 
