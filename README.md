@@ -61,13 +61,13 @@ Modifications to the REST API are required to use this client. The REST API upda
 
 #### DSpace 5.5 Updates
 
-REST login modified to use a RESTAuthention login module in lieu of password authentication. As ofDSpace 5.5 REST API does not support special groups, so we updated the REST API to retrieve special groups at login and retain special group IDs in the REST `TokenHolder` (in addition to the the `EPerson` ID). The DSpace REST API was also extended with a new `permissions` expand option that returns READ, WRITE, ADD and ADMIN authorizations on the object. This information is used in the AngularJs client to provide administrative and submit options.
+REST login modified to use a RESTAuthentication login module in lieu of password authentication. As of DSpace 5.5 REST API does not support special groups, so we updated the REST API to retrieve special groups at login and retain special group IDs in the REST `TokenHolder` (in addition to the the `EPerson` ID). The DSpace REST API was also extended with a new `permissions` expand option that returns READ, WRITE, ADD and ADMIN authorizations on the object. This information is used in the AngularJs client to provide administrative and submit options.
 
 #### DSpace 6.0 Updates
  
 DSpace 6.0 REST authentication supports authentication plugins and special groups, and DSpace session management is handled by the servlet rather than the `TokenHolder` class.  These enhancements reduce the number of DSpace modifications required by this client. The new 'permission' expand option currently needs to be added to the DSpace REST API so that requests for resources can be accompanied by authorization information (canWrite, canSubmit, canAdmin).  I also added a new adminStatus endpoint to determine whether the current session has system administration permissions.  REST authentication only works when the email address is provided as the security principal.  I updated `Resource` to create the context using netid if email fails, as will be the case for authentication methods that rely on netids.  This issue could also be addressed in the REST authentication plugin itself. 
 
-It seems hopeful that these requirements will be met in future DSpace releases 
+It seems likely that these requirements will in some way be addressed with future DSpace releases.
 
 ## Setting up the development environment
 
