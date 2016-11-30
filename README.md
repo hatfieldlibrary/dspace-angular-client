@@ -104,7 +104,7 @@ Currently have only middleware integration tests.  To run tests, execute `mocha`
 
 ## Build
    
-To build the application for deployment, you will need the Strongloop command line tool.  You can install this via `npm install -g strongloop`
+To build the application for deployment, we use the [Strongloop command line tool](https://docs.strongloop.com/display/SLC/Building+applications+with+slc).  You can install this via `npm install -g strongloop`
    
 Next:
    
