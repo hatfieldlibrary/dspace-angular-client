@@ -3,8 +3,9 @@
  * Created by mspalti on 3/28/16.
  */
 
-
 (function () {
+
+  var constants = require('../core/constants');
 
   /**
    * The author response is a facet object containing a list
@@ -14,7 +15,7 @@
    * @param solrResponse  the solr response
    * @returns {{}}
    */
-  exports.processAuthor = function (solrResponse) {
+  function processAuthor(solrResponse) {
 
     var json = solrResponse.facet_counts.facet_fields;
 
@@ -55,9 +56,9 @@
 
     return ret;
 
-  };
+  }
 
-  exports.processSubject = function (solrResponse) {
+  function processSubject(solrResponse) {
 
     var json = solrResponse.facet_counts.facet_fields;
 
@@ -99,7 +100,7 @@
 
     return ret;
 
-  };
+  }
 
   /**
    * Item lists returned by solr queries have a similar structure.
@@ -109,7 +110,7 @@
    * @param solrResponse
    * @returns {{}}
    */
-  exports.processItems = function (solrResponse) {
+  function processItems(solrResponse) {
 
     var json = solrResponse.response.docs;
 
@@ -148,10 +149,10 @@
 
     return ret;
 
-  };
+  }
 
 
-  exports.processDiscoveryResult = function (json) {
+  function processDiscoveryResult(json) {
 
     var docs = json.response.docs;
     var highlights = json.highlighting;
@@ -186,6 +187,27 @@
     final.count = json.response.numFound;
 
     return final;
+  }
+
+  exports.processResult = function(processType, solrResponse) {
+
+    if (processType === constants.QueryType.AUTHOR_FACETS) {
+      return processAuthor;
+
+    }
+    else if (processType === constants.QueryType.SUBJECT_FACETS) {
+      return processSubject(solrResponse);
+
+    }
+    else if (processType === constants.QueryType.DISCOVER) {
+      return processDiscoveryResult(solrResponse);
+
+    }
+    else {
+      return processItems(solrResponse);
+
+    }
   };
+
 
 })();

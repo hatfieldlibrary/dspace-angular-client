@@ -4,7 +4,7 @@ var rp = require('request-promise');
 var queryGenerator = require('../core/queryGenerator');
 var utils = require('../core/utils');
 var processors = require('../core/responseProcessor');
-var constants = require('../core/constants');
+
 
 (function () {
 
@@ -17,23 +17,8 @@ var constants = require('../core/constants');
    * @returns {{}}
    */
   function processResult(solrResponse) {
+    return processors.processResult(processType, solrResponse);
 
-    if (processType === constants.QueryType.AUTHOR_FACETS) {
-      return processors.processAuthor(solrResponse);
-
-    }
-    else if (processType === constants.QueryType.SUBJECT_FACETS) {
-      return processors.processSubject(solrResponse);
-
-    }
-    else if (processType === constants.QueryType.DISCOVER) {
-      return processors.processDiscoveryResult(solrResponse);
-
-    }
-    else {
-      return processors.processItems(solrResponse);
-
-    }
   }
 
   /**
@@ -42,12 +27,10 @@ var constants = require('../core/constants');
   module.exports = function (query, res, session) {
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
-
     /**
      * Setting the processType. This allows us to distinguish requests
      * to sort an author list from other requests for items (more typical).
      */
-
     try {
       if (query.params.query.qType.length > 0) {
         processType = query.params.query.qType;
@@ -57,13 +40,11 @@ var constants = require('../core/constants');
       console.log(err);
     }
 
-
     /**
      * Get the solr URL.
      * @type {string}
      */
     var solrUrl = queryGenerator.getSolrUrl(query, dspaceTokenHeader);
-
     /**
      * The request-promise.
      */
@@ -118,9 +99,6 @@ var constants = require('../core/constants');
 
     return solr;
 
-  }
-  ;
+  };
 
-
-})
-();
+})();
