@@ -1,5 +1,6 @@
 #  DSpace Node/Angular Client
 
+[![bitHound Overall Score](https://www.bithound.io/github/hatfieldlibrary/dspace-angular-client/badges/score.svg)](https://www.bithound.io/github/hatfieldlibrary/dspace-angular-client)
 
 ## General Overview
 
