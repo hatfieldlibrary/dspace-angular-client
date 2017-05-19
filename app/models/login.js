@@ -19,7 +19,7 @@ var qs = require('querystring');
       {
         url: host + '/' + dspaceContext + '/login',
         method: 'POST',
-        headers: {'User-Agent': 'Request-Promise'},
+        headers: {'User-Agent': 'Request-Promise','Accepts': 'application/json'},
         form: {
           'email': netid,
           'password': encodeURI(config.secret)
