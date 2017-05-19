@@ -50,7 +50,7 @@ module.exports = function (app, config, passport) {
       ),
       function (req, res) {
         // Successful authentication, redirect to login/netid to obtain DSpace token.
-        res.redirect('/ds-api/login/' + req.user);
+        res.redirect('/ds-api/login/' + req.user.uid);
       });
 
   }

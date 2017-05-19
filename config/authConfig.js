@@ -122,36 +122,39 @@ module.exports = function (app, config, passport) {
 
 
     /**
-     * Validates CAS user.  Not much to do at this point. Just
-     * make sure we have a user and return.
+     * Class for validating the user.
      */
     var User = {
-
-      validate: function (user, callback) {
-
-        if (typeof user === 'undefined') {
+      findOne: function (login, callback) {
+        if (typeof login === 'undefined') {
           return callback(new Error('User is undefined'), '');
         }
-
-        return callback(null, user.username);
-
+        return callback(null, login.login);
       }
     };
-
     /**
-     * CAS authentication strategy
+     * The CAS authentication strategy.  The callback method just checks to be sure that
+     * a user was returned.  The user object contains email and uid.
+     *
+     * CAS configuration is defined in the credentials file.
      */
-    var CasStrategy = require('passport-cas2').Strategy;
-
-    passport.use(new CasStrategy({
-        casURL: config.cas.casServer
-      },
-      // This is the `verify` callback
-      function (username, profile, done) {
-        User.validate({username: username}, function (err, user) {
-          done(err, user);
-        });
-      }));
+    var casStrategy = require('passport-cas');
+    passport.use(new (casStrategy.Strategy)({
+      version: 'CAS3.0',
+      ssoBaseURL: config.cas.ssoBaseURL,
+      serverBaseURL: config.cas.serverBaseURL,
+      validateURL: config.cas.validateURL
+    }, function (profile, done) {
+      User.findOne({ login: profile.attributes }, function (err, user) {
+        if (err) {
+          return done(err);
+        }
+        if (!user) {
+          return done(null, false, { message: 'Unknown user' });
+        }
+        return done(null, user);
+      });
+    }));
 
     /**
      * Use this custom callback to restrict access to client routes.

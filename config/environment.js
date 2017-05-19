@@ -195,7 +195,9 @@ var config = {
       emailDomain: credentials.oauth.emailDomain
     },
     cas: {
-      casServer: credentials.cas.casServer
+      serverBaseURL: credentials.cas.serverBaseURL,
+      ssoBaseURL: credentials.cas.ssoBaseURL,
+      validateURL: credentials.cas.validateURL
     },
     diskCache: {
       dir: '/var/ds/diskCache'
