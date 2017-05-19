@@ -10,7 +10,7 @@ var config = {
   dspaceDev: {
 
     // full host name (e.g. 'dspace.college.edu')
-    host: '158.104.3.30',
+    host: 'dspace.willamette.edu',
 
     // rest protocol can be http or https.
     protocol: 'http',
