@@ -101,8 +101,15 @@
 
       $anchorScroll();
 
-      PageTitle.setTitle(ctrl.data.name);
-      PageDescription.setDescription(ctrl.data.introductoryText);
+      try {
+        PageTitle.setTitle(ctrl.data.name);
+        PageDescription.setDescription(ctrl.data.introductoryText);
+
+      } catch(error) {
+        console.log(error);
+
+      }
+
       PageAuthor.setAuthor('');
 
 
