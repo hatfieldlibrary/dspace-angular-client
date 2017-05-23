@@ -88,7 +88,7 @@
         if (ctrl.data.countItems !== ctrl.data.itemTotal) {
           return false;
 
-        }  else {
+        } else {
           return true;
         }
       }
@@ -101,10 +101,16 @@
 
       $anchorScroll();
 
-      PageTitle.setTitle(ctrl.data.name);
-      PageDescription.setDescription(ctrl.data.introductoryText);
-      PageAuthor.setAuthor('');
+      try {
+        PageTitle.setTitle(ctrl.data.name);
+        PageDescription.setDescription(ctrl.data.introductoryText);
 
+      } catch (error) {
+        console.log(error);
+
+      }
+
+      PageAuthor.setAuthor('');
 
       SeoPaging.setNextLink('nofollow', '');
       SeoPaging.setPrevLink('nofollow', '');
@@ -123,7 +129,7 @@
       data: '<'
     },
     templateUrl: ['AppContext', function (AppContext) {
-      return'/' + AppContext.getApplicationPrefix() + '-app/app/templates/handle/community.html';
+      return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/handle/community.html';
     }],
     controller: CommunityCtrl
 

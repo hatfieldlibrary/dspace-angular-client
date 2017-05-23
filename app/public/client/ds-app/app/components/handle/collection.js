@@ -98,8 +98,14 @@
       SeoPaging.setPrevLink('nofollow', '');
 
       PageAuthor.setAuthor('');
-      PageTitle.setTitle(ctrl.data.name);
-      PageDescription.setDescription(ctrl.data.introductoryText);
+
+      try {
+        PageTitle.setTitle(ctrl.data.name);
+        PageDescription.setDescription(ctrl.data.introductoryText);
+
+      } catch(error) {
+        console.log(error);
+      }
 
       /**
        * Set query action to retrieve list.
