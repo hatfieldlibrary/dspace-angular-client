@@ -39,7 +39,7 @@ var utils = require('../core/utils');
   function processResult(json) {
 
     var ret = {};
-    ret.id = json.id;
+    ret.id = json.uuid;
     var parent = {};
     parent.name = json.parentCommunity.name;
     parent.id = json.parentCommunity.id;

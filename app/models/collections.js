@@ -44,7 +44,7 @@ var utils = require('../core/utils');
 
 
     var ret = {};
-    ret.id = json.id;
+    ret.id = json.uuid;
     ret.parentCommunity = [];
     var parent = {};
     parent.name = json.parentCommunity.name;

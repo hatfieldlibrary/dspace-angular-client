@@ -117,6 +117,8 @@
     /** @type {string} the current dspace token or an empty string */
     var dspaceTokenHeader = utils.getDspaceToken(session);
 
+    console.log(dspaceTokenHeader);
+
     if (dspaceTokenHeader.length > 0) {
 
       models

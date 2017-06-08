@@ -42,7 +42,8 @@ var utils = require('../core/utils');
   function processResult(json) {
 
     var ret = {};
-    ret.id = json.id;
+
+    ret.id = json.uuid;
     ret.name = json.name;
     ret.handle = json.handle;
     ret.type = json.type;

@@ -39,7 +39,7 @@ var utils = require('../core/utils');
   function processResult(json) {
 
     var ret = {};
-    ret.id = json.id;
+    ret.id = json.uuid;
     var parent = {};
     parent.name = json.parentCollection.name;
     parent.id = json.parentCollection.id;
@@ -84,7 +84,7 @@ var utils = require('../core/utils');
     var bits = [];
     for (var i = 0; i < json.bitstreams.length; i++) {
       var tmpItem = {};
-      tmpItem.id = json.bitstreams[i].id;
+      tmpItem.id = json.bitstreams[i].uuid;
       tmpItem.bundleName = json.bitstreams[i].bundleName;
       tmpItem.name = json.bitstreams[i].name;
       tmpItem.description = json.bitstreams[i].description;
