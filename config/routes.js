@@ -103,8 +103,6 @@ module.exports = function (app, config, passport) {
     // ...is a crawler request, use crawler template
     if (userAgent.match(regex)) {
 
-      console.log('Search engine user agent: ' + userAgent);
-
       res.sendFile(
         app.get('appPath') +
         '/ds-app/app/alternate/shared/lists/itemDetailSeo.html'

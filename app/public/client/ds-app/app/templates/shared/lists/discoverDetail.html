@@ -1,4 +1,5 @@
-<md-list-item class="discover-item" ng-click="$ctrl.showItem($event, $ctrl.id, $ctrl.resourceType)">
+<md-list-item class="discover-item" ng-href="{{$ctrl.getItemUrl()}}"
+              ng-click="$ctrl.setEvent($event);$ctrl.reloadItem($event, $ctrl.id, $ctrl.resourceType)">
 
   <div class="md-list-item-text" layout-fill>
 
@@ -12,6 +13,7 @@
       <span class="md-body-1" ng-repeat="desc in $ctrl.description" ng-bind-html="desc"></span>
     </div>
   </div>
+  {{$ctrl.id}}
 
   <md-divider ng-if="!$ctrl.last"></md-divider>
 

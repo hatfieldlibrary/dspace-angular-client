@@ -45,7 +45,7 @@
 
           // Ignore browse and search actions.
           if (loader.context !== QueryActions.BROWSE && loader.context !== QueryActions.SEARCH && loader.context !== QueryActions.ADVANCED) {
-
+           // if (loader.context !== QueryActions.BROWSE ) {
             // Set default in query object.
             QueryManager.setOffset(0);
             QueryManager.setFilter('');
@@ -129,13 +129,11 @@
 
             // If there is change in any request field, get new data.
             else if (LoaderUtils.hasNewParams(qs.field, qs.sort, qs.offset, qs.filter, qs.filters, qs.comm, qs.coll) && qs.itype !== 'i') {
-
               LoaderUtils.updateList(loader, qs.sort, qs.d);
 
             }
             // Otherwise just update positions. This will open items.
             else {
-
               LoaderUtils.initializePositions(loader);
 
             }

@@ -111,7 +111,10 @@
         description="item.description"
         resource-type="{{item.resourcetype}}"
         handle="{{item.handle}}"
+        type="{{$ctrl.type}}"
+        pos="{{$index}}"
         last="$last"
+        selected-item="{{$ctrl.selectedItem}}"
         count="{{$ctrl.count}}">
 
       </discover-detail-component>
@@ -121,7 +124,6 @@
     <pager-component ng-show="$ctrl.ready && $ctrl.context!='seo'"
     next="{{$ctrl.nextPagerOffset}}"
     context="{{$ctrl.context}}">
-
     </pager-component>
 
     <div ng-if="$ctrl.count > 10 && $ctrl.context!='seo'" class="md-body-1 md-accent layout-padding">

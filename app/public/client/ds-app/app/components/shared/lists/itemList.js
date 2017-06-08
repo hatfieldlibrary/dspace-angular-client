@@ -108,6 +108,7 @@
      */
     function addPreviousResults(results) {
       ctrl.items = results.concat(ctrl.items);
+
     }
 
     /**
@@ -125,7 +126,6 @@
      * @param index
      */
     ctrl.setSelectedPosition = function (pos) {
-
       ctrl.selectedPosition = pos;
 
     };

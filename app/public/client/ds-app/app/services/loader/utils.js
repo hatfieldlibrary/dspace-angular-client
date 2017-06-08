@@ -150,6 +150,7 @@
           //  QueryManager.setOffset(0);
           AppContext.setInitOffset(0);
           AppContext.setViewStartIndex(0);
+          qs.offset = 0;
         } else {
           //  QueryManager.setOffset(qs.offset);
           AppContext.setInitOffset(qs.offset);

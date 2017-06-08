@@ -114,7 +114,7 @@
     };
 
     ctrl.$onChanges = function (changes) {
-      console.log(changes)
+
       /**
        * Side panel sets administrative options based on the AssetType.
        * In most cases, we can simply watch for tne new AssetType and update

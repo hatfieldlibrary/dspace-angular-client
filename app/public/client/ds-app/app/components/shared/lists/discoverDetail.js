@@ -17,6 +17,8 @@
   function DiscoverDetailCtrl($scope,
                               $mdMedia,
                               $location,
+                              QueryManager,
+                              QueryActions,
                               ItemDialogFactory) {
 
     var ctrl = this;
@@ -34,7 +36,6 @@
     }
 
 
-
     /**
      * Sets fullscreen view via media query.
      */
@@ -50,20 +51,62 @@
      * @param ev the event
      * @param id the DSpace id of the item
      */
-    ctrl.showItem = function (ev, id, type) {
+    ctrl.reloadItem = function (ev, id, type) {
 
-      // Make sure the query string is empty.
-      $location.search({});
+
+      // Make sure the query string is empty. temp removal...
+    //  $location.search({});
+
       // item type, use service to launch item dialog.
-      if (type === '2') {
-        ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
-      }
-      // community or collection type, use new route.
-      else {
-        $location.path('/ds/handle/' + ctrl.handle);
+      // if (type === '2') {
+      //   ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
+      // }
+      // // community or collection type, use new route.
+      // else {
+      //   $location.path('/ds/handle/' + ctrl.handle);
+      //
+      // }
 
+    };
+
+
+    /**
+     * Constructs and returns the url used by the item list element.
+     * @returns {string}
+     */
+    ctrl.getItemUrl = function() {
+
+      var qs = $location.search();
+
+      if (QueryManager.getAction() !== QueryActions.BROWSE) {
+
+        var url = '/ds/discover/' + ctrl.type + '/' + QueryManager.getAssetId() + '/' + QueryManager.getSearchTerms() + '?';
+
+        url += 'filter=none';
+        url += '&id=' + ctrl.id;
+        url += '&pos=' + ctrl.pos;
+        url += '&itype=i';
+
+        var arr = Object.keys(qs);
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype' && arr[i] !== 'filter') {
+            url += '&' + arr[i] + '=' + qs[arr[i]];
+          }
+        }
+
+        return url;
       }
 
+      return '#';
+
+    };
+
+    ctrl.$onChanges = function(changes) {
+      if (changes.selectedItem) {
+        if (changes.selectedItem.currentValue === ctrl.id) {
+          ItemDialogFactory.showItem(event, ctrl.id, $scope.customFullscreen);
+        }
+      }
     };
 
   }
@@ -79,6 +122,9 @@
       resourceType: '@',
       handle: '@',
       author: '<',
+      type: '@',
+      pos: '@',
+      selectedItem: '@',
       last: '<'
     },
     templateUrl: ['AppContext', function (AppContext) {
