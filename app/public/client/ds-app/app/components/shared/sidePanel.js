@@ -97,9 +97,24 @@
 
       ctrl.submitInstructionsLink = Messages.SUBMIT_INSTRUCTIONS_LINK;
 
+      ctrl.editCommunity = Messages.COMMUNITY_EDIT_LABEL;
+
+      ctrl.createCommuity = Messages.COMMUNITY_CREATE_LABEL;
+
+      ctrl.createSubCommunity = Messages.SUB_COMMUNITY_CREATE_LABEL;
+
+      ctrl.createCollection = Messages.COLLECTION_CREATE_LABEL;
+
+      ctrl.editCollection = Messages.COLLECTION_EDIT_LABEL;
+
+      ctrl.itemMapper = Messages.ITEM_MAPPER_LABEL;
+
+      ctrl.itemEdit = Messages.ITEM_EDIT_LABEL;
+
     };
 
     ctrl.$onChanges = function (changes) {
+      console.log(changes)
       /**
        * Side panel sets administrative options based on the AssetType.
        * In most cases, we can simply watch for tne new AssetType and update
@@ -127,6 +142,9 @@
           ctrl.actionType = 'DSpace';
           ctrl.canAdminister = false; // not needed
           ctrl.canWrite = false; // not needed
+        }
+        else if (changes.type.currentValue === 'global') {
+          ctrl.actionType = 'toplevel';
         }
         else if (changes.assetId) {
           ctrl.assetId = changes.assetId.currentValue;

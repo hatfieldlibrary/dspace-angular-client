@@ -19,57 +19,93 @@
     </md-toolbar>
 
 
-    <div class="userOptions" ng-class="{'user-options-medium': $ctrl.isEqualMd()}" layout="column" layout-padding layout-align="center left">
+    <div class="userOptions" ng-class="{'user-options-medium': $ctrl.isEqualMd()}" layout="column" layout-padding
+         layout-align="center left">
 
-      <md-list-item class="icon-list" ng-if="$ctrl.type!='global'"
-                    ng-href="/ds/communities">
-        <md-icon md-font-set="material-icons"> subject </md-icon>
-        <p class="md-body-1">{{$ctrl.allCommunitiesLink}} </p>
+      <md-list-item class="icon-list" ng-show="$ctrl.showSubmitInstuctions" href="{{$ctrl.submitInformationLink}}"
+                    target="_blank">
+        <md-icon md-font-set="material-icons"> info_outline</md-icon>
+        <p class="md-body-1">{{$ctrl.submitInformationLabel}} </p>
+      </md-list-item>
+
+      <md-list-item class="icon-list" ng-show="$ctrl.showSubmitInstuctions" href="{{$ctrl.submitInstructionsLink}}"
+                    target="_blank">
+        <md-icon md-font-set="material-icons"> directions_run</md-icon>
+        <p class="md-body-1">{{$ctrl.submitInstructionsLabel}} </p>
       </md-list-item>
 
 
       <md-list-item class="icon-list" ng-show="$ctrl.canSubmit"
                     href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/handle/{{$ctrl.itemHandle}}/submit"
                     target="_blank">
-        <md-icon md-font-set="material-icons"> file_upload </md-icon>
+        <md-icon md-font-set="material-icons"> file_upload</md-icon>
         <p class="md-body-1">{{$ctrl.submitButtonLabel}} </p>
       </md-list-item>
 
-      <md-list-item class="icon-list" ng-show="$ctrl.showSubmitInstuctions" href="{{$ctrl.submitInformationLink}}"
-                    target="_blank">
-        <md-icon md-font-set="material-icons"> info_outline </md-icon>
-        <p class="md-body-1">{{$ctrl.submitInformationLabel}} </p>
+
+      <md-list-item class="icon-list" ng-if="$ctrl.type!='global'"
+                    ng-href="/ds/communities">
+        <md-icon md-font-set="material-icons"> subject</md-icon>
+        <p class="md-body-1">{{$ctrl.allCommunitiesLink}} </p>
       </md-list-item>
 
-      <md-list-item class="icon-list" ng-show="$ctrl.showSubmitInstuctions" href="{{$ctrl.submitInstructionsLink}}"
-                    target="_blank">
-        <md-icon md-font-set="material-icons"> directions_run </md-icon>
-        <p class="md-body-1">{{$ctrl.submitInstructionsLabel}} </p>
-      </md-list-item>
+      <search-box-component ng-if="$ctrl.type!='global' && $ctrl.type!='discover'"
+                            asset-id="{{$ctrl.assetId}}"></search-box-component>
 
-      <md-list-item class="icon-list" ng-show="$ctrl.canAdminister"  target="_top"
-                    href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/{{$ctrl.service}}?{{$ctrl.service}}ID={{$ctrl.itemId}}">
-        <md-icon ng-if="$ctrl.actionType=='Community'"> group </md-icon>
-        <md-icon ng-if="$ctrl.actionType=='Collection'"> library_books </md-icon>
-        <p class="md-body-1">Administer {{$ctrl.actionType}} </p>
-      </md-list-item>
+      <global-search-box-component ng-if="$ctrl.type=='global'"></global-search-box-component>
 
-      <md-list-item class="icon-list" ng-show="$ctrl.isSystemAdmin"
-                    href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/panel"
-                    target="_blank">
-        <md-icon md-font-set="material-icons"> desktop_windows </md-icon>
-        <p class="md-body-1">Administer DSpace </p>
-      </md-list-item>
+      <div ng-if="$ctrl.canAdminister && $ctrl.actionType=='Community'">
+        <md-list-item class="icon-list" target="_top"
+                      href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/community?communityID={{$ctrl.itemId}}">
+          <md-icon> create</md-icon>
+          <p class="md-body-1">{{$ctrl.editCommunity}} </p>
+        </md-list-item>
+        <md-list-item class="icon-list" target="_top"
+                      href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/collection?createNew&communityID={{$ctrl.itemId}}">
+          <md-icon> add</md-icon>
+          <p class="md-body-1">{{$ctrl.createCollection}} </p>
+        </md-list-item>
+        <md-list-item class="icon-list" target="_top"
+                      href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/community?createNew&communityID={{$ctrl.itemId}}">
+          <md-icon> add</md-icon>
+          <p class="md-body-1">{{$ctrl.createSubCommunity}} </p>
+        </md-list-item>
+
+      </div>
+
+
+      <div ng-if="$ctrl.canAdminister && $ctrl.actionType=='Collection'">
+        <md-list-item class="icon-list" target="_top"
+                      href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/collection?collectionID={{$ctrl.itemId}}">
+          <md-icon> create</md-icon>
+          <p class="md-body-1">{{$ctrl.editCollection}} </p>
+        </md-list-item>
+        <md-list-item class="icon-list" target="_top"
+                      href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/mapper?collectionID={{$ctrl.itemId}}">
+          <md-icon> place</md-icon>
+          <p class="md-body-1">{{$ctrl.itemMapper}} </p>
+        </md-list-item>
+
+      </div>
+
+      <div ng-if="$ctrl.isSystemAdmin && $ctrl.actionType=='toplevel'">
+
+        <md-list-item class="icon-list"
+                      href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/community?createNew"
+                      target="_blank">
+          <md-icon md-font-set="material-icons"> add</md-icon>
+          <p class="md-body-1">{{$ctrl.createCommuity}} </p>
+        </md-list-item>
+
+        <md-list-item class="icon-list"
+                      href="{{$ctrl.dspaceHost}}{{$ctrl.dspaceRoot}}/admin/panel"
+                      target="_blank">
+          <md-icon md-font-set="material-icons"> desktop_windows</md-icon>
+          <p class="md-body-1">Administer DSpace </p>
+        </md-list-item>
+      </div>
+
 
     </div>
-
-
-    <search-box-component ng-if="$ctrl.type!='global' && $ctrl.type!='discover'" asset-id="{{$ctrl.assetId}}"></search-box-component>
-
-    <global-search-box-component ng-if="$ctrl.type=='global'"></global-search-box-component>
-
-
-
-  </div>
 </md-sidenav>
 
