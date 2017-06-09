@@ -9,6 +9,7 @@ module.exports = function (app, config, passport) {
     bitstream = require('../app/controllers/bitstream'),
     item = require('../app/controllers/item'),
     solr = require('../app/controllers/solr'),
+   loginController = require('../app/controllers/login'),
     authHandler = require('./authHandler');
 
   // AUTHENTICATION
@@ -60,6 +61,10 @@ module.exports = function (app, config, passport) {
   app.post('/ds-api/solrQuery', solr.query);
 
   app.post('/ds-api/solrJumpToQuery', solr.jumpTo);
+
+  // This sets the session url for subsequent redirect.
+  app.get('/ds-api/auth/:url', loginController.setUrl);
+
 
 
   // HTML5 MODE ROUTING

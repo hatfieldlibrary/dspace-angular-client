@@ -40,9 +40,8 @@ module.exports = function (app, config, passport) {
   //   );
   //
   // }
-console.log(app.get('env'))
+
   if (app.get('env') === 'development') {
-    console.log('configuring for cas')
     /**
      * Authentication route for CAS.
      */
@@ -51,8 +50,6 @@ console.log(app.get('env'))
       ),
       function (req, res) {
         // Successful authentication, redirect to login/netid to obtain DSpace token.
-        console.log('cas success')
-console.log(req.user)
         res.redirect('/ds-api/login/' + req.user.uid);
       });
 

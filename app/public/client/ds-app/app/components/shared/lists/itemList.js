@@ -171,6 +171,7 @@
       ctrl.count = count;
       ctrl.items = results;
       ctrl.ready = true;
+      console.log(ctrl.items)
 
     };
 
@@ -181,7 +182,6 @@
      * @param field  the field queried.
      */
     ctrl.onPagerUpdate = function (results, count, field) {
-
 
       addResults(results);
       ctrl.field = field;
@@ -195,7 +195,6 @@
       var start = AppContext.getViewStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
       ctrl.ready = true;
-
 
     };
 

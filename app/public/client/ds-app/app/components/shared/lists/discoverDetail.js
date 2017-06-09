@@ -23,6 +23,9 @@
 
     var ctrl = this;
 
+    ctrl.authorized = false;
+    ctrl.prevOpenedState = false;
+
     if (ctrl.description !== undefined) {
       ctrl.description[0] += ' ... ';
     }
@@ -53,19 +56,21 @@
      */
     ctrl.reloadItem = function (ev, id, type) {
 
-
+    //  ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
       // Make sure the query string is empty. temp removal...
-    //  $location.search({});
+     //   $location.search({});
 
-      // item type, use service to launch item dialog.
-      // if (type === '2') {
-      //   ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
-      // }
-      // // community or collection type, use new route.
-      // else {
-      //   $location.path('/ds/handle/' + ctrl.handle);
-      //
-      // }
+     //  item type, use service to launch item dialog.
+      if (+type === 2 && ctrl.prevOpenedState === true) {
+        ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
+      }
+     //  // community or collection type, use new route.
+     //  else {
+     //    $location.search({});
+     //    $location.path('/ds/handle/' + ctrl.handle);
+     //
+     //  }
+
 
     };
 
@@ -74,13 +79,13 @@
      * Constructs and returns the url used by the item list element.
      * @returns {string}
      */
-    ctrl.getItemUrl = function() {
+    ctrl.getItemUrl = function () {
 
       var qs = $location.search();
 
       if (QueryManager.getAction() !== QueryActions.BROWSE) {
 
-        var url = '/ds/discover/' + ctrl.type + '/' + QueryManager.getAssetId() + '/' + QueryManager.getSearchTerms() + '?';
+        var url = '/ds/discover/' + ctrl.type + '/' + QueryManager.getAssetId() + '/' + QueryManager.getSearchTerms() + '/' + ctrl.id + '?';
 
         url += 'filter=none';
         url += '&id=' + ctrl.id;
@@ -101,14 +106,27 @@
 
     };
 
-    ctrl.$onChanges = function(changes) {
-      if (changes.selectedItem) {
-        if (changes.selectedItem.currentValue === ctrl.id) {
-          ItemDialogFactory.showItem(event, ctrl.id, $scope.customFullscreen);
-        }
-      }
+    ctrl.$onInit = function () {
+
     };
 
+    ctrl.$onChanges = function (changes) {
+      if (changes.selectedItem) {
+        if (changes.selectedItem.currentValue === ctrl.id) {
+          console.log(ctrl.resourceType)
+         if(+ctrl.resourceType === 2) {
+            ctrl.prevOpenedState = true;
+           ItemDialogFactory.showItem(event, ctrl.id, $scope.customFullscreen);
+         }
+          else {
+           $location.search({});
+           $location.path('/ds/handle/' + ctrl.handle);
+         }
+
+        }
+
+      }
+    }
   }
 
   dspaceComponents.component('discoverDetailComponent', {

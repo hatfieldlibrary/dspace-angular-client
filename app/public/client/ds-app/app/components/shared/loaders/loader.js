@@ -56,6 +56,7 @@
 
       var path = $location.path();
       if (path.match(re)) {
+        console.log(loader.context)
         OnPagerLocationChange.onLocationChange(loader, qs, loader.context);
       }
 

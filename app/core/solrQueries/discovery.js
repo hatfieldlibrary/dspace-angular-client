@@ -21,7 +21,7 @@
      * Input: terms, offset, terms(2), [location]
      */
 
-    var discover = utils.getSolrUrl() + '/solr/search/select?f.dc.title_hl.hl.snippets=5&f.dc.title_hl.hl.fragsize=0&spellcheck=true&sort=score+desc&spellcheck.q=%s&f.fulltext_hl.hl.fragsize=250&hl.fl=dc.description.abstract_hl&hl.fl=dc.title_hl&hl.fl=dc.contributor.author_hl&hl.fl=fulltext_hl&wt=json&spellcheck.collate=true&hl=true&version=2&rows=20&f.fulltext_hl.hl.snippets=2&f.dc.description.abstract_hl.hl.snippets=2&f.dc.contributor.author_hl.hl.snippets=5&fl=handle,dc.title,dc.contributor.author,search.resourcetype,search.resourceid&start=%s&q=%s&f.dc.contributor.author_hl.hl.fragsize=0&hl.usePhraseHighlighter=true&f.dc.description.abstract_hl.hl.fragsize=250%s&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)%s%s';
+    var discover = utils.getSolrUrl() + '/solr/search/select?f.dc.title_hl.hl.snippets=5&f.dc.title_hl.hl.fragsize=0&spellcheck=true&sort=score+desc&spellcheck.q=%s&f.fulltext_hl.hl.fragsize=250&hl.fl=dc.description.abstract_hl&hl.fl=dc.title_hl&hl.fl=dc.contributor.author_hl&hl.fl=fulltext_hl&wt=json&spellcheck.collate=true&hl=true&version=2&rows=20&f.fulltext_hl.hl.snippets=2&f.dc.description.abstract_hl.hl.snippets=2&f.dc.contributor.author_hl.hl.snippets=5&fl=handle,dc.title,dc.contributor.author,search.resourcetype,search.resourceid&start=%s&q=%s&f.dc.contributor.author_hl.hl.fragsize=0&hl.usePhraseHighlighter=true&f.dc.description.abstract_hl.hl.fragsize=250%s&fq=NOT(withdrawn:true)&fq=NOT(discoverable:false)%s';
 
     return util.format(
       discover,
@@ -29,7 +29,7 @@
       query.params.query.offset,
       query.params.query.terms,
       getDiscoverLocationFilter(query.params.asset.type, query.params.asset.id),
-      filters.getAnonymousQueryFilter(dspaceToken),
+    //  filters.getAnonymousQueryFilter(dspaceToken),
       addDiscoveryFilters(query.params.filters)
     );
 
@@ -48,7 +48,7 @@
       try {
         /**
          * Queries with id value of zero are global queries.
-         * Do not add a location fitler.
+         * Do not add a location filter.
          */
         if (id > 0) {
           /**
@@ -70,7 +70,7 @@
       }
       catch (err) {
 
-        console.log(err);
+        //console.log(err);
 
       }
 

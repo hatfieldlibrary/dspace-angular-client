@@ -142,9 +142,10 @@
        * as provided in the query string..
        * @param qs
        */
-      function initializePositions(loader) {
+      function initializePositions(loader, qs) {
 
         var qs = $location.search();
+      //  console.log(qs)
 
         if (typeof qs.offset === 'undefined') {
           //  QueryManager.setOffset(0);

@@ -10,6 +10,7 @@
   'use strict';
 
   function DiscoverCtrl($mdMedia,
+                        $window,
                         $routeParams,
                         $location,
                         QueryManager,
@@ -33,6 +34,11 @@
     var id = $routeParams.id;
     disc.terms = $routeParams.terms;
     disc.context = QueryActions.SEARCH;
+    console.log($routeParams.selectedId)
+    if (typeof $routeParams.auth !== 'undefined' ) {
+      console.log('got auth')
+      $window.location = AppContext.getApplicationPrefix() + '-api/auth/login';
+    }
 
     disc.isMobile = true;
 

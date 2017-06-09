@@ -7,10 +7,35 @@
   var utils = require('../core/utils');
 
   var config;
+  /**
+   * The session url used by dspace authentication requests
+   * can be updated via the exported setUrl controller.
+   */
+  var url;
 
+  /**
+   * Sets the member variable for sessions.
+   * @param req
+   * @param res
+   */
+  exports.setUrl = function(req, res) {
+    url = decodeURIComponent(req.params.url);
+
+  };
+
+  /**
+   * Attempts login to dspace.
+   * @param netid
+   * @param config
+   * @param req
+   * @param res
+   */
   function loginToDspace(netid, config, req, res) {
 
     var session = req.session;
+    if (typeof url !== 'undefined') {
+      session.url = url;
+    }
 
     models.login(
       netid,

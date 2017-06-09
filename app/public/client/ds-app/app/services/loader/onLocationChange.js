@@ -21,6 +21,7 @@
               CollectionFilters,
               SolrDataLoader,
               LoaderUtils,
+              $routeParams,
               FacetHandler) {
 
 
@@ -32,6 +33,7 @@
        * @private
        */
       function onLocationChange(loader, qs) {
+
 
         // Query string is empty.
         if (Object.keys(qs).length === 0) {
@@ -173,6 +175,7 @@
 
             }
             else {
+              // Just update the position
               LoaderUtils.initializePositions(loader);
             }
           }

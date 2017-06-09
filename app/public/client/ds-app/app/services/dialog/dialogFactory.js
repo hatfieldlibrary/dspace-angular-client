@@ -10,6 +10,7 @@
   dspaceServices.factory('ItemDialogFactory',
 
     function ($mdDialog,
+              $location,
               $mdMedia,
               /*jshint unused:false */
               ItemById,
@@ -33,8 +34,10 @@
                                 Utils,
                                 Messages,
                                 $anchorScroll,
+                                $window,
                                 $mdMedia,
                                 AppContext,
+                                SetAuthUrl,
                                 $timeout) {
 
         var ctrl = this;
@@ -62,6 +65,8 @@
 
         ctrl.isMobile = $mdMedia('sm') || $mdMedia('xs');
 
+        ctrl.authorized = true;
+
         /**
          * Set screen size boolean.
          */
@@ -79,10 +84,20 @@
           $mdDialog.cancel();
         };
 
+        function _encodePath(path) {
+
+          if(path) {
+            return window.encodeURIComponent(path);
+          }
+          return "";
+
+        }
+
         /**
          * Get the number of bitstreams for this item.
          */
-        ctrl.data.$promise.then(function (data) {
+        ctrl.data.$promise.
+        then(function (data) {
           ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
           ctrl.canWrite = WriteObserver.get();
           ctrl.itemId = data.id;
@@ -91,8 +106,33 @@
           PageDescription.setDescription(data.description);
           ctrl.jsonLd = Utils.setJsonLd(ctrl.data);
 
+        }).catch(function () {
+
+          ctrl.authorized = false;
+          var path = $location.path();
+        //  path += '/auth';
+
+          var search = $location.search();
+          var keys = (Object.keys(search));
+
+          for (var i = 0; i < keys.length; i++) {
+            if (i === 0) {
+              path += '?';
+            }
+            path += keys[i] + '=' + search[keys[i]];
+            if (i < keys.length - 1) {
+              path += '&';
+            }
+          }
+          console.log('setting session url to ' + path);
+          SetAuthUrl.query({url:  _encodePath(path)});
+
         });
 
+
+        ctrl.login = function() {
+          $window.location = '/' + AppContext.getApplicationPrefix() + '-api/auth/login/';
+        };
 
         /**
          * Toggles the metadata view.
@@ -144,10 +184,37 @@
 
       };
 
-      return {showItem: showItem};
+      // var showDiscoveryItem = function (ev, id, authorized, scopeFullScreen) {
+      //
+      //   var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && scopeFullScreen;
+      //
+      //   $mdDialog.show(
+      //     {
+      //       controller: DialogController,
+      //       controllerAs: '$ctrl',
+      //       templateUrl: '/' + AppContext.getApplicationPrefix() + '-app/app/templates/handle/item/dialogItem.html',
+      //       parent: angular.element(document.body),
+      //       targetEvent: ev,
+      //       clickOutsideToClose: true,
+      //       fullscreen: useFullScreen,
+      //       bindToController: true,
+      //       // do not show dialog until promise returns
+      //       resolve: {
+      //         ItemById: 'ItemById',
+      //         data: function (ItemById, id, authorized) {
+      //         //  return ItemById.query({item: id});
+      //          _getData(ItemById, id, authorized);
+      //         }
+      //       }
+      //     });
+      // };
+
+      return {
+        showItem: showItem
+        //showDiscoveryItem: showDiscoveryItem
+      };
 
     }
-
   );
 
 })();
