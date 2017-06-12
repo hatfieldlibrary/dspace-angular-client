@@ -118,7 +118,7 @@
     }
 
     //console.log('solr url is....');
-    //console.log(solrUrl);
+   // console.log(solrUrl);
 
     return solrUrl;
 

@@ -192,7 +192,7 @@
   exports.processResult = function(processType, solrResponse) {
 
     if (processType === constants.QueryType.AUTHOR_FACETS) {
-      return processAuthor;
+      return processAuthor(solrResponse);
 
     }
     else if (processType === constants.QueryType.SUBJECT_FACETS) {

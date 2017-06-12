@@ -41,7 +41,7 @@
           var collections = GetCollectionsForCommunity.query({id: communityId});
           collections.$promise.then(function (data) {
 
-            data.unshift({id: 0, name: 'All Collections'});
+            data.unshift({uuid: 0, name: 'All Collections'});
             _ctrl.collections = data;
             that.getSelectedCollection(data, collectionId);
 
@@ -95,7 +95,7 @@
         if (AppContext.getDiscoverCommunities().length === 0) {
           var items = GetCommunitiesForDiscover.query();
           items.$promise.then(function (data) {
-            data.unshift({id: '0', name: 'All Departments'});
+            data.unshift({uuid: '0', name: 'All Departments'});
             AppContext.setDiscoverCommunities(data);
             _ctrl.communityItems = data;
           });

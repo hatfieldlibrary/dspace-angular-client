@@ -19,8 +19,24 @@
     </md-toolbar>
 
 
+
+
+
+
     <div class="userOptions" ng-class="{'user-options-medium': $ctrl.isEqualMd()}" layout="column" layout-padding
          layout-align="center left">
+
+      <search-box-component ng-if="$ctrl.type!='global' && $ctrl.type!='discover'"
+                            asset-id="{{$ctrl.assetId}}"></search-box-component>
+
+      <global-search-box-component ng-if="$ctrl.type=='global'"></global-search-box-component>
+
+
+      <md-list-item class="icon-list" ng-if="$ctrl.type!='global'"
+                    ng-href="/ds/communities">
+        <md-icon md-font-set="material-icons"> subject</md-icon>
+        <p class="md-body-1">{{$ctrl.allCommunitiesLink}} </p>
+      </md-list-item>
 
       <md-list-item class="icon-list" ng-show="$ctrl.showSubmitInstuctions" href="{{$ctrl.submitInformationLink}}"
                     target="_blank">
@@ -43,16 +59,6 @@
       </md-list-item>
 
 
-      <md-list-item class="icon-list" ng-if="$ctrl.type!='global'"
-                    ng-href="/ds/communities">
-        <md-icon md-font-set="material-icons"> subject</md-icon>
-        <p class="md-body-1">{{$ctrl.allCommunitiesLink}} </p>
-      </md-list-item>
-
-      <search-box-component ng-if="$ctrl.type!='global' && $ctrl.type!='discover'"
-                            asset-id="{{$ctrl.assetId}}"></search-box-component>
-
-      <global-search-box-component ng-if="$ctrl.type=='global'"></global-search-box-component>
 
       <div ng-if="$ctrl.canAdminister && $ctrl.actionType=='Community'">
         <md-list-item class="icon-list" target="_top"

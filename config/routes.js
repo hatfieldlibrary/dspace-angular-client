@@ -66,7 +66,6 @@ module.exports = function (app, config, passport) {
   app.get('/ds-api/auth/:url', loginController.setUrl);
 
 
-
   // HTML5 MODE ROUTING
   /**
    * Route to page partials.

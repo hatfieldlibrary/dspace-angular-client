@@ -23,6 +23,7 @@
                         Utils,
                         Messages,
                         PageTitle,
+                        SetAuthUrl,
                         DiscoveryFormExtensions) {
 
     var disc = this;
@@ -34,9 +35,7 @@
     var id = $routeParams.id;
     disc.terms = $routeParams.terms;
     disc.context = QueryActions.SEARCH;
-    console.log($routeParams.selectedId)
     if (typeof $routeParams.auth !== 'undefined' ) {
-      console.log('got auth')
       $window.location = AppContext.getApplicationPrefix() + '-api/auth/login';
     }
 
@@ -134,7 +133,7 @@
        * use path routing to reload the page.
        */
       if (disc.terms.length > 0) {
-        $location.path('/ds/discover/' + QueryManager.getAssetType() + '/' + QueryManager.getAssetId() + '/' + disc.terms);
+        $location.path('/ds/discover/' + QueryManager.getAssetType() + '/' + QueryManager.getAssetId() + '/' + disc.terms + '/' + 0);
       }
 
     };
@@ -142,7 +141,14 @@
     /**
      * Initialization.
      */
-    function init() {
+    disc.$onInit = function () {
+
+      var path = $location.url();
+      SetAuthUrl.query({url:  Utils.encodePath(path)});
+      if ($location.search().login === 'auto') {
+
+        $window.location = '/' + AppContext.getApplicationPrefix() + '-api/auth/login/';
+      }
 
       Utils.resetQuerySettings();
 
@@ -213,6 +219,7 @@
          * Set the provided community.
          */
         disc.communityId = id;
+
         /**
          * Get list of collections for this community.
          */
@@ -221,7 +228,7 @@
       }
     }
 
-    init();
+
 
   }
 

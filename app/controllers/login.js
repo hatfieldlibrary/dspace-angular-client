@@ -1,5 +1,3 @@
-
-
 (function () {
 
   'use strict';
@@ -7,20 +5,16 @@
   var utils = require('../core/utils');
 
   var config;
-  /**
-   * The session url used by dspace authentication requests
-   * can be updated via the exported setUrl controller.
-   */
-  var url;
 
   /**
-   * Sets the member variable for sessions.
+   * Sets the url value for sessions.
    * @param req
    * @param res
    */
-  exports.setUrl = function(req, res) {
-    url = decodeURIComponent(req.params.url);
-
+  exports.setUrl = function (req, res) {
+    var url = decodeURIComponent(req.params.url);
+    req.session.url = url;
+    res.end();
   };
 
   /**
@@ -33,9 +27,6 @@
   function loginToDspace(netid, config, req, res) {
 
     var session = req.session;
-    if (typeof url !== 'undefined') {
-      session.url = url;
-    }
 
     models.login(
       netid,
@@ -43,9 +34,12 @@
       req)
       .then(function () {
         // If successful, redirect to session.url or to home page.
-        if (session.url !== 'undefined') {
-          res.redirect(session.url);
-
+        if (typeof session.url !== 'undefined') {
+          // We added an optional auto login parameter to discovery
+          // queries.  Remove here after initial use (prevents auth loop).
+          var path = session.url;
+          path = path.replace('&login=auto', '')
+          res.redirect(path);
         } else {
           res.redirect('/ds/communities');
         }
@@ -53,7 +47,7 @@
       })
       .catch(function (err) {
         console.log('DSpace login error.');
-        console.log(err);
+        console.log(err.message);
         res.statusCode = err.statusCode;
         res.end();
       });

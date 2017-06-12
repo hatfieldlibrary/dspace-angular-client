@@ -18,6 +18,7 @@
               PageDescription,
               PageAuthor,
               AppContext,
+              Utils,
               WriteObserver) {
 
       /**
@@ -84,14 +85,7 @@
           $mdDialog.cancel();
         };
 
-        function _encodePath(path) {
 
-          if(path) {
-            return window.encodeURIComponent(path);
-          }
-          return "";
-
-        }
 
         /**
          * Get the number of bitstreams for this item.
@@ -125,7 +119,7 @@
             }
           }
           console.log('setting session url to ' + path);
-          SetAuthUrl.query({url:  _encodePath(path)});
+          SetAuthUrl.query({url:  Utils.encodePath(path)});
 
         });
 

@@ -171,7 +171,6 @@
       ctrl.count = count;
       ctrl.items = results;
       ctrl.ready = true;
-      console.log(ctrl.items)
 
     };
 
