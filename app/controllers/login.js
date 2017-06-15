@@ -7,7 +7,9 @@
   var config;
 
   /**
-   * Sets the url value for sessions.
+   * Sets the url value for sessions. This is currently used
+   * for discovery item logins. For other request types, the session url
+   * is set in the corresponding controller module.
    * @param req
    * @param res
    */
@@ -33,6 +35,7 @@
       config,
       req)
       .then(function () {
+        console.log(session);
         // If successful, redirect to session.url or to home page.
         if (typeof session.url !== 'undefined') {
           // We added an optional auto login parameter to discovery

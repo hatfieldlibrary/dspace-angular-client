@@ -42,7 +42,7 @@ var utils = require('../core/utils');
    */
   function processResult(json) {
 
-
+console.log(json);
     var ret = {};
     ret.id = json.uuid;
     ret.parentCommunity = [];

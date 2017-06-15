@@ -16,37 +16,37 @@ module.exports = function (app, config, passport) {
   /**
    * Use OAUTH2 for development.
    */
-  // if (app.get('env') === 'development') {
-  //
-  //   /**
-  //    * Authentication route for Google OAuth .
-  //    */
-  //   app.get('/ds-api/auth/login', passport.authenticate('google', {
-  //     scope: ['https://www.googleapis.com/auth/userinfo.profile',
-  //       'https://www.googleapis.com/auth/userinfo.email']
-  //   }));
-  //   /**
-  //    * Google OAuth callback route.
-  //    */
-  //   // If authentication failed, redirect back to the communities page for now.
-  //   app.get('/ds/oauth2callback',
-  //     passport.authenticate('google',
-  //       {failureRedirect: '/ds/communities'}
-  //     ),
-  //     // If authentication succeeded, redirect to login/netid to obtain DSpace token.
-  //     function (req, res) {
-  //       res.redirect('/ds-api/login/' + req.user);
-  //     }
-  //   );
-  //
-  // }
-
   if (app.get('env') === 'development') {
+
+    /**
+     * Authentication route for Google OAuth .
+     */
+    app.get('/ds-api/auth/login', passport.authenticate('google', {
+      scope: ['https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/userinfo.email']
+    }));
+    /**
+     * Google OAuth callback route.
+     */
+    // If authentication failed, redirect back to the communities page for now.
+    app.get('/ds/oauth2callback',
+      passport.authenticate('google',
+        {failureRedirect: '/ds/communities'}
+      ),
+      // If authentication succeeded, redirect to login/netid to obtain DSpace token.
+      function (req, res) {
+        res.redirect('/ds-api/login/' + req.user);
+      }
+    );
+
+  }
+
+  if (app.get('env') === 'production') {
     /**
      * Authentication route for CAS.
      */
     app.get('/ds-api/auth/login', passport.authenticate('cas',
-      {failureRedirect: '/ds/communities'}
+      {failureRedirect: 'http://libmedia.willamette.edu'}
       ),
       function (req, res) {
         // Successful authentication, redirect to login/netid to obtain DSpace token.
