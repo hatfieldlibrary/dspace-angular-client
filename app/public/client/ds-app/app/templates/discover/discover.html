@@ -34,7 +34,7 @@
               </md-select>
             </md-input-container>
           </div>
-          <div ng-if="disc.communityId > 0">
+          <div ng-if="disc.communityId !== 0">
             <md-input-container class="halfer">
               <label class="md-no-sticky">{{disc.collectionLabel}}</label>
               <!-- Using the model trackBy option so that select will refresh when new community is selected.

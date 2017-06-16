@@ -77,6 +77,7 @@
         if (id !== 0) {
           var info = GetCollectionInfo.query({item: id});
           info.$promise.then(function (data) {
+            console.log(data);
             _ctrl.communityId = data.parentCommunity.id;
             that.getCollectionsForCommunity(data.parentCommunity.id, id);
 
