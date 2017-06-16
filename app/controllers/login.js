@@ -35,7 +35,6 @@
       config,
       req)
       .then(function () {
-        console.log(session);
         // If successful, redirect to session.url or to home page.
         if (typeof session.url !== 'undefined') {
           // We added an optional auto login parameter to discovery
@@ -57,6 +56,7 @@
 
   }
 
+
   /**
    * Checks for DSpace REST API key in current session.  If not available,
    * logs into DSpace.
@@ -65,8 +65,10 @@
    */
   exports.dspace = function (req, res) {
 
+    var session = req.session;
+
     /** @type {string} the netid of the user */
-    var netid = req.params.netid;
+    var netid = session.passport.user
 
     if (!config) {
       console.log('ERROR: Missing application configuration.  Cannot access application key.');
@@ -74,11 +76,8 @@
       res.end();
     }
 
-    var session = req.session;
-
     /** If session does not already have DSpace token, login to DSpace.  */
     if (!session.dspaceSessionCookie) {
-
 
       loginToDspace(netid, config, req, res);
 
@@ -91,7 +90,7 @@
             // DSpace API REST status check will return a boolean
             // value for authenticated.
             if (!response.authenticated) {
-              console.log('This dspace token is no longer valid: ' + session.dspaceSessionCookie);
+              console.log('This dspace session is no longer valid: ' + session.dspaceSessionCookie);
               // If not authenticated, remove the stale token.
               utils.removeDspaceSession(session);
               loginToDspace(netid, config, req, res);
@@ -138,8 +137,6 @@
 
     /** @type {string} the current dspace token or an empty string */
     var dspaceTokenHeader = utils.getDspaceToken(session);
-
-    console.log(dspaceTokenHeader);
 
     if (dspaceTokenHeader.length > 0) {
 

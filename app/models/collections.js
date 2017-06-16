@@ -42,7 +42,6 @@ var utils = require('../core/utils');
    */
   function processResult(json) {
 
-console.log(json);
     var ret = {};
     ret.id = json.uuid;
     ret.parentCommunity = [];
@@ -62,7 +61,7 @@ console.log(json);
       ret.canWrite = json.permission.canWrite;
     }
     if (json.logo !== null) {
-      logo.id = json.logo.id;
+      logo.id = json.logo.uuid;
       logo.retrieveLink = json.logo.retrieveLink;
       logo.sizeBytes = json.logo.sizeBytes;
       logo.mimeType = json.logo.mimeType;

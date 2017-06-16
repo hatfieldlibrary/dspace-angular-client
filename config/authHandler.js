@@ -46,11 +46,12 @@ module.exports = function (app, config, passport) {
      * Authentication route for CAS.
      */
     app.get('/ds-api/auth/login', passport.authenticate('cas',
-      {failureRedirect: 'http://libmedia.willamette.edu'}
+      {failureRedirect: '/ds/communities'}
       ),
       function (req, res) {
         // Successful authentication, redirect to login/netid to obtain DSpace token.
-        res.redirect('/ds-api/login/' + req.user.uid);
+      //  res.redirect('/ds-api/login/' + req.user.uid);
+        res.redirect('/ds-api/login');
       });
 
   }
@@ -60,7 +61,7 @@ module.exports = function (app, config, passport) {
    * Get DSpace token for authenticated user.
    */
   /*jshint unused:false*/
-  app.get('/ds-api/login/:netid', login.dspace);
+  app.get('/ds-api/login', login.dspace);
   /**
    * Logout
    */
