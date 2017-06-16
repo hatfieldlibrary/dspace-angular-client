@@ -115,7 +115,9 @@ var config = {
       /**
        * Your organizations' CAS authentication server.
        */
-      casServer: credentials.cas.casServer
+      serverBaseURL: credentials.cas.serverBaseURL,
+      ssoBaseURL: credentials.cas.ssoBaseURL,
+      validateURL: credentials.cas.validateURL
     },
     /**
      * The cache directory location, used by partial content
@@ -154,7 +156,9 @@ var config = {
       emailDomain: credentials.oauth.emailDomain
     },
     cas: {
-      casServer: credentials.cas.casServer
+      serverBaseURL: credentials.cas.serverBaseURL,
+      ssoBaseURL: credentials.cas.ssoBaseURL,
+      validateURL: credentials.cas.validateURL
     },
     nodeEnv: env
   },
@@ -195,7 +199,9 @@ var config = {
       emailDomain: credentials.oauth.emailDomain
     },
     cas: {
-      casServer: credentials.cas.casServer
+      serverBaseURL: credentials.cas.serverBaseURL,
+      ssoBaseURL: credentials.cas.ssoBaseURL,
+      validateURL: credentials.cas.validateURL
     },
     diskCache: {
       dir: '/var/ds/diskCache'

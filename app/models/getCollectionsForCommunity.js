@@ -47,7 +47,7 @@ var utils = require('../core/utils');
 
       for (var i = 0; i < json.collections.length; i++) {
         var tmp = {};
-        tmp.id = json.collections[i].id;
+        tmp.id = json.collections[i].uuid;
         tmp.name = json.collections[i].name;
         tmp.handle = json.collections[i].handle;
         tmp.type = json.collections[i].type;

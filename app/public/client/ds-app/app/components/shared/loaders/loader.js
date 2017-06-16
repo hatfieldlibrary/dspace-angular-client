@@ -54,9 +54,9 @@
       // only act on location changes for paging requests
       var re = /^\/ds\/handle|^\/ds\/discover|^\/ds\/advanced|^\/ds\/browse/;
 
-
       var path = $location.path();
       if (path.match(re)) {
+        console.log(loader.context)
         OnPagerLocationChange.onLocationChange(loader, qs, loader.context);
       }
 

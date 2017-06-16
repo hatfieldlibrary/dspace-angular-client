@@ -1,5 +1,3 @@
-
-
 (function () {
 
   'use strict';
@@ -8,6 +6,26 @@
 
   var config;
 
+  /**
+   * Sets the url value for sessions. This is currently used
+   * for discovery item logins. For other request types, the session url
+   * is set in the corresponding controller module.
+   * @param req
+   * @param res
+   */
+  exports.setUrl = function (req, res) {
+    var url = decodeURIComponent(req.params.url);
+    req.session.url = url;
+    res.end();
+  };
+
+  /**
+   * Attempts login to dspace.
+   * @param netid
+   * @param config
+   * @param req
+   * @param res
+   */
   function loginToDspace(netid, config, req, res) {
 
     var session = req.session;
@@ -18,9 +36,10 @@
       req)
       .then(function () {
         // If successful, redirect to session.url or to home page.
-        if (session.url !== 'undefined') {
-          res.redirect(session.url);
-
+        if (typeof session.url !== 'undefined') {
+          // We added an optional auto login parameter to discovery
+          // queries.  Remove here after initial use (prevents auth loop).
+          res.redirect(_replaceLoginParam(session.url));
         } else {
           res.redirect('/ds/communities');
         }
@@ -28,11 +47,18 @@
       })
       .catch(function (err) {
         console.log('DSpace login error.');
-        console.log(err);
+        console.log(err.message);
         res.statusCode = err.statusCode;
         res.end();
       });
 
+  }
+
+  function _replaceLoginParam(path) {
+    if (path) {
+      return path.replace('?login=auto', '');
+    }
+    return '';
   }
 
   /**
@@ -43,8 +69,11 @@
    */
   exports.dspace = function (req, res) {
 
+    var session = req.session;
+    req.session.url = _replaceLoginParam(session.url);
+
     /** @type {string} the netid of the user */
-    var netid = req.params.netid;
+    var netid = session.passport.user;
 
     if (!config) {
       console.log('ERROR: Missing application configuration.  Cannot access application key.');
@@ -52,11 +81,8 @@
       res.end();
     }
 
-    var session = req.session;
-
     /** If session does not already have DSpace token, login to DSpace.  */
     if (!session.dspaceSessionCookie) {
-
 
       loginToDspace(netid, config, req, res);
 
@@ -69,10 +95,13 @@
             // DSpace API REST status check will return a boolean
             // value for authenticated.
             if (!response.authenticated) {
-              console.log('This dspace token is no longer valid: ' + session.dspaceSessionCookie);
+              console.log('This dspace session is no longer valid: ' + session.dspaceSessionCookie);
               // If not authenticated, remove the stale token.
               utils.removeDspaceSession(session);
               loginToDspace(netid, config, req, res);
+            } else {
+
+              //res.redirect(_replaceLoginParam(session.url));
             }
 
           })
@@ -129,6 +158,7 @@
             if (response.authenticated) {
               // Autheticated, returning status 'ok'
               utils.jsonResponse(res, {status: 'ok'});
+
 
             }
             else {

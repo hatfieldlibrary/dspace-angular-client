@@ -14,11 +14,16 @@
 
   <h2 class="md-title" ng-if="$ctrl.isBrowseContext() && $ctrl.context!='seo'">Browsing: {{$ctrl.browseTerms}}</h2>
 
-  <div  style="background: #791716; color: #fefefe; font-size: 16px;font-weight: 500;letter-spacing: 0.005em; padding-left: 5px;" class="md-body-1 layout-padding">
-    <div layout="row" layout-align="left center"  ng-class="{'warning': $ctrl.noResultWarning}"><i class="material-icons" ng-show="$ctrl.noResultWarning">error_outline</i>&nbsp;{{$ctrl.resultMessage}}</div>
+  <div
+    style="background: #791716; color: #fefefe; font-size: 16px;font-weight: 500;letter-spacing: 0.005em; padding-left: 5px;"
+    class="md-body-1 layout-padding">
+    <div layout="row" layout-align="left center" ng-class="{'warning': $ctrl.noResultWarning}">
+      <i class="material-icons" ng-show="$ctrl.noResultWarning">error_outline</i>&nbsp;{{$ctrl.resultMessage}}
+    </div>
   </div>
 
-  <md-content md-colors="::{background: 'default-background-200'}" class="filter-container" ng-if="$ctrl.showDiscoverContainer  && $ctrl.context!='seo'">
+  <md-content md-colors="::{background: 'default-background-200'}" class="filter-container"
+              ng-if="$ctrl.showDiscoverContainer  && $ctrl.context!='seo'">
 
     <sort-options-component ng-if="$ctrl.showOptions && $ctrl.context!='seo'"
                             context="{{$ctrl.context}}"
@@ -27,8 +32,9 @@
                             reset-list-view="$ctrl.resetListView()">
     </sort-options-component>
 
-    <discover-filter-container ng-if="$ctrl.context=='search'""
-                               on-update="$ctrl.onUpdate(results, count, field)">
+    <discover-filter-container ng-if="$ctrl.context=='search'"
+    "
+    on-update="$ctrl.onUpdate(results, count, field)">
     </discover-filter-container>
 
   </md-content>
@@ -111,7 +117,10 @@
         description="item.description"
         resource-type="{{item.resourcetype}}"
         handle="{{item.handle}}"
+        type="{{$ctrl.type}}"
+        pos="{{$index}}"
         last="$last"
+        selected-item="{{$ctrl.selectedItem}}"
         count="{{$ctrl.count}}">
 
       </discover-detail-component>
@@ -119,9 +128,8 @@
     </md-list>
 
     <pager-component ng-show="$ctrl.ready && $ctrl.context!='seo'"
-    next="{{$ctrl.nextPagerOffset}}"
-    context="{{$ctrl.context}}">
-
+                     next="{{$ctrl.nextPagerOffset}}"
+                     context="{{$ctrl.context}}">
     </pager-component>
 
     <div ng-if="$ctrl.count > 10 && $ctrl.context!='seo'" class="md-body-1 md-accent layout-padding">

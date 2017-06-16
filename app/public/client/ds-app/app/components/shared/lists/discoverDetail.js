@@ -17,9 +17,14 @@
   function DiscoverDetailCtrl($scope,
                               $mdMedia,
                               $location,
+                              QueryManager,
+                              QueryActions,
                               ItemDialogFactory) {
 
     var ctrl = this;
+
+    ctrl.authorized = false;
+    ctrl.prevOpenedState = false;
 
     if (ctrl.description !== undefined) {
       ctrl.description[0] += ' ... ';
@@ -32,7 +37,6 @@
     } else if (ctrl.resourceType === '4') {
       ctrl.itemLabel = '(Department Link)';
     }
-
 
 
     /**
@@ -50,22 +54,79 @@
      * @param ev the event
      * @param id the DSpace id of the item
      */
-    ctrl.showItem = function (ev, id, type) {
+    ctrl.reloadItem = function (ev, id, type) {
 
-      // Make sure the query string is empty.
-      $location.search({});
-      // item type, use service to launch item dialog.
-      if (type === '2') {
+    //  ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
+      // Make sure the query string is empty. temp removal...
+     //   $location.search({});
+
+     //  item type, use service to launch item dialog.
+      if (+type === 2 && ctrl.prevOpenedState === true) {
         ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
       }
-      // community or collection type, use new route.
-      else {
-        $location.path('/ds/handle/' + ctrl.handle);
+     //  // community or collection type, use new route.
+     //  else {
+     //    $location.search({});
+     //    $location.path('/ds/handle/' + ctrl.handle);
+     //
+     //  }
 
-      }
 
     };
 
+
+    /**
+     * Constructs and returns the url used by the item list element.
+     * @returns {string}
+     */
+    ctrl.getItemUrl = function () {
+
+      var qs = $location.search();
+
+      if (QueryManager.getAction() !== QueryActions.BROWSE) {
+
+        var url = '/ds/discover/' + ctrl.type + '/' + QueryManager.getAssetId() + '/' + QueryManager.getSearchTerms() + '/' + ctrl.id + '?';
+
+        url += 'filter=none';
+        url += '&id=' + ctrl.id;
+        url += '&pos=' + ctrl.pos;
+        url += '&itype=i';
+
+        var arr = Object.keys(qs);
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype' && arr[i] !== 'filter') {
+            url += '&' + arr[i] + '=' + qs[arr[i]];
+          }
+        }
+
+        return url;
+      }
+
+      return '#';
+
+    };
+
+    ctrl.$onInit = function () {
+
+    };
+
+    ctrl.$onChanges = function (changes) {
+      if (changes.selectedItem) {
+        if (changes.selectedItem.currentValue === ctrl.id) {
+          console.log(ctrl.resourceType)
+         if(+ctrl.resourceType === 2) {
+            ctrl.prevOpenedState = true;
+           ItemDialogFactory.showItem(event, ctrl.id, $scope.customFullscreen);
+         }
+          else {
+           $location.search({});
+           $location.path('/ds/handle/' + ctrl.handle);
+         }
+
+        }
+
+      }
+    }
   }
 
   dspaceComponents.component('discoverDetailComponent', {
@@ -79,6 +140,9 @@
       resourceType: '@',
       handle: '@',
       author: '<',
+      type: '@',
+      pos: '@',
+      selectedItem: '@',
       last: '<'
     },
     templateUrl: ['AppContext', function (AppContext) {

@@ -42,7 +42,8 @@ var utils = require('../core/utils');
   function processResult(json) {
 
     var ret = {};
-    ret.id = json.id;
+
+    ret.id = json.uuid;
     ret.name = json.name;
     ret.handle = json.handle;
     ret.type = json.type;
@@ -55,7 +56,7 @@ var utils = require('../core/utils');
     ret.countItems = json.countItems;
     var logo = {};
     if (json.logo !== null) {
-      logo.id = json.logo.id;
+      logo.id = json.logo.uuid;
       logo.retrieveLink = json.logo.retrieveLink;
       logo.sizeBytes = json.logo.sizeBytes;
       logo.mimeType = json.logo.mimeType;

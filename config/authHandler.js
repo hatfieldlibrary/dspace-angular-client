@@ -35,13 +35,13 @@ module.exports = function (app, config, passport) {
       ),
       // If authentication succeeded, redirect to login/netid to obtain DSpace token.
       function (req, res) {
-        res.redirect('/ds-api/login/' + req.user);
+        res.redirect('/ds-api/login/dspace');
       }
     );
 
   }
 
-  else if (app.get('env') === 'production') {
+  if (app.get('env') === 'production') {
     /**
      * Authentication route for CAS.
      */
@@ -49,8 +49,8 @@ module.exports = function (app, config, passport) {
       {failureRedirect: '/ds/communities'}
       ),
       function (req, res) {
-        // Successful authentication, redirect to login/netid to obtain DSpace token.
-        res.redirect('/ds-api/login/' + req.user);
+        // Successful authentication, redirect to login/dspace to obtain DSpace token.
+        res.redirect('/ds-api/login/dspace');
       });
 
   }
@@ -60,7 +60,7 @@ module.exports = function (app, config, passport) {
    * Get DSpace token for authenticated user.
    */
   /*jshint unused:false*/
-  app.get('/ds-api/login/:netid', login.dspace);
+  app.get('/ds-api/login/dspace', login.dspace);
   /**
    * Logout
    */

@@ -52,7 +52,11 @@ var dspaceApp = angular.module('dspaceApp', [
           templateUrl: '/ds/partials/browse.html',
           reloadOnSearch: false
         })
-        .when('/ds/discover/:type/:id/:terms', {
+        .when('/ds/discover/:type/:id/:terms/:selectedId', {
+          templateUrl: '/ds/partials/discover.html',
+          reloadOnSearch: false
+        })
+        .when('/ds/discover/:type/:id/:terms/:selectedId/:auth', {
           templateUrl: '/ds/partials/discover.html',
           reloadOnSearch: false
         })

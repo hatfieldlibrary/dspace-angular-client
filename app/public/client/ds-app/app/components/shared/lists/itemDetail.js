@@ -121,6 +121,7 @@
     };
 
     ctrl.$onChanges = function(changes) {
+
       if (changes.selectedItem) {
         if (changes.selectedItem.currentValue === ctrl.id) {
           ItemDialogFactory.showItem(event, ctrl.id, $scope.customFullscreen);

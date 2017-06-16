@@ -108,6 +108,7 @@
      */
     function addPreviousResults(results) {
       ctrl.items = results.concat(ctrl.items);
+
     }
 
     /**
@@ -125,7 +126,6 @@
      * @param index
      */
     ctrl.setSelectedPosition = function (pos) {
-
       ctrl.selectedPosition = pos;
 
     };
@@ -182,7 +182,6 @@
      */
     ctrl.onPagerUpdate = function (results, count, field) {
 
-
       addResults(results);
       ctrl.field = field;
       ctrl.count = count;
@@ -195,7 +194,6 @@
       var start = AppContext.getViewStartIndex() + 1;
       ctrl.resultMessage = _format(Messages.RESULTS_LABEL, [start, end, count]);
       ctrl.ready = true;
-
 
     };
 

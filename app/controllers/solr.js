@@ -44,8 +44,10 @@ var constants = require('../core/constants');
     var type = req.body.params.asset.type;
     var id = req.body.params.asset.id;
     var term = req.body.params.query.terms;
+
+    // Sets session url for initial query.
     if (req.body.params.query.qType === constants.QueryType.DISCOVER) {
-      req.session.url = '/ds/discover/' + type + '/' + id + '/' + term;
+     req.session.url = '/ds/discover/' + type + '/' + id + '/' + term + '/0';
     }
 
     var session = req.session;
