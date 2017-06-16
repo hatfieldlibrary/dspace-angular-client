@@ -48,9 +48,10 @@
       try {
         /**
          * Queries with id value of zero are global queries.
-         * Do not add a location filter.
+         * Do not add a location filter. Using unary operator
+         * for comparison;
          */
-        if (id > 0) {
+        if (+id !== 0) {
           /**
            * Community query scope.
            */

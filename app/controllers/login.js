@@ -39,9 +39,7 @@
         if (typeof session.url !== 'undefined') {
           // We added an optional auto login parameter to discovery
           // queries.  Remove here after initial use (prevents auth loop).
-          var path = session.url;
-          path = path.replace('&login=auto', '')
-          res.redirect(path);
+          res.redirect(_replaceLoginParam(session.url));
         } else {
           res.redirect('/ds/communities');
         }
@@ -56,6 +54,12 @@
 
   }
 
+  function _replaceLoginParam(path) {
+    if (path) {
+      return path.replace('?login=auto', '');
+    }
+    return '';
+  }
 
   /**
    * Checks for DSpace REST API key in current session.  If not available,
@@ -66,9 +70,10 @@
   exports.dspace = function (req, res) {
 
     var session = req.session;
+    req.session.url = _replaceLoginParam(session.url);
 
     /** @type {string} the netid of the user */
-    var netid = session.passport.user
+    var netid = session.passport.user;
 
     if (!config) {
       console.log('ERROR: Missing application configuration.  Cannot access application key.');
@@ -94,6 +99,9 @@
               // If not authenticated, remove the stale token.
               utils.removeDspaceSession(session);
               loginToDspace(netid, config, req, res);
+            } else {
+
+              //res.redirect(_replaceLoginParam(session.url));
             }
 
           })
@@ -150,6 +158,7 @@
             if (response.authenticated) {
               // Autheticated, returning status 'ok'
               utils.jsonResponse(res, {status: 'ok'});
+
 
             }
             else {
