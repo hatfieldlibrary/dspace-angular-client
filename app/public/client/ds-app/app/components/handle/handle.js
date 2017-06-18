@@ -70,7 +70,9 @@
 
       // Retrieve data for the handle.
       var query = ItemByHandle.query({site: site, item: item});
+
       query.$promise.then(
+
         function (data) {
 
           ctrl.parent.setQueryType(QueryManager.getQueryType());

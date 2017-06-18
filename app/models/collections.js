@@ -20,7 +20,7 @@ var utils = require('../core/utils');
         {
           /** From API documentation: limit and offset params can be used for
            * paging (current default 100 */
-          url: host + link + '?expand=logo,parentCommunity,permission',
+          url: host  + '/' + dspaceContext + '/collections/' + link + '?expand=logo,parentCommunity,permission',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
@@ -29,6 +29,10 @@ var utils = require('../core/utils');
           json: true,
           rejectUnauthorized: utils.rejectUnauthorized(),
           transform: processResult
+        }, function (error, response, body) {
+          if (dspaceTokenHeader.length === 0) {
+            session = utils.setDspaceCookieInfo(response, session);
+          }
         }
       );
 

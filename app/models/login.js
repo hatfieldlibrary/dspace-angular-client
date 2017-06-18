@@ -39,18 +39,12 @@ var qs = require('querystring');
         var session = req.session;
 
         if (response.statusCode === 200) {    // success
+          if (typeof session.dspaceSessionCookie === 'undefined' ) {
 
-          var regex = /^JSESSIONID.*/;
-          var cookies =  response.headers['set-cookie'];
-          if (cookies) {
-            cookies.forEach(function(cookie) {
-                if (cookie.match(regex)) {
-                  var cstring = cookie.split(';');
-                  session.dspaceSessionCookie = cstring[0];
-
-                }
-            })
+            session = utils.setDspaceCookieInfo(response, session);
+            session.authenticated = true;
           }
+
 
         } else if (response.statusCode === 403) {   // forbidden
           console.log('DSpace access forbidden.');

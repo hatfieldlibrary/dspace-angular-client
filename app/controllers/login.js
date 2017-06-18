@@ -69,8 +69,8 @@
    */
   exports.dspace = function (req, res) {
 
+    req.session.url = _replaceLoginParam(req.session.url);
     var session = req.session;
-    req.session.url = _replaceLoginParam(session.url);
 
     /** @type {string} the netid of the user */
     var netid = session.passport.user;

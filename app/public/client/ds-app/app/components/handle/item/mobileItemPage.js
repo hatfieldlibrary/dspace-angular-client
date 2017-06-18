@@ -55,6 +55,8 @@
 
     };
 
+    console.log(ctrl.collectionItem)
+
     var itemInfo = ItemById.query({item: ctrl.collectionItem});
 
     itemInfo.$promise.then(function (data) {

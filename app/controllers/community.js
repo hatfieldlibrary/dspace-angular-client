@@ -7,6 +7,8 @@
 
 (function () {
 
+  var utils = require('../core/utils');
+
   /**
    * Controller for retrieving the communities list via the rest api.
    * @param req
@@ -17,6 +19,7 @@
     req.session.url = '/ds/communities';
 
     models.listCommunities(req.session).then(function (json) {
+
       res.send(json);
       res.end();
     })
@@ -52,7 +55,7 @@
         res.end();
 
       });
-    
+
 
   };
 

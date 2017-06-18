@@ -35,6 +35,7 @@ var utils = require('../core/utils');
           models.handle(site, item, session)
 
             .then(function (result) {
+              console.log(result)
               callback(null, result);
             })
             .catch(function (err) {
@@ -53,7 +54,7 @@ var utils = require('../core/utils');
 
           try {
             var type = result.type;
-            var link = result.link;
+            var link = result.uuid;
 
             if (type === 'community') {
 

@@ -12,11 +12,13 @@ var utils = require('../core/utils');
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
     var dspaceContext = utils.getDspaceAppContext();
+    console.log(link)
 
     var itemRequest =
       rp(
         {
           url: host + '/' + dspaceContext + '/items/' + link + '?expand=bitstreams,logo,metadata,parentCollection,permission',
+          //url: host + '/' + link + '?expand=bitstreams,logo,metadata,parentCollection,permission',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
@@ -25,6 +27,10 @@ var utils = require('../core/utils');
           json: true,
           rejectUnauthorized: utils.rejectUnauthorized(),
           transform: processResult
+        }, function (error, response, body) {
+          if (dspaceTokenHeader.length === 0) {
+            session = utils.setDspaceCookieInfo(response, session);
+          }
         }
       );
 

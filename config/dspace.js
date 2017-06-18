@@ -10,7 +10,7 @@ var config = {
   dspaceDev: {
 
     // full host name (e.g. 'dspace.college.edu')
-    host: 'dspace.willamette.edu',
+    host: '158.104.5.46',
 
     // rest protocol can be http or https.
     protocol: 'http',
@@ -33,7 +33,7 @@ var config = {
     // Solr port. Use port forwarding for development on localhost if
     // not also running dspace on localhost, e.g.:
     // ssh -L 1234:127.0.0.1:8080 dspace.college.edu.
-    solrPort: '1234'
+    solrPort: '8080'
 
   },
 

@@ -9,11 +9,12 @@ var utils = require('../core/utils');
    * Model for fetching via DSpace handle.  Uses REST API.
    */
   module.exports = function (site, item, session) {
-
+console.log(session)
 
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
     var dspaceContext = utils.getDspaceAppContext();
+    console.log(dspaceTokenHeader)
 
     /** DSpace handle request-promise */
     var handleRequest =
@@ -27,6 +28,10 @@ var utils = require('../core/utils');
           },
           json: true,
           rejectUnauthorized: utils.rejectUnauthorized()
+        }, function (error, response, body) {
+          if (dspaceTokenHeader.length === 0) {
+            session = utils.setDspaceCookieInfo(response, session);
+          }
         }
       );
 
