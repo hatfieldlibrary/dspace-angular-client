@@ -19,7 +19,7 @@
     req.session.url = '/ds/communities';
 
     models.listCommunities(req.session).then(function (json) {
-
+      res.session = req.session;
       res.send(json);
       res.end();
     })
@@ -44,6 +44,7 @@
 
     models.listCommunities(req.session)
       .then(function (json) {
+        res.session = req.session;
         res.send(json);
         res.end();
       })

@@ -35,7 +35,6 @@ var utils = require('../core/utils');
           models.handle(site, item, session)
 
             .then(function (result) {
-              console.log(result)
               callback(null, result);
             })
             .catch(function (err) {
@@ -125,6 +124,8 @@ var utils = require('../core/utils');
 
 
         }   else {
+          res.session = session;
+          console.log(session)
           /** send response */
           utils.jsonResponse(res, result);
         }

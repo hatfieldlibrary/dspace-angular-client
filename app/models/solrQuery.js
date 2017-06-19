@@ -89,6 +89,7 @@ var processors = require('../core/responseProcessor');
           }
         }
         else {
+          res.session = req.session;
           res.send(json);
           res.end();
         }

@@ -19,7 +19,7 @@ var qs = require('querystring');
       {
         url: host + '/' + dspaceContext + '/login',
         method: 'POST',
-        headers: {'User-Agent': 'Request-Promise','Accepts': 'application/json'},
+        headers: {'User-Agent': 'Request-Promise', 'Accepts': 'application/json'},
         form: {
           'email': netid,
           'password': encodeURI(config.secret)
@@ -39,11 +39,9 @@ var qs = require('querystring');
         var session = req.session;
 
         if (response.statusCode === 200) {    // success
-          if (typeof session.dspaceSessionCookie === 'undefined' ) {
 
-            session = utils.setDspaceCookieInfo(response, session);
-            session.authenticated = true;
-          }
+          session = utils.setDspaceCookieInfo(response, session);
+          session.authenticated = true;
 
 
         } else if (response.statusCode === 403) {   // forbidden

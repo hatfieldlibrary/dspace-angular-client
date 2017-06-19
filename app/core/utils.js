@@ -23,16 +23,20 @@
 
   exports.setDspaceCookieInfo = function (response, session) {
 
-    var regex = /^JSESSIONID.*/;
-    var cookies =  response.headers['set-cookie'];
-    if (cookies) {
-      cookies.forEach(function(cookie) {
-        if (cookie.match(regex)) {
-          var cstring = cookie.split(';');
-          session.dspaceSessionCookie = cstring[0];
+    try {
+      var regex = /^JSESSIONID.*/;
+      var cookies = response.headers['set-cookie'];
+      if (cookies) {
+        cookies.forEach(function (cookie) {
+          if (cookie.match(regex)) {
+            var cstring = cookie.split(';');
+            session.dspaceSessionCookie = cstring[0];
 
-        }
-      })
+          }
+        })
+      }
+    } catch(err) {
+      console.log(err);
     }
     return session;
   };
