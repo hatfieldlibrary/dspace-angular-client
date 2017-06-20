@@ -279,7 +279,6 @@
         ctrl.setPrevPagerOffset(-1);
       }
 
-
     };
 
   }

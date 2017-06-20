@@ -10,7 +10,6 @@ var utils = require('../core/utils');
    */
   module.exports = function (site, item, session) {
 
-
     var dspaceTokenHeader = utils.getDspaceToken(session);
     var host = utils.getURL();
     var dspaceContext = utils.getDspaceAppContext();
@@ -27,6 +26,10 @@ var utils = require('../core/utils');
           },
           json: true,
           rejectUnauthorized: utils.rejectUnauthorized()
+        }, function (error, response, body) {
+          if (dspaceTokenHeader.length === 0) {
+            session = utils.setDspaceCookieInfo(response, session);
+          }
         }
       );
 

@@ -57,36 +57,38 @@
 
     };
 
-    /**
-     * Get information about the item.
-     */
-    ctrl.data.$promise.then(function (data) {
+    ctrl.$onInit = function() {
+      /**
+       * Get information about the item.
+       */
+      ctrl.data.$promise.then(function (data) {
 
-      ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
-      ctrl.canWrite = WriteObserver.get();
-      ctrl.itemId = data.id;
+        ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
+        ctrl.canWrite = WriteObserver.get();
+        ctrl.itemId = data.id;
 
-      SeoPaging.setNextLink('nofollow', '');
-      SeoPaging.setPrevLink('nofollow', '');
+        SeoPaging.setNextLink('nofollow', '');
+        SeoPaging.setPrevLink('nofollow', '');
 
-      PageTitle.setTitle(data.name);
-      PageAuthor.setAuthor(data.author);
-      PageDescription.setDescription(data.description);
+        PageTitle.setTitle(data.name);
+        PageAuthor.setAuthor(data.author);
+        PageDescription.setDescription(data.description);
 
-      ctrl.jsonLd = Utils.setJsonLd(data);
+        ctrl.jsonLd = Utils.setJsonLd(data);
 
-    });
+      });
 
-    /**
-     * Retrieve parent collection name and handle.
-     */
-    var parent = GetCollectionInfo.query({item: ctrl.data.parentCollection.id});
-    parent.$promise.then(function (data) {
-      ctrl.parentName = data.parentCommunity.name;
-      ctrl.parentHandle = data.parentCommunity.handle;
-    });
+      /**
+       * Retrieve parent collection name and handle.
+       */
+      var parent = GetCollectionInfo.query({item: ctrl.data.parentCollection.id});
+      parent.$promise.then(function (data) {
+        ctrl.parentName = data.parentCommunity.name;
+        ctrl.parentHandle = data.parentCommunity.handle;
+      });
 
-    $anchorScroll();
+      $anchorScroll();
+    }
 
   }
 

@@ -178,7 +178,7 @@ var constants = require('../core/constants');
           res.end();
 
         } else {
-
+          res.session = req.session;
           /** send response */
           utils.jsonResponse(res, result);
 

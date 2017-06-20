@@ -71,7 +71,6 @@
       var qs = $location.search();
       OnPagerInit.onInit(loader, qs);
 
-
     };
 
     // The following functions are wrappers for bound callbacks
@@ -117,7 +116,6 @@
     this.updateParentNewSet = function (data) {
 
       if (data) {
-
         loader.onNewSet({
           results: data.results,
           count: data.count,
@@ -172,7 +170,6 @@
     this.setTheSortOrder = function(order) {
       loader.setSortOrder({order: order});
     };
-
 
   }
 

@@ -17,6 +17,7 @@
 
     models.collectionInfo(id, req.session)
       .then(function (result) {
+        res.session = req.session;
         res.send(result);
         res.end();
 

@@ -70,8 +70,6 @@
           });
         }
 
-
-
         return items;
 
       }

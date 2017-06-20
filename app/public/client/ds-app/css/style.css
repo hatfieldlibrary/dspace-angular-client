@@ -109,7 +109,7 @@ img {
 }
 
 .layout-row .app-primary-content-container {
-  max-width: 900px;
+  /*max-width: 900px;*/
 }
 
 md-sidenav {
@@ -426,6 +426,7 @@ div.is-mobile,
 
 md-card.item {
   background: #fff;
+  margin: 8px 0 0;
 }
 
 .file-info .md-button,

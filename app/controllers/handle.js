@@ -53,7 +53,7 @@ var utils = require('../core/utils');
 
           try {
             var type = result.type;
-            var link = result.link;
+            var link = result.uuid;
 
             if (type === 'community') {
 
@@ -124,6 +124,8 @@ var utils = require('../core/utils');
 
 
         }   else {
+          res.session = session;
+          console.log(session)
           /** send response */
           utils.jsonResponse(res, result);
         }

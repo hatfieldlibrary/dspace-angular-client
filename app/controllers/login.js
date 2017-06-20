@@ -69,8 +69,8 @@
    */
   exports.dspace = function (req, res) {
 
+    req.session.url = _replaceLoginParam(req.session.url);
     var session = req.session;
-    req.session.url = _replaceLoginParam(session.url);
 
     /** @type {string} the netid of the user */
     var netid = session.passport.user;
@@ -96,18 +96,13 @@
             // value for authenticated.
             if (!response.authenticated) {
               console.log('This dspace session is no longer valid: ' + session.dspaceSessionCookie);
-              // If not authenticated, remove the stale token.
-              utils.removeDspaceSession(session);
               loginToDspace(netid, config, req, res);
             } else {
-
               //res.redirect(_replaceLoginParam(session.url));
             }
 
           })
         .catch(function (err) {
-            // If status request returned an error, remove dspace token.
-            utils.removeDspaceSession(session);
             console.log(err.message);
             //utils.jsonResponse(res, {status: 'denied'});
 
@@ -139,7 +134,6 @@
    */
   exports.checkSession = function (req, res) {
 
-
     /** @type {Object} the current session object */
     var session = req.session;
 
@@ -148,10 +142,14 @@
 
     if (dspaceTokenHeader.length > 0) {
 
+
       models
         .checkDspaceSession(dspaceTokenHeader)
         .then(
           function (response) {
+
+            res.session = session;
+            console.log(response)
 
             // DSpace API REST status check will return a boolean
             // value for authenticated.
@@ -162,8 +160,6 @@
 
             }
             else {
-              // If not authenticated, remove the stale token.
-              utils.removeDspaceSession(session);
               // Returning status denied.
               utils.jsonResponse(res, {status: 'denied'});
 
@@ -171,8 +167,6 @@
 
           })
         .catch(function (err) {
-            // If status request returned an error, remove dspace token.
-            utils.removeDspaceSession(session);
             console.log(err.message);
             //utils.jsonResponse(res, {status: 'denied'});
             res.statusCode = err.statusCode;
@@ -180,7 +174,7 @@
           }
         );
     } else {
-
+      res.session = session;
       // There's no dspace token in the current Express session.
       utils.jsonResponse(res, {status: 'denied'});
 
