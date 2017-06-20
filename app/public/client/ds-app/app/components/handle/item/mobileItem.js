@@ -57,6 +57,7 @@
     };
 
     ctrl.$onInit = function() {
+
       /**
        * Get information about the item.
        */

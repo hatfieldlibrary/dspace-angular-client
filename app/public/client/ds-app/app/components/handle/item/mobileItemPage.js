@@ -55,21 +55,22 @@
 
     };
 
-    console.log(ctrl.collectionItem)
+    ctrl.$onInit = function () {
 
-    var itemInfo = ItemById.query({item: ctrl.collectionItem});
+      var itemInfo = ItemById.query({item: ctrl.collectionItem});
 
-    itemInfo.$promise.then(function (data) {
+      itemInfo.$promise.then(function (data) {
 
-      ctrl.data = data;
-      PageTitle.setTitle(data.name);
-      PageAuthor.setAuthor(data.author);
-      PageDescription.setDescription(data.description);
+        ctrl.data = data;
+        PageTitle.setTitle(data.name);
+        PageAuthor.setAuthor(data.author);
+        PageDescription.setDescription(data.description);
 
-      SeoPaging.setNextLink('nofollow', '');
-      SeoPaging.setPrevLink('nofollow', '');
+        SeoPaging.setNextLink('nofollow', '');
+        SeoPaging.setPrevLink('nofollow', '');
 
-    });
+      });
+    }
 
   }
 
@@ -80,7 +81,7 @@
       collectionHandle: '@'
     },
     templateUrl: ['AppContext', function (AppContext) {
-      return'/' + AppContext.getApplicationPrefix() + '-app/app/templates/handle/item/mobileItem.html';
+      return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/handle/item/mobileItem.html';
     }],
     controller: MobileItemCtrl
 

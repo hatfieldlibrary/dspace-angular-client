@@ -426,6 +426,7 @@ div.is-mobile,
 
 md-card.item {
   background: #fff;
+  margin: 8px 0 0;
 }
 
 .file-info .md-button,
