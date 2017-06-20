@@ -28,16 +28,6 @@
 
     var disc = this;
 
-    /**
-     * Input route parameters.
-     */
-    disc.type = $routeParams.type;
-    var id = $routeParams.id;
-    disc.terms = $routeParams.terms;
-    disc.context = QueryActions.SEARCH;
-    if (typeof $routeParams.auth !== 'undefined' ) {
-      $window.location = AppContext.getApplicationPrefix() + '-api/auth/login';
-    }
 
     disc.isMobile = true;
 
@@ -45,10 +35,6 @@
       disc.isMobile = false;
     }
 
-    /**
-     * Pass the controller to discovery extensions.
-     */
-    DiscoveryFormExtensions.setController(this);
 
     /**
      * Array containing list of communities.
@@ -143,12 +129,32 @@
      */
     disc.$onInit = function () {
 
+      /**
+       * Input route parameters.
+       */
+      disc.type = $routeParams.type;
+      var id = $routeParams.id;
+      disc.terms = $routeParams.terms;
+      disc.context = QueryActions.SEARCH;
+      /**
+       * Handle login request.
+       */
+      if (typeof $routeParams.auth !== 'undefined' ) {
+        $window.location = AppContext.getApplicationPrefix() + '-api/auth/login';
+      }
+      /**
+       * Handle auto-login request
+       */
       var path = $location.url();
       SetAuthUrl.query({url:  Utils.encodePath(path)});
       if ($location.search().login === 'auto') {
-
         $window.location = '/' + AppContext.getApplicationPrefix() + '-api/auth/login/';
       }
+
+      /**
+       * Pass the controller to discovery extensions.
+       */
+      DiscoveryFormExtensions.setController(this);
 
       Utils.resetQuerySettings();
 
@@ -176,10 +182,11 @@
 
 
       /**
-       * If the DSpace ID parameter is undefined then hide unnecessary
-       * components and set this initial id to zero ('All Departments').
+       * If the DSpace ID parameter is undefined then hide
+       * components and set initial id to zero ('All Departments').
        */
-      if (id === undefined) {
+      console.log(id)
+      if (id === undefined || +id === 0) {
         disc.hideComponents = true;
         id = 0;
       }
