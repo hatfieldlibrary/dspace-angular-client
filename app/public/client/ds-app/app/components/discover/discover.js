@@ -182,12 +182,9 @@
 
 
       /**
-       * If the DSpace ID parameter is undefined then hide
-       * components and set initial id to zero ('All Departments').
+       * If the DSpace ID parameter is undefined then set initial id to zero ('All Departments').
        */
-      console.log(id)
       if (id === undefined || +id === 0) {
-        disc.hideComponents = true;
         id = 0;
       }
 
