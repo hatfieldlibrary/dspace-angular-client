@@ -114,7 +114,6 @@
      * @param data the next set if items.
      */
     this.updateParentNewSet = function (data) {
-
       if (data) {
         loader.onNewSet({
           results: data.results,

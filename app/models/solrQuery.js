@@ -45,6 +45,7 @@ var processors = require('../core/responseProcessor');
      * @type {string}
      */
     var solrUrl = queryGenerator.getSolrUrl(query, dspaceTokenHeader);
+
     /**
      * The request-promise.
      */
@@ -89,7 +90,6 @@ var processors = require('../core/responseProcessor');
           }
         }
         else {
-          res.session = req.session;
           res.send(json);
           res.end();
         }

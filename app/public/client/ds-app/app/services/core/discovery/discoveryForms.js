@@ -80,8 +80,7 @@
             console.log(data);
             _ctrl.communityId = data.parentCommunity.id;
             that.getCollectionsForCommunity(data.parentCommunity.id, id);
-
-
+            
           });
         }
       };

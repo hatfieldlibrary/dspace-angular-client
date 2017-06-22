@@ -1,6 +1,6 @@
 /**
  * Component for discovery searches.  This component binds to the
- * DiscoveryFormExtensions service to get necessary functions that are
+ * DiscoveryFormExtensions service to access functions that are
  * shared with the advanced search component.
  * Created by mspalti on 3/4/16.
  */
@@ -24,17 +24,16 @@
                         Messages,
                         PageTitle,
                         SetAuthUrl,
+                        CheckSession,
                         DiscoveryFormExtensions) {
 
     var disc = this;
-
 
     disc.isMobile = true;
 
     if ($mdMedia('gt-sm')) {
       disc.isMobile = false;
     }
-
 
     /**
      * Array containing list of communities.
@@ -124,61 +123,7 @@
 
     };
 
-    /**
-     * Initialization.
-     */
-    disc.$onInit = function () {
-
-      /**
-       * Input route parameters.
-       */
-      disc.type = $routeParams.type;
-      var id = $routeParams.id;
-      disc.terms = $routeParams.terms;
-      disc.context = QueryActions.SEARCH;
-      /**
-       * Handle login request.
-       */
-      if (typeof $routeParams.auth !== 'undefined' ) {
-        $window.location = AppContext.getApplicationPrefix() + '-api/auth/login';
-      }
-      /**
-       * Handle auto-login request
-       */
-      var path = $location.url();
-      SetAuthUrl.query({url:  Utils.encodePath(path)});
-      if ($location.search().login === 'auto') {
-        $window.location = '/' + AppContext.getApplicationPrefix() + '-api/auth/login/';
-      }
-
-      /**
-       * Pass the controller to discovery extensions.
-       */
-      DiscoveryFormExtensions.setController(this);
-
-      Utils.resetQuerySettings();
-
-      /**
-       * Remove any previous discovery filters.
-       */
-      QueryManager.clearDiscoveryFilters();
-
-      /**
-       * Routine initialization.
-       */
-      QueryManager.setAssetType(disc.type);
-
-      QueryManager.setQueryType(QueryTypes.DISCOVER);
-
-      QueryManager.setAction(QueryActions.SEARCH);
-
-      QueryManager.setSort(QuerySort.ASCENDING);
-
-      QueryManager.setSearchTerms(disc.terms);
-
-      QueryManager.setOffset(0);
-
-      AppContext.setDiscoveryContext(DiscoveryContext.BASIC_SEARCH);
+    function _initialize(id) {
 
 
       /**
@@ -193,10 +138,7 @@
        */
       DiscoveryFormExtensions.getCommunities();
 
-      /**
-       * The asset id is the id of the collection.
-       */
-      QueryManager.setAssetId(id);
+
 
       /**
        * If this is a collection query, set the collection id
@@ -230,10 +172,96 @@
         DiscoveryFormExtensions.getCollectionsForCommunity(disc.communityId);
 
       }
+
     }
 
+    /**
+     * Initialization.
+     */
+    disc.$onInit = function () {
 
+      /**
+       * Pass the controller to discovery extensions.
+       */
+      DiscoveryFormExtensions.setController(this);
 
+      /**
+       * Input route parameters.
+       */
+      disc.type = $routeParams.type;
+      var id = $routeParams.id;
+      disc.terms = $routeParams.terms;
+      disc.context = QueryActions.SEARCH;
+
+      Utils.resetQuerySettings();
+
+      /**
+       * The query object updated at init, before the loader module invokes
+       * the query.
+       *
+       * Remove any previous discovery filters.
+       */
+      QueryManager.clearDiscoveryFilters();
+
+      /**
+       * The asset id is the id of the collection.
+       */
+      QueryManager.setAssetId(id);
+
+      /**
+       * Routine initialization.
+       */
+      QueryManager.setAssetType(disc.type);
+
+      QueryManager.setQueryType(QueryTypes.DISCOVER);
+
+      QueryManager.setAction(QueryActions.SEARCH);
+
+      QueryManager.setSort(QuerySort.ASCENDING);
+
+      QueryManager.setSearchTerms(disc.terms);
+
+      QueryManager.setOffset(0);
+
+      AppContext.setDiscoveryContext(DiscoveryContext.BASIC_SEARCH);
+
+      var path = $location.url();
+      console.log(path)
+      /**
+       * Auto login the request.
+       */
+      if ($location.search().login === 'auto') {
+        // remove login query parameter
+        path = path.replace('?login=auto', '');
+        $location.search(path);
+        CheckSession.query().$promise.then(function (sessionStatus) {
+          // If no DSpace session, redirect to authentication.
+          if (sessionStatus.status !== 'ok') {
+            // This sets the session url.
+            SetAuthUrl.query({url: Utils.encodePath(path)}).$promise.then(function () {
+              $window.location = '/' + AppContext.getApplicationPrefix() + '-api/auth/login/';
+            });
+          } else {
+            $location.url(path);
+            _initialize(id);
+          }
+
+        });
+      }
+      /**
+       * Handle user-initiated login request.
+       */
+      else if (typeof $routeParams.auth !== 'undefined') {
+        $window.location = AppContext.getApplicationPrefix() + '-api/auth/login';
+      }
+      /**
+       * Continue with normal initialization.
+       */
+      else {
+        _initialize(id);
+
+      }
+    }
   }
 
   dspaceComponents.component('discoverComponent', {

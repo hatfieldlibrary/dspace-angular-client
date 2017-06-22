@@ -42,7 +42,6 @@
 
     ctrl.showMetadata = false;
 
-
     ctrl.toggleMeta = function () {
       ctrl.showMetadata = !ctrl.showMetadata;
 

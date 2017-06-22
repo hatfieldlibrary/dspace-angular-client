@@ -20,7 +20,6 @@
         .checkSysAdminStatus(dspaceTokenHeader)
         .then(
           function (response) {
-            res.session = req.session;
             utils.jsonResponse(res, {isSysAdmin: response.systemAdmin})
           })
         .catch(function (err) {
@@ -32,7 +31,6 @@
         );
 
     } else {
-      res.session = req.session;
       // There's no dspace token in the current Express session.
       utils.jsonResponse(res, {isSysAdmin: false});
 

@@ -29,6 +29,8 @@
         var action = QueryManager.getAction();
         var params = QueryManager.getQuery();
 
+        console.log(params)
+
         var items;
         /**
          * List query: POST.
@@ -132,9 +134,6 @@
 
         invokeQuery: invokeQuery,
         filterQuery: filterQuery,
-        // getOffset: function () {
-        //   return offset;
-        // },
         setJumpType: setJumpType
 
       };

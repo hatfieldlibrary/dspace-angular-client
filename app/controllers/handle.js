@@ -24,6 +24,7 @@ var utils = require('../core/utils');
     /** @type {Object} Express session */
     var session = req.session;
 
+
     async.waterfall(
       [
         /**
@@ -124,7 +125,6 @@ var utils = require('../core/utils');
 
 
         }   else {
-          res.session = session;
           console.log(session)
           /** send response */
           utils.jsonResponse(res, result);
