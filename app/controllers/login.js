@@ -36,7 +36,7 @@
       req)
       .then(function () {
         // If successful, redirect to session.url or to home page.
-        if (typeof session.url !== 'undefined') {
+        if (typeof session.url !== 'undefined' && session.url.length > 0) {
           // We added an optional auto login parameter to discovery
           // queries.  Remove here after initial use. This ensures that
           // we do not create a loop in the event that the client has
