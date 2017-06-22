@@ -3,24 +3,29 @@
 
   <md-content flex class="main-content">
 
-    <div layout="row" layout-fill class="top-highlight" layout-align="center left" flex="100">
+    <div layout="row" class="top-highlight" layout-align="center top" flex="100">
 
       <handle-component flex="100"
                         flex-offset-gt-xs="0"
-                        flex-offset-gt-sm="5"
-                        flex-offset-gt-md="15"
+
+
+                        flex-offset-gt-md="10"
                         flex-offset-gt-lg="20"
                         flex-gt-xs="95"
                         flex-gt-sm="70"
-                        flex-gt-md="60"
+                        flex-gt-md="65"
                         flex-gt-lg="55"
-                        class="app-primary-content-container"></handle-component>
+                        class="app-primary-content-container">
+
+      </handle-component>
 
       <side-nav-component asset-type="{{$ctrl.assetType}}" asset-id="{{$ctrl.assetId}}" query-type="{{$ctrl.queryType}}" type="handle"
                           flex-gt-xs="0"
                           flex-gt-sm="25"
                           flex-gt-md="25"
-                          flex-gt-lg="25"></side-nav-component>
+                          flex-gt-lg="25">
+
+      </side-nav-component>
 
 
     </div>
