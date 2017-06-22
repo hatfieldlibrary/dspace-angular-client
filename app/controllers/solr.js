@@ -144,7 +144,7 @@ var constants = require('../core/constants');
                 callback(null, result);
               })
               .catch(function (err) {
-                console.log(err);
+                console.log(err.message);
               });
 
           } catch (err) {

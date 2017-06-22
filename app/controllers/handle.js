@@ -39,7 +39,6 @@ var utils = require('../core/utils');
               callback(null, result);
             })
             .catch(function (err) {
-
               callback(err, null);
             });
         },
@@ -63,7 +62,7 @@ var utils = require('../core/utils');
                   callback(null, result);
                 })
                 .catch(function (err) {
-                  console.log(err);
+                  console.log(err.message);
                 });
 
             } else if (type === 'collection') {
@@ -73,7 +72,7 @@ var utils = require('../core/utils');
                   callback(null, result);
                 })
                 .catch(function (err) {
-                  console.log(err);
+                  console.log(err.message);
                 });
 
             } else if (type === 'item') {
@@ -83,7 +82,7 @@ var utils = require('../core/utils');
                   callback(null, result);
                 })
                 .catch(function (err) {
-                  console.log(err);
+                  console.log(err.message);
                 });
 
             }
@@ -125,7 +124,6 @@ var utils = require('../core/utils');
 
 
         }   else {
-          console.log(session)
           /** send response */
           utils.jsonResponse(res, result);
         }
