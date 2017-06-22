@@ -97,7 +97,7 @@
       }
     }
 
-    function init() {
+    ctrl.$onInit = function() {
 
       $anchorScroll();
 
@@ -118,9 +118,9 @@
 
       Utils.checkStatus(showLoginMessage);
 
-    }
+    };
 
-    init();
+
 
   }
 

@@ -373,7 +373,7 @@
 
 
       /**
-       * Updates the pager controller with new data retrieved by solr query. Input
+       * Updates with new data retrieved by solr query. Input
        * parameters for field and sort may be new values originating from a sort options
        * action by the user.
        * @param loader  - reference to the pager controller

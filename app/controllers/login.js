@@ -38,7 +38,9 @@
         // If successful, redirect to session.url or to home page.
         if (typeof session.url !== 'undefined') {
           // We added an optional auto login parameter to discovery
-          // queries.  Remove here after initial use (prevents auth loop).
+          // queries.  Remove here after initial use. This ensures that
+          // we do not create a loop in the event that the client has
+          // not handled the query parameter itself.
           res.redirect(_replaceLoginParam(session.url));
         } else {
           res.redirect('/ds/communities');
@@ -69,6 +71,7 @@
    */
   exports.dspace = function (req, res) {
 
+    /** Remove login param if it exists on the url */
     req.session.url = _replaceLoginParam(req.session.url);
     var session = req.session;
 
@@ -77,7 +80,7 @@
 
     if (!config) {
       console.log('ERROR: Missing application configuration.  Cannot access application key.');
-      res.statusCode = 500;
+      res.status(500);
       res.end();
     }
 
@@ -95,10 +98,11 @@
             // DSpace API REST status check will return a boolean
             // value for authenticated.
             if (!response.authenticated) {
-              console.log('This dspace session is no longer valid: ' + session.dspaceSessionCookie);
               loginToDspace(netid, config, req, res);
             } else {
               //res.redirect(_replaceLoginParam(session.url));
+              res.status(304);
+              res.end();
             }
 
           })
@@ -113,7 +117,6 @@
 
   };
 
-
   /**
    * Returns the application environment.  The app configuration
    * includes the application key used by DSpace RestAuthentication.
@@ -124,7 +127,6 @@
     config = configuration;
 
   };
-
 
   /**
    * Checks for existing DSpace REST session token and validates
@@ -142,14 +144,10 @@
 
     if (dspaceTokenHeader.length > 0) {
 
-
       models
         .checkDspaceSession(dspaceTokenHeader)
         .then(
           function (response) {
-
-            res.session = session;
-            console.log(response)
 
             // DSpace API REST status check will return a boolean
             // value for authenticated.
@@ -174,7 +172,6 @@
           }
         );
     } else {
-      res.session = session;
       // There's no dspace token in the current Express session.
       utils.jsonResponse(res, {status: 'denied'});
 

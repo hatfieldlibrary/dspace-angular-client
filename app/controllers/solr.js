@@ -97,7 +97,6 @@ var constants = require('../core/constants');
 
   };
 
-
   // currently unused.
   exports.recentSubmissions = function (req, res) {
 
@@ -105,7 +104,6 @@ var constants = require('../core/constants');
     var id = req.params.id;
     models.solrRecentSubmissions(type, id, res);
   };
-
 
   exports.jumpTo = function (req, res) {
 
@@ -178,7 +176,6 @@ var constants = require('../core/constants');
           res.end();
 
         } else {
-          res.session = req.session;
           /** send response */
           utils.jsonResponse(res, result);
 
