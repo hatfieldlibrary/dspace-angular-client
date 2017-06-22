@@ -1,4 +1,3 @@
-
 <md-dialog class="item-details dialog" aria-label="{{$ctrl.data.name}}">
 
   <head>
@@ -34,7 +33,7 @@
 
     <div id="dialog-top" style="height: 0px; padding:0;"></div>
 
-    <div layout-fill>
+    <div ng-if="$ctrl.authorized" layout-fill>
 
       <!-- Title, layout row-->
       <div layout="row" layout-align="start start" layout-padding class="dialog-item-title dialog-record-width">
@@ -48,11 +47,11 @@
 
       <md-divider style="padding-bottom: 0px;"></md-divider>
 
+
       <!-- Main content area, layout row < lg, layout column > md -->
       <div class="dialog-record dialog-record-width">
 
         <div layout="row" layout-align="start start" flex="100" style="height:100%" layout-padding>
-
 
           <!-- Files, gt-md -->
           <div hide show-gt-sm flex="20" class="item-left-col-dimens">
@@ -126,7 +125,23 @@
 
     </div>
 
+    <div ng-if="!$ctrl.authorized" layout-fill>
+      <div class="dialog-record dialog-record-width">
+        <div layout="column" layout-align="center center" flex="100" style="height:300px" layout-padding>
+          <div>
+            <h3>This item requires authorization. Please login.</h3>
+          </div>
+          <md-input-container>
+            <md-button class="md-raised md-accent md-button md-ink-ripple" type="button"
+               ng-click="$ctrl.login()">Login
+              <div class="md-ripple-container"></div>
+            </md-button>
+          </md-input-container>
+        </div>
+      </div>
+    </div>
   </md-dialog-content>
+
 
   </body>
 </md-dialog>

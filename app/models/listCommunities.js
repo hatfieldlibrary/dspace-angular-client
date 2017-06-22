@@ -28,6 +28,10 @@ var utils = require('../core/utils');
           json: true,
           rejectUnauthorized: utils.rejectUnauthorized()
 
+        }, function (error, response, body) {
+          if (dspaceTokenHeader.length === 0) {
+            session = utils.setDspaceCookieInfo(response, session);
+          }
         }
       );
 

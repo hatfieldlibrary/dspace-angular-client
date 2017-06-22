@@ -54,9 +54,10 @@ var queryGenerator = require('../core/queryGenerator');
    */
   function processResult(solrResponse) {
 
-
-    return {offset: solrResponse.response.numFound - 1};
-
+    if (solrResponse.response.numFound > 0) {
+      return {offset: solrResponse.response.numFound - 1};
+    }
+    return {offset: 0};
 
 
   }

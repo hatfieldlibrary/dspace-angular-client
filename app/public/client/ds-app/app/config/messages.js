@@ -25,7 +25,7 @@
     // Relative path to the image used with collection list view.  Can be empty string.
     COMMUNITIES_HEADER_IMAGE: '/ds-app/images/collections-list.png',
 
-    VIEW_ALL_COMMUNITIES: 'View Departments',
+    VIEW_ALL_COMMUNITIES: 'View All Departments',
 
     COMMUNITY_HOME_LINK_LABEL: 'All Departments',
 
@@ -113,6 +113,18 @@
     SUBMIT_INSTRUCTIONS_LINK: 'http://library.willamette.edu/guide_on_the_side/tutorial/academic-commons-submission',
 
     ITEM_EDIT_LABEL: 'Edit Item',
+
+    COMMUNITY_EDIT_LABEL: 'Edit Community',
+
+    COMMUNITY_CREATE_LABEL: 'Create Community',
+
+    COLLECTION_CREATE_LABEL: 'Create Collection',
+
+    SUB_COMMUNITY_CREATE_LABEL: 'Create Sub-community',
+
+    COLLECTION_EDIT_LABEL: 'Edit Collection',
+
+    ITEM_MAPPER_LABEL: 'Item Mapper',
 
     LOGIN_TO_SEE_MORE_LABEL: 'Login to see more collections.',
 

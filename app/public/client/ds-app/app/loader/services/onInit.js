@@ -36,7 +36,7 @@
         /**
          * Sets the open position or item id for the current state.
          */
-        LoaderUtils.initializePositions(loader);
+        LoaderUtils.initializePositions(loader, qs);
 
         AppContext.setPager(false);
 

@@ -18,7 +18,7 @@ var utils = require('../core/utils');
     var communityRequest =
       rp(
         {
-          url: host + link + '?expand=collections,logo,permission',
+          url: host + '/' + dspaceContext + '/communities/' +link + '?expand=collections,logo,permission',
           method: 'GET',
           headers: {
             'User-Agent': 'Request-Promise',
@@ -27,8 +27,12 @@ var utils = require('../core/utils');
           json: true,
           rejectUnauthorized: utils.rejectUnauthorized(),
           transform: processResult
+        }, function (error, response, body) {
+          if (typeof session.dspaceSessionCookie === 'undefined') {
+            session = utils.setDspaceCookieInfo(response, session);
+          }
         }
-      );
+  );
 
     return communityRequest;
 
@@ -42,7 +46,8 @@ var utils = require('../core/utils');
   function processResult(json) {
 
     var ret = {};
-    ret.id = json.id;
+
+    ret.id = json.uuid;
     ret.name = json.name;
     ret.handle = json.handle;
     ret.type = json.type;
@@ -55,7 +60,7 @@ var utils = require('../core/utils');
     ret.countItems = json.countItems;
     var logo = {};
     if (json.logo !== null) {
-      logo.id = json.logo.id;
+      logo.id = json.logo.uuid;
       logo.retrieveLink = json.logo.retrieveLink;
       logo.sizeBytes = json.logo.sizeBytes;
       logo.mimeType = json.logo.mimeType;

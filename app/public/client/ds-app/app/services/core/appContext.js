@@ -285,6 +285,10 @@
       }
 
       function setViewStartIndex(index) {
+        if (index < 0 || typeof index === 'undefined') {
+          index = 0;
+        }
+        console.log(index)
         _context.startIndex = +index;
       }
 

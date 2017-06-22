@@ -21,6 +21,26 @@
     'webm': 'video/webm'
   };
 
+  exports.setDspaceCookieInfo = function (response, session) {
+
+    try {
+      var regex = /^JSESSIONID.*/;
+      var cookies = response.headers['set-cookie'];
+      if (cookies) {
+        cookies.forEach(function (cookie) {
+          if (cookie.match(regex)) {
+            var cstring = cookie.split(';');
+            session.dspaceSessionCookie = cstring[0];
+
+          }
+        })
+      }
+    } catch(err) {
+      console.log(err.message);
+    }
+    return session;
+  };
+
   /**
    * Checks for dspace token in the current session and
    * returns token if present.
@@ -29,14 +49,10 @@
    */
   exports.getDspaceToken = function (session) {
 
-    var dspaceTokenHeader;
     if ('dspaceSessionCookie' in session) {
-      dspaceTokenHeader = session.dspaceSessionCookie;
-    } else {
-      dspaceTokenHeader = '';
+      return session.dspaceSessionCookie;
     }
-
-    return dspaceTokenHeader;
+    return '';
   };
 
   /**
@@ -65,7 +81,7 @@
 
       }
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
     }
   };
 

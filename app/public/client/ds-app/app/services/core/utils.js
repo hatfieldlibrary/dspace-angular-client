@@ -30,6 +30,15 @@
 
       var sysAdminStatus;
 
+      utils.encodePath = function(path) {
+
+        if(path) {
+          return window.encodeURIComponent(path);
+        }
+        return "";
+
+      };
+
 
       /**
        * Check system administrator status.

@@ -142,14 +142,16 @@
        * as provided in the query string..
        * @param qs
        */
-      function initializePositions(loader) {
+      function initializePositions(loader, qs) {
 
         var qs = $location.search();
+      //  console.log(qs)
 
         if (typeof qs.offset === 'undefined') {
           //  QueryManager.setOffset(0);
           AppContext.setInitOffset(0);
           AppContext.setViewStartIndex(0);
+          qs.offset = 0;
         } else {
           //  QueryManager.setOffset(qs.offset);
           AppContext.setInitOffset(qs.offset);
@@ -371,7 +373,7 @@
 
 
       /**
-       * Updates the pager controller with new data retrieved by solr query. Input
+       * Updates with new data retrieved by solr query. Input
        * parameters for field and sort may be new values originating from a sort options
        * action by the user.
        * @param loader  - reference to the pager controller

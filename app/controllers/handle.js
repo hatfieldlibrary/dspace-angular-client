@@ -24,6 +24,7 @@ var utils = require('../core/utils');
     /** @type {Object} Express session */
     var session = req.session;
 
+
     async.waterfall(
       [
         /**
@@ -38,7 +39,6 @@ var utils = require('../core/utils');
               callback(null, result);
             })
             .catch(function (err) {
-
               callback(err, null);
             });
         },
@@ -53,7 +53,7 @@ var utils = require('../core/utils');
 
           try {
             var type = result.type;
-            var link = result.link;
+            var link = result.uuid;
 
             if (type === 'community') {
 
@@ -62,7 +62,7 @@ var utils = require('../core/utils');
                   callback(null, result);
                 })
                 .catch(function (err) {
-                  console.log(err);
+                  console.log(err.message);
                 });
 
             } else if (type === 'collection') {
@@ -72,7 +72,7 @@ var utils = require('../core/utils');
                   callback(null, result);
                 })
                 .catch(function (err) {
-                  console.log(err);
+                  console.log(err.message);
                 });
 
             } else if (type === 'item') {
@@ -82,7 +82,7 @@ var utils = require('../core/utils');
                   callback(null, result);
                 })
                 .catch(function (err) {
-                  console.log(err);
+                  console.log(err.message);
                 });
 
             }
@@ -124,7 +124,6 @@ var utils = require('../core/utils');
 
 
         }   else {
-
           /** send response */
           utils.jsonResponse(res, result);
         }

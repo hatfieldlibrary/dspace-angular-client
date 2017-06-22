@@ -7,6 +7,8 @@
 
 (function () {
 
+  var utils = require('../core/utils');
+
   /**
    * Controller for retrieving the communities list via the rest api.
    * @param req
@@ -23,7 +25,7 @@
       .catch(function (err) {
         // log and return error code to client.
         console.log('DSpace returned an error.');
-        console.log(err);
+        console.log(err.message);
         res.statusCode = err.statusCode;
         res.end();
 
@@ -47,12 +49,12 @@
       .catch(function (err) {
         // log and return error code to client.
         console.log('DSpace returned an error.');
-        console.log(err);
+        console.log(err.message);
         res.statusCode = err.statusCode;
         res.end();
 
       });
-    
+
 
   };
 
@@ -73,7 +75,7 @@
       })
       .catch(function (err) {
         console.log('DSpace returned an error.');
-        console.log(err);
+        console.log(err.message);
         res.statusCode = err.statusCode;
         res.end();
       });

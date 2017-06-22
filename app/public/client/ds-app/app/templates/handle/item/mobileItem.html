@@ -68,7 +68,7 @@
                 <div class="md-body-2">{{$ctrl.publicationLabel}}</div>
                 <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.date}}</div>
                 <div class="md-body-2 citation-margin">{{$ctrl.citationLabel}}</div>
-                <div class="md-subhead" style="max-width:100%;box-sizing:border-box">{{$ctrl.data.url}}</div>
+                <div class="md-subhead" style="max-width:100%;box-sizing:border-box;word-break: break-all;">{{$ctrl.data.url}}</div>
                 <div class="md-body-2 citation-margin">{{$ctrl.parentCollectionLabel}}</div>
                 <div class="md-subhead" style="max-width:100%;box-sizing:border-box"><a
                   ng-href="/ds/handle/{{$ctrl.data.parentCollection.handle}}" target="_top">{{$ctrl.data.parentCollection.name}}</a>

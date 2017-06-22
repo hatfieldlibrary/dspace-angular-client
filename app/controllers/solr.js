@@ -44,8 +44,10 @@ var constants = require('../core/constants');
     var type = req.body.params.asset.type;
     var id = req.body.params.asset.id;
     var term = req.body.params.query.terms;
+
+    // Sets session url for initial query.
     if (req.body.params.query.qType === constants.QueryType.DISCOVER) {
-      req.session.url = '/ds/discover/' + type + '/' + id + '/' + term;
+     req.session.url = '/ds/discover/' + type + '/' + id + '/' + term + '/0';
     }
 
     var session = req.session;
@@ -95,7 +97,6 @@ var constants = require('../core/constants');
 
   };
 
-
   // currently unused.
   exports.recentSubmissions = function (req, res) {
 
@@ -103,7 +104,6 @@ var constants = require('../core/constants');
     var id = req.params.id;
     models.solrRecentSubmissions(type, id, res);
   };
-
 
   exports.jumpTo = function (req, res) {
 
@@ -144,7 +144,7 @@ var constants = require('../core/constants');
                 callback(null, result);
               })
               .catch(function (err) {
-                console.log(err);
+                console.log(err.message);
               });
 
           } catch (err) {
@@ -176,7 +176,6 @@ var constants = require('../core/constants');
           res.end();
 
         } else {
-
           /** send response */
           utils.jsonResponse(res, result);
 

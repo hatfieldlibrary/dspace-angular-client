@@ -1,5 +1,3 @@
-
-
 (function () {
 
   'use strict';
@@ -8,6 +6,26 @@
 
   var config;
 
+  /**
+   * Sets the url value for sessions. This is currently used
+   * for discovery item logins. For other request types, the session url
+   * is set in the corresponding controller module.
+   * @param req
+   * @param res
+   */
+  exports.setUrl = function (req, res) {
+    var url = decodeURIComponent(req.params.url);
+    req.session.url = url;
+    res.end();
+  };
+
+  /**
+   * Attempts login to dspace.
+   * @param netid
+   * @param config
+   * @param req
+   * @param res
+   */
   function loginToDspace(netid, config, req, res) {
 
     var session = req.session;
@@ -18,9 +36,12 @@
       req)
       .then(function () {
         // If successful, redirect to session.url or to home page.
-        if (session.url !== 'undefined') {
-          res.redirect(session.url);
-
+        if (typeof session.url !== 'undefined' && session.url.length > 0) {
+          // We added an optional auto login parameter to discovery
+          // queries.  Remove here after initial use. This ensures that
+          // we do not create a loop in the event that the client has
+          // not handled the query parameter itself.
+          res.redirect(_replaceLoginParam(session.url));
         } else {
           res.redirect('/ds/communities');
         }
@@ -28,11 +49,18 @@
       })
       .catch(function (err) {
         console.log('DSpace login error.');
-        console.log(err);
+        console.log(err.message);
         res.statusCode = err.statusCode;
         res.end();
       });
 
+  }
+
+  function _replaceLoginParam(path) {
+    if (path) {
+      return path.replace('?login=auto', '');
+    }
+    return '';
   }
 
   /**
@@ -43,20 +71,21 @@
    */
   exports.dspace = function (req, res) {
 
+    /** Remove login param if it exists on the url */
+    req.session.url = _replaceLoginParam(req.session.url);
+    var session = req.session;
+
     /** @type {string} the netid of the user */
-    var netid = req.params.netid;
+    var netid = session.passport.user;
 
     if (!config) {
       console.log('ERROR: Missing application configuration.  Cannot access application key.');
-      res.statusCode = 500;
+      res.status(500);
       res.end();
     }
 
-    var session = req.session;
-
     /** If session does not already have DSpace token, login to DSpace.  */
     if (!session.dspaceSessionCookie) {
-
 
       loginToDspace(netid, config, req, res);
 
@@ -69,16 +98,15 @@
             // DSpace API REST status check will return a boolean
             // value for authenticated.
             if (!response.authenticated) {
-              console.log('This dspace token is no longer valid: ' + session.dspaceSessionCookie);
-              // If not authenticated, remove the stale token.
-              utils.removeDspaceSession(session);
               loginToDspace(netid, config, req, res);
+            } else {
+              //res.redirect(_replaceLoginParam(session.url));
+              res.status(304);
+              res.end();
             }
 
           })
         .catch(function (err) {
-            // If status request returned an error, remove dspace token.
-            utils.removeDspaceSession(session);
             console.log(err.message);
             //utils.jsonResponse(res, {status: 'denied'});
 
@@ -88,7 +116,6 @@
     }
 
   };
-
 
   /**
    * Returns the application environment.  The app configuration
@@ -101,7 +128,6 @@
 
   };
 
-
   /**
    * Checks for existing DSpace REST session token and validates
    * status with the DSpace API.
@@ -109,7 +135,6 @@
    * @param res
    */
   exports.checkSession = function (req, res) {
-
 
     /** @type {Object} the current session object */
     var session = req.session;
@@ -130,10 +155,9 @@
               // Autheticated, returning status 'ok'
               utils.jsonResponse(res, {status: 'ok'});
 
+
             }
             else {
-              // If not authenticated, remove the stale token.
-              utils.removeDspaceSession(session);
               // Returning status denied.
               utils.jsonResponse(res, {status: 'denied'});
 
@@ -141,8 +165,6 @@
 
           })
         .catch(function (err) {
-            // If status request returned an error, remove dspace token.
-            utils.removeDspaceSession(session);
             console.log(err.message);
             //utils.jsonResponse(res, {status: 'denied'});
             res.statusCode = err.statusCode;
@@ -150,7 +172,6 @@
           }
         );
     } else {
-
       // There's no dspace token in the current Express session.
       utils.jsonResponse(res, {status: 'denied'});
 

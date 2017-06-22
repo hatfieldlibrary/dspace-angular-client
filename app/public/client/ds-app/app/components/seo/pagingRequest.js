@@ -10,7 +10,6 @@
 
     var ctrl = this;
 
-
     var site = $routeParams.site;
     var item = $routeParams.item;
 
@@ -35,8 +34,7 @@
     /**
      * Initialize the component.
      */
-    var init = function () {
-
+    ctrl.$onInit = function () {
 
       /** Retrieve data for the handle. */
       var query = ItemByHandle.query({site: site, item: item});
@@ -81,7 +79,6 @@
 
             ctrl.ready = true;
 
-
           }
         }).catch(function (err) {
 
@@ -91,12 +88,7 @@
       });
     };
 
-
-    init();
-
-
   }
-
 
   dspaceComponents.component('seoPagingComponent', {
 

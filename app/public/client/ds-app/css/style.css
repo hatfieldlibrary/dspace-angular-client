@@ -97,7 +97,7 @@ img {
 }
 
 .app-side-nav {
-  margin-top: 102px;
+  margin-top: 70px;
 }
 
 .user-options-medium {
@@ -109,7 +109,7 @@ img {
 }
 
 .layout-row .app-primary-content-container {
-  max-width: 900px;
+  /*max-width: 900px;*/
 }
 
 md-sidenav {
@@ -340,7 +340,7 @@ md-sidenav md-list-item {
 
 .search-form md-input-container.md-has-icon,
 .userOptions md-input-container {
-  padding-left: 18px;
+  /*padding-left: 18px;*/
 }
 
 .userOptions md-input-container {
@@ -426,6 +426,7 @@ div.is-mobile,
 
 md-card.item {
   background: #fff;
+  margin: 8px 0 0;
 }
 
 .file-info .md-button,

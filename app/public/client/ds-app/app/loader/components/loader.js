@@ -54,7 +54,6 @@
       // only act on location changes for paging requests
       var re = /^\/ds\/handle|^\/ds\/discover|^\/ds\/advanced|^\/ds\/browse/;
 
-
       var path = $location.path();
       if (path.match(re)) {
         OnPagerLocationChange.onLocationChange(loader, qs, loader.context);
@@ -70,7 +69,6 @@
       AppContext.isFilter(false);
       var qs = $location.search();
       OnPagerInit.onInit(loader, qs);
-
 
     };
 
@@ -115,9 +113,7 @@
      * @param data the next set if items.
      */
     this.updateParentNewSet = function (data) {
-
       if (data) {
-
         loader.onNewSet({
           results: data.results,
           count: data.count,
@@ -172,7 +168,6 @@
     this.setTheSortOrder = function(order) {
       loader.setSortOrder({order: order});
     };
-
 
   }
 

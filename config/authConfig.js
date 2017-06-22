@@ -84,8 +84,7 @@ module.exports = function (app, config, passport) {
 
       passport.authenticate('google', function (err, user) {
         if (user) {
-          console.log(req.user)
-          res.redirect('/ds-api/login/' + req.user);
+          res.redirect('/ds-api/login');
         }
       });
 
@@ -125,11 +124,11 @@ module.exports = function (app, config, passport) {
      * Class for validating the user.
      */
     var User = {
-      findOne: function (login, callback) {
-        if (typeof login === 'undefined') {
+      findOne: function (user, callback) {
+        if (typeof user === 'undefined') {
           return callback(new Error('User is undefined'), '');
         }
-        return callback(null, login.login);
+        return callback(null, user.login.uid);
       }
     };
     /**
@@ -192,7 +191,7 @@ module.exports = function (app, config, passport) {
             return next(err);
           }
           req.session.messages = '';
-          return res.redirect('/ds-api/login/' + user.username);
+          return res.redirect('/ds-api/login');
 
         });
       })(req, res, next);
