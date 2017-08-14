@@ -41,7 +41,6 @@
 
       };
 
-
       /**
        * Check system administrator status.
        */
@@ -500,28 +499,31 @@
           CheckSession.query().$promise.then(function (sessionStatus) {
             // If no DSpace session, redirect to authentication.
             if (sessionStatus.status !== 'ok') {
-              // This sets the session url.
+              // This sets the Express session url. This will be used in
+              // the redirect after authentication succeeds.
               SetAuthUrl.query({url: utils.encodePath(path)}).$promise.then(function () {
                 $window.location = '/' + AppContext.getApplicationPrefix() + '-api/auth/login/';
               });
-            } else {
+            }
+            // If a dspace session already exists, then proceed with component initialization.
+            else {
+              $location.search('');
               $location.url(path);
-              // Continue with component initialization.
+              // Initialization callback.
               callback();
             }
           });
         }
-        // User-initiated login request.
+        // If this is a user-initiated login request, redirect to authentication url.
         else if (typeof $routeParams.auth !== 'undefined') {
           $window.location = AppContext.getApplicationPrefix() + '-api/auth/login';
         }
-        // No auth required. Continue with component initialization.
+        // No auth is required. Continue with component initialization.
         else {
           callback();
         }
 
       };
-
 
       return utils;
 

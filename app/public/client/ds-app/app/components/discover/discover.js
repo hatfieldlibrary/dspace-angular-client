@@ -83,6 +83,12 @@
     disc.hideComponents = false;
 
     /**
+     * Default value id.
+     * @type {number}
+     */
+    disc.suppliedId = 0;
+
+    /**
      * Handles collection selection.
      * @param id
      */
@@ -127,9 +133,49 @@
     var initializeCallback = function() {
 
       /**
-       * Pass the controller to discovery extensions.
+       * Get the community list.
        */
-      DiscoveryFormExtensions.setController(this);
+      DiscoveryFormExtensions.getCommunities();
+
+      /**
+       * If this is a collection query, set the collection id
+       * and fetch the parent community.
+       */
+      if (disc.type === AssetTypes.COLLECTION) {
+
+        disc.collectionId = disc.suppliedId;
+        /**
+         * Get parent community info, including collections belonging the community.
+         * Provide callback that locates the currently selected collection object.
+         */
+        DiscoveryFormExtensions.getParentCommunityInfo(disc.suppliedId);
+
+      }
+      else {
+
+        /**
+         * If this is a community query, then set the collection id to zero.
+         * @type {number}
+         */
+        disc.collectionId = 0;
+        /**
+         * Set the provided community.
+         */
+        disc.communityId = disc.suppliedId;
+
+        /**
+         * Get list of collections for this community.
+         */
+        DiscoveryFormExtensions.getCollectionsForCommunity(disc.communityId);
+
+      }
+
+    };
+
+    /**
+     * Initialization.
+     */
+    disc.$onInit = function () {
 
       /**
        * Input route parameters.
@@ -137,7 +183,15 @@
       disc.type = $routeParams.type;
       disc.terms = $routeParams.terms;
       disc.context = QueryActions.SEARCH;
-      var id = $routeParams.id;
+      // If id is present in query params, update the controller field.
+      if ($routeParams.id) {
+        disc.suppliedId = $routeParams.id;
+      }
+      /**
+       * Pass the controller to discovery extensions.
+       */
+      DiscoveryFormExtensions.setController(disc);
+
 
       Utils.resetQuerySettings();
 
@@ -152,7 +206,7 @@
       /**
        * The asset id is the id of the collection.
        */
-      QueryManager.setAssetId(id);
+      QueryManager.setAssetId(disc.suppliedId);
 
       /**
        * Routine initialization.
@@ -171,59 +225,6 @@
 
       AppContext.setDiscoveryContext(DiscoveryContext.BASIC_SEARCH);
 
-      /**
-       * If the DSpace ID parameter is undefined then set initial id to zero ('All Departments').
-       */
-      if (id === undefined || +id === 0) {
-        id = 0;
-      }
-
-      /**
-       * Get the community list.
-       */
-      DiscoveryFormExtensions.getCommunities();
-
-
-
-      /**
-       * If this is a collection query, set the collection id
-       * and fetch the parent community.
-       */
-      if (disc.type === AssetTypes.COLLECTION) {
-
-        disc.collectionId = id;
-        /**
-         * Get parent community info, including collections belonging the community.
-         * Provide callback that locates the currently selected collection object.
-         */
-        DiscoveryFormExtensions.getParentCommunityInfo(id);
-
-      }
-      else {
-
-        /**
-         * If this is a community query, then set the collection id to zero.
-         * @type {number}
-         */
-        disc.collectionId = 0;
-        /**
-         * Set the provided community.
-         */
-        disc.communityId = id;
-
-        /**
-         * Get list of collections for this community.
-         */
-        DiscoveryFormExtensions.getCollectionsForCommunity(disc.communityId);
-
-      }
-
-    };
-
-    /**
-     * Initialization.
-     */
-    disc.$onInit = function () {
       /**
        * Handle auto login requests. Community handle requests and
        * discovery requests accept a query parameter that triggers

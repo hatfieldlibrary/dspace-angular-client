@@ -47,7 +47,7 @@ module.exports = function (grunt) {
           script: 'server.js',
           /*jshint camelcase: false */
           node_env: 'development',
-          debug: true
+          inspect: true
         }
       },
       prod: {
@@ -55,7 +55,7 @@ module.exports = function (grunt) {
           script: 'server.js',
           /*jshint camelcase: false */
           node_env: 'production',
-          debug: false
+          inspect: false
         }
       },
       test: {
@@ -63,7 +63,7 @@ module.exports = function (grunt) {
           script: 'server.js',
           /*jshint camelcase: false */
           node_env: 'test',
-          debug: true
+          inspect: true
         }
       }
     },
@@ -137,37 +137,37 @@ module.exports = function (grunt) {
     },
 
     // Debugging with node inspector
-    'node-inspector': {
-      custom: {
-        options: {
-          'web-host': 'localhost'
-        }
-      }
-    },
+    // 'node-inspector': {
+    //   custom: {
+    //     options: {
+    //       'web-host': 'localhost'
+    //     }
+    //   }
+    // },
 
     // Use nodemon to run server in debug mode with an initial breakpoint
     nodemon: {
-      debug: {
-        script: '<%= app %>',
-        options: {
-          nodeArgs: ['--debug-brk'],
-          env: {
-            PORT: process.env.PORT || 9000
-          },
-          callback: function (nodemon) {
-            /* jshint unused: false */
-            nodemon.on('log', function (event) {
-            });
-
-            // opens browser on initial server start
-            nodemon.on('config:update', function () {
-              setTimeout(function () {
-                require('open')('http://localhost:8080/debug?port=5858');
-              }, 500);
-            });
-          }
-        }
-      }
+      // debug: {
+      //   script: '<%= app %>',
+      //   options: {
+      //     nodeArgs: ['--debug-brk'],
+      //     env: {
+      //       PORT: process.env.PORT || 9000
+      //     },
+      //     callback: function (nodemon) {
+      //       /* jshint unused: false */
+      //       nodemon.on('log', function (event) {
+      //       });
+      //
+      //       // opens browser on initial server start
+      //       nodemon.on('config:update', function () {
+      //         setTimeout(function () {
+      //           require('open')('http://localhost:8080/debug?port=5858');
+      //         }, 500);
+      //       });
+      //     }
+      //   }
+      // }
     },
     // Allow the use of non-minsafe AngularJS files. Automatically makes it
     // minsafe compatible so Uglify does not destroy the ng references
@@ -292,15 +292,15 @@ module.exports = function (grunt) {
       //test: [
       //  'newer:babel:client',
       //],
-      debug: {
-        tasks: [
-          'nodemon',
-          'node-inspector'
-        ],
-        options: {
-          logConcurrentOutput: true
-        }
-      },
+      // debug: {
+      //   tasks: [
+      //     'nodemon',
+      //   //  'node-inspector'
+      //   ],
+      //   options: {
+      //     logConcurrentOutput: true
+      //   }
+     // },
       dist: [
         'newer:babel:client',
        // 'imagemin'
@@ -479,18 +479,18 @@ module.exports = function (grunt) {
       return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', 'wait', 'open', 'express-keepalive']);
     }
 
-    if (target === 'debug') {
-      return grunt.task.run([
-        'clean:server',
-        'env:all',
-        // 'concurrent:pre',
-        'concurrent:server',
-        //  'injector',
-        //  'wiredep:client',
-        // 'postcss',
-        'concurrent:debug'
-      ]);
-    }
+    // if (target === 'debug') {
+    //   return grunt.task.run([
+    //     'clean:server',
+    //     'env:all',
+    //     // 'concurrent:pre',
+    //     'concurrent:server',
+    //     //  'injector',
+    //     //  'wiredep:client',
+    //     // 'postcss',
+    //     'concurrent:debug'
+    //   ]);
+    // }
 
     grunt.task.run([
       'clean:server',
