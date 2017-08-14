@@ -189,11 +189,11 @@
 
     models.logout(req)
       .then(function () {
-        res.redirect('http://libmedia.willamette.edu/commons');
+        res.redirect('http://libmedia.willamette.edu/academiccommons');
       })
       .catch(function (err) {
         console.log(err.message);
-        res.redirect('http://libmedia.willamette.edu/commons');
+        res.redirect('http://libmedia.willamette.edu/academiccommons');
 
       });
 

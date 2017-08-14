@@ -97,13 +97,17 @@
       }
     }
 
-    ctrl.$onInit = function() {
+    /**
+     * Callback function for initializing the component.  Called
+     * from the checkAutoLogin utility function.
+     */
+    var initializeCallback = function(controller) {
 
       $anchorScroll();
 
       try {
-        PageTitle.setTitle(ctrl.data.name);
-        PageDescription.setDescription(ctrl.data.introductoryText);
+        PageTitle.setTitle(controller.data.name);
+        PageDescription.setDescription(controller.data.introductoryText);
 
       } catch(error) {
         console.log(error);
@@ -111,16 +115,21 @@
       }
 
       PageAuthor.setAuthor('');
-
-
       SeoPaging.setNextLink('nofollow', '');
       SeoPaging.setPrevLink('nofollow', '');
-
       Utils.checkStatus(showLoginMessage);
 
     };
 
+    ctrl.$onInit = function() {
+      /**
+       * Handle auto login requests. Community handle requests and
+       * discovery requests accept a query parameter that triggers
+       * authentication if no dspace session exists. See utility method.
+       */
+      Utils.checkAutoLogin(ctrl, initializeCallback);
 
+    };
 
   }
 

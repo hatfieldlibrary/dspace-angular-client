@@ -10,7 +10,6 @@
   'use strict';
 
   function DiscoverCtrl($mdMedia,
-                        $window,
                         $routeParams,
                         $location,
                         QueryManager,
@@ -23,8 +22,6 @@
                         Utils,
                         Messages,
                         PageTitle,
-                        SetAuthUrl,
-                        CheckSession,
                         DiscoveryFormExtensions) {
 
     var disc = this;
@@ -86,6 +83,12 @@
     disc.hideComponents = false;
 
     /**
+     * Default value id.
+     * @type {number}
+     */
+    disc.suppliedId = 0;
+
+    /**
      * Handles collection selection.
      * @param id
      */
@@ -123,22 +126,16 @@
 
     };
 
-    function _initialize(id) {
-
-
-      /**
-       * If the DSpace ID parameter is undefined then set initial id to zero ('All Departments').
-       */
-      if (id === undefined || +id === 0) {
-        id = 0;
-      }
+    /**
+     * Callback function for initializing the component.  Called
+     * from the checkAutoLogin utility function.
+     */
+    var initializeCallback = function() {
 
       /**
        * Get the community list.
        */
       DiscoveryFormExtensions.getCommunities();
-
-
 
       /**
        * If this is a collection query, set the collection id
@@ -146,12 +143,12 @@
        */
       if (disc.type === AssetTypes.COLLECTION) {
 
-        disc.collectionId = id;
+        disc.collectionId = disc.suppliedId;
         /**
          * Get parent community info, including collections belonging the community.
          * Provide callback that locates the currently selected collection object.
          */
-        DiscoveryFormExtensions.getParentCommunityInfo(id);
+        DiscoveryFormExtensions.getParentCommunityInfo(disc.suppliedId);
 
       }
       else {
@@ -164,7 +161,7 @@
         /**
          * Set the provided community.
          */
-        disc.communityId = id;
+        disc.communityId = disc.suppliedId;
 
         /**
          * Get list of collections for this community.
@@ -173,7 +170,7 @@
 
       }
 
-    }
+    };
 
     /**
      * Initialization.
@@ -181,17 +178,20 @@
     disc.$onInit = function () {
 
       /**
-       * Pass the controller to discovery extensions.
-       */
-      DiscoveryFormExtensions.setController(this);
-
-      /**
        * Input route parameters.
        */
       disc.type = $routeParams.type;
-      var id = $routeParams.id;
       disc.terms = $routeParams.terms;
       disc.context = QueryActions.SEARCH;
+      // If id is present in query params, update the controller field.
+      if ($routeParams.id) {
+        disc.suppliedId = $routeParams.id;
+      }
+      /**
+       * Pass the controller to discovery extensions.
+       */
+      DiscoveryFormExtensions.setController(disc);
+
 
       Utils.resetQuerySettings();
 
@@ -206,7 +206,7 @@
       /**
        * The asset id is the id of the collection.
        */
-      QueryManager.setAssetId(id);
+      QueryManager.setAssetId(disc.suppliedId);
 
       /**
        * Routine initialization.
@@ -225,43 +225,14 @@
 
       AppContext.setDiscoveryContext(DiscoveryContext.BASIC_SEARCH);
 
-      var path = $location.url();
-      console.log(path)
       /**
-       * Auto login the request.
+       * Handle auto login requests. Community handle requests and
+       * discovery requests accept a query parameter that triggers
+       * authentication if no dspace session exists. See utility method.
        */
-      if ($location.search().login === 'auto') {
-        // remove login query parameter
-        path = path.replace('?login=auto', '');
-        $location.search(path);
-        CheckSession.query().$promise.then(function (sessionStatus) {
-          // If no DSpace session, redirect to authentication.
-          if (sessionStatus.status !== 'ok') {
-            // This sets the session url.
-            SetAuthUrl.query({url: Utils.encodePath(path)}).$promise.then(function () {
-              $window.location = '/' + AppContext.getApplicationPrefix() + '-api/auth/login/';
-            });
-          } else {
-            $location.url(path);
-            _initialize(id);
-          }
+      Utils.checkAutoLogin(initializeCallback);
 
-        });
-      }
-      /**
-       * Handle user-initiated login request.
-       */
-      else if (typeof $routeParams.auth !== 'undefined') {
-        $window.location = AppContext.getApplicationPrefix() + '-api/auth/login';
-      }
-      /**
-       * Continue with normal initialization.
-       */
-      else {
-        _initialize(id);
-
-      }
-    }
+     }
   }
 
   dspaceComponents.component('discoverComponent', {

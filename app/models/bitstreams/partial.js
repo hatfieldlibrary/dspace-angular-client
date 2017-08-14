@@ -122,7 +122,7 @@ else {
         path: '/' + dspaceContext + '/bitstreams/' + id + '/retrieve',
         method: 'GET',
         headers: {
-          'rest-dspace-token': dspaceTokenHeader
+          'Cookie': dspaceTokenHeader
         },
         rejectUnauthorized: utils.rejectUnauthorized()
       };
@@ -130,24 +130,30 @@ else {
 
       http.get(options, function (response) {
 
-        var writeStream = fs.createWriteStream(filePath);
-
-        writeStream.on('error', function (err) {
-          console.log(err);
-        });
-
-        response.pipe(writeStream)
-
-          .on('error', function (err) {  // done
-            console.log("Error writing file to disk. " + err);
-          })
-
-          .on('finish', function () {
-            console.log('File written to disk: ' + filePath);
-            _readFile(filePath);
-
+        if (response.statusCode === 401) {
+          console.log('Error retrieving file from Dspace. Status: ' + response.statusCode);
+          res.statusCode = 401;
+          res.end();
+        }
+        else {
+          var writeStream = fs.createWriteStream(filePath);
+          writeStream.on('error', function (err) {
+            console.log(err);
           });
 
+          response.pipe(writeStream)
+
+            .on('error', function (err) {  // done
+              console.log("Error writing file to disk. " + err);
+            })
+
+            .on('finish', function () {
+              console.log('File written to disk: ' + filePath);
+              _readFile(filePath);
+
+            });
+
+        }
       }).on('error', function (e) {
         // we got an error, return 500 error to client and log error
         console.log('Error retrieving file from Dspace. ' + e.message);
