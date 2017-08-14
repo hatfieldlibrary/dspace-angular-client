@@ -10,7 +10,6 @@
   'use strict';
 
   function DiscoverCtrl($mdMedia,
-                        $window,
                         $routeParams,
                         $location,
                         QueryManager,
@@ -23,8 +22,6 @@
                         Utils,
                         Messages,
                         PageTitle,
-                        SetAuthUrl,
-                        CheckSession,
                         DiscoveryFormExtensions) {
 
     var disc = this;
@@ -123,8 +120,56 @@
 
     };
 
-    function _initialize(id) {
+    /**
+     * Callback function for initializing the component.  Called
+     * from the checkAutoLogin utility function.
+     */
+    var initializeCallback = function() {
 
+      /**
+       * Pass the controller to discovery extensions.
+       */
+      DiscoveryFormExtensions.setController(this);
+
+      /**
+       * Input route parameters.
+       */
+      disc.type = $routeParams.type;
+      disc.terms = $routeParams.terms;
+      disc.context = QueryActions.SEARCH;
+      var id = $routeParams.id;
+
+      Utils.resetQuerySettings();
+
+      /**
+       * The query object updated at init, before the loader module invokes
+       * the query.
+       *
+       * Remove any previous discovery filters.
+       */
+      QueryManager.clearDiscoveryFilters();
+
+      /**
+       * The asset id is the id of the collection.
+       */
+      QueryManager.setAssetId(id);
+
+      /**
+       * Routine initialization.
+       */
+      QueryManager.setAssetType(disc.type);
+
+      QueryManager.setQueryType(QueryTypes.DISCOVER);
+
+      QueryManager.setAction(QueryActions.SEARCH);
+
+      QueryManager.setSort(QuerySort.ASCENDING);
+
+      QueryManager.setSearchTerms(disc.terms);
+
+      QueryManager.setOffset(0);
+
+      AppContext.setDiscoveryContext(DiscoveryContext.BASIC_SEARCH);
 
       /**
        * If the DSpace ID parameter is undefined then set initial id to zero ('All Departments').
@@ -173,95 +218,20 @@
 
       }
 
-    }
+    };
 
     /**
      * Initialization.
      */
     disc.$onInit = function () {
-
       /**
-       * Pass the controller to discovery extensions.
+       * Handle auto login requests. Community handle requests and
+       * discovery requests accept a query parameter that triggers
+       * authentication if no dspace session exists. See utility method.
        */
-      DiscoveryFormExtensions.setController(this);
+      Utils.checkAutoLogin(initializeCallback);
 
-      /**
-       * Input route parameters.
-       */
-      disc.type = $routeParams.type;
-      var id = $routeParams.id;
-      disc.terms = $routeParams.terms;
-      disc.context = QueryActions.SEARCH;
-
-      Utils.resetQuerySettings();
-
-      /**
-       * The query object updated at init, before the loader module invokes
-       * the query.
-       *
-       * Remove any previous discovery filters.
-       */
-      QueryManager.clearDiscoveryFilters();
-
-      /**
-       * The asset id is the id of the collection.
-       */
-      QueryManager.setAssetId(id);
-
-      /**
-       * Routine initialization.
-       */
-      QueryManager.setAssetType(disc.type);
-
-      QueryManager.setQueryType(QueryTypes.DISCOVER);
-
-      QueryManager.setAction(QueryActions.SEARCH);
-
-      QueryManager.setSort(QuerySort.ASCENDING);
-
-      QueryManager.setSearchTerms(disc.terms);
-
-      QueryManager.setOffset(0);
-
-      AppContext.setDiscoveryContext(DiscoveryContext.BASIC_SEARCH);
-
-      var path = $location.url();
-      console.log(path)
-      /**
-       * Auto login the request.
-       */
-      if ($location.search().login === 'auto') {
-        // remove login query parameter
-        path = path.replace('?login=auto', '');
-        $location.search(path);
-        CheckSession.query().$promise.then(function (sessionStatus) {
-          // If no DSpace session, redirect to authentication.
-          if (sessionStatus.status !== 'ok') {
-            // This sets the session url.
-            SetAuthUrl.query({url: Utils.encodePath(path)}).$promise.then(function () {
-              $window.location = '/' + AppContext.getApplicationPrefix() + '-api/auth/login/';
-            });
-          } else {
-            $location.url(path);
-            _initialize(id);
-          }
-
-        });
-      }
-      /**
-       * Handle user-initiated login request.
-       */
-      else if (typeof $routeParams.auth !== 'undefined') {
-        $window.location = AppContext.getApplicationPrefix() + '-api/auth/login';
-      }
-      /**
-       * Continue with normal initialization.
-       */
-      else {
-        _initialize(id);
-
-      }
-    }
+     }
   }
 
   dspaceComponents.component('discoverComponent', {

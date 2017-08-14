@@ -10,12 +10,14 @@
 
     function ($window,
               $location,
+              $routeParams,
               $timeout,
               $mdMedia,
               QueryManager,
               AppContext,
               Messages,
               CheckSession,
+              SetAuthUrl,
               CheckSysAdmin,
               QueryActions,
               QueryFields,
@@ -30,9 +32,9 @@
 
       var sysAdminStatus;
 
-      utils.encodePath = function(path) {
+      utils.encodePath = function (path) {
 
-        if(path) {
+        if (path) {
           return window.encodeURIComponent(path);
         }
         return "";
@@ -60,7 +62,7 @@
         }
       };
 
-      utils.getImagePath = function(img) {
+      utils.getImagePath = function (img) {
         return '/' + AppContext.getApplicationPrefix() + '-app/images/' + img;
       };
 
@@ -251,7 +253,7 @@
         var sessionStatus = CheckSession.query();
         sessionStatus.$promise.then(function () {
           if (sessionStatus.status === 'ok') {
-           // AppContext.updateDspaceSession(true);
+            // AppContext.updateDspaceSession(true);
             SessionObserver.set(true);
           } else {
             //AppContext.updateDspaceSession(false);
@@ -483,10 +485,47 @@
 
       };
 
+      /**
+       * Checks for auto login request parameter.  If auto login is requested, checks for
+       * dspace session and redirects to application login if required.
+       * @param callback the component's initialization method
+       */
+      utils.checkAutoLogin = function (callback) {
+        // Auto login requested.
+        if ($location.search().login === 'auto') {
+          var path = $location.url();
+          // Remove login query parameter.
+          path = path.replace('?login=auto', '');
+          $location.search(path);
+          CheckSession.query().$promise.then(function (sessionStatus) {
+            // If no DSpace session, redirect to authentication.
+            if (sessionStatus.status !== 'ok') {
+              // This sets the session url.
+              SetAuthUrl.query({url: utils.encodePath(path)}).$promise.then(function () {
+                $window.location = '/' + AppContext.getApplicationPrefix() + '-api/auth/login/';
+              });
+            } else {
+              $location.url(path);
+              // Continue with component initialization.
+              callback();
+            }
+          });
+        }
+        // User-initiated login request.
+        else if (typeof $routeParams.auth !== 'undefined') {
+          $window.location = AppContext.getApplicationPrefix() + '-api/auth/login';
+        }
+        // No auth required. Continue with component initialization.
+        else {
+          callback();
+        }
+
+      };
+
+
       return utils;
 
     }
-
   );
 
 })();
