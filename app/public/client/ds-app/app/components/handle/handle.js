@@ -137,7 +137,7 @@
         // to be an expired session or the user following an
         // external link to a resource they are not authorized
         // to use.
-        Utils.checkStatus(status);
+        Utils.checkSession(statusCallback);
 
       });
 
@@ -158,7 +158,7 @@
      * contact in the message to the user.  The admin can investigate
      * the problem when contacted.
      */
-    function status(dspaceSession) {
+    function statusCallback(dspaceSession) {
 
       if (AppContext.useRedirect()) {
         // Attempt to login. Redirect only if no DSpace session exists.
@@ -190,8 +190,8 @@
     },
 
     template: '<!-- Switch components based on item type --> ' +
-    '<div ng-if="$ctrl.loginRequired || $ctrl.accessNotAllowed"> ' +
-    '<login-required-component></login-required-component> ' +
+    '<div ng-if="$ctrl.accessNotAllowed"> ' +
+    '<no-access-component></no-access-component> ' +
     '</div> ' +
     '<div flex layout-fill class="spinner" ng-hide="$ctrl.ready" >' +
     '<div layout="row" flex layout-fill layout-sm="row" layout-md="row" style="min-height: 800px;" layout-align="space-around">' +

@@ -101,13 +101,13 @@
      * Callback function for initializing the component.  Called
      * from the checkAutoLogin utility function.
      */
-    var initializeCallback = function(controller) {
+    var initializeCallback = function() {
 
       $anchorScroll();
 
       try {
-        PageTitle.setTitle(controller.data.name);
-        PageDescription.setDescription(controller.data.introductoryText);
+        PageTitle.setTitle(ctrl.data.name);
+        PageDescription.setDescription(ctrl.data.introductoryText);
 
       } catch(error) {
         console.log(error);
@@ -127,7 +127,7 @@
        * discovery requests accept a query parameter that triggers
        * authentication if no dspace session exists. See utility method.
        */
-      Utils.checkAutoLogin(ctrl, initializeCallback);
+      Utils.checkAutoLogin(initializeCallback);
 
     };
 
