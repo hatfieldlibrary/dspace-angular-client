@@ -104,7 +104,6 @@
     var initializeCallback = function() {
 
       $anchorScroll();
-
       try {
         PageTitle.setTitle(ctrl.data.name);
         PageDescription.setDescription(ctrl.data.introductoryText);

@@ -137,7 +137,7 @@
         // to be an expired session or the user following an
         // external link to a resource they are not authorized
         // to use.
-        Utils.checkSession(statusCallback);
+        Utils.checkStatus(statusCallback);
 
       });
 
