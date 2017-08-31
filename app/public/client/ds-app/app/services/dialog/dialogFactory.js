@@ -66,7 +66,8 @@
 
         ctrl.isMobile = $mdMedia('sm') || $mdMedia('xs');
 
-        ctrl.authorized = true;
+        ctrl.isAuthorized = true;
+        ctrl.hasDspaceSession = false;
 
         /**
          * Set screen size boolean.
@@ -85,6 +86,29 @@
           $mdDialog.cancel();
         };
 
+        function statusCallback(dspaceSession){
+          if (dspaceSession) {
+            ctrl.hasDspaceSession = true;
+            ctrl.isAuthorized = false;
+          } else {
+            ctrl.isAuthorized = false;
+            ctrl.hasDspaceSession = false;
+            var path = $location.path();
+            var search = $location.search();
+            var keys = (Object.keys(search));
+            for (var i = 0; i < keys.length; i++) {
+              if (i === 0) {
+                path += '?';
+              }
+              path += keys[i] + '=' + search[keys[i]];
+              if (i < keys.length - 1) {
+                path += '&';
+              }
+            }
+            SetAuthUrl.query({url:  Utils.encodePath(path)});
+
+          }
+        }
 
 
         /**
@@ -92,6 +116,7 @@
          */
         ctrl.data.$promise.
         then(function (data) {
+          ctrl.isAuthorized = true;
           ctrl.fileCount = Utils.getFileCount(ctrl.data.bitstreams);
           ctrl.canWrite = WriteObserver.get();
           ctrl.itemId = data.id;
@@ -101,25 +126,8 @@
           ctrl.jsonLd = Utils.setJsonLd(ctrl.data);
 
         }).catch(function () {
-
-          ctrl.authorized = false;
-          var path = $location.path();
-        //  path += '/auth';
-
-          var search = $location.search();
-          var keys = (Object.keys(search));
-
-          for (var i = 0; i < keys.length; i++) {
-            if (i === 0) {
-              path += '?';
-            }
-            path += keys[i] + '=' + search[keys[i]];
-            if (i < keys.length - 1) {
-              path += '&';
-            }
-          }
-          console.log('setting session url to ' + path);
-          SetAuthUrl.query({url:  Utils.encodePath(path)});
+          // Check for dspace session and set component values accordingly in the callback.
+          Utils.checkStatus(statusCallback);
 
         });
 

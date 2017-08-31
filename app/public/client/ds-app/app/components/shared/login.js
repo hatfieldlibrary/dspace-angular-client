@@ -42,7 +42,7 @@
 
     /** Check DSpace session status on init. */
     ctrl.$onInit = function () {
-      Utils.checkSession();
+      Utils.setSessionStatus();
 
     };
 

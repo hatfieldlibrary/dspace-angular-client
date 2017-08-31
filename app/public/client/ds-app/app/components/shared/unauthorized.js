@@ -11,16 +11,16 @@
 
     ctrl.administratorEmail = Messages.ADMINISTRATOR_EMAIL;
 
-    ctrl.errorMessage = Messages.UNABLE_TO_ACCESS_CONTENT;
+    ctrl.errorMessage = Messages.UNAUTHORIZED_FOR_ACCESS;
 
     ctrl.showLogin = AppContext.useRedirect();
 
   }
 
-  dspaceComponents.component('noAccessComponent', {
+  dspaceComponents.component('unauthorizedComponent', {
 
     templateUrl: ['AppContext', function (AppContext) {
-      return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/handle/noAccess.html';
+      return '/' + AppContext.getApplicationPrefix() + '-app/app/templates/shared/unauthorized.html';
     }],
     controller: NoAccessCtrl
 

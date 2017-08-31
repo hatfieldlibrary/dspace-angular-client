@@ -154,6 +154,8 @@
 
     UNABLE_TO_ACCESS_CONTENT: 'We are unable to access the content you requested.',
 
+    UNAUTHORIZED_FOR_ACCESS: 'You are not authorized to view this content.',
+
     ADMINISTRATOR_CONTACT: 'Bill Kelm',
 
     ADMINISTRATOR_EMAIL: 'bkelm@willamette.edu'

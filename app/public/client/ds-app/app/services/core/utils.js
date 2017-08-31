@@ -247,7 +247,7 @@
        * Calls the server to see if a dspaceToken is
        * associated with the current user session.
        */
-      utils.checkSession = function () {
+      utils.setSessionStatus = function () {
 
         var sessionStatus = CheckSession.query();
         sessionStatus.$promise.then(function () {
@@ -273,11 +273,9 @@
         var sessionStatus = CheckSession.query();
         sessionStatus.$promise.then(function () {
 
-          var dspaceSession;
+          var dspaceSession = false;
           if (sessionStatus.status === 'ok') {
             dspaceSession = true;
-          } else {
-            dspaceSession = false;
           }
 
           callback(dspaceSession);
