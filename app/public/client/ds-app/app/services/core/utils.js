@@ -10,12 +10,14 @@
 
     function ($window,
               $location,
+              $routeParams,
               $timeout,
               $mdMedia,
               QueryManager,
               AppContext,
               Messages,
               CheckSession,
+              SetAuthUrl,
               CheckSysAdmin,
               QueryActions,
               QueryFields,
@@ -30,15 +32,14 @@
 
       var sysAdminStatus;
 
-      utils.encodePath = function(path) {
+      utils.encodePath = function (path) {
 
-        if(path) {
+        if (path) {
           return window.encodeURIComponent(path);
         }
         return "";
 
       };
-
 
       /**
        * Check system administrator status.
@@ -60,7 +61,7 @@
         }
       };
 
-      utils.getImagePath = function(img) {
+      utils.getImagePath = function (img) {
         return '/' + AppContext.getApplicationPrefix() + '-app/images/' + img;
       };
 
@@ -246,12 +247,12 @@
        * Calls the server to see if a dspaceToken is
        * associated with the current user session.
        */
-      utils.checkSession = function () {
+      utils.setSessionStatus = function () {
 
         var sessionStatus = CheckSession.query();
         sessionStatus.$promise.then(function () {
           if (sessionStatus.status === 'ok') {
-           // AppContext.updateDspaceSession(true);
+            // AppContext.updateDspaceSession(true);
             SessionObserver.set(true);
           } else {
             //AppContext.updateDspaceSession(false);
@@ -272,11 +273,9 @@
         var sessionStatus = CheckSession.query();
         sessionStatus.$promise.then(function () {
 
-          var dspaceSession;
+          var dspaceSession = false;
           if (sessionStatus.status === 'ok') {
             dspaceSession = true;
-          } else {
-            dspaceSession = false;
           }
 
           callback(dspaceSession);
@@ -483,10 +482,50 @@
 
       };
 
+      /**
+       * Checks for auto login request parameter.  If auto login is requested, checks for
+       * dspace session and redirects to application login if required.
+       * @param callback the component's initialization method
+       */
+      utils.checkAutoLogin = function (callback) {
+        // Auto login requested.
+        if ($location.search().login === 'auto') {
+          var path = $location.url();
+          // Remove login query parameter.
+          path = path.replace('?login=auto', '');
+          $location.search(path);
+          CheckSession.query().$promise.then(function (sessionStatus) {
+            // If no DSpace session, redirect to authentication.
+            if (sessionStatus.status !== 'ok') {
+              // This sets the Express session url. This will be used in
+              // the redirect after authentication succeeds.
+              SetAuthUrl.query({url: utils.encodePath(path)}).$promise.then(function () {
+                $window.location = '/' + AppContext.getApplicationPrefix() + '-api/auth/login/';
+              });
+            }
+            // If a dspace session already exists, then proceed with component initialization.
+            else {
+              $location.search('');
+              $location.url(path);
+              // Initialization callback.
+              callback();
+            }
+          });
+        }
+        // If this is a user-initiated login request, redirect to authentication url.
+        else if (typeof $routeParams.auth !== 'undefined') {
+          $window.location = AppContext.getApplicationPrefix() + '-api/auth/login';
+        }
+        // No auth is required. Continue with component initialization.
+        else {
+          callback();
+        }
+
+      };
+
       return utils;
 
     }
-
   );
 
 })();

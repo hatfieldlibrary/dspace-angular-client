@@ -9,7 +9,7 @@ module.exports = function (app, config, passport) {
     bitstream = require('../app/controllers/bitstream'),
     item = require('../app/controllers/item'),
     solr = require('../app/controllers/solr'),
-   loginController = require('../app/controllers/login'),
+    loginController = require('../app/controllers/login'),
     authHandler = require('./authHandler');
 
   // AUTHENTICATION

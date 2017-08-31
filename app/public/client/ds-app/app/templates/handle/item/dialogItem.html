@@ -33,7 +33,7 @@
 
     <div id="dialog-top" style="height: 0px; padding:0;"></div>
 
-    <div ng-if="$ctrl.authorized" layout-fill>
+    <div ng-if="$ctrl.isAuthorized" layout-fill>
 
       <!-- Title, layout row-->
       <div layout="row" layout-align="start start" layout-padding class="dialog-item-title dialog-record-width">
@@ -125,7 +125,7 @@
 
     </div>
 
-    <div ng-if="!$ctrl.authorized" layout-fill>
+    <div ng-if="!$ctrl.isAuthorized && $ctrl.hasDspaceSession === false" layout-fill>
       <div class="dialog-record dialog-record-width">
         <div layout="column" layout-align="center center" flex="100" style="height:300px" layout-padding>
           <div>
@@ -140,6 +140,11 @@
         </div>
       </div>
     </div>
+
+    <div ng-if="!$ctrl.isAuthorized && $ctrl.hasDspaceSession === true" layout-fill>
+      <unauthorized-component></unauthorized-component>
+    </div>
+
   </md-dialog-content>
 
 
