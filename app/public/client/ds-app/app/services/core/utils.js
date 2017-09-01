@@ -116,8 +116,6 @@
        * @returns {*}
        */
       utils.getType = function (type) {
-
-
         if (type === AssetTypes.ITEM) {
           return AssetTypes.COLLECTION;
         }
