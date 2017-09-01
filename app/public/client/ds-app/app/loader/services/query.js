@@ -29,8 +29,6 @@
         var action = QueryManager.getAction();
         var params = QueryManager.getQuery();
 
-        console.log(params)
-
         var items;
         /**
          * List query: POST.

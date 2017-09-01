@@ -6,9 +6,7 @@
 
 (function () {
 
-  var util = require('util');
   var config = require('../../config/environment');
-  var constants = require('./constants');
 
   // video and audio extensions.
   var mimeNames = {
@@ -180,9 +178,6 @@
 
   };
 
-  exports.truncateAbstract = function (text) {
-
-  };
 
   exports.mimeType = function (type) {
 
@@ -191,7 +186,7 @@
     }
     return 'unknown';
 
-  }
+  };
 
   exports.isMediaExtension = function(extension) {
 
