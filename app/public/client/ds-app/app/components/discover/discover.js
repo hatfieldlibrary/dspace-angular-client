@@ -124,6 +124,7 @@
         $location.path('/ds/discover/' + QueryManager.getAssetType() + '/' + QueryManager.getAssetId() + '/' + disc.terms + '/' + 0);
       }
 
+
     };
 
     /**
@@ -176,7 +177,7 @@
      * Initialization.
      */
     disc.$onInit = function () {
-
+console.log('INIT DISCOVER')
       /**
        * Input route parameters.
        */
@@ -187,6 +188,7 @@
       if ($routeParams.id) {
         disc.suppliedId = $routeParams.id;
       }
+      disc.selectedItem = $routeParams.selectedItem;
       /**
        * Pass the controller to discovery extensions.
        */

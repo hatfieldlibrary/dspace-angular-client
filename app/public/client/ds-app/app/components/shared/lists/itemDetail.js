@@ -54,7 +54,6 @@
      * @param id
      */
     ctrl.reloadItem = function(ev, id) {
-
       /**
        * If the position has not changed, we need to show
        * the dialog for the user.  New  are handled
@@ -121,7 +120,6 @@
     };
 
     ctrl.$onChanges = function(changes) {
-
       if (changes.selectedItem) {
         if (changes.selectedItem.currentValue === ctrl.id) {
           ItemDialogFactory.showItem(event, ctrl.id, $scope.customFullscreen);

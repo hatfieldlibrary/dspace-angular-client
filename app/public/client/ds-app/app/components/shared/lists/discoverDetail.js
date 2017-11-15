@@ -64,13 +64,6 @@
       if (+type === 2 && ctrl.prevOpenedState === true) {
         ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
       }
-     //  // community or collection type, use new route.
-     //  else {
-     //    $location.search({});
-     //    $location.path('/ds/handle/' + ctrl.handle);
-     //
-     //  }
-
 
     };
 
@@ -88,7 +81,6 @@
         var url = '/ds/discover/' + ctrl.type + '/' + QueryManager.getAssetId() + '/' + QueryManager.getSearchTerms() + '/' + ctrl.id + '?';
 
         url += 'filter=none';
-        url += '&id=' + ctrl.id;
         url += '&pos=' + ctrl.pos;
         url += '&itype=i';
 
@@ -107,24 +99,23 @@
     };
 
     ctrl.$onInit = function () {
-
+console.log("INIT DIS DETAILs")
     };
 
     ctrl.$onChanges = function (changes) {
       if (changes.selectedItem) {
-        if (changes.selectedItem.currentValue === ctrl.id) {
-          console.log(ctrl.resourceType)
+        if (changes.selectedItem.currentValue === ctrl.selectedItem) {
          if(+ctrl.resourceType === 2) {
-            ctrl.prevOpenedState = true;
-           ItemDialogFactory.showItem(event, ctrl.id, $scope.customFullscreen);
+           ctrl.prevOpenedState = true;
+           console.log("CHANGE")
+           console.log(ctrl.selectedItem)
+           ItemDialogFactory.showItem(event, ctrl.selectedItem, $scope.customFullscreen);
          }
           else {
            $location.search({});
            $location.path('/ds/handle/' + ctrl.handle);
          }
-
         }
-
       }
     }
   }
