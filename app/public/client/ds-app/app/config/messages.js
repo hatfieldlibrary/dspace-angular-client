@@ -108,9 +108,9 @@
 
     SUBMIT_BUTTON_LABEL: 'Submit an Item',
 
-    SUBMIT_INFORMATION_LINK: 'https://libmedia.willamette.edu/commons/info/thesis',
+    SUBMIT_INFORMATION_LINK: 'https://libmedia.willamette.edu/academiccommons/student/',
 
-    SUBMIT_INSTRUCTIONS_LINK: 'https://library.willamette.edu/guide_on_the_side/tutorial/academic-commons-submission',
+    SUBMIT_INSTRUCTIONS_LINK: 'https://libguides.willamette.edu/thesis_submission',
 
     ITEM_EDIT_LABEL: 'Edit Item',
 
