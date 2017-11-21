@@ -10,13 +10,13 @@ var config = {
   dspaceDev: {
 
     // full host name (e.g. 'dspace.college.edu')
-    host: '158.104.5.46',
+    host: '127.0.0.1',
 
     // rest protocol can be http or https.
     protocol: 'http',
 
     // rest port is either standard port (e.g. 8080) or ssl port (e.g. 8443).
-    port: '8080',
+    port: '1234',
 
     // if using self-signed certificate with ssl, this should be false. Otherwise, true.
     rejectUnauthorized: true,
@@ -33,7 +33,7 @@ var config = {
     // Solr port. Use port forwarding for development on localhost if
     // not also running dspace on localhost, e.g.:
     // ssh -L 1234:127.0.0.1:8080 dspace.college.edu.
-    solrPort: '8080'
+    solrPort: '1234'
 
   },
 

@@ -112,11 +112,14 @@
     }
 
     /**
-     * Updates the currently selected item id.
+     * Updates the currently selected item id. This function is called
+     * by the headless loader component. Child item components listen
+     * for the change and open dialog if the selected id matches the
+     * id field of the item component.
      * @param id
      */
-    ctrl.setSelectedItem = function (id) {
-      ctrl.selectedItem = id;
+    ctrl.setSelectedItem = function (selected) {
+      ctrl.selectedItemId = selected;
 
     };
 
