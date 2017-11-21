@@ -36,36 +36,40 @@ var dspaceApp = angular.module('dspaceApp', [
           reloadOnSearch: false
         })
         .when('/ds/handle/:site/:id/:field/:sort', {
-          templateUrl: '/ds/partials/handle'
+          templateUrl: '/ds/partials/handle.html',
+          reloadOnSearch: false
         })
         .when('/ds/paging/:site/:item', {
-          templateUrl: '/ds/partials/continuousPaging'
+          templateUrl: '/ds/partials/continuousPaging.html',
+          reloadOnSearch: false
         })
         .when('/ds/communities', {
-          templateUrl: '/ds/partials/communities.html'
+          templateUrl: '/ds/partials/communities.html',
+          reloadOnSearch: false
         })
         .when('/ds/browse/:site/:item', {
-          templateUrl: '/ds/partials/handle',
+          templateUrl: '/ds/partials/handle.html',
+          reloadOnSearch: false
+        })
+        .when('/ds/discover/:type/:id/:terms/:auth', {
+          templateUrl: '/ds/partials/discover.html',
+          reloadOnSearch: false
+        })
+        .when('/ds/discover/:type/:id/:terms', {
+          templateUrl: '/ds/partials/discover.html',
+          reloadOnSearch: false
+        })
+        .when('/ds/discover', {
+          templateUrl: '/ds/partials/discover.html',
           reloadOnSearch: false
         })
         .when('/ds/browse/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', {
           templateUrl: '/ds/partials/browse.html',
           reloadOnSearch: false
         })
-        .when('/ds/discover/:type/:id/:terms/:selectedId', {
-          templateUrl: '/ds/partials/discover.html',
-          reloadOnSearch: false
-        })
-        .when('/ds/discover/:type/:id/:terms/:selectedId/:auth', {
-          templateUrl: '/ds/partials/discover.html',
-          reloadOnSearch: false
-        })
         .when('/ds/advanced', {
           templateUrl: '/ds/partials/advanced.html',
           reloadOnSearch: false
-        })
-        .when('/ds/discover', {
-          templateUrl: '/ds/partials/discover.html'
         });
 
       $locationProvider.html5Mode(true);

@@ -64,13 +64,6 @@
       if (+type === 2 && ctrl.prevOpenedState === true) {
         ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
       }
-     //  // community or collection type, use new route.
-     //  else {
-     //    $location.search({});
-     //    $location.path('/ds/handle/' + ctrl.handle);
-     //
-     //  }
-
 
     };
 
@@ -85,16 +78,16 @@
 
       if (QueryManager.getAction() !== QueryActions.BROWSE) {
 
-        var url = '/ds/discover/' + ctrl.type + '/' + QueryManager.getAssetId() + '/' + QueryManager.getSearchTerms() + '/' + ctrl.id + '?';
+        var url = '/ds/discover/' + ctrl.type + '/' + QueryManager.getAssetId() + '/' + QueryManager.getSearchTerms() + '?';
 
-        url += 'filter=none';
-        url += '&id=' + ctrl.id;
+        url += '&selected=' + ctrl.id;
+        url += '&filter=none';
         url += '&pos=' + ctrl.pos;
         url += '&itype=i';
 
         var arr = Object.keys(qs);
         for (var i = 0; i < arr.length; i++) {
-          if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype' && arr[i] !== 'filter') {
+          if (arr[i] !== 'selected' && arr[i] !== 'pos' && arr[i] !== 'itype' && arr[i] !== 'filter') {
             url += '&' + arr[i] + '=' + qs[arr[i]];
           }
         }
@@ -106,25 +99,19 @@
 
     };
 
-    ctrl.$onInit = function () {
-
-    };
-
     ctrl.$onChanges = function (changes) {
-      if (changes.selectedItem) {
-        if (changes.selectedItem.currentValue === ctrl.id) {
-          console.log(ctrl.resourceType)
+      if (changes.selectedItemId) {
+        if (changes.selectedItemId.currentValue === ctrl.id) {
          if(+ctrl.resourceType === 2) {
-            ctrl.prevOpenedState = true;
-           ItemDialogFactory.showItem(event, ctrl.id, $scope.customFullscreen);
+           ctrl.prevOpenedState = true;
+
+           ItemDialogFactory.showItem(event, ctrl.selectedItemId, $scope.customFullscreen);
          }
           else {
            $location.search({});
            $location.path('/ds/handle/' + ctrl.handle);
          }
-
         }
-
       }
     }
   }
@@ -142,7 +129,7 @@
       author: '<',
       type: '@',
       pos: '@',
-      selectedItem: '@',
+      selectedItemId: '@',
       last: '<'
     },
     templateUrl: ['AppContext', function (AppContext) {
