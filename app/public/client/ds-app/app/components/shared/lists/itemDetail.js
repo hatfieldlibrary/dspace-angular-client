@@ -60,7 +60,7 @@
        * by the $locationChangeSuccess function in pager.
        */
       if (ctrl.context !== 'seo') {
-        if (ctrl.selectedItem === ctrl.id) {
+        if (ctrl.selectedItemId === ctrl.id) {
           ItemDialogFactory.showItem(ev, id, $scope.customFullscreen);
         }
       }
@@ -97,13 +97,13 @@
         var url = '/ds/handle/' + QueryManager.getHandle() + '?';
 
         url += 'filter=none';
-        url += '&id=' + ctrl.id;
+        url += '&selected=' + ctrl.id;
         url += '&pos=' + ctrl.pos;
         url += '&itype=i';
 
         var arr = Object.keys(qs);
         for (var i = 0; i < arr.length; i++) {
-          if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype' && arr[i] !== 'filter') {
+          if (arr[i] !== 'selected' && arr[i] !== 'pos' && arr[i] !== 'itype' && arr[i] !== 'filter') {
             url += '&' + arr[i] + '=' + qs[arr[i]];
           }
         }
@@ -120,8 +120,8 @@
     };
 
     ctrl.$onChanges = function(changes) {
-      if (changes.selectedItem) {
-        if (changes.selectedItem.currentValue === ctrl.id) {
+      if (changes.selectedItemId) {
+        if (changes.selectedItemId.currentValue === ctrl.id) {
           ItemDialogFactory.showItem(event, ctrl.id, $scope.customFullscreen);
         }
       }
@@ -146,8 +146,7 @@
       abstract: '@',
       context: '@',
       selectedPosition: '@',
-      selectedItem: '@',
-      setSelectedId: '&'
+      selectedItemId: '@'
     },
     controller: ItemDetailController,
     templateUrl: ['AppContext', function (AppContext) {

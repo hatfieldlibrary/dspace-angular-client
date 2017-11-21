@@ -51,27 +51,22 @@ var dspaceApp = angular.module('dspaceApp', [
           templateUrl: '/ds/partials/handle.html',
           reloadOnSearch: false
         })
-        .when('/ds/discover/:type/:id/:terms/:selectedItem', {
+        .when('/ds/discover/:type/:id/:terms/:auth', {
           templateUrl: '/ds/partials/discover.html',
           reloadOnSearch: false
         })
-
-        .when('/ds/discover/:type/:id/:terms/:selectedItem/:auth', {
+        .when('/ds/discover/:type/:id/:terms', {
           templateUrl: '/ds/partials/discover.html',
           reloadOnSearch: false
         })
         .when('/ds/discover', {
           templateUrl: '/ds/partials/discover.html',
-          reloadOnSearch: true
+          reloadOnSearch: false
         })
-
         .when('/ds/browse/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', {
           templateUrl: '/ds/partials/browse.html',
           reloadOnSearch: false
         })
-
-
-
         .when('/ds/advanced', {
           templateUrl: '/ds/partials/advanced.html',
           reloadOnSearch: false

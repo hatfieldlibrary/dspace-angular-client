@@ -78,15 +78,16 @@
 
       if (QueryManager.getAction() !== QueryActions.BROWSE) {
 
-        var url = '/ds/discover/' + ctrl.type + '/' + QueryManager.getAssetId() + '/' + QueryManager.getSearchTerms() + '/' + ctrl.id + '?';
+        var url = '/ds/discover/' + ctrl.type + '/' + QueryManager.getAssetId() + '/' + QueryManager.getSearchTerms() + '?';
 
-        url += 'filter=none';
+        url += '&selected=' + ctrl.id;
+        url += '&filter=none';
         url += '&pos=' + ctrl.pos;
         url += '&itype=i';
 
         var arr = Object.keys(qs);
         for (var i = 0; i < arr.length; i++) {
-          if (arr[i] !== 'id' && arr[i] !== 'pos' && arr[i] !== 'itype' && arr[i] !== 'filter') {
+          if (arr[i] !== 'selected' && arr[i] !== 'pos' && arr[i] !== 'itype' && arr[i] !== 'filter') {
             url += '&' + arr[i] + '=' + qs[arr[i]];
           }
         }
@@ -98,18 +99,13 @@
 
     };
 
-    ctrl.$onInit = function () {
-console.log("INIT DIS DETAILs")
-    };
-
     ctrl.$onChanges = function (changes) {
-      if (changes.selectedItem) {
-        if (changes.selectedItem.currentValue === ctrl.selectedItem) {
+      if (changes.selectedItemId) {
+        if (changes.selectedItemId.currentValue === ctrl.id) {
          if(+ctrl.resourceType === 2) {
            ctrl.prevOpenedState = true;
-           console.log("CHANGE")
-           console.log(ctrl.selectedItem)
-           ItemDialogFactory.showItem(event, ctrl.selectedItem, $scope.customFullscreen);
+
+           ItemDialogFactory.showItem(event, ctrl.selectedItemId, $scope.customFullscreen);
          }
           else {
            $location.search({});
@@ -133,7 +129,7 @@ console.log("INIT DIS DETAILs")
       author: '<',
       type: '@',
       pos: '@',
-      selectedItem: '@',
+      selectedItemId: '@',
       last: '<'
     },
     templateUrl: ['AppContext', function (AppContext) {
