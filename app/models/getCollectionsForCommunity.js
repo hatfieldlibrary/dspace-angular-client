@@ -1,9 +1,11 @@
-'use strict';
 
-var rp = require('request-promise');
-var utils = require('../core/utils');
 
 (function () {
+
+  'use strict';
+
+  var rp = require('request-promise');
+  var utils = require('../core/utils');
 
   /**
    * Model for an individual dspace community. Uses REST API.

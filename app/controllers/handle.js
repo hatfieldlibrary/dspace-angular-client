@@ -115,12 +115,14 @@ var utils = require('../core/utils');
               error: true,
               message: err.message
             });
+            res.end();
           }
 
           res.status(err.statusCode).send({
             error: true,
             message: err.message
           });
+          res.end();
 
 
         }   else {
