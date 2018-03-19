@@ -129,8 +129,8 @@
      * Sets the id of the selected item on the parent component.
      * @param id
      */
-    this.setTheSelectedItem = function(id){
-      loader.setSelectedItem({id: id});
+    this.setTheSelectedItem = function(selected){
+      loader.setSelectedItem({selected: selected});
     };
     /**
      * Sets the index position of the selected item in the parent component.

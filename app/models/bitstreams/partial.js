@@ -1,25 +1,33 @@
-/**
- * Created by mspalti on 9/29/16.
- */
-
-
-var utils = require('../../core/utils');
-var fs = require('fs');
-
-// Use either http or https as specified in the app
-// config. If using https and a self-signed certificate,
-// set rejectUnauthorized to false in the app config.
-if (utils.getDspaceRestProtocol() === 'https') {
-  var http = require('https');
-}
-else {
-  var http = require('http');
-}
-
 
 (function () {
 
+  /**
+   * Created by mspalti on 9/29/16.
+   */
+  var utils = require('../../core/utils');
+  var fs = require('fs');
+
+  // Use either http or https as specified in the app
+  // config. If using https and a self-signed certificate,
+  // set rejectUnauthorized to false in the app config.
+  if (utils.getDspaceRestProtocol() === 'https') {
+    var http = require('https');
+  }
+  else {
+    var http = require('http');
+  }
+
   module.exports = function (range, req, res, id, session, file) {
+
+    // The request includes the cache directory location
+    // defined in app config.
+    var filePath = req.filePath;
+    // Stat file on disk.
+    var regex = /\s/g;
+    var filePath = filePath + '/' + id + '-' + file.replace(regex, '_');
+    // Initiate request. Will use cached file if available, otherwise
+    // request from DSpace.
+    fs.stat(filePath, _loadContent);
 
     /**
      * Reads file from the cache.
@@ -53,7 +61,6 @@ else {
     function _sendData(filePath, size) {
 
       var positions = range.replace(/bytes=/, "").split("-");
-
       var start = parseInt(positions[0], 10);
       var end = positions[1] ? parseInt(positions[1], 10) : size - 1;
       var chunkSize = (end - start) + 1;
@@ -64,10 +71,11 @@ else {
         res.status(416);
         res.set("Content-Range", 'bytes */' + size);
         res.end();
-
+        res = null;
       }
       else {
 
+        // Content-Length is required by firefox.
         res.set({
           'Content-Range': 'bytes ' + start + '-' + end + '/' + size,
           'Accept-Ranges': 'bytes',
@@ -85,19 +93,14 @@ else {
 
         });
         readStream.on('close', function () {
-          // closed, let's end client request as well
           res.end();
-
         });
         readStream.on('end', function () {
           // finished, ending res.
           res.end();
-
         });
 
-
       }
-
 
     }
 
@@ -128,38 +131,40 @@ else {
       };
 
 
-      http.get(options, function (response) {
+      http.get(options, function (stream) {
 
-        if (response.statusCode === 401) {
-          console.log('Error retrieving file from Dspace. Status: ' + response.statusCode);
+        if (stream.statusCode === 401) {
+          console.log('Error retrieving file from Dspace. Status: ' + stream.statusCode);
           res.statusCode = 401;
           res.end();
         }
         else {
+
           var writeStream = fs.createWriteStream(filePath);
           writeStream.on('error', function (err) {
             console.log(err);
           });
 
-          response.pipe(writeStream)
+          stream.pipe(writeStream);
 
-            .on('error', function (err) {  // done
-              console.log("Error writing file to disk. " + err);
-            })
+          stream.on('error', function (err) {  // done
+            console.log("Error writing file to disk. " + err);
+            writeStream.end();
+          });
 
-            .on('finish', function () {
-              console.log('File written to disk: ' + filePath);
-              _readFile(filePath);
+          stream.on('end', function () {
+            console.log('File written to disk: ' + filePath);
+            _readFile(filePath);
 
-            });
+          });
 
         }
       }).on('error', function (e) {
         // we got an error, return 500 error to client and log error
         console.log('Error retrieving file from Dspace. ' + e.message);
+        res.statusCode = 500;
         res.end();
       });
-
 
 
     }
@@ -178,7 +183,6 @@ else {
       if (err !== null) {
         // File does not exist, so fetch from dspace.
         if (err.code === 'ENOENT') {
-          console.log('Attempting to add file to local cache.');
           _getFileFromDspace(filePath);
 
         }
@@ -195,17 +199,6 @@ else {
 
     }
 
-    // The request includes the cache directory location
-    // defined in app config.
-    var filePath = req.filePath;
-
-    // Stat file on disk.
-    var regex = /\s/g;
-    var filePath = filePath + '/' + id + '-' + file.replace(regex, '_');
-
-    fs.stat(filePath, _loadContent);
-
   }
-
 
 })();

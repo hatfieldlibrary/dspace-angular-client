@@ -60,12 +60,13 @@ module.exports = function (app) {
     if (err !== null) {
       console.log(err);
     }
-    res.status(err.status || 500).end();
+    res.status(err.status || 500);
     res.render('error', {
       message: err.message,
       error: {},
       status: err.status
     });
+    res.end();
   }
 
   /**

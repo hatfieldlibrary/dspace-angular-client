@@ -1,25 +1,32 @@
-/**
- * Created by mspalti on 9/29/16.
- */
+(function () {
 
-
-var utils = require('../../core/utils');
-var fs = require('fs');
+  /**
+   * Created by mspalti on 9/29/16.
+   */
+  var utils = require('../../core/utils');
+  var fs = require('fs');
 
 // Use either http or https as specified in the app
 // config. If using https and a self-signed certificate,
 // set rejectUnauthorized to false in the app config.
-if (utils.getDspaceRestProtocol() === 'https') {
-  var http = require('https');
-}
-else {
-  var http = require('http');
-}
-
-(function () {
+  if (utils.getDspaceRestProtocol() === 'https') {
+    var http = require('https');
+  }
+  else {
+    var http = require('http');
+  }
 
   module.exports = function (req, res, id, session, file) {
 
+    // The request contains the cache directory location
+    // defined in app config.
+    var filePath = req.filePath;
+    // try to stat file on disk.
+    var regex = /\s/g;
+    var filePath = filePath + '/' + id + '-' + file.replace(regex, '_');
+    // Initiate request. Will use cached file if available, otherwise
+    // request from DSpace.
+    fs.stat(filePath, _loadContent);
 
     /**
      * Retrieves file from DSpace and streams response to client.
@@ -32,6 +39,11 @@ else {
       var port = utils.getPort();
       var dspaceContext = utils.getDspaceAppContext();
 
+      res.set({
+        'Transfer-Encoding': 'chunked'
+
+      });
+
       var options = {
         host: host,
         port: port,
@@ -43,11 +55,11 @@ else {
         rejectUnauthorized: utils.rejectUnauthorized()
       };
 
-      http.get(options, function (response) {
+      http.get(options, function (stream) {
 
         try {
 
-          var mimeType = response.headers['content-type'];
+          var mimeType = stream.headers['content-type'];
 
           /**
            * Internet Explorer resists displaying images without a proper
@@ -59,23 +71,23 @@ else {
           } else {
             res.type(mimeType);
           }
-
         } catch (err) {
           console.log(err);
         }
-
-        // write data chunk to res.
-        response.on('data', function (chunk) {
+        stream.on('data', function (chunk) {
           res.write(chunk);
-
         });
-        response.on('close', function () {
+        stream.on('close', function () {
           // closed, let's end client request as well
           res.end();
-
         });
-        response.on('end', function () {
-          // finished.
+        stream.on('error', function(err) {
+          console.log(err);
+          res.statusCode = 500;
+          res.end();
+        });
+        stream.on('end', function () {
+          // finished reading data.
           res.end();
         });
 
@@ -99,12 +111,10 @@ else {
       var extension = filePath.split('.').pop();
 
       var mimeType = utils.mimeType(extension);
-
-      res.set({
-        'Content-Length': size
-
-      });
       res.type(mimeType);
+      res.set({
+        'Transfer-Encoding': 'chunked'
+      });
 
       var readStream = fs.createReadStream(filePath);
 
@@ -112,22 +122,23 @@ else {
       readStream.on('data', function (chunk) {
         // Set to encode base64.
         res.write(chunk);
-
+      });
+      readStream.on('error', function(err) {
+        console.log(err);
+        res.statusCode = 500;
+        res.end();
       });
       readStream.on('close', function () {
-        // closed, let's end client request as well
+        // closed, lets end client request as well
         res.end();
-
       });
       readStream.on('end', function () {
-        // finished, ending res.
+        // End of data. This event precedes the close event.
         res.end();
-
       });
 
 
     }
-
 
     /**
      * Loads content based on the file's availability
@@ -148,9 +159,7 @@ else {
         else {
           console.log(err);
         }
-
       }
-
       else if (stats.isFile()) {
         // File exists, so use it.
         var size = stats.size;
@@ -158,16 +167,6 @@ else {
       }
 
     }
-
-    // The request contains the cache directory location
-    // defined in app config.
-    var filePath = req.filePath;
-
-    // try to stat file on disk.
-    var regex = /\s/g;
-    var filePath = filePath + '/' + id + '-' + file.replace(regex, '_');
-
-    fs.stat(filePath, _loadContent);
 
   }
 
