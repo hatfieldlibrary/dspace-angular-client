@@ -486,15 +486,17 @@
        * @param callback the component's initialization method
        */
       utils.checkAutoLogin = function (callback) {
+
+        var path = $location.url();
+        // Remove login query parameter.
+        path = path.replace('?login=auto', '');
         // Auto login requested.
         if ($location.search().login === 'auto') {
-          var path = $location.url();
-          // Remove login query parameter.
-          path = path.replace('?login=auto', '');
           $location.search(path);
           CheckSession.query().$promise.then(function (sessionStatus) {
             // If no DSpace session, redirect to authentication.
             if (sessionStatus.status !== 'ok') {
+              console.log('checking session status with auth/login')
               // This sets the Express session url. This will be used in
               // the redirect after authentication succeeds.
               SetAuthUrl.query({url: utils.encodePath(path)}).$promise.then(function () {
@@ -511,6 +513,10 @@
           });
         }
         // If this is a user-initiated login request, redirect to authentication url.
+        // NOTE: the auth parameter is defined in the angular client routes. It is
+        // unclear that it's in current use.  However, if the value is defined and used with
+        // the auto login parameter the result is an infinite login loop.
+        // TODO consider removal of the route /ds/discover/:type/:id/:terms/:auth
         else if (typeof $routeParams.auth !== 'undefined') {
           $window.location = AppContext.getApplicationPrefix() + '-api/auth/login';
         }

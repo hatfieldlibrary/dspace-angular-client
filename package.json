@@ -1,7 +1,7 @@
 {
   "name": "DSpace_API_Client",
   "description": "The DSpace API client provides an angularjs front-end and nodejs middleware used with the DSpace API.",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "license": "(MIT)",
   "homepage": "",
   "author": {

@@ -10,13 +10,14 @@ var config = {
   dspaceDev: {
 
     // full host name (e.g. 'dspace.college.edu')
-    host: '127.0.0.1',
+    //host: '127.0.0.1',
+    host: 'dspace.willamette.edu',
 
     // rest protocol can be http or https.
     protocol: 'http',
 
     // rest port is either standard port (e.g. 8080) or ssl port (e.g. 8443).
-    port: '1234',
+    port: '8080',
 
     // if using self-signed certificate with ssl, this should be false. Otherwise, true.
     rejectUnauthorized: true,

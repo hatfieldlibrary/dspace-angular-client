@@ -54,7 +54,7 @@ var config = {
     /**
      * The nodejs port.
      */
-    port: 3000,
+    port: 3003,
     /**
      * The secret application key used for DSpace REST
      * authentication.
