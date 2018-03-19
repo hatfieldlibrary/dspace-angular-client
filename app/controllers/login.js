@@ -76,7 +76,10 @@
     var session = req.session;
 
     /** @type {string} the netid of the user */
-    var netid = session.passport.user;
+    var netid;
+    if (session.passport) {
+      netid = session.passport.user;
+    }
 
     if (!config) {
       console.log('ERROR: Missing application configuration.  Cannot access application key.');
@@ -85,14 +88,12 @@
     }
 
     /** If session does not already have DSpace token, login to DSpace.  */
-    if (!session.dspaceSessionCookie) {
-
+    if (!session.dspaceSessionCookie && typeof netid !== 'undefined') {
       loginToDspace(netid, config, req, res);
 
     } else {
       /** Check validity of token. */
-      models
-        .checkDspaceSession(session.dspaceSessionCookie)
+      models.checkDspaceSession(session.dspaceSessionCookie)
         .then(
           function (response) {
             // DSpace API REST status check will return a boolean
@@ -100,11 +101,10 @@
             if (!response.authenticated) {
               loginToDspace(netid, config, req, res);
             } else {
-              //res.redirect(_replaceLoginParam(session.url));
+              // res.redirect(session.url);
               res.status(304);
               res.end();
             }
-
           })
         .catch(function (err) {
             console.log(err.message);
@@ -112,9 +112,7 @@
 
           }
         );
-
     }
-
   };
 
   /**
@@ -189,11 +187,11 @@
 
     models.logout(req)
       .then(function () {
-        res.redirect('http://libmedia.willamette.edu/academiccommons');
+        res.redirect('https://libmedia.willamette.edu/academiccommons');
       })
       .catch(function (err) {
         console.log(err.message);
-        res.redirect('http://libmedia.willamette.edu/academiccommons');
+        res.redirect('https://libmedia.willamette.edu/academiccommons');
 
       });
 

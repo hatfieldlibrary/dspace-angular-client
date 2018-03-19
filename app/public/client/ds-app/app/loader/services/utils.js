@@ -47,7 +47,6 @@
        * @param context
        */
       function initialize(qs, context) {
-
         _setOffset(qs);
         _setQueryComponents(qs, context);
 
@@ -153,17 +152,14 @@
           AppContext.setViewStartIndex(0);
           qs.offset = 0;
         } else {
-          //  QueryManager.setOffset(qs.offset);
           AppContext.setInitOffset(qs.offset);
           AppContext.setViewStartIndex(qs.offset);
         }
 
-        if (typeof qs.id !== 'undefined') {
-          loader.setTheSelectedItem(qs.id);
-          //AppContext.setSelectedItemId(qs.id);
+        if (typeof qs.selected !== 'undefined') {
+          loader.setTheSelectedItem(qs.selected);
         } else {
           loader.setTheSelectedItem(-1);
-         // AppContext.setSelectedItemId(-1);
         }
 
         _setOpenItemPosition(loader, qs);

@@ -80,7 +80,6 @@
 
 
     ctrl.$onInit = function() {
-
       /**
        * Returns the url for a logo.  This method can be called
        * for communities and collections.

@@ -6,7 +6,7 @@
                     on-prev-update="$ctrl.onPreviousUpdate(results, count, field)"
                     prev-pager-offset="$ctrl.setPrevPagerOffset(offset)"
                     next-pager-offset="$ctrl.setNextPagerOffset(offset)"
-                    set-selected-item="$ctrl.setSelectedItem(id)"
+                    set-selected-item="$ctrl.setSelectedItem(selected)"
                     set-selected-pos="$ctrl.setSelectedPostion(pos)"
                     set-query-type="$ctrl.setQueryType(type)"
                     set-sort-order="$ctrl.setSortOrder(order)">
@@ -62,7 +62,7 @@
         id="{{col.id}}"
         pos="{{$index}}"
         context="{{$ctrl.context}}"
-        selected-item="{{$ctrl.selectedItem}}"
+        selected-item-id="{{$ctrl.selectedItemId}}"
         ng-class="{'set-divider': $ctrl.addBorder($index)}">
 
       </item-detail-component>
@@ -72,7 +72,7 @@
         ng-if="$ctrl.field=='author'"
         ng-repeat="au in $ctrl.items"
         class="'animate'"
-        ng-class="{'selected': $index==$ctrl.selectedIndex}"
+        ng-class="{'selected': $index==$ctrl.selectedPosition}"
         author="{{au.item.value}}"
         count="{{au.item.count}}"
         type="{{$ctrl.type}}"
@@ -90,7 +90,7 @@
 
         ng-if="$ctrl.field=='subject'"
         ng-repeat="sub in $ctrl.items"
-        ng-class="{'selected': $index==$ctrl.selectedIndex}"
+        ng-class="{'selected': $index==$ctrl.selectedPosition}"
         subject="{{sub.item.value}}"
         count="{{sub.item.count}}"
         type="{{$ctrl.type}}"
@@ -118,7 +118,7 @@
         type="{{$ctrl.type}}"
         pos="{{$index}}"
         last="$last"
-        selected-item="{{$ctrl.selectedItem}}"
+        selected-item-id="{{$ctrl.selectedItemId}}"
         count="{{$ctrl.count}}">
 
       </discover-detail-component>

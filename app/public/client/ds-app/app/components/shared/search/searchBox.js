@@ -56,7 +56,7 @@
       $location.search({});
 
       // final param in search should be 0
-      $location.path('/ds/discover/' + sb.type + '/' + sb.id + '/' + terms + '/0');
+      $location.path('/ds/discover/' + sb.type + '/' + sb.id + '/' + terms);
 
     };
 

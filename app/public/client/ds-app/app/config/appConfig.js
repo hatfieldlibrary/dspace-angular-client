@@ -19,7 +19,7 @@
      * is used to open the administration and submission options
      * that are not available currently in the API client.
      */
-    DSPACE_HOST: 'http://libmedia.willamette.edu',
+    DSPACE_HOST: 'https://libmedia.willamette.edu',
 
     /**
      * DSpace path (e.g. xmlui).  Also used to open administration
