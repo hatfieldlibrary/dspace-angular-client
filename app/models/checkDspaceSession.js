@@ -10,7 +10,6 @@ var utils = require('../core/utils');
 
     var host = utils.getURL();
     var dspaceContext = utils.getDspaceAppContext();
-
     /** DSpace session status request-promise */
     var sessionStatus =
       rp(
@@ -27,7 +26,6 @@ var utils = require('../core/utils');
       );
 
     return sessionStatus;
-
   };
 
 })();
