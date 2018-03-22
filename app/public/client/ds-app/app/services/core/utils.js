@@ -496,7 +496,6 @@
           CheckSession.query().$promise.then(function (sessionStatus) {
             // If no DSpace session, redirect to authentication.
             if (sessionStatus.status !== 'ok') {
-              console.log('checking session status with auth/login')
               // This sets the Express session url. This will be used in
               // the redirect after authentication succeeds.
               SetAuthUrl.query({url: utils.encodePath(path)}).$promise.then(function () {
