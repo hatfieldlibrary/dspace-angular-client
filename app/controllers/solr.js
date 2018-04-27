@@ -45,7 +45,7 @@ var constants = require('../core/constants');
    */
   exports.externalApiQuery = function (req, res) {
     var session = req.session;
-    req.params.asset = {type: ''}
+    req.params.asset = {type: ''};
     req.params.query = {action: '', terms: '', qType: 'discover'};
     req.params.filters = [];
     req.params.query.offset = req.params.offset;
