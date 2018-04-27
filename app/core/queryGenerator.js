@@ -56,6 +56,10 @@
 
     var solrUrl = '';
 
+    console.log("TEST")
+
+    console.log(query)
+
     /**
      * Get the solr URL for a LIST query.
      */
