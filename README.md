@@ -13,7 +13,7 @@ The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passpo
 
   [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material 2 is currently in alpha. 
   
-*NOTE:* This project is not related to the [Angular 2 UI Prototype Project](https://github.com/DSpace-Labs/angular2-ui-prototype). But that project is very much worth following! As currently planned, this project will work within the NodeJs world rather than migrating into Javaland.  That works for us.  I'm very interested in seeing how the DSpace UI team's Angular 2 UI takes shape and the problems it solves.   
+*NOTE:* Work is underway on the new [DSpace7 Rest API and Angular client](https://wiki.duraspace.org/display/DSPACE/DSpace+7+Working+Group). Check it out. 
 
 ### Live site:
 
