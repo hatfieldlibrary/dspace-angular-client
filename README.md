@@ -1,7 +1,5 @@
 #  DSpace Node/Angular Client
 
-[![bitHound Overall Score](https://www.bithound.io/github/hatfieldlibrary/dspace-angular-client/badges/score.svg)](https://www.bithound.io/github/hatfieldlibrary/dspace-angular-client)
-
 ## General Overview
 
 This DSpace 6 [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace 6 REST") /solr client uses AngularJs 1.x (1.5) and NodeJs middleware.  Based on the new Angular 1.5 component model and local scope, the Angular application should port easily to Angular 2.0.
