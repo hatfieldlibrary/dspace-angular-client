@@ -56,8 +56,6 @@
 
     var solrUrl = '';
 
-    console.log("TEST")
-
     console.log(query)
 
     /**
