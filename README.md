@@ -11,6 +11,8 @@ The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passpo
 
   [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material 2 is currently in alpha. 
 
+*NOTE:* Work is underway on the new [DSpace7 Rest API and Angular client](https://wiki.duraspace.org/display/DSPACE/DSpace+7+Working+Group). Check it out. 
+
 ### Live site:
 
 [Willamette University Public Site](http://libmedia.willamette.edu/ds/communities)
