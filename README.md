@@ -1,7 +1,5 @@
 #  DSpace Node/Angular Client
 
-[![bitHound Overall Score](https://www.bithound.io/github/hatfieldlibrary/dspace-angular-client/badges/score.svg)](https://www.bithound.io/github/hatfieldlibrary/dspace-angular-client)
-
 ## General Overview
 
 This DSpace 6 [DSpace REST API](https://wiki.duraspace.org/display/DSDOC5x/REST+API "DSpace 6 REST") /solr client uses AngularJs 1.x (1.5) and NodeJs middleware.  Based on the new Angular 1.5 component model and local scope, the Angular application should port easily to Angular 2.0.
@@ -12,8 +10,6 @@ The client supports login, logout, handle-based browsing of communities, collect
 The Node middleware includes [Express](http://expressjs.com/ "Express"), [Passport](https://github.com/jaredhanson/passport "Passport") (with [CAS](https://github.com/sadne/passport-cas "CAS") and [Google OAUTH2](https://github.com/jaredhanson/passport-google-oauth "Google OAUTH2") strategies), [request-promise](https://www.npmjs.com/package/request-promise "request-promise"). In production, [connect-redis](https://github.com/tj/connect-redis "connect-redis") is used as the session store.  The Node application's controllers and models are responsible for user authentication and access to DSpace Rest and solr services. Communication between the NodeJs application and DSpace REST can use either https or http protocols. In a typical deployment, the Node Express server will run on the DSpace host.
 
   [Angular Material](https://material.angularjs.org/latest/) is the UI framework.  Angular Material 2 is currently in alpha. 
-  
-*NOTE:* This project is not related to the [Angular 2 UI Prototype Project](https://github.com/DSpace-Labs/angular2-ui-prototype). But that project is very much worth following! As currently planned, this project will work within the NodeJs world rather than migrating into Javaland.  That works for us.  I'm very interested in seeing how the DSpace UI team's Angular 2 UI takes shape and the problems it solves.   
 
 ### Live site:
 
