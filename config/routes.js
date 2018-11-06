@@ -56,6 +56,8 @@ module.exports = function (app, config, passport) {
 
   app.get('/ds-api/solrQuery/:type/:id/:qType/:field/:sort/:terms/:offset/:rows', solr.browse);
 
+  app.get('/ds-api/solrQuery/:action/:terms/:qType/:offset', solr.externalApiQuery);
+
   app.get('/ds-api/solrQuery/:site/:item/:field/:mode', solr.sortOptions);
 
   app.post('/ds-api/solrQuery', solr.query);

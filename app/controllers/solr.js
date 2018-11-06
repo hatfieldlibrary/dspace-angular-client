@@ -35,6 +35,27 @@ var constants = require('../core/constants');
 
 
   /**
+   * This endpoint was added to support GET requests from the
+   * cross-search service.  The original query function below
+   * incorrectly uses POST for a REST read operation. No need to
+   * correct this now, since we will presumably move to a new
+   * DSpace client in the coming year (ca 2018-2019)
+   * @param req
+   * @param res
+   */
+  exports.externalApiQuery = function (req, res) {
+    var session = req.session;
+    req.params.asset = {type: ''}
+    req.params.query = {action: '', terms: '', qType: 'discover'};
+    req.params.filters = [];
+    req.params.query.offset = req.params.offset;
+    req.params.query.action = req.params.action;
+    req.params.query.terms = req.params.terms;
+    req.params.query.qType = req.params.qType;
+    models.solrQuery(req, res, session);
+  };
+
+  /**
    * Default solr query controller. Handles POST queries.
    * @param req
    * @param res
@@ -51,7 +72,6 @@ var constants = require('../core/constants');
     }
 
     var session = req.session;
-
     models.solrQuery(req.body, res, session);
 
   };
