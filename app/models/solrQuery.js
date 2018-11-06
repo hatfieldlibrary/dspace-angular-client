@@ -45,6 +45,7 @@ var processors = require('../core/responseProcessor');
      * @type {string}
      */
     var solrUrl = queryGenerator.getSolrUrl(query, dspaceTokenHeader);
+    console.log(solrUrl)
     /**
      * The request-promise.
      */
