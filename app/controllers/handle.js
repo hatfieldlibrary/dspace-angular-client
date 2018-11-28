@@ -31,7 +31,7 @@ var utils = require('../core/utils');
          * Request item info by handle.
          * @param callback
          */
-          function (callback) {
+        function (callback) {
 
           models.handle(site, item, session)
 
@@ -49,7 +49,7 @@ var utils = require('../core/utils');
          * @param result  the object returned by the inital handle query
          * @param callback
          */
-          function (result, callback) {
+        function (result, callback) {
 
           try {
             var type = result.type;
@@ -125,7 +125,7 @@ var utils = require('../core/utils');
           res.end();
 
 
-        }   else {
+        } else {
           /** send response */
           utils.jsonResponse(res, result);
         }

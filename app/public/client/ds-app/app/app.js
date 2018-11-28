@@ -15,9 +15,7 @@ var dspaceApp = angular.module('dspaceApp', [
   'dspaceContext',
   'dspaceServices',
   'dspaceRequests',
-  'dspaceComponents',
-  'angulartics',
-  'angulartics.google.analytics'
+  'dspaceComponents'
 
 ]);
 
