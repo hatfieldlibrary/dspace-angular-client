@@ -22,7 +22,7 @@
     "express": "^4.16.4",
     "express-session": "^1.13.0",
     "helmet": "^3.21.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "lodash-node": "^3.10.2",
     "method-override": "^2.3.10",
     "morgan": "^1.9.1",
