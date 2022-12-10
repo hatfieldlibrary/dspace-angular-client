@@ -19,7 +19,7 @@
     "cookie-parser": "^1.4.1",
     "debug": "^4.1.0",
     "ejs": "^2.6.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-session": "^1.13.0",
     "helmet": "^3.21.2",
     "lodash": "^4.17.15",
